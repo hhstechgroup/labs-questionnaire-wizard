@@ -7,9 +7,7 @@ import java.io.IOException;
 
 @javax.servlet.annotation.WebServlet(name = "HelloWorldServlet", urlPatterns = "/helloworld")
 public class HelloWorldServlet extends javax.servlet.http.HttpServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -8786994986490780818L;
 	@EJB
 	private HelloWorldBean helloWorldBean;
