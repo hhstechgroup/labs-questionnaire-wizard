@@ -11,4 +11,11 @@
     <module>wizard-web</module>
     <module>wizard-ejb</module>
   </modules>
+    <dependencies>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.1-20130918</version>
+        </dependency>
+    </dependencies>
 </project>
