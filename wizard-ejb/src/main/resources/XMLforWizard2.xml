@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<questionnaire-forms
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='XSDforWizard.xsd'>
+    <questionnaire-form>
+        <form-name>Test 2, Second Generated XML file</form-name>
+        <pages>
+            <page>
+                <page-number>1</page-number>
+                <groups-of-questions>
+                    <group>
+                        <group-name></group-name>
+                        <questions>
+                            <question answer-required="True" question-id="2">
+                                <question-title></question-title>
+                                <question-type></question-type>
+                                <help-text></help-text>
+                                <dependent-questions>
+                                    <dependent-question>
+                                        <question-id></question-id>
+                                        <required-answer></required-answer>
+                                    </dependent-question>
+                                </dependent-questions>
+                                <multiple-choice-options>
+                                    <option></option>
+                                </multiple-choice-options>
+                                <checkboxes-options>
+                                    <option></option>
+                                </checkboxes-options>
+                                <choose-from-list-options>
+                                    <option></option>
+                                </choose-from-list-options>
+                                <range range-begin="32" range-end="12"></range>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+        </pages>
+    </questionnaire-form>
+
+</questionnaire-forms>

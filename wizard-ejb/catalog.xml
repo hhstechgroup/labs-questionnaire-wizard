@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/artem/Documents/NetBeansProjects/git%20(wizard-web)/labs-questionnaire-wizard/wizard-ejb/src/main/resources/XSDforWizard.xsd" uri="src/main/resources/jaxb/super_binding/XSDforWizard.xsd"/>
+</catalog>
