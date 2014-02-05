@@ -42,10 +42,8 @@ and open the template in the editor.
                                                                                                             <xs:sequence>
                                                                                                                 <xs:element name="dependent-question" maxOccurs="unbounded">
                                                                                                                     <xs:complexType>
-                                                                                                                        <xs:sequence>
-                                                                                                                            <xs:element type="xs:string" name="question-id"/>
-                                                                                                                            <xs:element type="xs:string" name="required-answer"/>
-                                                                                                                        </xs:sequence>
+                                                                                                                        <xs:attribute type="xs:int" name="question-id"/>
+                                                                                                                        <xs:attribute type="xs:string" name="required-answer"/>
                                                                                                                     </xs:complexType>
                                                                                                                 </xs:element>
                                                                                                             </xs:sequence>
@@ -89,7 +87,7 @@ and open the template in the editor.
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
                                                                                                 </xs:sequence>
-                                                                                                <xs:attribute type="xs:string" name="answer-required"/>
+                                                                                                <xs:attribute type="xs:boolean" name="answer-required"/>
                                                                                                 <xs:attribute type="xs:int" name="question-id"/>
                                                                                             </xs:complexType>
                                                                                         </xs:element>

@@ -10,11 +10,11 @@ import java.util.List;
  *
  * @author artem.pylypenko
  */
-public class WizardPageModel {
+public class WizardPage {
 
     private Integer id;
     private List<WizardQuestionGroup> questionGroupList;
 
-    public WizardPageModel() {
+    public WizardPage() {
     }
 }

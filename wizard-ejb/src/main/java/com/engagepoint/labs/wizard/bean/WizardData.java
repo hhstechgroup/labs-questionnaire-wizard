@@ -13,7 +13,7 @@ import java.util.List;
 public class WizardData {
 
     private Integer id;
-    private List<WizardPageModel> pageList;
+    private List<WizardPage> pageList;
 
     public WizardData() {
     }

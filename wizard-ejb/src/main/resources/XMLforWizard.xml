@@ -14,10 +14,7 @@
                                 <question-type></question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
-                                    <dependent-question>
-                                        <question-id></question-id>
-                                        <required-answer></required-answer>
-                                    </dependent-question>
+                                    <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
                                 <options>                                                                  
                                     <option>dd222</option>

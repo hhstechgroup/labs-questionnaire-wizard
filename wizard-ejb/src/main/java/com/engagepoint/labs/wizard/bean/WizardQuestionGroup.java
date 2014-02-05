@@ -4,6 +4,7 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
+import com.engagepoint.labs.wizard.questions.BasicQuestion;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class WizardQuestionGroup {
 
     private int id;
-    private List<WizardQuestion> wizardQuestionList;
+    private List<BasicQuestion> wizardQuestionList;
 
     public WizardQuestionGroup() {
     }

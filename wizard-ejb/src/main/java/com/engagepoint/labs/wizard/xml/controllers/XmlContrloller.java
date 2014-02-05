@@ -5,7 +5,7 @@
  */
 package com.engagepoint.labs.wizard.xml.controllers;
 
-import com.engagepoint.labs.wizard.bean.WizardDataModel;
+
 import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
 import java.io.Serializable;
 import java.util.List;
@@ -13,8 +13,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import org.xml.sax.SAXException;
-//import super_binding.CheckboxesOptions;
-//import super_binding.ChooseFromListOptions;
 import super_binding.Columns;
 import super_binding.DependentQuestion;
 import super_binding.DependentQuestions;
@@ -22,7 +20,6 @@ import super_binding.Grid;
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Options;
-//import super_binding.MultipleChoiceOptions;
 import super_binding.Page;
 import super_binding.Pages;
 import super_binding.Question;
@@ -95,15 +92,15 @@ public class XmlContrloller implements Serializable {
         List<Question> questionList = questions.getQuestion();
 
         for (Question question : questionList) {
-            questionsInfo += "Answer required: " + question.getAnswerRequired() + "<br/>";
-            questionsInfo += "Question ID: " + question.getQuestionId().toString() + "<br/>";
+            questionsInfo += "Answer required: " + question.isAnswerRequired() + "<br/>";
             questionsInfo += "Question title: " + question.getQuestionTitle() + "<br/>";
             questionsInfo += "Question type: " + question.getQuestionType() + "<br/>";
             questionsInfo += "Help text" + question.getHelpText() + "<br/>";
-            questionsInfo += "Options" + getOptionsInfo(question.getOptions()) + "<br/>";
             questionsInfo += getDependentQuestionsInfo(question.getDependentQuestions());
+            questionsInfo += "Options: " + getOptionsInfo(question.getOptions()) + "<br/>";
             questionsInfo += getRangeInfo(question.getRange());
             questionsInfo += getGridInfo(question.getGrid());
+            questionsInfo += "Question ID: " + question.getQuestionId().toString() + "<br/>";
         }
 
         return questionsInfo;
@@ -113,7 +110,7 @@ public class XmlContrloller implements Serializable {
         String questionsInfo = "";
         List<String> optionList = options.getOption();
         for (String option : optionList) {
-            questionsInfo += "     Option: " + option + "<br/>";
+            questionsInfo += option + "<br/>";
         }
         return questionsInfo;
     }
@@ -123,7 +120,7 @@ public class XmlContrloller implements Serializable {
         List<DependentQuestion> dependentQuestionList = dependentQuestions.getDependentQuestion();
 
         for (DependentQuestion dependentQuestion : dependentQuestionList) {
-            dependentQuestionInfo += "Dependent question ID: " + dependentQuestion.getQuestionId() + "\n\r";
+            dependentQuestionInfo += "Dependent question ID: " + dependentQuestion.getQuestionId() + "<br/>";
             dependentQuestionInfo += "Dependent question required answer: "
                     + dependentQuestion.getRequiredAnswer() + "<br/>";
         }

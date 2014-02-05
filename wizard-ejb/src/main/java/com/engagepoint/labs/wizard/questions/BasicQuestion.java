@@ -9,27 +9,27 @@ import super_binding.DependentQuestion;
  */
 public abstract class BasicQuestion<B extends Answer> {
 
-    protected long id;
+    protected Integer id;
     protected String title;
     protected QuestionType questionType;
-    protected boolean required;
-    protected String toolTipText;
+    protected String helpText;
     private List<DependentQuestion> dependentQuestionsList; // need to be done later!!!
+    protected boolean answerRequired;
 
-    public String getToolTipText() {
-        return toolTipText;
+    public String getHelpText() {
+        return helpText;
     }
 
-    public void setToolTipText(String toolTipText) {
-        this.toolTipText = toolTipText;
+    public void setHelpText(String helpText) {
+        this.helpText = helpText;
     }
 
     public boolean isRequired() {
-        return required;
+        return answerRequired;
     }
 
-    public void setRequired(boolean required) {
-        this.required = required;
+    public void setAnswerRequired(boolean answerRequired) {
+        this.answerRequired = answerRequired;
     }
 
     public String getTitle() {
@@ -44,8 +44,16 @@ public abstract class BasicQuestion<B extends Answer> {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
     }
 
     public abstract B getAnswer();

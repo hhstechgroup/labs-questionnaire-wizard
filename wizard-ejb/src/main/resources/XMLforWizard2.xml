@@ -18,25 +18,16 @@ and open the template in the editor.
                     <group>
                         <group-name></group-name>
                         <questions>
-                            <question answer-required="True" question-id="2">
+                            <question answer-required="true" question-id="2">
                                 <question-title></question-title>
                                 <question-type></question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
-                                    <dependent-question>
-                                        <question-id></question-id>
-                                        <required-answer></required-answer>
-                                    </dependent-question>
+                                    <dependent-question/>
                                 </dependent-questions>
-                                <multiple-choice-options>
+                                <options>
                                     <option></option>
-                                </multiple-choice-options>
-                                <checkboxes-options>
-                                    <option></option>
-                                </checkboxes-options>
-                                <choose-from-list-options>
-                                    <option></option>
-                                </choose-from-list-options>
+                                </options>
                                 <range range-begin="32" range-end="12"></range>
                                 <grid>
                                     <columns>
