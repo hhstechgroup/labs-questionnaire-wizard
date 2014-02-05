@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,7 +7,6 @@
 package com.engagepoint.labs.wizard.jsfbean;
 
 import com.engagepoint.labs.wizard.xml.controllers.XmlContrloller;
-import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,10 +26,8 @@ import org.xml.sax.SAXException;
 public class ManagedBean {
 
     private String xmlInfo;
-
     @Inject
     XmlContrloller xmlContrloller;
-
     private String selectedXmlFile;
     private Map<String, String> MapOfXmls;
 
@@ -68,7 +66,7 @@ public class ManagedBean {
     public void parse() {
         try {
             xmlInfo = xmlContrloller.readXML(selectedXmlFile);
-        } catch (SAXException | JAXBException ex) {
+        } catch (JAXBException | SAXException ex) {
             Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

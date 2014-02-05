@@ -51,21 +51,7 @@ and open the template in the editor.
                                                                                                             </xs:sequence>
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
-                                                                                                    <xs:element name="multiple-choice-options">
-                                                                                                        <xs:complexType>
-                                                                                                            <xs:sequence>
-                                                                                                                <xs:element type="xs:string" name="option" maxOccurs="unbounded"/>
-                                                                                                            </xs:sequence>
-                                                                                                        </xs:complexType>
-                                                                                                    </xs:element>
-                                                                                                    <xs:element name="checkboxes-options">
-                                                                                                        <xs:complexType>
-                                                                                                            <xs:sequence>
-                                                                                                                <xs:element type="xs:string" name="option" maxOccurs="unbounded"/>
-                                                                                                            </xs:sequence>
-                                                                                                        </xs:complexType>
-                                                                                                    </xs:element>
-                                                                                                    <xs:element name="choose-from-list-options">
+                                                                                                    <xs:element name="options">
                                                                                                         <xs:complexType>
                                                                                                             <xs:sequence>
                                                                                                                 <xs:element type="xs:string" name="option" maxOccurs="unbounded"/>

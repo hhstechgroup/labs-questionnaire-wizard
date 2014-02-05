@@ -1,13 +1,20 @@
 package com.engagepoint.labs.wizard.questions;
 
+import com.engagepoint.labs.wizard.answers.Answer;
+import java.util.List;
+import super_binding.DependentQuestion;
+
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class BasicQuestion {
+public abstract class BasicQuestion<B extends Answer> {
+
     protected long id;
     protected String title;
+    protected QuestionType questionType;
     protected boolean required;
     protected String toolTipText;
+    private List<DependentQuestion> dependentQuestionsList; // need to be done later!!!
 
     public String getToolTipText() {
         return toolTipText;
@@ -41,5 +48,7 @@ public class BasicQuestion {
         this.id = id;
     }
 
+    public abstract B getAnswer();
 
+    public abstract void setAnswer(B answers);
 }

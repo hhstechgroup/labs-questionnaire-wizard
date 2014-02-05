@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.Question;
+import com.engagepoint.labs.wizard.questions.BasicQuestion;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Group {
     private String title;
-    private List<Question> questions;
+    private List<BasicQuestion> questions;
 
     public String getTitle() {
         return title;
@@ -24,11 +24,11 @@ public class Group {
         this.title = title;
     }
 
-    public List<Question> getQuestions() {
+    public List<BasicQuestion> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(List<BasicQuestion> questions) {
         this.questions = questions;
     }
 }

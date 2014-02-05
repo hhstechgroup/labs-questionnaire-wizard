@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class CheckBoxesQuestion extends BasicQuestion implements Question<ListTextAnswer> {
+public class CheckBoxesQuestion extends BasicQuestion<ListTextAnswer> {
     private ListTextAnswer listTextAnswer;
     private ArrayList<String> optionsList;
     public ArrayList<String> getOptionsList() {

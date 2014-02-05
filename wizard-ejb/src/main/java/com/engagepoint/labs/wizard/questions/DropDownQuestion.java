@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class DropDownQuestion extends BasicQuestion implements Question<TextAnswer> {
+public class DropDownQuestion extends BasicQuestion<TextAnswer> {
     private TextAnswer textAnswer;
     private ArrayList<String> optionsList;
 

@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.Question;
+import com.engagepoint.labs.wizard.questions.BasicQuestion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +47,8 @@ public class WizardDataModel {
 
     public List<Integer> getQuestionIDsByPage(int groupID) {
         List<Integer> questionIDs = new ArrayList<>();
-        List<Question> questionList = wizardScreens.get(groupID).getQuestions();
-        for(Question question : questionList) {
+        List<BasicQuestion> questionList = wizardScreens.get(groupID).getQuestions();
+        for(BasicQuestion question : questionList) {
             questionIDs.add((int)question.getId());
         }
         return questionIDs;
