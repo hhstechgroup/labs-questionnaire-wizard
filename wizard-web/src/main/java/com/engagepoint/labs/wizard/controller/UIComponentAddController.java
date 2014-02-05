@@ -2,9 +2,11 @@ package com.engagepoint.labs.wizard.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlOutputText;
 import javax.inject.Named;
@@ -21,12 +23,13 @@ import com.engagepoint.labs.wizard.ui.UITimeQuestion;
 public class UIComponentAddController implements Serializable {
     private static final long serialVersionUID = -7860806407082286277L;
     private HtmlForm dynaform;
-    private ArrayList<UIBasicQuestion> currentUIComponents;
+    
+    private ArrayList<UIBasicQuestion> currentUIBasicComponents;
     private int[] currentPointer;
 
     @PostConstruct
     public void init() {
-	currentUIComponents = new ArrayList<UIBasicQuestion>();
+	currentUIBasicComponents = new ArrayList<UIBasicQuestion>();
 
 	currentPointer = new int[2];
 	currentPointer[0] = 0;
@@ -40,9 +43,9 @@ public class UIComponentAddController implements Serializable {
 	UIBasicQuestion q2 = new UITextAreaQuestion();
 	UIBasicQuestion q3 = new UITimeQuestion();
 
-	currentUIComponents.add(q1);
-	currentUIComponents.add(q2);
-	currentUIComponents.add(q3);
+	currentUIBasicComponents.add(q1);
+	currentUIBasicComponents.add(q2);
+	currentUIBasicComponents.add(q3);
 
 	// TODO: get model data here and convert to UIComponents
 	// wakes up within button from left menu with help of currentPointer
@@ -52,8 +55,8 @@ public class UIComponentAddController implements Serializable {
 
     private void reloadDynaForm() {
 	dynaform.getChildren().clear();
-	for (int i = 0; i < currentUIComponents.size(); i++) {
-	    dynaform.getChildren().add(currentUIComponents.get(i).getUiComponent());
+	for (int i = 0; i < currentUIBasicComponents.size(); i++) {
+	    dynaform.getChildren().add(currentUIBasicComponents.get(i).getUiComponent());
 
 	    HtmlOutputText linebreak = new HtmlOutputText();
 	    linebreak.setValue("<br/>");

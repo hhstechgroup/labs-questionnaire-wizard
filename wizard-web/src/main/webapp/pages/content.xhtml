@@ -10,6 +10,12 @@
 <h:body>
 	<br />
 	<h:form id="commandform">
+
+		<!-- 	DO NOT TOUCH -->
+		<p:calendar value="#{uiComponentAddController.date}" pattern="HH:mm"
+			timeOnly="true" rendered="false" />
+		<!-- 	DO NOT TOUCH -->
+
 		<p:commandButton action="#{uiComponentAddController.updateDynaform}"
 			value="Updater" update=":dynaform"></p:commandButton>
 	</h:form>
