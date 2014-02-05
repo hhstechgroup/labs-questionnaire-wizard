@@ -6,20 +6,20 @@ import org.primefaces.component.inputtext.InputText;
 
 public class UITextQuestion extends UIBasicQuestion {
 
-    public static final String TYPE = "textQuestion";
+    public static final String TYPE = "TextQuestion";
     private InputText inputText;
 
     public UITextQuestion() {
 	super(TYPE);
 
 	inputText = new InputText();
-	inputText.setValue(new String("inputText"));
+	inputText.setValue(TYPE);
 	uiComponent = (UIComponent) inputText;
     }
 
     @Override
-    public void setPf_value(String pf_value) {
-	inputText.setValue(pf_value);
+    public void setPf_value(Object pf_value) {
+	inputText.setValue((String)pf_value);
 	this.pf_value=pf_value;
     }
 

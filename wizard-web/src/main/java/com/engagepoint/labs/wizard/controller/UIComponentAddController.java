@@ -6,10 +6,15 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
 import javax.inject.Named;
 
+import org.w3c.dom.html.HTMLBRElement;
+
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
+import com.engagepoint.labs.wizard.ui.UITextAreaQuestion;
 import com.engagepoint.labs.wizard.ui.UITextQuestion;
+import com.engagepoint.labs.wizard.ui.UITimeQuestion;
 
 @Named("uiComponentAddController")
 @SessionScoped
@@ -32,13 +37,12 @@ public class UIComponentAddController implements Serializable {
     private void populateCurrentUIComponents() {
 
 	UIBasicQuestion q1 = new UITextQuestion();
-	q1.setPf_value("input 1");
-
-	UIBasicQuestion q2 = new UITextQuestion();
-	q2.setPf_value("input 2");
+	UIBasicQuestion q2 = new UITextAreaQuestion();
+	UIBasicQuestion q3 = new UITimeQuestion();
 
 	currentUIComponents.add(q1);
 	currentUIComponents.add(q2);
+	currentUIComponents.add(q3);
 
 	// TODO: get model data here and convert to UIComponents
 	// wakes up within button from left menu with help of currentPointer
@@ -47,8 +51,14 @@ public class UIComponentAddController implements Serializable {
     }
 
     private void reloadDynaForm() {
+	dynaform.getChildren().clear();
 	for (int i = 0; i < currentUIComponents.size(); i++) {
 	    dynaform.getChildren().add(currentUIComponents.get(i).getUiComponent());
+
+	    HtmlOutputText linebreak = new HtmlOutputText();
+	    linebreak.setValue("<br/>");
+	    linebreak.setEscape(false);
+	    dynaform.getChildren().add(linebreak);
 	}
     }
 

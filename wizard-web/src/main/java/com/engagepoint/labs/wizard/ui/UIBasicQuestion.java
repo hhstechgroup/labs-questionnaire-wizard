@@ -8,7 +8,7 @@ public class UIBasicQuestion {
 
     private String type;
     protected UIComponent uiComponent;
-    protected String pf_value;
+    protected Object pf_value;
 
     public UIBasicQuestion(String type) {
 	this.type = type;
@@ -22,11 +22,11 @@ public class UIBasicQuestion {
 	return uiComponent;
     }
 
-    public String getPf_value() {
+    public Object getPf_value() {
 	return pf_value;
     }
 
-    public void setPf_value(String pf_value) {
+    public void setPf_value(Object pf_value) {
     }
 
 }
