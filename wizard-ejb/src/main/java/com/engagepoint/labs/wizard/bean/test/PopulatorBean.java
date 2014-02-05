@@ -46,7 +46,8 @@ public class PopulatorBean implements Serializable {
 
 	// Create <h:dataTable value="#{myBean.dataList}" var="dataItem">.
 	HtmlDataTable dataTable = new HtmlDataTable();
-	dataTable.setValueExpression("value", createValueExpression("#{populatorBean.dataList}", List.class));
+	dataTable.setValueExpression("value",
+		createValueExpression("#{populatorBean.dataList}", List.class));
 	dataTable.setVar("dataItem");
 
 	// Create <h:column> for 'ID' column.
@@ -62,7 +63,8 @@ public class PopulatorBean implements Serializable {
 	// Create <h:outputText value="#{dataItem.id}"> for the body of 'ID'
 	// column.
 	HtmlOutputText idOutput = new HtmlOutputText();
-	idOutput.setValueExpression("value", createValueExpression("#{dataItem.id}", Long.class));
+	idOutput.setValueExpression("value",
+		createValueExpression("#{dataItem.id}", Long.class));
 	idColumn.getChildren().add(idOutput);
 
 	// Create <h:column> for 'Name' column.
@@ -78,7 +80,8 @@ public class PopulatorBean implements Serializable {
 	// Create <h:outputText value="#{dataItem.name}"> for the body of 'Name'
 	// column.
 	HtmlOutputText nameOutput = new HtmlOutputText();
-	nameOutput.setValueExpression("value", createValueExpression("#{dataItem.name}", String.class));
+	nameOutput.setValueExpression("value",
+		createValueExpression("#{dataItem.name}", String.class));
 	nameColumn.getChildren().add(nameOutput);
 
 	// Create <h:column> for 'Value' column.
@@ -94,7 +97,8 @@ public class PopulatorBean implements Serializable {
 	// Create <h:outputText value="#{dataItem.value}"> for the body of
 	// 'Value' column.
 	HtmlOutputText valueOutput = new HtmlOutputText();
-	valueOutput.setValueExpression("value", createValueExpression("#{dataItem.value}", String.class));
+	valueOutput.setValueExpression("value",
+		createValueExpression("#{dataItem.value}", String.class));
 	valueColumn.getChildren().add(valueOutput);
 
 	// Finally add the datatable to <h:panelGroup
@@ -129,10 +133,14 @@ public class PopulatorBean implements Serializable {
     // Helpers
     // -----------------------------------------------------------------------------------
 
-    private ValueExpression createValueExpression(String valueExpression, Class<?> valueType) {
+    private ValueExpression createValueExpression(String valueExpression,
+	    Class<?> valueType) {
 	FacesContext facesContext = FacesContext.getCurrentInstance();
-	return facesContext.getApplication().getExpressionFactory()
-		.createValueExpression(facesContext.getELContext(), valueExpression, valueType);
+	return facesContext
+		.getApplication()
+		.getExpressionFactory()
+		.createValueExpression(facesContext.getELContext(), valueExpression,
+			valueType);
     }
 
     public List<Item> getDataList() {
