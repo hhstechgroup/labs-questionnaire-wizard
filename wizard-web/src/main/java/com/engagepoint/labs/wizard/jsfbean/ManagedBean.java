@@ -6,7 +6,7 @@
  */
 package com.engagepoint.labs.wizard.jsfbean;
 
-import com.engagepoint.labs.wizard.xml.controllers.XmlContrloller;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,7 +27,7 @@ public class ManagedBean {
 
     private String xmlInfo;
     @Inject
-    XmlContrloller xmlContrloller;
+    XmlController xmlController;
     private String selectedXmlFile;
     private Map<String, String> MapOfXmls;
 
@@ -65,7 +65,7 @@ public class ManagedBean {
 
     public void parse() {
         try {
-            xmlInfo = xmlContrloller.readXML(selectedXmlFile);
+            xmlInfo = xmlController.readXML(selectedXmlFile);
         } catch (JAXBException | SAXException ex) {
             Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }

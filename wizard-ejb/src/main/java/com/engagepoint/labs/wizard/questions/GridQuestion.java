@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class GridQuestion extends BasicQuestion<GridAnswer> {
+public class GridQuestion extends WizardQuestion<GridAnswer> {
 
     private List<String> columns;
     private List<String> rows;

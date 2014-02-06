@@ -7,8 +7,9 @@ import super_binding.QType;
 
 /**
  * Created by igor.guzenko on 2/4/14.
+ * @param <B>
  */
-public abstract class BasicQuestion<B extends Answer> {
+public abstract class WizardQuestion<B extends Answer> {
 
     protected Integer id;
     protected String title;

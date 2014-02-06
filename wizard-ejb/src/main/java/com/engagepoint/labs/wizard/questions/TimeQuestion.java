@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.TimeAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class TimeQuestion extends BasicQuestion<TimeAnswer> {
+public class TimeQuestion extends WizardQuestion<TimeAnswer> {
 
     private TimeAnswer timeAnswer;
 

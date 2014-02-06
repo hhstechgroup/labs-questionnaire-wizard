@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <questionnaire-forms>
     <questionnaire-form>
-        <form-name>Test Bla Blass +++ !!</form-name>
+        <form-name>XML NuMBER 1</form-name>
         <pages>
-            <page>
-                <page-number>1</page-number>
+            <page page-number="1">
                 <groups-of-questions>
                     <group>
                         <group-name>test group name</group-name>
@@ -21,7 +20,7 @@
                                     <option>list-1</option>
                                     <option>list-2</option>
                                 </options>
-                                <range range-begin="0" range-end="1"></range>
+                                <range range-begin="0" range-end="1"/>
 
                                 <grid>
                                     <columns>

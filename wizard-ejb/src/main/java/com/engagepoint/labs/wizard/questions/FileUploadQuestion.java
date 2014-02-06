@@ -10,7 +10,7 @@ import com.engagepoint.labs.wizard.answers.FileAnswer;
  *
  * @author artem
  */
-public class FileUploadQuestion extends BasicQuestion<FileAnswer> {
+public class FileUploadQuestion extends WizardQuestion<FileAnswer> {
 
     private FileAnswer fileAnswer;
 

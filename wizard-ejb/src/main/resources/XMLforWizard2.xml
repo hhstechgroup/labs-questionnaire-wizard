@@ -12,22 +12,21 @@ and open the template in the editor.
     <questionnaire-form>
         <form-name>Test 2, Second Generated XML file</form-name>
         <pages>
-            <page>
-                <page-number>1</page-number>
+            <page page-number="10">
                 <groups-of-questions>
                     <group>
                         <group-name></group-name>
                         <questions>
                             <question answer-required="true" question-id="2">
                                 <question-title></question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>RANGE</question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
                                 </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
-                                <range range-begin="32" range-end="12"></range>
+                                <range range-begin="32" range-end="12"/>
                                 <grid>
                                     <columns>
                                     </columns>
