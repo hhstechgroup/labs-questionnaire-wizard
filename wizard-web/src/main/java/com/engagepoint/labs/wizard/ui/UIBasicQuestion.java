@@ -7,6 +7,7 @@ import org.primefaces.component.inputtext.InputText;
 public class UIBasicQuestion {
 
     private String type;
+    private String id;
     protected UIComponent uiComponent;
     protected Object pf_value;
 
@@ -27,6 +28,19 @@ public class UIBasicQuestion {
     }
 
     public void setPf_value(Object pf_value) {
+    }
+
+    public String getId() {
+	return uiComponent.getId();
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
+    
+    public void postInit()
+    {
+	
     }
 
 }

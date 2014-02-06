@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link type="text/css" rel="stylesheet"
+	href="/wizard-web/faces/javax.faces.resource/theme.css?ln=primefaces-pepper-grinder" />
+<link type="text/css" rel="stylesheet"
+	href="/wizard-web/faces/javax.faces.resource/primefaces.css?ln=primefaces" />
+<script type="text/javascript"
+	src="/wizard-web/faces/javax.faces.resource/jquery/jquery.js?ln=primefaces"></script>
+<script type="text/javascript"
+	src="/wizard-web/faces/javax.faces.resource/primefaces.js?ln=primefaces"></script>
+<script type="text/javascript"
+	src="/wizard-web/faces/javax.faces.resource/jquery/jquery-plugins.js?ln=primefaces"></script>
+<title>XML parsing !</title>
+</head>
+<body>
+	<br />
+	<form id="form_breadcrumb" name="form_breadcrumb" method="post"
+		action="/wizard-web/faces/pages/template.xhtml"
+		enctype="application/x-www-form-urlencoded">
+		<input type="hidden" name="form_breadcrumb" value="form_breadcrumb" />
+		<div id="form_breadcrumb:breadcrumb"
+			class="ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all"
+			role="menu">
+			<ul>
+				<li role="menuitem"><a id="form_breadcrumb:j_id1"
+					class="ui-menuitem-link ui-corner-all ui-icon ui-icon-home"
+					href="javascript:void(0)"
+					onclick="PrimeFaces.ab({source:'form_breadcrumb:j_id1',formId:'form_breadcrumb'});return false;"><span
+						class="ui-menuitem-text">Page0</span></a></li>
+				<li class="ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e"></li>
+				<li role="menuitem"><a id="form_breadcrumb:j_id2"
+					class="ui-menuitem-link ui-corner-all" href="javascript:void(0)"
+					onclick="PrimeFaces.ab({source:'form_breadcrumb:j_id2',formId:'form_breadcrumb'});return false;"><span
+						class="ui-menuitem-text">Page1</span></a></li>
+				<li class="ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e"></li>
+				<li role="menuitem"><a id="form_breadcrumb:j_id3"
+					class="ui-menuitem-link ui-corner-all" href="javascript:void(0)"
+					onclick="PrimeFaces.ab({source:'form_breadcrumb:j_id3',formId:'form_breadcrumb'});return false;"><span
+						class="ui-menuitem-text">Page2</span></a></li>
+				<li class="ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e"></li>
+				<li role="menuitem"><a id="form_breadcrumb:j_id4"
+					class="ui-menuitem-link ui-corner-all" href="javascript:void(0)"
+					onclick="PrimeFaces.ab({source:'form_breadcrumb:j_id4',formId:'form_breadcrumb'});return false;"><span
+						class="ui-menuitem-text">Page3</span></a></li>
+				<li class="ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e"></li>
+				<li role="menuitem"><a id="form_breadcrumb:j_id5"
+					class="ui-menuitem-link ui-corner-all" href="javascript:void(0)"
+					onclick="PrimeFaces.ab({source:'form_breadcrumb:j_id5',formId:'form_breadcrumb'});return false;"><span
+						class="ui-menuitem-text">Page4</span></a></li>
+			</ul>
+		</div>
+		<input type="hidden" name="javax.faces.ViewState"
+			id="j_id1:javax.faces.ViewState:0"
+			value="4209027820247509344:-4159066488684437666" autocomplete="off" />
+	</form>
+	<form id="form_menu" name="form_menu" method="post"
+		action="/wizard-web/faces/pages/template.xhtml"
+		enctype="application/x-www-form-urlencoded">
+		<input type="hidden" name="form_menu" value="form_menu" />
+		<div id="form_menu:menu"
+			class="ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix"
+			role="menu">
+			<ul class="ui-menu-list ui-helper-reset"></ul>
+		</div>
+		<script id="form_menu:menu_s" type="text/javascript">
+			$(function() {
+				PrimeFaces.cw('PlainMenu', 'widget_form_menu_menu', {
+					id : 'form_menu:menu'
+				});
+			});
+		</script>
+		<input type="hidden" name="javax.faces.ViewState"
+			id="j_id1:javax.faces.ViewState:0"
+			value="4209027820247509344:-4159066488684437666" autocomplete="off" />
+	</form>
+</body>
+</html>
