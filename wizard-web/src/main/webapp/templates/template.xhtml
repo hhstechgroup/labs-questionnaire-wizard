@@ -1,0 +1,82 @@
+<uib:page xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:uib="http://engagepoint.com/uib"
+          xmlns:ui="http://java.sun.com/jsf/facelets"
+          xmlns:ui-headerUtilityBar="http://java.sun.com/jsf/composite/uibootstrap/components/headerUtilityBar"
+          xmlns:p="http://primefaces.org/ui"
+          xmlns:cc-header="http://java.sun.com/jsf/composite/header"
+          xmlns:cc-footer="http://java.sun.com/jsf/composite/footer"
+          markupType="html5"
+          contentType="text/html"
+          showFooter="false"
+          pageTitle="UI Bootstrap Demo"
+          project="financials">
+
+    <h:outputStylesheet library="css" name="leftmenu.css" target="head"/>
+
+    <uib:pageLayout>
+
+
+        <uib:pageHeaderFacet hideHelpMenu="true">
+            <ui:insert name="topMenu">
+                <!--<ui:include src="topmenubar.xhtml"/>-->
+            </ui:insert>
+        </uib:pageHeaderFacet>
+
+        <ui-headerUtilityBar:headerUtilityBar id="utilityBarContainer"
+                                              helpButtonActionListener="#{langSelectMenuBean.helpButtonActionListener}"
+                                              languageBean="#{langSelectMenuBean}" showSearch="true">
+
+            <ui:insert name="utilityBar"/>
+
+            <p:ajaxStatus styleClass="ajax-loader">
+                <f:facet name="start">
+                    <h:panelGroup styleClass="ajax-loader-visible"> </h:panelGroup>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+
+        </ui-headerUtilityBar:headerUtilityBar>
+
+
+        <div>
+            <h:form style="">
+            <p:breadCrumb  id="breadcrumb" >
+                <p:menuitem value="Page1" url="#"  />
+                <p:menuitem value="Page2" url="#" />
+                <p:menuitem value="Page3" url="#" />
+                <p:menuitem value="Page4" url="#" />
+                <p:menuitem value="Page5" url="#" />
+                <p:menuitem value="Page6" url="#" />
+                <p:menuitem value="Page7" url="#" />
+                <p:menuitem value="Page8" url="#" />
+            </p:breadCrumb>
+            </h:form>
+        </div>
+
+        <uib:pageMenuFacet id="leftmenu" >
+            <!--<ui:insert name="leftMenu"/>-->
+        </uib:pageMenuFacet>
+
+        <!--<uib:pageBodyFacet>-->
+                   <!--&lt;!&ndash;<ui:insert name="mainContent"/>&ndash;&gt;-->
+        <!--</uib:pageBodyFacet>-->
+    </uib:pageLayout>
+
+
+
+
+        <!--<uib:pageMenuFacet id="pageMenu">-->
+            <!--<ui:insert name="leftMenu"/>-->
+        <!--</uib:pageMenuFacet>-->
+
+        <!--<uib:pageBodyFacet>-->
+            <!--<ui:insert name="page"/>-->
+        <!--</uib:pageBodyFacet>-->
+
+    <!--</uib:pageLayout>-->
+
+</uib:page>
