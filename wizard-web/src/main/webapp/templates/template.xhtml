@@ -34,22 +34,18 @@
     </h:outputScript>
 
     <uib:pageLayout>
-         <div id="topmenuid">
-        <uib:pageHeaderFacet hideHelpMenu="true">
-            <ui:insert name="topMenu">
-                <ui:include src="topmenubar.xhtml"/>
-            </ui:insert>
-        </uib:pageHeaderFacet>
-         </div>
+        <div id="topmenuid">
+            <uib:pageHeaderFacet hideHelpMenu="true">
+                <ui:insert name="topMenu">
+                    <ui:include src="topmenubar.xhtml"/>
+                </ui:insert>
+            </uib:pageHeaderFacet>
+        </div>
 
         <uib:pageHeaderUtilityBarFacet>
             <ui:insert name="headerBar"/>
             <ui:insert name="breadcrumb"/>
         </uib:pageHeaderUtilityBarFacet>
-
-        <!--<div id="breadcrumb">-->
-            <!--<ui:insert name="breadcrumb"/>-->
-        <!--</div>-->
 
         <uib:pageMenuFacet id="pageMenu">
             <ui:insert name="leftMenu"/>
