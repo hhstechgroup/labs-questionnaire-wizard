@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+    <ui:define name="breadcrumb">
+        <h:form id="brd" >
+            <p:breadCrumb style="background: skyblue"  >
+                <p:menuitem value="Page1" url="#"  />
+                <p:menuitem value="Page2" url="#" />
+                <p:menuitem value="Page3" url="#" />
+                <p:menuitem value="Page4" url="#" />
+                <p:menuitem value="Page5" url="#" />
+                <p:menuitem value="Page6" url="#" />
+                <p:menuitem value="Page7" url="#" />
+                <p:menuitem value="Page8" url="#" />
+            </p:breadCrumb>
+        </h:form>
+        <br/>
+    </ui:define>
+    <ui:define name="leftMenu">
+
+        <ui:include src="leftMenu.xhtml" />
+    </ui:define>
+    <ui:define name="mainContent">
+        Select demo project from left menu
+    </ui:define>
+</ui:composition>

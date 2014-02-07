@@ -1,14 +1,10 @@
 <h:form xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:p="http://primefaces.org/ui"
         xmlns:uib="http://engagepoint.com/uib"
-        xmlns:ui="http://java.sun.com/jsf/facelets"
         id="leftMenu">
 
-    <uib:menu id="menu" styleClass="sub-navigation">
-        <uib:menu>
-            <uib:menuItem title="test1"/>
-            <uib:menuItem title="test2"/>
-            <uib:menuItem title="test3"/>
-        </uib:menu>
+    <uib:menu id="menu">
+        <uib:menuSection id="menutest1" title="Topic 1" url="/demo/financials/index.xhtml" parentUrl="/financials/"/>
+        <uib:menuSection id="menutest2" title="Topic 2" url="/demo/financials/index.xhtml" parentUrl="/financials/"/>
+        <uib:menuSection id="menutest3" title="Topic 3" url="/demo/financials/index.xhtml" parentUrl="/financials/"/>
     </uib:menu>
 </h:form>
