@@ -1,4 +1,4 @@
-<!--<uib:page xmlns="http://www.w3.org/1999/xhtml"
+<uib:page xmlns="http://www.w3.org/1999/xhtml"
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:uib="http://engagepoint.com/uib"
@@ -13,7 +13,7 @@
           pageTitle="UI Bootstrap Demo"
           project="financials">
 
-    <h:outputStylesheet library="css" name="leftmenu.css" target="head"/>
+    <h:outputStylesheet library="css" name="leftmenu.css"/>
 
     <uib:pageLayout>
 
@@ -24,9 +24,9 @@
             </ui:insert>
         </uib:pageHeaderFacet>
 
-        <ui-headerUtilityBar:headerUtilityBar id="utilityBarContainer"
-                                              helpButtonActionListener="#{langSelectMenuBean.helpButtonActionListener}"
-                                              languageBean="#{langSelectMenuBean}" showSearch="true">
+<!--        <ui-headerUtilityBar:headerUtilityBar id="utilityBarContainer"
+                                              helpButtonActionListener="\#{langSelectMenuBean.helpButtonActionListener}"
+                                              languageBean="\#{langSelectMenuBean}" showSearch="true">
 
             <ui:insert name="utilityBar"/>
 
@@ -39,7 +39,7 @@
                 </f:facet>
             </p:ajaxStatus>
 
-        </ui-headerUtilityBar:headerUtilityBar>
+        </ui-headerUtilityBar:headerUtilityBar>-->
 
 
         <div>
@@ -79,4 +79,4 @@
 
     </uib:pageLayout>
 
-</uib:page>-->
+</uib:page>
