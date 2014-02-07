@@ -23,4 +23,18 @@ public class WizardDocument {
         this.formList = formList;
     }
 
+    public void getWizardFormByID(String formID, WizardForm cdiWizardForm, List<WizardForm> formList) {
+        if (cdiWizardForm != null) {
+            this.formList = formList;
+            for (WizardForm wizardForm : formList) {
+                if (wizardForm.getId().equals(formID)) {
+                    cdiWizardForm.setFormName(wizardForm.getFormName());
+                    cdiWizardForm.setId(wizardForm.getId());
+                    List<WizardPage> allWizardPages = wizardForm.getWizardPageList();
+                    cdiWizardForm.setWizardPageList(allWizardPages);
+                }
+            }
+        }
+    }
+
 }

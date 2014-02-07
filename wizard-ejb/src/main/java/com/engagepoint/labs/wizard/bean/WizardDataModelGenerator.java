@@ -44,22 +44,22 @@ public class WizardDataModelGenerator {
 
     public WizardDocument getWizardDocument(List<QuestionnaireForms> forms) {
         wizardDocument = new WizardDocument();
-        for (QuestionnaireForms questionnaireForms : forms) {
-            wizardDocument.setFormList(getWizardForms(questionnaireForms));
-        }
+        wizardDocument.setFormList(getWizardForms(forms));
         return wizardDocument;
     }
 
-    private List<WizardForm> getWizardForms(QuestionnaireForms forms) {
-        List<QuestionnaireForm> questionalFormList = forms.getQuestionnaireForm();
+    private List<WizardForm> getWizardForms(List<QuestionnaireForms> forms) {
         wizardFormList = new ArrayList<>();
         WizardForm wizardForm;
-        for (QuestionnaireForm form : questionalFormList) {
-            wizardForm = new WizardForm();
-            wizardForm.setFormName(form.getFormName());
-            wizardForm.setId(form.getFormId());
-            wizardForm.setPageList(getWizardPages(form.getPages()));
-            wizardFormList.add(wizardForm);
+        for (QuestionnaireForms questionnaireForms : forms) {
+            List<QuestionnaireForm> questionalFormList = questionnaireForms.getQuestionnaireForm();
+            for (QuestionnaireForm questionnaireForm : questionalFormList) {
+                wizardForm = new WizardForm();
+                wizardForm.setFormName(questionnaireForm.getFormName());
+                wizardForm.setId(questionnaireForm.getFormId());
+                wizardForm.setWizardPageList(getWizardPages(questionnaireForm.getPages()));
+                wizardFormList.add(wizardForm);
+            }
         }
         return wizardFormList;
     }

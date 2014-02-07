@@ -29,7 +29,6 @@ import org.xml.sax.SAXException;
 @RequestScoped
 public class ManagedBean {
 
-    private String xmlInfo;
     private WizardDocument wizardDocument;
     XmlController xmlController;
     @Inject
@@ -37,25 +36,23 @@ public class ManagedBean {
     private String selectedFormTemplate;
     // only for our default xml files!
     private List<String> XMLpathList;
-    private Map<String, String> MapOfXmls;
+    private Map<String, String> MapOfWizardForms;
 
     {
-        MapOfXmls = new LinkedHashMap<>();
+        MapOfWizardForms = new LinkedHashMap<>();
         XMLpathList = new ArrayList<>();
         XMLpathList.add("/XMLforWizard.xml");
-        XMLpathList.add("/XMLforWizard2.xml");
-        xmlController = new XmlController();
+        XMLpathList.add("/XMLforWizard2.xml"); 
+        xmlController = new XmlController();     
         try {
-            wizardDocument = xmlController.readXML(XMLpathList);
-        } catch (SAXException | JAXBException ex) {
+            wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
+        } 
+        catch (SAXException | JAXBException ex) {
             Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         for (WizardForm wForm : wizardDocument.getFormList()) {
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            System.out.println("size" + wizardDocument.getFormList().size());
-            System.out.println("Name" + wForm.getFormName());
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            MapOfXmls.put(wForm.getFormName(), wForm.getId());
+            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
         }
     }
 
@@ -66,7 +63,7 @@ public class ManagedBean {
     }
 
     public Map<String, String> getXmlsValues() {
-        return MapOfXmls;
+        return MapOfWizardForms;
     }
 
     public String getSelectedFormTemplate() {
@@ -77,28 +74,7 @@ public class ManagedBean {
         this.selectedFormTemplate = selectedFormTemplate;
     }
 
-    public String getXmlInfo() {
-        return xmlInfo;
-    }
-
-    public void setXmlInfo(String xmlInfo) {
-        this.xmlInfo = xmlInfo;
-    }
-
-    public void parse() {
-//        try {
-//            xmlController.readXML(selectedFormTemplate);
-//        } catch (JAXBException | SAXException ex) {
-//            Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        // Code below for testing only 
-        xmlController.getSelectedTemplate(selectedFormTemplate, wizardDocument, wizardForm);
-        System.out.println("**********************");
-        System.out.println("***********************");
-        System.out.println("SELECTED TEML: " + selectedFormTemplate);
-        System.out.println("It's a call from Managed BEan");
-        System.out.println("ID : " + wizardForm.getId());
-        System.out.println("Wizard Form - " + wizardForm.getFormName());
-        System.out.println("Pages: " + wizardForm.getPageList());
+    public void start() {
+        wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
     }
 }
