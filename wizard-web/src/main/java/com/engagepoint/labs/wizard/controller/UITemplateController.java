@@ -79,22 +79,26 @@ public class UITemplateController implements Serializable {
 	FacesContext facesCtx = FacesContext.getCurrentInstance();
 	ELContext elCtx = facesCtx.getELContext();
 	ExpressionFactory expFact = facesCtx.getApplication().getExpressionFactory();
+	
 	for (int i = 0; i < getGroupCount(pointer[0]); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
+	
 	    item.setValue("Group " + i);
+	
 	    expr = expFact.createMethodExpression(elCtx,
 		    "#{uiTemplateController.chCurrGroup(" + i + ")}", void.class,
 		    new Class[] { int.class });
+
 	    item.setActionExpression(expr);
 	    getMenu_model().addMenuItem(item);
 	}
+	
 	menu.setModel(getMenu_model());
     }
 
-    public void reloadMenu(String p_id) {
+    private void reloadMenu(int p_id, int g_id) {
 	System.out.println("Hi!");
-	System.out.println(p_id);
 	// FacesContext facesCtx = FacesContext.getCurrentInstance();
 	// ELContext elCtx = facesCtx.getELContext();
 	// ExpressionFactory expFact =
@@ -159,12 +163,16 @@ public class UITemplateController implements Serializable {
 
     public void chCurrPage(int currPage) {
 	this.currPage = currPage;
+	reloadMenu(currPage,1);
 	System.out.println("Curr page set to: " + currPage);
+	System.out.println("Curr group set to: " + currGroup);
     }
 
     public void chCurrGroup(int currGroup) {
 	this.currGroup = currGroup;
-	System.out.println("Curr group set to: " + currPage);
+	reloadMenu(currPage,currGroup);
+	System.out.println("Curr page set to: " + currPage);
+	System.out.println("Curr group set to: " + currGroup);
     }
 
 }
