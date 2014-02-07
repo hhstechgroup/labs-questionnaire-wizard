@@ -11,8 +11,8 @@ public class UITimeQuestion extends UIBasicQuestion {
     private Calendar calendar;
     private Date date;
 
-    public UITimeQuestion() {
-	super(TYPE);
+    public UITimeQuestion(String name) {
+	super(TYPE,name);
 
 	date=new Date();
 	calendar=new Calendar();

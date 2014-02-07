@@ -12,8 +12,8 @@ public class UIMultipleChoiceQuestion extends UIBasicQuestion {
     private ArrayList<String> labels;
     private ArrayList<Integer> values;
 
-    public UIMultipleChoiceQuestion(ArrayList<String> labels, ArrayList<Integer> values) {
-	super(TYPE);
+    public UIMultipleChoiceQuestion(String name,ArrayList<String> labels, ArrayList<Integer> values) {
+	super(TYPE,name);
 	this.labels = labels;
 	this.values = values;
 

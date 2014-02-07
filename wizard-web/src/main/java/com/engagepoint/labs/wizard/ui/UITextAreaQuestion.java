@@ -9,11 +9,11 @@ public class UITextAreaQuestion extends UIBasicQuestion {
     public static final String TYPE = "TextAreaQuestion";
     private InputTextarea inputTextArea;
 
-    public UITextAreaQuestion() {
-	super(TYPE);
+    public UITextAreaQuestion(String name) {
+	super(TYPE,name);
 
 	inputTextArea = new InputTextarea();
-	inputTextArea.setValue(TYPE);
+	inputTextArea.setValue(name);
 	uiComponent = (UIComponent) inputTextArea;
     }
 

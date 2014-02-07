@@ -9,14 +9,23 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.primefaces.component.breadcrumb.BreadCrumb;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
+
+import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
+import com.engagepoint.labs.wizard.ui.UIMultipleChoiceQuestion;
+import com.engagepoint.labs.wizard.ui.UITextAreaQuestion;
+import com.engagepoint.labs.wizard.ui.UITextQuestion;
+import com.engagepoint.labs.wizard.ui.UITimeQuestion;
 
 @Named("uiTemplateController")
 @SessionScoped
@@ -24,9 +33,11 @@ public class UITemplateController implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
 
-    private int[] pointer;
+    private HtmlForm dynaform;
+
     private int currPage;
-    private int currGroup;
+    private int currTopic;
+    private ArrayList<UIBasicQuestion> currentUIBasicComponents;
 
     private BreadCrumb breadcrumb;
     private MenuModel breadcrumb_model;
@@ -36,11 +47,16 @@ public class UITemplateController implements Serializable {
 
     private ArrayList<Page> document;
 
+    private FacesContext facesCtx;
+    private ELContext elCtx;
+    private ExpressionFactory expFact;
+
+    // TODO: Test
+    private ArrayList<String> defaultStrings;
+    private ArrayList<Integer> defaultInts;
+
     @PostConstruct
     public void init() {
-	pointer = new int[2];
-	pointer[0] = 0;
-	pointer[1] = 0;
 
 	breadcrumb = new BreadCrumb();
 	setBreadcrumb_model(new DefaultMenuModel());
@@ -54,38 +70,53 @@ public class UITemplateController implements Serializable {
 	    document.add(new Page(i));
 	}
 
+	// TODO: check this
+	facesCtx = FacesContext.getCurrentInstance();
+	elCtx = facesCtx.getELContext();
+	expFact = facesCtx.getApplication().getExpressionFactory();
+
+	currentUIBasicComponents = new ArrayList<UIBasicQuestion>();
+
+	// TODO: Test
+
+	defaultStrings = new ArrayList<String>();
+	defaultInts = new ArrayList<Integer>();
+	for (int i = 0; i < 4; i++) {
+	    defaultInts.add(new Integer(i));
+	    defaultStrings.add(new String("Option" + i));
+	}
+
 	populateBreadcrumb();
 	populateMenu();
     }
 
     private void populateBreadcrumb() {
-	FacesContext facesCtx = FacesContext.getCurrentInstance();
-	ELContext elCtx = facesCtx.getELContext();
-	ExpressionFactory expFact = facesCtx.getApplication().getExpressionFactory();
+
 	for (int i = 0; i < getPageCount(); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
+
 	    item.setValue("Page " + i);
+
 	    expr = expFact.createMethodExpression(elCtx,
 		    "#{uiTemplateController.chCurrPage(" + i + ")}", void.class,
 		    new Class[] { int.class });
+
 	    item.setActionExpression(expr);
 	    getBreadcrumb_model().addMenuItem(item);
 	}
+
 	breadcrumb.setModel(getBreadcrumb_model());
     }
 
     private void populateMenu() {
-	FacesContext facesCtx = FacesContext.getCurrentInstance();
-	ELContext elCtx = facesCtx.getELContext();
-	ExpressionFactory expFact = facesCtx.getApplication().getExpressionFactory();
-	
-	for (int i = 0; i < getGroupCount(pointer[0]); i++) {
+
+	for (int i = 0; i < getGroupCount(currPage); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
-	
+
 	    item.setValue("Group " + i);
-	
+
 	    expr = expFact.createMethodExpression(elCtx,
 		    "#{uiTemplateController.chCurrGroup(" + i + ")}", void.class,
 		    new Class[] { int.class });
@@ -93,12 +124,13 @@ public class UITemplateController implements Serializable {
 	    item.setActionExpression(expr);
 	    getMenu_model().addMenuItem(item);
 	}
-	
+
 	menu.setModel(getMenu_model());
     }
 
-    private void reloadMenu(int p_id, int g_id) {
+    private void reloadMenu() {
 	System.out.println("Hi!");
+	populateCurrentUIComponents();
 	// FacesContext facesCtx = FacesContext.getCurrentInstance();
 	// ELContext elCtx = facesCtx.getELContext();
 	// ExpressionFactory expFact =
@@ -111,6 +143,39 @@ public class UITemplateController implements Serializable {
 	// getBreadcrumb_model().addMenuItem(item);
 	// }
 	// breadcrumb.setModel(getBreadcrumb_model());
+    }
+
+    private void populateCurrentUIComponents() {
+
+	UIBasicQuestion q1 = new UITextQuestion(currPage + " - " + currTopic);
+	UIBasicQuestion q2 = new UITextAreaQuestion(currPage + " - " + currTopic);
+	UIBasicQuestion q3 = new UITimeQuestion(currPage + " - " + currTopic);
+	UIBasicQuestion q4 = new UIMultipleChoiceQuestion((currPage + " - " + currTopic),
+		defaultStrings, defaultInts);
+
+	currentUIBasicComponents.add(q1);
+	currentUIBasicComponents.add(q2);
+	currentUIBasicComponents.add(q3);
+	currentUIBasicComponents.add(q4);
+
+	// TODO: get model data here and convert to UIComponents
+	// wakes up within button from left menu with help of currentPointer
+
+	reloadDynaForm();
+    }
+
+    private void reloadDynaForm() {
+	dynaform.getChildren().clear();
+	for (int i = 0; i < currentUIBasicComponents.size(); i++) {
+	    currentUIBasicComponents.get(i).postInit();
+	    dynaform.getChildren().add(currentUIBasicComponents.get(i).getUiComponent());
+	    HtmlOutputText linebreak = new HtmlOutputText();
+	    linebreak.setValue("<br/>");
+	    linebreak.setEscape(false);
+	    dynaform.getChildren().add(linebreak);
+	}
+	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("dynaform");
+	RequestContext.getCurrentInstance().update("dynaform");
     }
 
     public BreadCrumb getBreadcrumb() {
@@ -163,16 +228,28 @@ public class UITemplateController implements Serializable {
 
     public void chCurrPage(int currPage) {
 	this.currPage = currPage;
-	reloadMenu(currPage,1);
+	this.currTopic = 1;
+	reloadMenu();
+	System.out.println("Curr page set to: " + currPage);
+	System.out.println("Curr group set to: " + currTopic);
+    }
+
+    public void chCurrGroup(int currGroup) {
+	this.currTopic = currGroup;
+	reloadMenu();
 	System.out.println("Curr page set to: " + currPage);
 	System.out.println("Curr group set to: " + currGroup);
     }
 
-    public void chCurrGroup(int currGroup) {
-	this.currGroup = currGroup;
-	reloadMenu(currPage,currGroup);
-	System.out.println("Curr page set to: " + currPage);
-	System.out.println("Curr group set to: " + currGroup);
+    public HtmlForm getDynaform() {
+	if (dynaform == null) {
+	    dynaform = new HtmlForm();
+	}
+	return dynaform;
+    }
+
+    public void setDynaform(HtmlForm dynaform) {
+	this.dynaform = dynaform;
     }
 
 }

@@ -9,11 +9,11 @@ public class UITextQuestion extends UIBasicQuestion {
     public static final String TYPE = "TextQuestion";
     private InputText inputText;
 
-    public UITextQuestion() {
-	super(TYPE);
+    public UITextQuestion(String name) {
+	super(TYPE,name);
 
 	inputText = new InputText();
-	inputText.setValue(TYPE);
+	inputText.setValue(name);
 	uiComponent = (UIComponent) inputText;
     }
 

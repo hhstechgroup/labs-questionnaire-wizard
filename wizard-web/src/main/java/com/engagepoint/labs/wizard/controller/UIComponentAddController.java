@@ -54,10 +54,10 @@ public class UIComponentAddController implements Serializable {
 
     private void populateCurrentUIComponents() {
 
-	UIBasicQuestion q1 = new UITextQuestion();
-	UIBasicQuestion q2 = new UITextAreaQuestion();
-	UIBasicQuestion q3 = new UITimeQuestion();
-	UIBasicQuestion q4 = new UIMultipleChoiceQuestion(defaultStrings,
+	UIBasicQuestion q1 = new UITextQuestion("blah");
+	UIBasicQuestion q2 = new UITextAreaQuestion("ff");
+	UIBasicQuestion q3 = new UITimeQuestion("gg");
+	UIBasicQuestion q4 = new UIMultipleChoiceQuestion("dd", defaultStrings,
 		defaultInts);
 
 	currentUIBasicComponents.add(q1);
@@ -82,7 +82,6 @@ public class UIComponentAddController implements Serializable {
 	    dynaform.getChildren().add(linebreak);
 	}
     }
-    
 
     public HtmlForm getDynaform() {
 	if (dynaform == null) {

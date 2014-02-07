@@ -15,14 +15,9 @@
 			model="#{uiTemplateController.breadcrumb_model}" />
 	</h:form>
 	<h:form id="form_menu">
-		<p:menu id="menu"
-			binding="#{uiTemplateController.menu}"
-			model="#{uiTemplateController.menu_model}"/>
+		<p:menu id="menu" binding="#{uiTemplateController.menu}"
+			model="#{uiTemplateController.menu_model}" />
 	</h:form>
-	<h:form id="form_content">
-		<p:menu id="content"
-			binding="#{uiTemplateController.menu}"
-			model="#{uiTemplateController.menu_model}"/>
-	</h:form>
+	<h:form id="dynaform" binding="#{uiTemplateController.dynaform}" />
 </h:body>
 </html>

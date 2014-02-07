@@ -8,10 +8,11 @@ public class UIBasicQuestion {
 
     private String type;
     private String id;
+    private String name;
     protected UIComponent uiComponent;
     protected Object pf_value;
 
-    public UIBasicQuestion(String type) {
+    public UIBasicQuestion(String type, String Name) {
 	this.type = type;
     }
 
@@ -41,6 +42,14 @@ public class UIBasicQuestion {
     public void postInit()
     {
 	
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
     }
 
 }
