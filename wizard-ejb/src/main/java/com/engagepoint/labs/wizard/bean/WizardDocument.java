@@ -8,7 +8,6 @@ package com.engagepoint.labs.wizard.bean;
 import java.util.List;
 
 /**
- * NOT SUPORTED YET !!!!!!!!!!! SKIP IT !!!!!!!! NOW !!!!! =)
  *
  * @author artem.pylypenko
  */

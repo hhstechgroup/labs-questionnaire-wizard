@@ -7,16 +7,17 @@ import super_binding.QType;
 
 /**
  * Created by igor.guzenko on 2/4/14.
+ *
  * @param <B>
  */
 public abstract class WizardQuestion<B extends Answer> {
 
-    protected Integer id;
+    protected String id;
     protected String title;
     protected QType questionType;
     protected String helpText;
     private List<DependentQuestion> dependentQuestionsList; // need to be done later!!!
-    protected boolean answerRequired;
+    protected Boolean answerRequired;
 
     public abstract B getAnswer();
 
@@ -34,7 +35,7 @@ public abstract class WizardQuestion<B extends Answer> {
         return answerRequired;
     }
 
-    public void setAnswerRequired(boolean answerRequired) {
+    public void setAnswerRequired(Boolean answerRequired) {
         this.answerRequired = answerRequired;
     }
 
@@ -46,11 +47,11 @@ public abstract class WizardQuestion<B extends Answer> {
         this.title = title;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

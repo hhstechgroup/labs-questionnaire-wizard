@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-
 <questionnaire-forms
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xsi:noNamespaceSchemaLocation='XSDforWizard.xsd'>
-    <questionnaire-form>
-        <form-name>Test 2, Second Generated XML file</form-name>
+    xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
+    <questionnaire-form form-id="9gncv474f3x1swz">
+        <form-name>Simple Form Template 2</form-name>
         <pages>
-            <page page-number="10">
+            <page page-id="4dfmch" page-number="1">
                 <groups-of-questions>
-                    <group>
-                        <group-name></group-name>
+                    <group group-id="487cnh">
+                        <group-name>Group bla-bla</group-name>
                         <questions>
-                            <question answer-required="true" question-id="2">
-                                <question-title></question-title>
+                            <question answer-required="true" question-id="zxxxx3">
+                                <question-title>Title bla-bla</question-title>
                                 <question-type>RANGE</question-type>
-                                <help-text></help-text>
+                                <help-text>Help text bla-bla</help-text>
                                 <dependent-questions>
                                 </dependent-questions>
-                                <options>
-                                    <option></option>
-                                </options>
                                 <range range-begin="32" range-end="12"/>
                                 <grid>
                                     <columns>
@@ -39,6 +29,32 @@ and open the template in the editor.
                 </groups-of-questions>
             </page>
         </pages>
+    </questionnaire-form> 
+    <questionnaire-form form-id="589fg">
+        <form-name>Simple Form Template 3</form-name>
+        <pages>
+            <page page-id="495c" page-number="1">
+                <groups-of-questions>
+                    <group group-id="8475dn">
+                        <group-name>Super Q Group</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="12vv">
+                                <question-type>GRID</question-type>
+                                <grid>
+                                    <columns>
+                                        <column>Column 1</column>
+                                        <column>Column 2</column>
+                                    </columns>
+                                    <rows>
+                                        <row>Row 1</row>
+                                        <row>Row 2</row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+        </pages>
     </questionnaire-form>
-
 </questionnaire-forms>

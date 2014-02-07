@@ -9,7 +9,16 @@ public class RangeQuestion extends WizardQuestion<RangeAnswer> {
 
     private int startRange;
     private int endRange;
+    private String value;
     private RangeAnswer rangeAnswer;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public void setRange(Integer start, Integer end) {
         startRange = start;

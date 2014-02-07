@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<questionnaire-forms>
-    <questionnaire-form>
-        <form-name>XML NuMBER 1</form-name>
+<questionnaire-forms
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
+    <questionnaire-form form-id="3943bcdmlpq1">
+        <form-name>Simple Form Template 1</form-name>
         <pages>
-            <page page-number="1">
+            <page page-number="1" page-id="12dcvxd">
                 <groups-of-questions>
-                    <group>
+                    <group group-id="874bcugyrfn">
                         <group-name>test group name</group-name>
                         <questions>
                             <question answer-required="true" question-id="1">
-                                <question-title></question-title>
+                                <question-title>Error Q</question-title>
                                 <question-type>text</question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
                                 <options>                                                                  
-                                    <option>dd222</option>
-                                    <option>list-1</option>
-                                    <option>list-2</option>
+                                    <option></option>
                                 </options>
-                                <range range-begin="0" range-end="1"/>
-
-                                <grid>
-                                    <columns>
-                                        <column>22</column>
-                                    </columns>
-                                    <rows>
-                                        <row></row>
-                                    </rows>
-                                </grid>
+                            </question>
+                            <question>
+                                <question-title>CheckBox Q</question-title>
+                                <question-type>CHECKBOX</question-type>
+                                <options>
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                </options>
                             </question>
                         </questions>
                     </group>
@@ -37,5 +35,4 @@
             </page>
         </pages>
     </questionnaire-form>
-
 </questionnaire-forms>

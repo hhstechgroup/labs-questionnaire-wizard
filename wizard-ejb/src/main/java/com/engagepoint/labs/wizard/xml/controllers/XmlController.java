@@ -7,12 +7,15 @@ package com.engagepoint.labs.wizard.xml.controllers;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.questions.RangeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import org.xml.sax.SAXException;
@@ -29,26 +32,39 @@ import super_binding.QuestionnaireForms;
 public class XmlController implements Serializable {
 
     private final XmlCustomParser parser;
+    private WizardDocument wizardDocument;
 
     public XmlController() {
         this.parser = new XmlCustomParser();
     }
 
-    public String readXML(String XMLpath) throws SAXException, JAXBException {
+    public WizardDocument readXML(List<String> XMLpathList) throws SAXException, JAXBException {
         WizardDataModelGenerator generator = new WizardDataModelGenerator();
-        QuestionnaireForms questionnaireForms = parser.parseXML(XMLpath);
-        WizardForm wizardDataModel = generator.getFirstWizardForm(questionnaireForms);
-
-        List<WizardQuestion> wizarsdQuestionsList = wizardDataModel.getPageList().get(0).getTopicList().get(0).getWizardQuestionList();
-
-        if (wizarsdQuestionsList.get(0) == null) {
-            return "Q IS NULL !!!!!!!!!";
+        List<QuestionnaireForms> formsList = new ArrayList<>();
+        for (String xmlPath : XMLpathList) {
+            formsList.add(parser.parseXML(xmlPath));
         }
-        QType questionType = wizarsdQuestionsList.get(0).getQuestionType();
-        if (questionType != null && questionType.equals(QType.RANGE)) {
-            RangeQuestion q = (RangeQuestion) wizardDataModel.getPageList().get(0).getTopicList().get(0).getWizardQuestionList().get(0);
-            return "Form Name " + wizardDataModel.getFormName() + "Range start" + q.getStartRange();
+        wizardDocument = generator.getWizardDocument(formsList);
+        return wizardDocument;
+    }
+
+    public void getSelectedTemplate(String formID, WizardDocument wd, WizardForm wizardForm) {
+        wizardDocument = wd;
+        if (wizardForm != null && wizardDocument != null) {
+            List<WizardForm> formList = wizardDocument.getFormList();
+            if (formList == null || formList.isEmpty()) {
+                return;
+            }
+            for (WizardForm f : formList) {
+                if (f.getId().equals(formID)) {
+                    System.out.println("INSIDE");
+                    System.out.println("size " + formList.size());
+                    System.out.println("ID = " + f.getId());
+                    wizardForm.setFormName(f.getFormName());
+                    wizardForm.setId(f.getId());
+                    wizardForm.setPageList(f.getPageList());
+                }
+            }
         }
-        return "Not A  RANGE Q";
     }
 }

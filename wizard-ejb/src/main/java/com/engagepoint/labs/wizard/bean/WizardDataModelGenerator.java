@@ -5,10 +5,6 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.answers.DateAnswer;
-import com.engagepoint.labs.wizard.answers.FileAnswer;
-import com.engagepoint.labs.wizard.answers.TextAnswer;
-import com.engagepoint.labs.wizard.answers.TimeAnswer;
 import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
 import com.engagepoint.labs.wizard.questions.DropDownQuestion;
@@ -22,9 +18,6 @@ import com.engagepoint.labs.wizard.questions.TimeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import javax.inject.Inject;
-import super_binding.DependentQuestions;
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Page;
@@ -40,27 +33,35 @@ import super_binding.Questions;
  */
 public class WizardDataModelGenerator {
 
-    private WizardForm wizardForm;
+    private WizardDocument wizardDocument;
+    private List<WizardForm> wizardFormList;
     private List<WizardPage> wizardPageList;
-    private List<WizardTopic> wizardQuestionGroupList;
+    private List<WizardTopic> wizardTopicList;
     private List<WizardQuestion> wizardQuestionList;
 
     public WizardDataModelGenerator() {
     }
 
-    /**
-     * Getting first (by index '0' in List) Questional Form from XML
-     *
-     * @param forms
-     * @return
-     */
-    public WizardForm getFirstWizardForm(QuestionnaireForms forms) {
-        QuestionnaireForm form = forms.getQuestionnaireForm().get(0);
-        wizardForm = new WizardForm();
-        wizardForm.setFormName(form.getFormName());
-        wizardForm.setId(UUID.randomUUID().toString());
-        wizardForm.setPageList(getWizardPages(form.getPages()));
-        return wizardForm;
+    public WizardDocument getWizardDocument(List<QuestionnaireForms> forms) {
+        wizardDocument = new WizardDocument();
+        for (QuestionnaireForms questionnaireForms : forms) {
+            wizardDocument.setFormList(getWizardForms(questionnaireForms));
+        }
+        return wizardDocument;
+    }
+
+    private List<WizardForm> getWizardForms(QuestionnaireForms forms) {
+        List<QuestionnaireForm> questionalFormList = forms.getQuestionnaireForm();
+        wizardFormList = new ArrayList<>();
+        WizardForm wizardForm;
+        for (QuestionnaireForm form : questionalFormList) {
+            wizardForm = new WizardForm();
+            wizardForm.setFormName(form.getFormName());
+            wizardForm.setId(form.getFormId());
+            wizardForm.setPageList(getWizardPages(form.getPages()));
+            wizardFormList.add(wizardForm);
+        }
+        return wizardFormList;
     }
 
     private List<WizardPage> getWizardPages(Pages pages) {
@@ -69,7 +70,7 @@ public class WizardDataModelGenerator {
         WizardPage wizardPage;
         for (Page page : pageList) {
             wizardPage = new WizardPage();
-            wizardPage.setId(UUID.randomUUID().toString());
+            wizardPage.setId(page.getPageId());
             wizardPage.setPageNumber(page.getPageNumber());
             wizardPage.setTopicList(getWizardQuestionGroups(page.getGroupsOfQuestions()));
             wizardPageList.add(wizardPage);
@@ -79,16 +80,16 @@ public class WizardDataModelGenerator {
 
     private List<WizardTopic> getWizardQuestionGroups(GroupsOfQuestions questionsGroups) {
         List<Group> groupList = questionsGroups.getGroup();
-        wizardQuestionGroupList = new ArrayList<>();
-        WizardTopic wizardQuestionGroup;
+        wizardTopicList = new ArrayList<>();
+        WizardTopic wizardTopic;
         for (Group group : groupList) {
-            wizardQuestionGroup = new WizardTopic();
-            wizardQuestionGroup.setId(UUID.randomUUID().toString());
-            wizardQuestionGroup.setGroupTitle(group.getGroupName());
-            wizardQuestionGroup.setWizardQuestionList(getWizardQuestions(group.getQuestions()));
-            wizardQuestionGroupList.add(wizardQuestionGroup);
+            wizardTopic = new WizardTopic();
+            wizardTopic.setId(group.getGroupId());
+            wizardTopic.setGroupTitle(group.getGroupName());
+            wizardTopic.setWizardQuestionList(getWizardQuestions(group.getQuestions()));
+            wizardTopicList.add(wizardTopic);
         }
-        return wizardQuestionGroupList;
+        return wizardTopicList;
     }
 
     private List<WizardQuestion> getWizardQuestions(Questions questions) {
@@ -138,6 +139,7 @@ public class WizardDataModelGenerator {
                 break;
             case RANGE:
                 RangeQuestion rangeQuestion = new RangeQuestion();
+                rangeQuestion.setValue(xmlQuestion.getRange().getValue());
                 rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(),
                         xmlQuestion.getRange().getRangeEnd());
                 wizardQuestion = rangeQuestion;

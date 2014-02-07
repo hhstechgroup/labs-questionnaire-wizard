@@ -57,6 +57,7 @@ and open the template in the editor.
                                                                                                     </xs:element>
                                                                                                     <xs:element name="range">
                                                                                                         <xs:complexType>
+                                                                                                            <xs:attribute type="xs:string" name="value"/> 
                                                                                                             <xs:attribute type="xs:int" name="range-begin"/>
                                                                                                             <xs:attribute type="xs:int" name="range-end"/>
                                                                                                         </xs:complexType>
@@ -83,19 +84,21 @@ and open the template in the editor.
                                                                                                     </xs:element>
                                                                                                 </xs:sequence>
                                                                                                 <xs:attribute type="xs:boolean" name="answer-required"/>
-                                                                                                <xs:attribute type="xs:int" name="question-id"/>
+                                                                                                <xs:attribute type="xs:string" name="question-id"/>
                                                                                             </xs:complexType>
                                                                                         </xs:element>
                                                                                     </xs:sequence>
                                                                                 </xs:complexType>
                                                                             </xs:element>
                                                                         </xs:sequence>
+                                                                        <xs:attribute type="xs:string" name="group-id"/>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
+                                                <xs:attribute type="xs:string" name="page-id"/>
                                                 <xs:attribute type="xs:int" name="page-number"/>
                                             </xs:complexType>
                                         </xs:element>
@@ -103,6 +106,7 @@ and open the template in the editor.
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
+                        <xs:attribute type="xs:string" name="form-id"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
