@@ -3,20 +3,21 @@ package com.engagepoint.labs.wizard.questions;
 import com.engagepoint.labs.wizard.answers.ListTextAnswer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class CheckBoxesQuestion extends BasicQuestion<ListTextAnswer> {
+public class CheckBoxesQuestion extends WizardQuestion<ListTextAnswer> {
 
     private ListTextAnswer listTextAnswer;
-    private ArrayList<String> optionsList;
+    private List<String> optionsList;
 
-    public ArrayList<String> getOptionsList() {
+    public List<String> getOptionsList() {
         return optionsList;
     }
 
-    public void setOptionsList(ArrayList<String> optionsList) {
+    public void setOptionsList(List<String> optionsList) {
         this.optionsList = optionsList;
     }
 

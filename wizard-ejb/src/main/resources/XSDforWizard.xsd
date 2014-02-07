@@ -20,7 +20,6 @@ and open the template in the editor.
                                         <xs:element name="page" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element type="xs:string" name="page-number"/>
                                                     <xs:element name="groups-of-questions">
                                                         <xs:complexType>
                                                             <xs:sequence>
@@ -35,7 +34,7 @@ and open the template in the editor.
                                                                                             <xs:complexType>
                                                                                                 <xs:sequence>
                                                                                                     <xs:element type="xs:string" name="question-title"/>
-                                                                                                    <xs:element type="xs:string" name="question-type"/>
+                                                                                                    <xs:element type="q-type" name="question-type"/>
                                                                                                     <xs:element type="xs:string" name="help-text"/>
                                                                                                     <xs:element name="dependent-questions">
                                                                                                         <xs:complexType>
@@ -58,12 +57,9 @@ and open the template in the editor.
                                                                                                     </xs:element>
                                                                                                     <xs:element name="range">
                                                                                                         <xs:complexType>
-                                                                                                            <xs:simpleContent>
-                                                                                                                <xs:extension base="xs:string">
-                                                                                                                    <xs:attribute type="xs:int" name="range-begin"/>
-                                                                                                                    <xs:attribute type="xs:int" name="range-end"/>
-                                                                                                                </xs:extension>
-                                                                                                            </xs:simpleContent>
+                                                                                                            <xs:attribute type="xs:string" name="value"/> 
+                                                                                                            <xs:attribute type="xs:int" name="range-begin"/>
+                                                                                                            <xs:attribute type="xs:int" name="range-end"/>
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
                                                                                                     <xs:element name="grid">
@@ -88,30 +84,48 @@ and open the template in the editor.
                                                                                                     </xs:element>
                                                                                                 </xs:sequence>
                                                                                                 <xs:attribute type="xs:boolean" name="answer-required"/>
-                                                                                                <xs:attribute type="xs:int" name="question-id"/>
+                                                                                                <xs:attribute type="xs:string" name="question-id"/>
                                                                                             </xs:complexType>
                                                                                         </xs:element>
                                                                                     </xs:sequence>
                                                                                 </xs:complexType>
                                                                             </xs:element>
                                                                         </xs:sequence>
+                                                                        <xs:attribute type="xs:string" name="group-id"/>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
+                                                <xs:attribute type="xs:string" name="page-id"/>
+                                                <xs:attribute type="xs:int" name="page-number"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
+                        <xs:attribute type="xs:string" name="form-id"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:simpleType name="q-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TEXT"/>
+            <xs:enumeration value="PARAGRAPHTEXT"/>
+            <xs:enumeration value="MULTIPLECHOICE"/>
+            <xs:enumeration value="CHECKBOX"/>
+            <xs:enumeration value="CHOOSEFROMLIST"/>
+            <xs:enumeration value="RANGE"/>
+            <xs:enumeration value="GRID"/>
+            <xs:enumeration value="DATE"/>
+            <xs:enumeration value="TIME"/>
+            <xs:enumeration value="FILEUPLOAD"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
 
 

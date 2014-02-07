@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.DateAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class DateQuestion extends BasicQuestion<DateAnswer> {
+public class DateQuestion extends WizardQuestion<DateAnswer> {
 
     private DateAnswer dateAnswer;
     @Override

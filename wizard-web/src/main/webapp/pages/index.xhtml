@@ -11,15 +11,20 @@
         <br/>
         <h:form>
             <h:panelGrid columns="2">
-                <p:outputLabel value="Choose XML File : "/>
-                <p:selectOneListbox id="default_xml" value="#{managedBean.selectedXmlFile}">
+                <h:outputLabel value="Choose XML File 4444444: "/>
+                <h:selectOneListbox id="default_xml" value="#{managedBean.selectedFormTemplate}">
                     <f:selectItems value="#{managedBean.xmlsValues}"/>
-                </p:selectOneListbox>
+                </h:selectOneListbox>
             </h:panelGrid>           
-            
-            <h:commandButton value="XML Parse" action="#{managedBean.parse}"/>
+
+            <h:commandButton value=" START " action="#{managedBean.parse}"/>
             <br/>    
-            <p:outputLabel value="#{managedBean.xmlInfo}" escape="false"/>
+            <!--<p:outputLabel value="#{managedBean.xmlInfo}" escape="false"/>-->
+            <p:outputLabel value="Form Name:   "/>
+            <p:outputLabel value="#{wizardForm.formName}"/>
+            <br/>
+            <p:outputLabel value="Form ID:   "/>
+            <p:outputLabel value="#{wizardForm.id}"/>
         </h:form>
     </h:body>
 </html>

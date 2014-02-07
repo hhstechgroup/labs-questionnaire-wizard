@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.TextAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class TextAreaQuestion extends BasicQuestion<TextAnswer> {
+public class TextAreaQuestion extends WizardQuestion<TextAnswer> {
 
     private TextAnswer textAnswer;
 
