@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -22,6 +24,10 @@ public class UITemplateController implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
 
+    private int[] pointer;
+    private int currPage;
+    private int currGroup;
+
     private BreadCrumb breadcrumb;
     private MenuModel breadcrumb_model;
 
@@ -32,11 +38,15 @@ public class UITemplateController implements Serializable {
 
     @PostConstruct
     public void init() {
+	pointer = new int[2];
+	pointer[0] = 0;
+	pointer[1] = 0;
+
 	breadcrumb = new BreadCrumb();
 	setBreadcrumb_model(new DefaultMenuModel());
 
 	menu = new Menu();
-	menu_model = new DefaultMenuModel();
+	setMenu_model(new DefaultMenuModel());
 
 	document = new ArrayList<Page>();
 	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
@@ -45,6 +55,7 @@ public class UITemplateController implements Serializable {
 	}
 
 	populateBreadcrumb();
+	populateMenu();
     }
 
     private void populateBreadcrumb() {
@@ -53,16 +64,36 @@ public class UITemplateController implements Serializable {
 	ExpressionFactory expFact = facesCtx.getApplication().getExpressionFactory();
 	for (int i = 0; i < getPageCount(); i++) {
 	    MenuItem item = new MenuItem();
-	    item.setValue(document.get(i).getName());
-	    item.setActionExpression(expFact.createMethodExpression(elCtx,
-		    "#{uiTemplateController.populateMenu(value)}", void.class,
-		    new Class[] { String.class }));
+	    MethodExpression expr;
+	    item.setValue("Page " + i);
+	    expr = expFact.createMethodExpression(elCtx,
+		    "#{uiTemplateController.chCurrPage(" + i + ")}", void.class,
+		    new Class[] { int.class });
+	    item.setActionExpression(expr);
 	    getBreadcrumb_model().addMenuItem(item);
 	}
 	breadcrumb.setModel(getBreadcrumb_model());
     }
 
-    public void populateMenu(String p_id) {
+    private void populateMenu() {
+	FacesContext facesCtx = FacesContext.getCurrentInstance();
+	ELContext elCtx = facesCtx.getELContext();
+	ExpressionFactory expFact = facesCtx.getApplication().getExpressionFactory();
+	for (int i = 0; i < getGroupCount(pointer[0]); i++) {
+	    MenuItem item = new MenuItem();
+	    MethodExpression expr;
+	    item.setValue("Group " + i);
+	    expr = expFact.createMethodExpression(elCtx,
+		    "#{uiTemplateController.chCurrGroup(" + i + ")}", void.class,
+		    new Class[] { int.class });
+	    item.setActionExpression(expr);
+	    getMenu_model().addMenuItem(item);
+	}
+	menu.setModel(getMenu_model());
+    }
+
+    public void reloadMenu(String p_id) {
+	System.out.println("Hi!");
 	System.out.println(p_id);
 	// FacesContext facesCtx = FacesContext.getCurrentInstance();
 	// ELContext elCtx = facesCtx.getELContext();
@@ -116,6 +147,24 @@ public class UITemplateController implements Serializable {
 
     public void navigate(String p_id) {
 	System.out.println(p_id);
+    }
+
+    public MenuModel getMenu_model() {
+	return menu_model;
+    }
+
+    public void setMenu_model(MenuModel menu_model) {
+	this.menu_model = menu_model;
+    }
+
+    public void chCurrPage(int currPage) {
+	this.currPage = currPage;
+	System.out.println("Curr page set to: " + currPage);
+    }
+
+    public void chCurrGroup(int currGroup) {
+	this.currGroup = currGroup;
+	System.out.println("Curr group set to: " + currPage);
     }
 
 }
