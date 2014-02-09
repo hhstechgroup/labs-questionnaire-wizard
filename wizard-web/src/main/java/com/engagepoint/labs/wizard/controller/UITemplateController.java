@@ -1,49 +1,42 @@
 package com.engagepoint.labs.wizard.controller;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.component.breadcrumb.BreadCrumb;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
+import com.engagepoint.labs.wizard.model.UITemplateModelForController;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
-import com.engagepoint.labs.wizard.ui.UIMultipleChoiceQuestion;
-import com.engagepoint.labs.wizard.ui.UITextAreaQuestion;
 import com.engagepoint.labs.wizard.ui.UITextQuestion;
-import com.engagepoint.labs.wizard.ui.UITimeQuestion;
 
 @Named("uiTemplateController")
-@SessionScoped
+@RequestScoped
 public class UITemplateController implements Serializable {
+
+    @Inject
+    UITemplateModelForController templateModel;
 
     private static final long serialVersionUID = 7470581070941487130L;
 
-    // NavData
-    private int currPage;
-    private int currTopic;
-    
     private final String FORM_MENU = "form_menu";
     private final String FORM_CONTENT = "form_content";
-
-    // CurrentUIComponents
-    private ArrayList<UIBasicQuestion> currentUIquestions;
-    private ArrayList<MenuItem> currentMenuItems;
 
     // BreadCrumb
     private BreadCrumb breadcrumb;
@@ -61,16 +54,8 @@ public class UITemplateController implements Serializable {
     private ELContext elCtx;
     private ExpressionFactory expFact;
 
-    // TODO: Test
-    private ArrayList<Page> document;
-    private ArrayList<String> defaultStrings;
-    private ArrayList<Integer> defaultInts;
-
     @PostConstruct
     public void init() {
-
-	currPage = 0;
-	currTopic = 0;
 
 	breadcrumb = new BreadCrumb();
 	setBreadcrumb_model(new DefaultMenuModel());
@@ -80,29 +65,12 @@ public class UITemplateController implements Serializable {
 
 	content = new HtmlForm();
 
-	currentUIquestions = new ArrayList<UIBasicQuestion>();
-	currentMenuItems = new ArrayList<MenuItem>();
+	// facesCtx = FacesContext.getCurrentInstance();
+	// elCtx = facesCtx.getELContext();
+	// expFact = facesCtx.getApplication().getExpressionFactory();
 
-	// TODO: Test
-	document = new ArrayList<Page>();
-	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
-	for (int i = 0; i < count; i++) {
-	    document.add(new Page(i));
-	}
-
-	defaultStrings = new ArrayList<String>();
-	defaultInts = new ArrayList<Integer>();
-	for (int i = 0; i < 4; i++) {
-	    defaultInts.add(new Integer(i));
-	    defaultStrings.add(new String("Option" + i));
-	}
-
-	facesCtx = FacesContext.getCurrentInstance();
-	elCtx = facesCtx.getELContext();
-	expFact = facesCtx.getApplication().getExpressionFactory();
-
-	facesCtx.getPartialViewContext().getRenderIds().add(FORM_MENU);
-	facesCtx.getPartialViewContext().getRenderIds().add(FORM_CONTENT);
+	// facesCtx.getPartialViewContext().getRenderIds().add(FORM_MENU);
+	// facesCtx.getPartialViewContext().getRenderIds().add(FORM_CONTENT);
 
 	// Insert data to menus
 	populateBreadcrumb();
@@ -111,14 +79,17 @@ public class UITemplateController implements Serializable {
 
     private void populateBreadcrumb() {
 
+	facesCtx = FacesContext.getCurrentInstance();
+	elCtx = facesCtx.getELContext();
+	expFact = facesCtx.getApplication().getExpressionFactory();
+
 	for (int i = 0; i < getPageCount(); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
 	    item.setValue("Page " + (i + 1));
 
-	    expr = expFact.createMethodExpression(elCtx,
-		    "#{uiTemplateController.chCurrPage(" + i + ")}", void.class,
+	    expr = expFact.createMethodExpression(elCtx, "#{uiTemplateController.chCurrPage(" + i + ")}", void.class,
 		    new Class[] { int.class });
 
 	    item.setActionExpression(expr);
@@ -130,23 +101,26 @@ public class UITemplateController implements Serializable {
 
     private void populateMenu() {
 
-	currentMenuItems.clear();
+	facesCtx = FacesContext.getCurrentInstance();
+	elCtx = facesCtx.getELContext();
+	expFact = facesCtx.getApplication().getExpressionFactory();
+
+	templateModel.getCurrentMenuItems().clear();
 	menu.getChildren().clear();
 	menu_model = new DefaultMenuModel();
 
-	for (int i = 0; i < getGroupCount(currPage); i++) {
+	for (int i = 0; i < getGroupCount(templateModel.getCurrPage()); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
 	    item.setValue("Group " + (i + 1));
 
-	    expr = expFact.createMethodExpression(elCtx,
-		    "#{uiTemplateController.chCurrTopic(" + i + ")}", void.class,
+	    expr = expFact.createMethodExpression(elCtx, "#{uiTemplateController.chCurrTopic(" + i + ")}", void.class,
 		    new Class[] { int.class });
 
 	    item.setActionExpression(expr);
 	    menu_model.addMenuItem(item);
-	    currentMenuItems.add(item);
+	    templateModel.getCurrentMenuItems().add(item);
 	}
 
 	menu.setModel(menu_model);
@@ -156,11 +130,12 @@ public class UITemplateController implements Serializable {
 
     private void createQuestions() {
 
-	currentUIquestions.clear();
+	templateModel.getCurrentUIquestions().clear();
 
-	UIBasicQuestion q1 = new UITextQuestion((currPage + 1) + " - " + (currTopic + 1));
+	UIBasicQuestion q1 = new UITextQuestion((templateModel.getCurrPage() + 1) + " - "
+		+ (templateModel.getCurrTopic() + 1));
 
-	currentUIquestions.add(q1);
+	templateModel.getCurrentUIquestions().add(q1);
 
 	// TODO: get model data here and convert to UIComponents
 
@@ -169,18 +144,23 @@ public class UITemplateController implements Serializable {
 
     private void populateUIquestions() {
 
+	facesCtx = FacesContext.getCurrentInstance();
+	elCtx = facesCtx.getELContext();
+	expFact = facesCtx.getApplication().getExpressionFactory();
+
 	content.getChildren().clear();
-	for (int i = 0; i < currentUIquestions.size(); i++) {
-	    currentUIquestions.get(i).postInit();
-	    content.getChildren().add(currentUIquestions.get(i).getUiComponent());
+	for (int i = 0; i < templateModel.getCurrentUIquestions().size(); i++) {
+	    templateModel.getCurrentUIquestions().get(i).postInit();
+	    content.getChildren().add(templateModel.getCurrentUIquestions().get(i).getUiComponent());
 	    HtmlOutputText linebreak = new HtmlOutputText();
 	    linebreak.setValue("<br/>");
 	    linebreak.setEscape(false);
 	    content.getChildren().add(linebreak);
 	}
 
-	RequestContext.getCurrentInstance().update(FORM_CONTENT);
-	RequestContext.getCurrentInstance().update(FORM_MENU);
+	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_MENU);
+	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_CONTENT);
+
     }
 
     public BreadCrumb getBreadcrumb() {
@@ -192,15 +172,15 @@ public class UITemplateController implements Serializable {
     }
 
     private int getPageCount() {
-	return document.size();
+	return templateModel.getDocument().size();
     }
 
     private int getGroupCount(int p_id) {
-	return document.get(p_id).getGroups().size();
+	return templateModel.getDocument().get(p_id).getGroups().size();
     }
 
     private int qetQuestionsCount(int p_id, int g_id) {
-	return document.get(p_id).getGroups().get(g_id).getQuestions().size();
+	return templateModel.getDocument().get(p_id).getGroups().get(g_id).getQuestions().size();
     }
 
     public MenuModel getBreadcrumb_model() {
@@ -233,16 +213,16 @@ public class UITemplateController implements Serializable {
 
     public void chCurrPage(int currPage) {
 	System.out.println("Curr page set to: " + currPage);
-	System.out.println("Curr group set to: " + currTopic);
-	this.currPage = currPage;
-	this.currTopic = 0;
+	System.out.println("Curr group set to: " + templateModel.getCurrTopic());
+	templateModel.setCurrPage(currPage);
+	templateModel.setCurrTopic(0);
 	populateMenu();
     }
 
     public void chCurrTopic(int currTopic) {
-	System.out.println("Curr page set to: " + currPage);
+	System.out.println("Curr page set to: " + templateModel.getCurrPage());
 	System.out.println("Curr group set to: " + currTopic);
-	this.currTopic = currTopic;
+	templateModel.setCurrTopic(currTopic);
 	createQuestions();
     }
 
@@ -254,88 +234,4 @@ public class UITemplateController implements Serializable {
 	this.content = content;
     }
 
-}
-
-// ///////////////////////////////////////////////
-// ///////////////////////////////////////////////
-// ///////////////////////////////////////////////
-
-class Page {
-    private String name = "Page";
-    private ArrayList<Group> groups;
-
-    private int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
-
-    Page(int id) {
-	setName(getName() + id + 1);
-	setGroups(new ArrayList<Group>());
-
-	for (int i = 0; i < count; i++) {
-	    getGroups().add(new Group(id, i));
-	}
-    }
-
-    public ArrayList<Group> getGroups() {
-	return groups;
-    }
-
-    public void setGroups(ArrayList<Group> groups) {
-	this.groups = groups;
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
-    }
-}
-
-class Group {
-    private String name = "Group";
-    private ArrayList<Question> questions;
-
-    private int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
-
-    Group(int p_id, int id) {
-	setName(getName() + id + 1);
-	setQuestions(new ArrayList<Question>());
-
-	for (int i = 0; i < count; i++) {
-	    getQuestions().add(new Question(p_id, id, i));
-	}
-    }
-
-    public ArrayList<Question> getQuestions() {
-	return questions;
-    }
-
-    public void setQuestions(ArrayList<Question> questions) {
-	this.questions = questions;
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
-    }
-}
-
-class Question {
-    private String name = "Question";
-
-    Question(int p_id, int gr_id, int id) {
-	setName(getName() + id + 1);
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
-    }
 }
