@@ -1,4 +1,4 @@
-package com.engagepoint.uib;
+package com.engagepoint.labs.wizard.jsfbean;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.model.DefaultMenuModel;
