@@ -5,25 +5,25 @@ import java.util.ArrayList;
 
 public class Page {
     private String name = "Page";
-    private ArrayList<Group> groups;
+    private ArrayList<Topic> topics;
 
     private int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
 
     public Page(int id) {
 	setName(getName() + id + 1);
-	setGroups(new ArrayList<Group>());
+	setTopics(new ArrayList<Topic>());
 
 	for (int i = 0; i < count; i++) {
-	    getGroups().add(new Group(id, i));
+	    getTopics().add(new Topic(id, i));
 	}
     }
 
-    public ArrayList<Group> getGroups() {
-	return groups;
+    public ArrayList<Topic> getTopics() {
+	return topics;
     }
 
-    public void setGroups(ArrayList<Group> groups) {
-	this.groups = groups;
+    public void setTopics(ArrayList<Topic> topics) {
+	this.topics = topics;
 	
     }
 

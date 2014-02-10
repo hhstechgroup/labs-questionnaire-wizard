@@ -2,13 +2,13 @@ package com.engagepoint.labs.wizard.model.data;
 
 import java.util.ArrayList;
 
-public class Group {
+public class Topic {
     private String name = "Group";
     private ArrayList<Question> questions;
 
     private int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
 
-    public Group(int p_id, int id) {
+    public Topic(int p_id, int id) {
 	setName(getName() + id + 1);
 	setQuestions(new ArrayList<Question>());
 

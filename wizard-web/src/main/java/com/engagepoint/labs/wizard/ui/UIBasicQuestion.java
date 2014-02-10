@@ -13,6 +13,7 @@ public class UIBasicQuestion {
     protected Object pf_value;
 
     public UIBasicQuestion(String type, String Name) {
+	id="question_"+name;
 	this.type = type;
     }
 

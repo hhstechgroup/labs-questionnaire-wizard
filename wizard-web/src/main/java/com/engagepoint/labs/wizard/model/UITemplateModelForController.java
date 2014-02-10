@@ -27,10 +27,13 @@ public class UITemplateModelForController implements Serializable {
     // CurrentUIComponents
     private ArrayList<UIBasicQuestion> currentUIquestions;
     private ArrayList<MenuItem> currentMenuItems;
+    
+    private boolean needRefresh;
 
     @PostConstruct
     public void init() {
-
+	needRefresh=false;
+	
 	setCurrPage(0);
 	setCurrTopic(0);
 
@@ -82,5 +85,13 @@ public class UITemplateModelForController implements Serializable {
 
     public void setCurrentMenuItems(ArrayList<MenuItem> currentMenuItems) {
 	this.currentMenuItems = currentMenuItems;
+    }
+
+    public boolean isNeedRefresh() {
+	return needRefresh;
+    }
+
+    public void setNeedRefresh(boolean needRefresh) {
+	this.needRefresh = needRefresh;
     }
 }

@@ -109,16 +109,17 @@ public class UITemplateController implements Serializable {
 	menu.getChildren().clear();
 	menu_model = new DefaultMenuModel();
 
-	for (int i = 0; i < getGroupCount(templateModel.getCurrPage()); i++) {
+	for (int i = 0; i < getTopicCount(templateModel.getCurrPage()); i++) {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
-	    item.setValue("Group " + (i + 1));
+	    item.setValue("Topic " + (i + 1));
 
 	    expr = expFact.createMethodExpression(elCtx, "#{uiTemplateController.chCurrTopic(" + i + ")}", void.class,
 		    new Class[] { int.class });
 
 	    item.setActionExpression(expr);
+	    item.setId("topic_"+i);
 	    menu_model.addMenuItem(item);
 	    templateModel.getCurrentMenuItems().add(item);
 	}
@@ -158,8 +159,10 @@ public class UITemplateController implements Serializable {
 	    content.getChildren().add(linebreak);
 	}
 
-	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_MENU);
-	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_CONTENT);
+//	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_MENU);
+//	FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(FORM_CONTENT);
+	
+	templateModel.setNeedRefresh(true);
 
     }
 
@@ -175,12 +178,12 @@ public class UITemplateController implements Serializable {
 	return templateModel.getDocument().size();
     }
 
-    private int getGroupCount(int p_id) {
-	return templateModel.getDocument().get(p_id).getGroups().size();
+    private int getTopicCount(int p_id) {
+	return templateModel.getDocument().get(p_id).getTopics().size();
     }
 
     private int qetQuestionsCount(int p_id, int g_id) {
-	return templateModel.getDocument().get(p_id).getGroups().get(g_id).getQuestions().size();
+	return templateModel.getDocument().get(p_id).getTopics().get(g_id).getQuestions().size();
     }
 
     public MenuModel getBreadcrumb_model() {
