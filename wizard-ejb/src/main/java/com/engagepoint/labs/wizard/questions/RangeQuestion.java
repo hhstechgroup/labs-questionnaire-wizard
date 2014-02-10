@@ -5,14 +5,23 @@ import com.engagepoint.labs.wizard.answers.RangeAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class RangeQuestion extends BasicQuestion implements Question<RangeAnswer> {
+public class RangeQuestion extends WizardQuestion<RangeAnswer> {
 
     private int startRange;
     private int endRange;
+    private String value;
     private RangeAnswer rangeAnswer;
 
-    public void setRange(Integer start,Integer end){
-        startRange=start;
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setRange(Integer start, Integer end) {
+        startRange = start;
         endRange = end;
     }
 
@@ -23,6 +32,7 @@ public class RangeQuestion extends BasicQuestion implements Question<RangeAnswer
     public int getEndRange() {
         return endRange;
     }
+
     @Override
     public RangeAnswer getAnswer() {
         return rangeAnswer;
@@ -30,6 +40,6 @@ public class RangeQuestion extends BasicQuestion implements Question<RangeAnswer
 
     @Override
     public void setAnswer(RangeAnswer answers) {
-        rangeAnswer=answers;
+        rangeAnswer = answers;
     }
 }

@@ -23,8 +23,7 @@ import super_binding.QuestionnaireForms;
  *
  * @author artem
  */
-@Named
-@RequestScoped
+
 public class XmlCustomParser {
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,

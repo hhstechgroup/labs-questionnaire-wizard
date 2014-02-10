@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,9 +6,12 @@
  */
 package com.engagepoint.labs.wizard.jsfbean;
 
-import com.engagepoint.labs.wizard.xml.controllers.XmlContrloller;
-import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,18 +29,31 @@ import org.xml.sax.SAXException;
 @RequestScoped
 public class ManagedBean {
 
-    private String xmlInfo;
-
+    private WizardDocument wizardDocument;
+    XmlController xmlController;
     @Inject
-    XmlContrloller xmlContrloller;
-
-    private String selectedXmlFile;
-    private Map<String, String> MapOfXmls;
+    private WizardForm wizardForm;
+    private String selectedFormTemplate;
+    // only for our default xml files!
+    private List<String> XMLpathList;
+    private Map<String, String> MapOfWizardForms;
 
     {
-        MapOfXmls = new LinkedHashMap<>();
-        MapOfXmls.put("1 Template", "/XMLforWizard.xml");
-        MapOfXmls.put("2 Template", "/XMLforWizard2.xml");
+        MapOfWizardForms = new LinkedHashMap<>();
+        XMLpathList = new ArrayList<>();
+        XMLpathList.add("/XMLforWizard.xml");
+        XMLpathList.add("/XMLforWizard2.xml"); 
+        xmlController = new XmlController();     
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
+        } 
+        catch (SAXException | JAXBException ex) {
+            Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
+        }
     }
 
     /**
@@ -46,30 +63,18 @@ public class ManagedBean {
     }
 
     public Map<String, String> getXmlsValues() {
-        return MapOfXmls;
+        return MapOfWizardForms;
     }
 
-    public String getSelectedXmlFile() {
-        return selectedXmlFile;
+    public String getSelectedFormTemplate() {
+        return selectedFormTemplate;
     }
 
-    public void setSelectedXmlFile(String selectedXmlFile) {
-        this.selectedXmlFile = selectedXmlFile;
+    public void setSelectedFormTemplate(String selectedFormTemplate) {
+        this.selectedFormTemplate = selectedFormTemplate;
     }
 
-    public String getXmlInfo() {
-        return xmlInfo;
-    }
-
-    public void setXmlInfo(String xmlInfo) {
-        this.xmlInfo = xmlInfo;
-    }
-
-    public void parse() {
-        try {
-            xmlInfo = xmlContrloller.readXML(selectedXmlFile);
-        } catch (SAXException | JAXBException ex) {
-            Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void start() {
+        wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
     }
 }

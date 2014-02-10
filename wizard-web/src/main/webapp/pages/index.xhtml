@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>XML parsing !</title>
+    </h:head>
+    <h:body>
+        <br/>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Choose XML File 22: "/>
+                <h:selectOneListbox id="default_xml" value="#{managedBean.selectedFormTemplate}">
+                    <f:selectItems value="#{managedBean.xmlsValues}"/>
+                </h:selectOneListbox>
+            </h:panelGrid>           
+
+            <h:commandButton value=" START " action="#{managedBean.start()}"/>
+            <br/>
+            <p:outputLabel value="Form Name:   "/>
+            <p:outputLabel value="#{wizardForm.formName}"/>
+            <br/>
+            <p:outputLabel value="Form ID:   "/>
+            <p:outputLabel value="#{wizardForm.id}"/>
+        </h:form>
+    </h:body>
+</html>

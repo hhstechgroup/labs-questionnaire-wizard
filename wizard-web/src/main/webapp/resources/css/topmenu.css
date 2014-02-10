@@ -1,0 +1,7 @@
+div .page-header .ui-menu ul {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    list-style: none outside none;
+    opacity: 0;
+}

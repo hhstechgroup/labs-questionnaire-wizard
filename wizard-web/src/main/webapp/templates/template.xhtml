@@ -1,0 +1,60 @@
+<uib:page xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:uib="http://engagepoint.com/uib"
+          xmlns:ui="http://java.sun.com/jsf/facelets"
+          markupType="html5"
+          contentType="text/html"
+          showFooter="false"
+          pageTitle="Template Page"
+          project="financials">
+
+    <h:outputStylesheet library="uibootstrap/js/tinymce/skins/lightgray" name="skin.min.css"/>
+    <f:view locale="#{langSelectMenuBean.locale}"/>
+    <h:outputStylesheet library="css" name="bread.css"/>
+    <h:outputStylesheet library="css" name="topmenu.css"/>
+    <h:outputStylesheet library="css" name="menuleft.css"/>
+    <h:outputStylesheet library="css" name="prettify.css" target="head"/>
+    <h:outputStylesheet library="css" name="example_components.css" target="head"/>
+    <h:outputScript library="js" name="prettify.js" target="head"/>
+    <h:outputScript library="js" name="switch_color.js" target="head"/>
+
+    <h:outputScript>
+        jQuery(document).ready(function() {
+        prettyPrint();
+        if ($.cookie('scheme')) {
+        $('body').removeAttr('class').addClass($.cookie('scheme'));
+        }
+        });
+        function setScheme(scheme) {
+        $.cookie('scheme', scheme, { expires: 7, path: '/' });
+        $('body').removeAttr('class').addClass($.cookie('scheme'));
+        return;
+        }
+    </h:outputScript>
+
+    <uib:pageLayout>
+        <div id="topmenuid">
+            <uib:pageHeaderFacet hideHelpMenu="true">
+                <ui:insert name="topMenu">
+                    <ui:include src="topmenubar.xhtml"/>
+                </ui:insert>
+            </uib:pageHeaderFacet>
+        </div>
+
+        <uib:pageHeaderUtilityBarFacet>
+            <ui:insert name="headerBar"/>
+            <ui:insert name="breadcrumb"/>
+        </uib:pageHeaderUtilityBarFacet>
+
+        <uib:pageMenuFacet id="pageMenu">
+            <ui:insert name="leftMenu"/>
+        </uib:pageMenuFacet>
+
+        <uib:pageBodyFacet>
+            <ui:insert name="page"/>
+        </uib:pageBodyFacet>
+
+    </uib:pageLayout>
+
+</uib:page>
