@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
 	<title>Navigator</title>
 </h:head>
@@ -16,8 +17,13 @@
 			model="#{uiTemplateController.breadcrumb_model}" />
 	</h:form>
 	<h:form id="form_menu">
-		<p:menu id="menu" binding="#{uiTemplateController.menu}"
-			model="#{uiTemplateController.menu_model}" />
+		<p:menu id="menu">
+			<c:forEach items="#{uiTemplateModelForController.currentMenuElements}"
+				var="topicName">
+				<p:menuitem id="#{topicName}" value="#{topicName}"
+					action="#{uiTemplateController.chCurrTopicString(topicName)}" />
+			</c:forEach>>
+		</p:menu>
 	</h:form>
 	<h:form id="form_content" binding="#{uiTemplateController.content}" />
 </h:body>

@@ -7,8 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import org.primefaces.component.menuitem.MenuItem;
-
 import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 
@@ -26,7 +24,7 @@ public class UITemplateModelForController implements Serializable {
 
     // CurrentUIComponents
     private ArrayList<UIBasicQuestion> currentUIquestions;
-    private ArrayList<MenuItem> currentMenuItems;
+    private ArrayList<String> currentMenuElements;
     
     private boolean needRefresh;
 
@@ -38,7 +36,7 @@ public class UITemplateModelForController implements Serializable {
 	setCurrTopic(0);
 
 	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
-	setCurrentMenuItems(new ArrayList<MenuItem>());
+	setCurrentMenuElements(new ArrayList<String>());
 
 	setDocument(new ArrayList<Page>());
 	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
@@ -79,19 +77,28 @@ public class UITemplateModelForController implements Serializable {
 	this.currentUIquestions = currentUIquestions;
     }
 
-    public ArrayList<MenuItem> getCurrentMenuItems() {
-	return currentMenuItems;
-    }
-
-    public void setCurrentMenuItems(ArrayList<MenuItem> currentMenuItems) {
-	this.currentMenuItems = currentMenuItems;
-    }
-
     public boolean isNeedRefresh() {
 	return needRefresh;
     }
 
     public void setNeedRefresh(boolean needRefresh) {
 	this.needRefresh = needRefresh;
+    }
+
+    public ArrayList<String> getCurrentMenuElements() {
+	if(currentMenuElements==null)
+	{
+	    currentMenuElements=new ArrayList<String>();
+	    currentMenuElements.add("Topic 1");
+	}
+	if(currentMenuElements.size()==0)
+	{
+	    currentMenuElements.add("Topic 1");
+	}
+	return currentMenuElements;
+    }
+
+    public void setCurrentMenuElements(ArrayList<String> currentMenuElements) {
+	this.currentMenuElements = currentMenuElements;
     }
 }
