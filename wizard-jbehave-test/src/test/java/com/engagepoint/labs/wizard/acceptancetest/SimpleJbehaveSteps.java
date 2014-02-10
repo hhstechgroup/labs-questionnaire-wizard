@@ -19,10 +19,11 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         uIBootstrapBasePage.element("//*[@id='" + id + "']//a[@href='#']").click();
     }
 
-    @When("the user dibil write name'$as'")
-    public void sss(String as) {
-        fillField("searchInput", "Арсенал");
-       clickBySelector("searchInputButton");
+    @When("the user choose template with name '$name'")
+    public void sss(String name) {
+        selectListBoxValue(name, "j_idt6-default_xml");
+        clickBySelector("j_idt6-submit");
     }
+
 
 }
