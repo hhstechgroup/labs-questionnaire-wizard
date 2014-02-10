@@ -18,6 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+<<<<<<< HEAD
 	<dependencies>
 		<dependency>
 			<groupId>javax</groupId>
@@ -38,6 +39,28 @@
 			<version>2.0.14</version>
 		</dependency>
 	</dependencies>
+=======
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.engagepoint.labs</groupId>
+            <artifactId>wizard-ejb</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>ejb</type>
+            <scope>provided</scope>
+        </dependency>
+         <dependency>
+             <groupId>com.engagepoint</groupId>
+             <artifactId>ui-bootstrap-components</artifactId>
+             <version>2.0.14</version>
+         </dependency>
+    </dependencies>
+>>>>>>> f4354c5c0cce3ca74791bf1e6925707caa952b50
 
 	<build>
 		<plugins>

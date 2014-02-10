@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                template="template.xhtml">
+    <ui:define name="breadcrumb">
+        <h:form enctype="multipart/form-data" style="background-color: lightskyblue; padding-left: 30px; font-size: 14px"
+                id="brd"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                >
+            <p:breadCrumb id="breadcrumb1" >
+                <p:menuitem id="Home" value="Home" action="#{dwBean.createTopics('Home')}"  />
+
+                <c:forEach items="#{dwBean.pageList}" var="pageName">
+                    <p:menuitem id="#{pageName}" value="#{pageName}" action="#{dwBean.createTopics(pageName)}" />
+                </c:forEach>
+
+            </p:breadCrumb>
+        </h:form>
+
+        <br/>
+    </ui:define>
+    <ui:define name="leftMenu">
+        <h:form xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:uib="http://engagepoint.com/uib"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                id="leftMenu">
+            <uib:menu id="menu">
+
+                <c:forEach items="#{dwBean.topicList}" var="pageName">
+                    <uib:menuSection id="#{pageName}" title="#{pageName}" url="/demo/financials/index.xhtml" parentUrl="/financials/"/>
+                </c:forEach>
+            </uib:menu>
+        </h:form>
+
+    </ui:define>
+    <div class="red">
+        <ui:define name="mainContent" >
+            <ui:include src="maincontent.xhtml"/>
+
+
+        </ui:define>
+    </div>
+</ui:composition>
