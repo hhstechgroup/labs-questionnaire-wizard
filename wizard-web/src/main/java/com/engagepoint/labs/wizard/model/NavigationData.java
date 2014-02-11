@@ -33,10 +33,9 @@ public class NavigationData implements Serializable {
     private boolean needRefresh;
 
     // NavData
-    private int currentWizardFormID;
     private String selectedFormTemplate;
     private String currentFormName;
-    private String currentFormID;
+    private int currentFormID;
     private int currPage;
     private int currTopic;
 
@@ -170,14 +169,6 @@ public class NavigationData implements Serializable {
 	this.currentTopicTitles = currentTopicTitles;
     }
 
-    public int getCurrentWizardFormID() {
-	return currentWizardFormID;
-    }
-
-    public void setCurrentWizardFormID(int currentWizardFormID2) {
-	this.currentWizardFormID = currentWizardFormID2;
-    }
-
     public String getCurrentFormName() {
 	return currentFormName;
     }
@@ -186,11 +177,11 @@ public class NavigationData implements Serializable {
 	this.currentFormName = currentFormName;
     }
 
-    public String getCurrentFormID() {
+    public int getCurrentFormID() {
 	return currentFormID;
     }
 
-    public void setCurrentFormID(String currentFormID) {
+    public void setCurrentFormID(int currentFormID) {
 	this.currentFormID = currentFormID;
     }
 
