@@ -42,9 +42,6 @@ public class UITemplateController implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
 
-    // BreadCrumb
-    private MenuModel breadcrumb_model;
-
     // Questions
     private HtmlForm content;
 
@@ -55,8 +52,6 @@ public class UITemplateController implements Serializable {
 
     @Inject
     private WizardForm wizardForm;
-    
-    @PostConstruct
     
     public void init(){
 
@@ -86,7 +81,7 @@ public class UITemplateController implements Serializable {
 	// MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
 	// }
 
-	setBreadcrumb_model(new DefaultMenuModel());
+	templateModel.setBreadcrumb_model(new DefaultMenuModel());
 
 	content = new HtmlForm();
 
@@ -137,7 +132,7 @@ public class UITemplateController implements Serializable {
 		    void.class, new Class[] { int.class });
 
 	    item.setActionExpression(expr);
-	    getBreadcrumb_model().addMenuItem(item);
+	    templateModel.getBreadcrumb_model().addMenuItem(item);
 	}
 
 	// breadcrumb.setModel(getBreadcrumb_model());
@@ -176,20 +171,20 @@ public class UITemplateController implements Serializable {
 
     private void createUIquestions() {
 
-	facesCtx = FacesContext.getCurrentInstance();
-	elCtx = facesCtx.getELContext();
-	expFact = facesCtx.getApplication().getExpressionFactory();
-
-	content.getChildren().clear();
-	for (int i = 0; i < getTemplateModel().getCurrentUIquestions().size(); i++) {
-	    getTemplateModel().getCurrentUIquestions().get(i).postInit();
-	    content.getChildren().add(
-		    getTemplateModel().getCurrentUIquestions().get(i).getUiComponent());
-	    HtmlOutputText linebreak = new HtmlOutputText();
-	    linebreak.setValue("<br/>");
-	    linebreak.setEscape(false);
-	    content.getChildren().add(linebreak);
-	}
+//	facesCtx = FacesContext.getCurrentInstance();
+//	elCtx = facesCtx.getELContext();
+//	expFact = facesCtx.getApplication().getExpressionFactory();
+//
+//	content.getChildren().clear();
+//	for (int i = 0; i < getTemplateModel().getCurrentUIquestions().size(); i++) {
+//	    getTemplateModel().getCurrentUIquestions().get(i).postInit();
+//	    content.getChildren().add(
+//		    getTemplateModel().getCurrentUIquestions().get(i).getUiComponent());
+//	    HtmlOutputText linebreak = new HtmlOutputText();
+//	    linebreak.setValue("<br/>");
+//	    linebreak.setEscape(false);
+//	    content.getChildren().add(linebreak);
+//	}
 
 	getTemplateModel().setNeedRefresh(true);
     }
@@ -199,15 +194,8 @@ public class UITemplateController implements Serializable {
     }
 
     private int getTopicCount(int p_id) {
+	System.out.println(p_id);
 	return wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size();
-    }
-
-    public MenuModel getBreadcrumb_model() {
-	return breadcrumb_model;
-    }
-
-    public void setBreadcrumb_model(MenuModel breadcrumb_model) {
-	this.breadcrumb_model = breadcrumb_model;
     }
 
     public void navigate(String p_id) {
@@ -215,16 +203,16 @@ public class UITemplateController implements Serializable {
     }
 
     public void changeCurrentPage(int currPage) {
-	System.out.println("Curr page set to: " + currPage);
-	System.out.println("Curr group set to: " + getTemplateModel().getCurrTopic());
+	System.out.println("P: Curr page set to: " + currPage);
+	System.out.println("P: Curr group set to: " + getTemplateModel().getCurrTopic());
 	getTemplateModel().setCurrPage(currPage);
 	getTemplateModel().setCurrTopic(1);
 	initMenu();
     }
 
     public void changeCurrentTopic(String currTopic) {
-	System.out.println("Curr page set to: " + getTemplateModel().getCurrentPage());
-	System.out.println("Curr group set to: " + currTopic);
+	System.out.println("T: Curr page set to: " + getTemplateModel().getCurrentPage());
+	System.out.println("T: Curr group set to: " + currTopic);
 	getTemplateModel().setCurrTopic(templateModel.getID(currTopic));
 	createQuestions();
     }

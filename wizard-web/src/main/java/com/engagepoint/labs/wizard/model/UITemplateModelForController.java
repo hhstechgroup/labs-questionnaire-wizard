@@ -2,16 +2,27 @@ package com.engagepoint.labs.wizard.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
 import javax.inject.Named;
+import javax.xml.bind.JAXBException;
+
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.jsfbean.ManagedBean;
 import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
@@ -25,25 +36,27 @@ public class UITemplateModelForController implements Serializable {
     private ArrayList<Page> document;
 
     // NavData
-    
+
     private int currentWizardFormID;
-    
+
     private String selectedFormTemplate;
     private String currentFormName;
     private String currentFormID;
 
     private int currPage;
     private int currTopic;
+    
+ // BreadCrumb
+    private MenuModel breadcrumb_model;
 
     // CurrentUIComponents
     private ArrayList<UIBasicQuestion> currentUIquestions;
     private ArrayList<String> currentTopicIDs;
     private ArrayList<String> currentTopicTitles;
-    
+
     private WizardDocument wizardDocument;
     private XmlController xmlController;
-    
-   
+
     // only for our default xml files!
     private List<String> XMLpathList;
     private Map<String, String> MapOfWizardForms;
@@ -52,6 +65,27 @@ public class UITemplateModelForController implements Serializable {
 
     @PostConstruct
     public void init() {
+
+	setMapOfWizardForms(new LinkedHashMap<String, String>());
+	// MapOfWizardForms = new LinkedHashMap<>();
+	setXMLpathList(new ArrayList<String>());
+	// XMLpathList = new ArrayList<>();
+	getXMLpathList().add("/XMLforWizard.xml");
+	// XMLpathList.add("/XMLforWizard.xml");
+	getXMLpathList().add("/XMLforWizard2.xml");
+	// XMLpathList.add("/XMLforWizard2.xml");
+	setXmlController(new XmlController());
+	// xmlController = new XmlController();
+	try {
+	    setWizardDocument(getXmlController().readAllDeafultXmlFiles(getXMLpathList()));
+	} catch (SAXException | JAXBException ex) {
+	    Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+	}
+
+	for (WizardForm wForm : getWizardDocument().getFormList()) {
+	    getMapOfWizardForms().put(wForm.getFormName(), wForm.getId());
+	}
+
 	needRefresh = false;
 
 	setCurrPage(1);
@@ -80,7 +114,7 @@ public class UITemplateModelForController implements Serializable {
 	}
 	return result;
     }
-    
+
     public int getID(String topic_id) {
 	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
 	Matcher m = p.matcher(topic_id);
@@ -151,9 +185,8 @@ public class UITemplateModelForController implements Serializable {
 	return currentWizardFormID;
     }
 
-
     public void setCurrentWizardFormID(int currentWizardFormID2) {
-	this.currentWizardFormID=currentWizardFormID2;
+	this.currentWizardFormID = currentWizardFormID2;
     }
 
     public String getCurrentFormName() {
@@ -210,5 +243,13 @@ public class UITemplateModelForController implements Serializable {
 
     public void setXmlController(XmlController xmlController) {
 	this.xmlController = xmlController;
+    }
+
+    public MenuModel getBreadcrumb_model() {
+	return breadcrumb_model;
+    }
+
+    public void setBreadcrumb_model(MenuModel breadcrumb_model) {
+	this.breadcrumb_model = breadcrumb_model;
     }
 }
