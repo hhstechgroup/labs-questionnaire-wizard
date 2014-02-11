@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.RangeAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class RangeQuestion extends WizardQuestion<RangeAnswer> {
+public class RangeQuestion extends WizardQuestion {
 
     private int startRange;
     private int endRange;
@@ -39,7 +39,7 @@ public class RangeQuestion extends WizardQuestion<RangeAnswer> {
     }
 
     @Override
-    public void setAnswer(RangeAnswer answers) {
-        rangeAnswer = answers;
+    public void setAnswer(Object answers) {
+        rangeAnswer = (RangeAnswer) answers;
     }
 }

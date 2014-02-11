@@ -11,7 +11,8 @@
 		<module>wizard-ear</module>
 		<module>wizard-web</module>
 		<module>wizard-ejb</module>
-	</modules>
+        <module>wizard-jbehave-test</module>
+    </modules>
 	<dependencies>
 		<!-- <dependency> -->
 		<!-- <groupId>org.primefaces</groupId> -->

@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.TimeAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class TimeQuestion extends WizardQuestion<TimeAnswer> {
+public class TimeQuestion extends WizardQuestion {
 
     private TimeAnswer timeAnswer;
 
@@ -15,7 +15,7 @@ public class TimeQuestion extends WizardQuestion<TimeAnswer> {
     }
 
     @Override
-    public void setAnswer(TimeAnswer answers) {
-        timeAnswer = answers;
+    public void setAnswer(Object answers) {
+        timeAnswer = (TimeAnswer) answers;
     }
 }

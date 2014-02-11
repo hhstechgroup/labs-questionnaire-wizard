@@ -1,12 +1,13 @@
 package com.engagepoint.labs.wizard.questions;
 
 import com.engagepoint.labs.wizard.answers.TextAnswer;
+
 import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class MultipleChoiseQuestion extends WizardQuestion<TextAnswer> {
+public class MultipleChoiseQuestion extends WizardQuestion {
 
     private TextAnswer textAnswer;
     private List<String> optionsList;
@@ -25,7 +26,7 @@ public class MultipleChoiseQuestion extends WizardQuestion<TextAnswer> {
     }
 
     @Override
-    public void setAnswer(TextAnswer answers) {
-        textAnswer = answers;
+    public void setAnswer(Object answers) {
+        textAnswer = (TextAnswer) answers;
     }
 }

@@ -5,12 +5,12 @@ import java.sql.Time;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class TimeAnswer implements Answer<Time> {
+public class TimeAnswer implements Answer {
     private Time timeAnswer;
 
     @Override
-    public void setAnswer(Time time) {
-        timeAnswer = time;
+    public void setAnswer(Object time) {
+        timeAnswer = (Time) time;
     }
 
     @Override
