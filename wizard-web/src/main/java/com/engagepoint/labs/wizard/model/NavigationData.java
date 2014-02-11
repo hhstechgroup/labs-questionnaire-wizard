@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
@@ -41,16 +40,20 @@ public class NavigationData implements Serializable {
     private String selectedFormTemplate;
     private String currentFormName;
     private String currentPageID;
-    private String currentTopic;
+    private String currentTopicID;
+
+    private String currentPageTitle;
+    private String currentTopicTitle;
 
     // UI elements
     private MenuModel breadcrumb_model;
-    private HtmlForm content;
 
-    // CurrentUIComponents
-    private ArrayList<UIBasicQuestion> currentUIquestions;
+    // Binding on form in maincontent.xhtml
+    private HtmlForm mainContentForm;
+
     private ArrayList<String> currentTopicIDs;
     private ArrayList<String> currentTopicTitles;
+    private HtmlOutputText currentOutputText;
 
     // Wizard XML items
     private WizardDocument wizardDocument;
@@ -65,8 +68,8 @@ public class NavigationData implements Serializable {
     @PostConstruct
     public void startSelectXMLScreen() {
 
-	onSelectXMLPage=true;
-	
+	onSelectXMLPage = true;
+
 	MapOfWizardForms = new LinkedHashMap<String, String>();
 
 	XMLpathList = new ArrayList<String>();
@@ -88,6 +91,8 @@ public class NavigationData implements Serializable {
     }
 
     public void startWizard() {
+	mainContentForm = new HtmlForm();
+
 	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
 
 	needRefresh = false;
@@ -95,7 +100,6 @@ public class NavigationData implements Serializable {
 	setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());
 	setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
 
-	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
 	setCurrentTopicIDs(new ArrayList<String>());
 	setCurrentTopicTitles(new ArrayList<String>());
 
@@ -116,22 +120,16 @@ public class NavigationData implements Serializable {
 
     public void setCurrentPageID(String currentPageID) {
 	this.currentPageID = currentPageID;
+	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
 
     public String getCurrentTopicID() {
-	return currentTopic;
+	return currentTopicID;
     }
 
     public void setCurrentTopicID(String currentTopicID) {
-	this.currentTopic = currentTopicID;
-    }
-
-    public ArrayList<UIBasicQuestion> getCurrentUIquestions() {
-	return currentUIquestions;
-    }
-
-    public void setCurrentUIquestions(ArrayList<UIBasicQuestion> currentUIquestions) {
-	this.currentUIquestions = currentUIquestions;
+	this.currentTopicID = currentTopicID;
+	this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
 
     public boolean isNeedRefresh() {
@@ -214,12 +212,12 @@ public class NavigationData implements Serializable {
 	this.breadcrumb_model = breadcrumb_model;
     }
 
-    public HtmlForm getContent() {
-	return content;
+    public HtmlForm getMainContentForm() {
+	return mainContentForm;
     }
 
-    public void setContent(HtmlForm content) {
-	this.content = content;
+    public void setMainContentForm(HtmlForm content) {
+	this.mainContentForm = content;
     }
 
     public WizardForm getWizardForm() {
@@ -240,5 +238,29 @@ public class NavigationData implements Serializable {
 
     public void setOnSelectXMLPage(boolean onSelectXMLPage) {
 	this.onSelectXMLPage = onSelectXMLPage;
+    }
+
+    public HtmlOutputText getCurrentOutputText() {
+	return currentOutputText;
+    }
+
+    public void setCurrentOutputText(HtmlOutputText currentOutputText) {
+	this.currentOutputText = currentOutputText;
+    }
+
+    public String getCurrentPageTitle() {
+	return currentPageTitle;
+    }
+
+    public void setCurrentPageTitle(String currentPageTitle) {
+	this.currentPageTitle = currentPageTitle;
+    }
+
+    public String getCurrentTopicTitle() {
+	return currentTopicTitle;
+    }
+
+    public void setCurrentTopicTitle(String currentTopicTitle) {
+	this.currentTopicTitle = currentTopicTitle;
     }
 }

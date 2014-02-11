@@ -2,31 +2,21 @@ package com.engagepoint.labs.wizard.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.model.DefaultMenuModel;
-import org.xml.sax.SAXException;
 
-import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
-import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
-import com.engagepoint.labs.wizard.ui.UITextQuestion;
-import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -42,7 +32,7 @@ public class UINavigationBean implements Serializable {
     private ELContext elCtx;
     private ExpressionFactory expFact;
 
-    public void clear() {
+    public void clearCurrentTopicsData() {
 	navigationData.setCurrentTopicIDs(new ArrayList<String>());
 	navigationData.setCurrentTopicTitles(new ArrayList<String>());
     }
@@ -88,9 +78,6 @@ public class UINavigationBean implements Serializable {
 
 	    item.setValue("Page " + page.getPageNumber().toString());
 
-	    // Generating
-	    // action="#{uiNavigationBean.changeCurrentPage(pageID)}" for
-	    // each menuItem
 	    expr = expFact.createMethodExpression(elCtx, "#{uiNavigationBean.changeCurrentPage(\"" + page.getId()
 		    + "\")}", void.class, new Class[] { String.class });
 
@@ -106,12 +93,6 @@ public class UINavigationBean implements Serializable {
 	navigationData.getCurrentTopicIDs().clear();
 
 	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
-
-	    // topicID will be represented as uib:menuItem id="#{topicID}" (see
-	    // leftMenu.xhtml).
-	    // Each of topicID's are put to curretTopicIDs list.
-	    // Each Topic title extracted from pagelist.topic list by arraylist
-	    // index
 
 	    String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
 		    .getTopicList().get(i).getId();
@@ -129,36 +110,14 @@ public class UINavigationBean implements Serializable {
 
     private void createQuestions() {
 
-	getNavigationData().getCurrentUIquestions().clear();
+	navigationData.getMainContentForm().getChildren().clear();
 
-	// UIBasicQuestion q1 = new
-	// UITextQuestion((getNavigationData().getCurrentPageID()) + " - "
-	// + (getNavigationData().getCurrTopic() + 1));
-	//
-	// getNavigationData().getCurrentUIquestions().add(q1);
+	navigationData.setCurrentOutputText(new HtmlOutputText());
 
-	// TODO: get model data here and convert to UIComponents
+	navigationData.getCurrentOutputText().setValue(
+		"Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
 
-	createUIquestions();
-    }
-
-    private void createUIquestions() {
-
-	// facesCtx = FacesContext.getCurrentInstance();
-	// elCtx = facesCtx.getELContext();
-	// expFact = facesCtx.getApplication().getExpressionFactory();
-	//
-	// content.getChildren().clear();
-	// for (int i = 0; i <
-	// getNavigationData().getCurrentUIquestions().size(); i++) {
-	// getNavigationData().getCurrentUIquestions().get(i).postInit();
-	// content.getChildren().add(
-	// getNavigationData().getCurrentUIquestions().get(i).getUiComponent());
-	// HtmlOutputText linebreak = new HtmlOutputText();
-	// linebreak.setValue("<br/>");
-	// linebreak.setEscape(false);
-	// content.getChildren().add(linebreak);
-	// }
+	navigationData.getMainContentForm().getChildren().add(navigationData.getCurrentOutputText());
 	getNavigationData().setNeedRefresh(true);
     }
 
@@ -177,22 +136,22 @@ public class UINavigationBean implements Serializable {
     public void changeCurrentPage(String currentPage) {
 	System.out.println("P: Curr page set to: " + currentPage);
 	System.out.println("P: Curr group set to: " + navigationData.getCurrentTopicID());
-	clear();
-	getNavigationData().setCurrentPageID(currentPage);
+	clearCurrentTopicsData();
+	navigationData.setCurrentPageID(currentPage);
+
 	navigationData.setCurrentTopicID(navigationData.getWizardForm()
 		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+
 	initMenu();
     }
 
     // The same
-    public void changeCurrentTopic(String currTopicID) {
+    public void changeCurrentTopic(String currentTopicID) {
 	String currentPageID = navigationData.getCurrentPageID();
 	System.out.println("T: Curr page set to: " + currentPageID);
-	System.out.println("T: Curr group set to: " + currTopicID);
-	clear();
-	getNavigationData().setCurrentPageID(currentPageID);
-	navigationData.setCurrentTopicID(navigationData.getWizardForm()
-		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+	System.out.println("T: Curr group set to: " + currentTopicID);
+
+	navigationData.setCurrentTopicID(currentTopicID);
 	createQuestions();
     }
 

@@ -8,7 +8,7 @@
 		<c:forEach items="#{uiNavigationBean.navigationData.currentTopicIDs}"
 			var="topicID">
 			<uib:menuItem id="#{topicID}" title="#{uiNavigationBean.navigationData.getTopicTitleFromID(topicID)}"
-				action="#{uiNavigationBean.changeCurrentTopic(topicName)}" />
+				action="#{uiNavigationBean.changeCurrentTopic(topicID)}" />
 		</c:forEach>
 	</uib:menu>
 </h:form>
