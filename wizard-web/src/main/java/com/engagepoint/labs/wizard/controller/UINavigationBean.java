@@ -37,7 +37,7 @@ import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 public class UINavigationBean implements Serializable {
 
     @Inject
-    private NavigationData templateModel;
+    private NavigationData navigationData;
 
     private static final long serialVersionUID = 7470581070941487130L;
 
@@ -54,33 +54,33 @@ public class UINavigationBean implements Serializable {
     
     public void init(){
 
-	templateModel.setMapOfWizardForms(new LinkedHashMap<String, String>());
+	navigationData.setMapOfWizardForms(new LinkedHashMap<String, String>());
 	// MapOfWizardForms = new LinkedHashMap<>();
-	templateModel.setXMLpathList(new ArrayList<String>());
+	navigationData.setXMLpathList(new ArrayList<String>());
 	// XMLpathList = new ArrayList<>();
-	templateModel.getXMLpathList().add("/XMLforWizard.xml");
+	navigationData.getXMLpathList().add("/XMLforWizard.xml");
 	// XMLpathList.add("/XMLforWizard.xml");
-	templateModel.getXMLpathList().add("/XMLforWizard2.xml");
+	navigationData.getXMLpathList().add("/XMLforWizard2.xml");
 	// XMLpathList.add("/XMLforWizard2.xml");
-	templateModel.setXmlController(new XmlController());
+	navigationData.setXmlController(new XmlController());
 	// xmlController = new XmlController();
 	try {
-	    templateModel.setWizardDocument(templateModel.getXmlController()
-		    .readAllDeafultXmlFiles(templateModel.getXMLpathList()));
+	    navigationData.setWizardDocument(navigationData.getXmlController()
+		    .readAllDeafultXmlFiles(navigationData.getXMLpathList()));
 	    // wizardDocument =
 	    // xmlController.readAllDeafultXmlFiles(XMLpathList);
 	} catch (SAXException | JAXBException ex) {
 	    Logger.getLogger(UINavigationBean.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
-	for (WizardForm wForm : templateModel.getWizardDocument().getFormList()) {
-	    templateModel.getMapOfWizardForms().put(wForm.getFormName(), wForm.getId());
+	for (WizardForm wForm : navigationData.getWizardDocument().getFormList()) {
+	    navigationData.getMapOfWizardForms().put(wForm.getFormName(), wForm.getId());
 	}
 	// for (WizardForm wForm : wizardDocument.getFormList()) {
 	// MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
 	// }
 
-	templateModel.setBreadcrumb_model(new DefaultMenuModel());
+	navigationData.setBreadcrumb_model(new DefaultMenuModel());
 
 	content = new HtmlForm();
 
@@ -92,11 +92,11 @@ public class UINavigationBean implements Serializable {
 	
 	init();
 
-	int currentWizardFormID = templateModel.getWizardDocument().getWizardFormByID(
-		templateModel.getSelectedFormTemplate(), wizardForm,
-		templateModel.getWizardDocument().getFormList());
+	int currentWizardFormID = navigationData.getWizardDocument().getWizardFormByID(
+		navigationData.getSelectedFormTemplate(), wizardForm,
+		navigationData.getWizardDocument().getFormList());
 
-	templateModel.setCurrentWizardFormID(currentWizardFormID);
+	navigationData.setCurrentWizardFormID(currentWizardFormID);
 
 	// int currentWizardFormID =
 	// wizardDocument.getWizardFormByID(selectedFormTemplate,
@@ -108,7 +108,7 @@ public class UINavigationBean implements Serializable {
 	// templateModel.setCurrentWizardFormID(currentWizardFormID);
 	initBreadcrumb();
 	initMenu();
-	templateModel.setNeedRefresh(false);
+	navigationData.setNeedRefresh(false);
 	return "bootstrapindex";
     }
 
@@ -131,7 +131,7 @@ public class UINavigationBean implements Serializable {
 		    void.class, new Class[] { int.class });
 
 	    item.setActionExpression(expr);
-	    templateModel.getBreadcrumb_model().addMenuItem(item);
+	    navigationData.getBreadcrumb_model().addMenuItem(item);
 	}
 
 	// breadcrumb.setModel(getBreadcrumb_model());
@@ -139,16 +139,16 @@ public class UINavigationBean implements Serializable {
 
     private void initMenu() {
 
-	templateModel.getCurrentTopicIDs().clear();
+	navigationData.getCurrentTopicIDs().clear();
 
-	for (int i = 0; i < getTopicCount(getTemplateModel().getCurrentPage()); i++) {
+	for (int i = 0; i < getTopicCount(getNavigationData().getCurrentPage()); i++) {
 	    String topic_id = "Topic" + (i + 1);
-	    templateModel.getCurrentTopicIDs().add(topic_id);
+	    navigationData.getCurrentTopicIDs().add(topic_id);
 
 	    String topic_title = wizardForm.getWizardPageList()
-		    .get(templateModel.getCurrentPage() - 1).getTopicList().get(i)
+		    .get(navigationData.getCurrentPage() - 1).getTopicList().get(i)
 		    .getGroupTitle();
-	    templateModel.getCurrentTopicTitles().add(topic_title);
+	    navigationData.getCurrentTopicTitles().add(topic_title);
 	}
 
 	createQuestions();
@@ -156,12 +156,12 @@ public class UINavigationBean implements Serializable {
 
     private void createQuestions() {
 
-	getTemplateModel().getCurrentUIquestions().clear();
+	getNavigationData().getCurrentUIquestions().clear();
 
-	UIBasicQuestion q1 = new UITextQuestion((getTemplateModel().getCurrentPage())
-		+ " - " + (getTemplateModel().getCurrTopic() + 1));
+	UIBasicQuestion q1 = new UITextQuestion((getNavigationData().getCurrentPage())
+		+ " - " + (getNavigationData().getCurrTopic() + 1));
 
-	getTemplateModel().getCurrentUIquestions().add(q1);
+	getNavigationData().getCurrentUIquestions().add(q1);
 
 	// TODO: get model data here and convert to UIComponents
 
@@ -175,17 +175,17 @@ public class UINavigationBean implements Serializable {
 //	expFact = facesCtx.getApplication().getExpressionFactory();
 //
 //	content.getChildren().clear();
-//	for (int i = 0; i < getTemplateModel().getCurrentUIquestions().size(); i++) {
-//	    getTemplateModel().getCurrentUIquestions().get(i).postInit();
+//	for (int i = 0; i < getNavigationData().getCurrentUIquestions().size(); i++) {
+//	    getNavigationData().getCurrentUIquestions().get(i).postInit();
 //	    content.getChildren().add(
-//		    getTemplateModel().getCurrentUIquestions().get(i).getUiComponent());
+//		    getNavigationData().getCurrentUIquestions().get(i).getUiComponent());
 //	    HtmlOutputText linebreak = new HtmlOutputText();
 //	    linebreak.setValue("<br/>");
 //	    linebreak.setEscape(false);
 //	    content.getChildren().add(linebreak);
 //	}
 
-	getTemplateModel().setNeedRefresh(true);
+	getNavigationData().setNeedRefresh(true);
     }
 
     private int getPageCount() {
@@ -203,16 +203,16 @@ public class UINavigationBean implements Serializable {
 
     public void changeCurrentPage(int currPage) {
 	System.out.println("P: Curr page set to: " + currPage);
-	System.out.println("P: Curr group set to: " + getTemplateModel().getCurrTopic());
-	getTemplateModel().setCurrPage(currPage);
-	getTemplateModel().setCurrTopic(1);
+	System.out.println("P: Curr group set to: " + getNavigationData().getCurrTopic());
+	getNavigationData().setCurrPage(currPage);
+	getNavigationData().setCurrTopic(1);
 	initMenu();
     }
 
     public void changeCurrentTopic(String currTopic) {
-	System.out.println("T: Curr page set to: " + getTemplateModel().getCurrentPage());
+	System.out.println("T: Curr page set to: " + getNavigationData().getCurrentPage());
 	System.out.println("T: Curr group set to: " + currTopic);
-	getTemplateModel().setCurrTopic(templateModel.getID(currTopic));
+	getNavigationData().setCurrTopic(navigationData.getID(currTopic));
 	createQuestions();
     }
 
@@ -224,16 +224,16 @@ public class UINavigationBean implements Serializable {
 	this.content = content;
     }
 
-    public NavigationData getTemplateModel() {
-	return templateModel;
+    public NavigationData getNavigationData() {
+	return navigationData;
     }
 
-    public void setTemplateModel(NavigationData templateModel) {
-	this.templateModel = templateModel;
+    public void setNavigationData(NavigationData navigationData) {
+	this.navigationData = navigationData;
     }
     
     public Map<String, String> getXmlsValues() {
-	return templateModel.getMapOfWizardForms();
+	return navigationData.getMapOfWizardForms();
     }
 
 //    public Map<String, String> getXmlsValues() {

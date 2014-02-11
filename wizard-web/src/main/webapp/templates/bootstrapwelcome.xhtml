@@ -16,7 +16,7 @@
 			<h:panelGrid columns="3">
 				<h:outputLabel value="Choose XML File : " />
 				<h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
-					value="#{uiNavigationBean.templateModel.selectedFormTemplate}">
+					value="#{uiNavigationBean.navigationData.selectedFormTemplate}">
 					<f:selectItems value="#{uiNavigationBean.xmlsValues}" />
 				</h:selectOneListbox>
 			</h:panelGrid>

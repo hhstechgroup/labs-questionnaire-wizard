@@ -5,9 +5,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
 
 	<uib:menu id="leftMenu">
-		<c:forEach items="#{uiNavigationBean.templateModel.currentTopicIDs}"
+		<c:forEach items="#{uiNavigationBean.navigationData.currentTopicIDs}"
 			var="topicID">
-			<uib:menuItem id="#{topicID}" title="#{uiNavigationBean.templateModel.getTitleFromID(topicID)}"
+			<uib:menuItem id="#{topicID}" title="#{uiNavigationBean.navigationData.getTitleFromID(topicID)}"
 				action="#{uiNavigationBean.changeCurrentTopic(topicName)}" />
 		</c:forEach>
 	</uib:menu>
