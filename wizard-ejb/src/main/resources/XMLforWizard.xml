@@ -2,12 +2,12 @@
 <questionnaire-forms
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
-    <questionnaire-form form-id="3943bcdmlpq1">
+    <questionnaire-form form-id="bcdmlpq1">
         <form-name>Simple Form Template 1</form-name>
         <pages>
-            <page page-number="1" page-id="12dcvxd">
+            <page page-number="1" page-id="dcvxd">
                 <groups-of-questions>
-                    <group group-id="874bcugyrfn">
+                    <group group-id="bcugyrfn">
                         <group-name>test group name</group-name>
                         <questions>
                             <question answer-required="true" question-id="1">
@@ -17,17 +17,39 @@
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
-                                <options>                                                                  
+                                <options>
                                     <option></option>
                                 </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
                             </question>
                             <question>
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHECKBOX</question-type>
+                                <help-text>help</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
                                 <options>
                                     <option>Option 1</option>
                                     <option>Option 2</option>
                                 </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
                             </question>
                         </questions>
                     </group>
