@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
@@ -20,7 +21,6 @@ import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
@@ -30,27 +30,26 @@ public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
 
-    private ArrayList<Page> document;
+    private boolean needRefresh;
 
     // NavData
-
     private int currentWizardFormID;
-
     private String selectedFormTemplate;
     private String currentFormName;
     private String currentFormID;
-
     private int currPage;
     private int currTopic;
-    
- // BreadCrumb
+
+    // UI elements
     private MenuModel breadcrumb_model;
+    private HtmlForm content;
 
     // CurrentUIComponents
     private ArrayList<UIBasicQuestion> currentUIquestions;
     private ArrayList<String> currentTopicIDs;
     private ArrayList<String> currentTopicTitles;
 
+    // Wizard XML items
     private WizardDocument wizardDocument;
     private XmlController xmlController;
 
@@ -58,21 +57,25 @@ public class NavigationData implements Serializable {
     private List<String> XMLpathList;
     private Map<String, String> MapOfWizardForms;
 
-    private boolean needRefresh;
-
+    // Initial construction, only for bootstrapwelcome.xhtml
     @PostConstruct
     public void init() {
 
 	setMapOfWizardForms(new LinkedHashMap<String, String>());
 	// MapOfWizardForms = new LinkedHashMap<>();
+
 	setXMLpathList(new ArrayList<String>());
 	// XMLpathList = new ArrayList<>();
+
 	getXMLpathList().add("/XMLforWizard.xml");
 	// XMLpathList.add("/XMLforWizard.xml");
+
 	getXMLpathList().add("/XMLforWizard2.xml");
 	// XMLpathList.add("/XMLforWizard2.xml");
+
 	setXmlController(new XmlController());
 	// xmlController = new XmlController();
+
 	try {
 	    setWizardDocument(getXmlController().readAllDeafultXmlFiles(getXMLpathList()));
 	} catch (SAXException | JAXBException ex) {
@@ -91,18 +94,13 @@ public class NavigationData implements Serializable {
 	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
 	setCurrentTopicIDs(new ArrayList<String>());
 	setCurrentTopicTitles(new ArrayList<String>());
-
-	setDocument(new ArrayList<Page>());
-	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
-	for (int i = 0; i < count; i++) {
-
-	    getDocument().add(new Page(i));
-	}
     }
 
-    public String getTitleFromID(String topic_id) {
+    // This method takes topicId (e.g Topic1, Topic999), extracts number and
+    // return actual topic title from model with correct index
+    public String getTitleFromID(String topicID) {
 	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
-	Matcher m = p.matcher(topic_id);
+	Matcher m = p.matcher(topicID);
 	String result = "1";
 	if (m.find()) {
 	    result = m.group(1);
@@ -112,22 +110,16 @@ public class NavigationData implements Serializable {
 	return result;
     }
 
-    public int getID(String topic_id) {
+    // This method takes topicId (e.g Topic1, Topic999), extracts number and
+    // returns topic number
+    public int getID(String topicID) {
 	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
-	Matcher m = p.matcher(topic_id);
+	Matcher m = p.matcher(topicID);
 	int result = 0;
 	if (m.find()) {
 	    result = Integer.parseInt(m.group(1));
 	}
 	return result;
-    }
-
-    public ArrayList<Page> getDocument() {
-	return document;
-    }
-
-    public void setDocument(ArrayList<Page> document) {
-	this.document = document;
     }
 
     public int getCurrentPage() {
@@ -248,5 +240,13 @@ public class NavigationData implements Serializable {
 
     public void setBreadcrumb_model(MenuModel breadcrumb_model) {
 	this.breadcrumb_model = breadcrumb_model;
+    }
+
+    public HtmlForm getContent() {
+	return content;
+    }
+
+    public void setContent(HtmlForm content) {
+	this.content = content;
     }
 }
