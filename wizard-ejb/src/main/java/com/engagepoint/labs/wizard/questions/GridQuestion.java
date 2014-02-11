@@ -1,12 +1,13 @@
 package com.engagepoint.labs.wizard.questions;
 
 import com.engagepoint.labs.wizard.answers.GridAnswer;
+
 import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class GridQuestion extends WizardQuestion<GridAnswer> {
+public class GridQuestion extends WizardQuestion {
 
     private List<String> columns;
     private List<String> rows;
@@ -34,7 +35,7 @@ public class GridQuestion extends WizardQuestion<GridAnswer> {
     }
 
     @Override
-    public void setAnswer(GridAnswer answers) {
-        this.gridAnswer = answers;
+    public void setAnswer(Object answers) {
+        this.gridAnswer = (GridAnswer) answers;
     }
 }

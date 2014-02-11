@@ -10,15 +10,16 @@ import com.engagepoint.labs.wizard.answers.TextAnswer;
  * To change this template use File | Settings | File Templates.
  */
 
-public class TextQuestion extends WizardQuestion<TextAnswer> {
+public class TextQuestion extends WizardQuestion {
     private TextAnswer textAnswer;
-   @Override
+
+    @Override
     public TextAnswer getAnswer() {
         return textAnswer;
     }
 
     @Override
-    public void setAnswer(TextAnswer answers) {
-        textAnswer = answers;
+    public void setAnswer(Object answers) {
+        textAnswer = (TextAnswer) answers;
     }
 }

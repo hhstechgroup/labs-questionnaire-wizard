@@ -5,11 +5,12 @@ import java.util.Date;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class DateAnswer implements Answer<Date> {
+public class DateAnswer implements Answer {
     private Date dateAnswer;
+
     @Override
-    public void setAnswer(Date date) {
-        dateAnswer=date;
+    public void setAnswer(Object date) {
+        dateAnswer = (Date) date;
     }
 
     @Override

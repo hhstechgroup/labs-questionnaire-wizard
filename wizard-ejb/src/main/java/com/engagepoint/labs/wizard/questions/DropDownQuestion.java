@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class DropDownQuestion extends WizardQuestion<TextAnswer> {
+public class DropDownQuestion extends WizardQuestion {
     private TextAnswer textAnswer;
     private List<String> optionsList;
 
@@ -19,13 +19,13 @@ public class DropDownQuestion extends WizardQuestion<TextAnswer> {
         this.optionsList = optionsList;
     }
 
-     @Override
+    @Override
     public TextAnswer getAnswer() {
         return textAnswer;
     }
 
     @Override
-    public void setAnswer(TextAnswer answers) {
-        textAnswer = answers;
+    public void setAnswer(Object answers) {
+        textAnswer = (TextAnswer) answers;
     }
 }

@@ -10,7 +10,7 @@ import super_binding.QType;
  *
  * @param <B>
  */
-public abstract class WizardQuestion<B extends Answer> {
+public abstract class WizardQuestion {
 
     protected String id;
     protected String title;
@@ -19,9 +19,9 @@ public abstract class WizardQuestion<B extends Answer> {
     private List<DependentQuestion> dependentQuestionsList; // need to be done later!!!
     protected Boolean answerRequired;
 
-    public abstract B getAnswer();
+    public abstract Object getAnswer();
 
-    public abstract void setAnswer(B answers);
+    public abstract void setAnswer(Object answers);
 
     public String getHelpText() {
         return helpText;

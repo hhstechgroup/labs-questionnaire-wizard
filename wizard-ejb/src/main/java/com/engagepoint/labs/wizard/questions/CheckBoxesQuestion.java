@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class CheckBoxesQuestion extends WizardQuestion<ListTextAnswer> {
+public class CheckBoxesQuestion extends WizardQuestion {
 
     private ListTextAnswer listTextAnswer;
     private List<String> optionsList;
@@ -27,7 +27,7 @@ public class CheckBoxesQuestion extends WizardQuestion<ListTextAnswer> {
     }
 
     @Override
-    public void setAnswer(ListTextAnswer answers) {
-        listTextAnswer = answers;
+    public void setAnswer(Object answers) {
+        listTextAnswer = (ListTextAnswer) answers;
     }
 }

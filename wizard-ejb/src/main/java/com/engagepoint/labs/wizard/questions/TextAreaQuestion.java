@@ -5,7 +5,7 @@ import com.engagepoint.labs.wizard.answers.TextAnswer;
 /**
  * Created by igor.guzenko on 2/4/14.
  */
-public class TextAreaQuestion extends WizardQuestion<TextAnswer> {
+public class TextAreaQuestion extends WizardQuestion {
 
     private TextAnswer textAnswer;
 
@@ -15,7 +15,7 @@ public class TextAreaQuestion extends WizardQuestion<TextAnswer> {
     }
 
     @Override
-    public void setAnswer(TextAnswer answers) {
-        textAnswer = answers;
+    public void setAnswer(Object answers) {
+        textAnswer = (TextAnswer) answers;
     }
 }

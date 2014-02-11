@@ -8,10 +8,10 @@ package com.engagepoint.labs.wizard.answers;
  *
  * @author artem.pylypenko
  */
-public class GridAnswer implements Answer<String> {
+public class GridAnswer implements Answer {
 
     @Override
-    public void setAnswer(String a) {
+    public void setAnswer(Object a) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

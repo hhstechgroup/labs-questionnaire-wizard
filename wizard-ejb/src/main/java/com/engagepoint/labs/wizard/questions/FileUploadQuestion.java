@@ -7,10 +7,9 @@ package com.engagepoint.labs.wizard.questions;
 import com.engagepoint.labs.wizard.answers.FileAnswer;
 
 /**
- *
  * @author artem
  */
-public class FileUploadQuestion extends WizardQuestion<FileAnswer> {
+public class FileUploadQuestion extends WizardQuestion {
 
     private FileAnswer fileAnswer;
 
@@ -20,7 +19,7 @@ public class FileUploadQuestion extends WizardQuestion<FileAnswer> {
     }
 
     @Override
-    public void setAnswer(FileAnswer answers) {
-        this.fileAnswer = answers;
+    public void setAnswer(Object answers) {
+        this.fileAnswer = (FileAnswer) answers;
     }
 }
