@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.controller;
 
-import com.engagepoint.labs.wizard.jsfbean.DWBean;
+import java.io.IOException;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
@@ -12,16 +12,15 @@ import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import com.engagepoint.labs.wizard.model.UITemplateModelForController;
 
 public class UITemplatePhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = -3163849709829451995L;
-    private final String FORM_MENU = "form_menu";
-    private final String FORM_CONTENT = "form_content";
 
     @Inject
-    DWBean dwBean;
+    UITemplateModelForController modelForController;
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -32,8 +31,8 @@ public class UITemplatePhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-	if (dwBean.isNeedUpdate()) {
-	    dwBean.setNeedUpdate(false);
+	if (modelForController.isNeedRefresh()) {
+	    modelForController.setNeedRefresh(false);
 	    redirectPage();
 	    FacesContext facesContext = event.getFacesContext();
 	    HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
@@ -66,7 +65,7 @@ public class UITemplatePhaseListener implements PhaseListener {
 	ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 	try {
 	    externalContext.redirect(origRequest.getRequestURI());
-        
+
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();

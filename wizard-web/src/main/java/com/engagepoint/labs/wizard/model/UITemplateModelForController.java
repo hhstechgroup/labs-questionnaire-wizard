@@ -54,7 +54,7 @@ public class UITemplateModelForController implements Serializable {
 	this.document = document;
     }
 
-    public int getCurrPage() {
+    public int getCurrentPage() {
 	return currPage;
     }
 
@@ -87,15 +87,6 @@ public class UITemplateModelForController implements Serializable {
     }
 
     public ArrayList<String> getCurrentMenuElements() {
-	if(currentMenuElements==null)
-	{
-	    currentMenuElements=new ArrayList<String>();
-	    currentMenuElements.add("Topic1");
-	}
-	if(currentMenuElements.size()==0)
-	{
-	    currentMenuElements.add("Topic1");
-	}
 	return currentMenuElements;
     }
 

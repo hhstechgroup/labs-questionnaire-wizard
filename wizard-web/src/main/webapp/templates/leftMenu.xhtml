@@ -5,10 +5,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
 
 	<uib:menu id="leftMenu">
-		<c:forEach items="#{uiTemplateModelForController.currentMenuElements}"
+		<c:forEach items="#{uiTemplateController.templateModel.currentMenuElements}"
 			var="topicName">
 			<uib:menuItem id="#{topicName}" title="#{topicName}"
-				action="#{uiTemplateController.chCurrTopicString(topicName)}" />
+				action="#{uiTemplateController.changeCurrentTopic(topicName)}" />
 		</c:forEach>
 	</uib:menu>
 </h:form>

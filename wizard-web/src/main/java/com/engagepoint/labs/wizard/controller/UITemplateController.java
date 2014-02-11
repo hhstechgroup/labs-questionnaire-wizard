@@ -66,10 +66,10 @@ public class UITemplateController implements Serializable {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
-	    item.setValue("Page " + (i + 1));
+	    item.setValue("Page" + (i + 1));
 
 	    expr = expFact.createMethodExpression(elCtx,
-		    "#{uiTemplateController.chCurrPage(" + i + ")}", void.class,
+		    "#{uiTemplateController.changeCurrentPage(" + i + ")}", void.class,
 		    new Class[] { int.class });
 
 	    item.setActionExpression(expr);
@@ -88,8 +88,8 @@ public class UITemplateController implements Serializable {
 	templateModel.setCurrentMenuElements(new ArrayList<String>());
 	templateModel.getCurrentMenuElements().clear();
 
-	for (int i = 0; i < getTopicCount(getTemplateModel().getCurrPage()); i++) {
-	    String str = "Topic " + (i + 1);
+	for (int i = 0; i < getTopicCount(getTemplateModel().getCurrentPage()); i++) {
+	    String str = "Topic" + (i + 1);
 	    templateModel.getCurrentMenuElements().add(str);
 	}
 
@@ -100,7 +100,7 @@ public class UITemplateController implements Serializable {
 
 	getTemplateModel().getCurrentUIquestions().clear();
 
-	UIBasicQuestion q1 = new UITextQuestion((getTemplateModel().getCurrPage() + 1)
+	UIBasicQuestion q1 = new UITextQuestion((getTemplateModel().getCurrentPage() + 1)
 		+ " - " + (getTemplateModel().getCurrTopic() + 1));
 
 	getTemplateModel().getCurrentUIquestions().add(q1);
@@ -151,7 +151,7 @@ public class UITemplateController implements Serializable {
 	System.out.println(p_id);
     }
 
-    public void chCurrPage(int currPage) {
+    public void changeCurrentPage(int currPage) {
 	System.out.println("Curr page set to: " + currPage);
 	System.out.println("Curr group set to: " + getTemplateModel().getCurrTopic());
 	getTemplateModel().setCurrPage(currPage);
@@ -159,8 +159,8 @@ public class UITemplateController implements Serializable {
 	populateMenu();
     }
 
-    public void chCurrTopicString(String currTopic) {
-	System.out.println("Curr page set to: " + getTemplateModel().getCurrPage());
+    public void changeCurrentTopic(String currTopic) {
+	System.out.println("Curr page set to: " + getTemplateModel().getCurrentPage());
 	System.out.println("Curr group set to: " + currTopic);
 	getTemplateModel().setCurrTopic(1);
 	createQuestions();
