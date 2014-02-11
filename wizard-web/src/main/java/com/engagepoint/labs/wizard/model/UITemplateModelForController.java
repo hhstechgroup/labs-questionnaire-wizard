@@ -2,6 +2,8 @@ package com.engagepoint.labs.wizard.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -24,26 +26,40 @@ public class UITemplateModelForController implements Serializable {
 
     // CurrentUIComponents
     private ArrayList<UIBasicQuestion> currentUIquestions;
-    private ArrayList<String> currentMenuElements;
-    
+    private ArrayList<String> currentTopicIDs;
+    private ArrayList<String> currentTopicTitles;
+
     private boolean needRefresh;
 
     @PostConstruct
     public void init() {
-	needRefresh=false;
-	
+	needRefresh = false;
+
 	setCurrPage(0);
 	setCurrTopic(0);
 
 	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
-	setCurrentMenuElements(new ArrayList<String>());
+	setCurrentTopicIDs(new ArrayList<String>());
+	setCurrentTopicTitles(new ArrayList<String>());
 
 	setDocument(new ArrayList<Page>());
 	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
 	for (int i = 0; i < count; i++) {
-	    
+
 	    getDocument().add(new Page(i));
 	}
+    }
+
+    public String getTitleFromID(String topic_id) {
+	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
+	Matcher m = p.matcher(topic_id);
+	String result = "1";
+	if (m.find()) {
+	    result = m.group(1);
+	    int index = Integer.parseInt(result);
+	    result = currentTopicTitles.get(index - 1);
+	}
+	return result;
     }
 
     public ArrayList<Page> getDocument() {
@@ -86,11 +102,19 @@ public class UITemplateModelForController implements Serializable {
 	this.needRefresh = needRefresh;
     }
 
-    public ArrayList<String> getCurrentMenuElements() {
-	return currentMenuElements;
+    public ArrayList<String> getCurrentTopicIDs() {
+	return currentTopicIDs;
     }
 
-    public void setCurrentMenuElements(ArrayList<String> currentMenuElements) {
-	this.currentMenuElements = currentMenuElements;
+    public void setCurrentTopicIDs(ArrayList<String> currentTopicIDs) {
+	this.currentTopicIDs = currentTopicIDs;
+    }
+
+    public ArrayList<String> getCurrentTopicTitles() {
+	return currentTopicTitles;
+    }
+
+    public void setCurrentTopicTitles(ArrayList<String> currentTopicTitles) {
+	this.currentTopicTitles = currentTopicTitles;
     }
 }

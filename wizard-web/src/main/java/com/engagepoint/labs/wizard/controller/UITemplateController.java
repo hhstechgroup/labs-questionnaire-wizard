@@ -81,16 +81,14 @@ public class UITemplateController implements Serializable {
 
     private void populateMenu() {
 
-	facesCtx = FacesContext.getCurrentInstance();
-	elCtx = facesCtx.getELContext();
-	expFact = facesCtx.getApplication().getExpressionFactory();
-
-	templateModel.setCurrentMenuElements(new ArrayList<String>());
-	templateModel.getCurrentMenuElements().clear();
+	templateModel.getCurrentTopicIDs().clear();
 
 	for (int i = 0; i < getTopicCount(getTemplateModel().getCurrentPage()); i++) {
-	    String str = "Topic" + (i + 1);
-	    templateModel.getCurrentMenuElements().add(str);
+	    String topic_id = "Topic" + (i + 1);
+	    templateModel.getCurrentTopicIDs().add(topic_id);
+	    
+	    String topic_title = "Topic " + (i + 1);
+	    templateModel.getCurrentTopicTitles().add(topic_title);
 	}
 
 	createQuestions();
