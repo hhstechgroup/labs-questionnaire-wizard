@@ -59,6 +59,8 @@ public class UINavigationBean implements Serializable {
 
 	navigationData.setXmlController(new XmlController());
 	// xmlController = new XmlController();
+	
+	navigationData.getMapOfWizardForms().clear();
 
 	try {
 	    navigationData.setWizardDocument(navigationData.getXmlController()
@@ -78,6 +80,11 @@ public class UINavigationBean implements Serializable {
 	// MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
 	// }
 
+	navigationData.setCurrentTopicIDs(new ArrayList<String>());
+	navigationData.setCurrentTopicTitles(new ArrayList<String>());
+	navigationData.setCurrPage(1);
+	navigationData.setCurrTopic(1);
+	
 	navigationData.setBreadcrumb_model(new DefaultMenuModel());
 
     }
@@ -93,7 +100,7 @@ public class UINavigationBean implements Serializable {
 		navigationData.getSelectedFormTemplate(), wizardForm,
 		navigationData.getWizardDocument().getFormList());
 
-	navigationData.setCurrentWizardFormID(currentWizardFormID);
+	navigationData.setCurrentFormID(currentWizardFormID);
 
 	initBreadcrumb();
 	initMenu();
@@ -117,7 +124,7 @@ public class UINavigationBean implements Serializable {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
-	    item.setValue(wizardForm.getWizardPageList().get(i).getId());
+	    item.setValue("Page "+wizardForm.getWizardPageList().get(i).getPageNumber().toString());
 
 	    int pageNumber = i + 1;
 
@@ -189,7 +196,6 @@ public class UINavigationBean implements Serializable {
 	// linebreak.setEscape(false);
 	// content.getChildren().add(linebreak);
 	// }
-
 	getNavigationData().setNeedRefresh(true);
     }
 
@@ -198,12 +204,9 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getTopicCount(int p_id) {
-	System.out.println(p_id);
+	System.out.println("Get topic counr for PID: "+p_id);
+	System.out.println("Topics: "+wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size());
 	return wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size();
-    }
-
-    public void navigate(String p_id) {
-	System.out.println(p_id);
     }
 
     //This method called by action="" attribute from page. Page numbers must be in range from 1 to n
