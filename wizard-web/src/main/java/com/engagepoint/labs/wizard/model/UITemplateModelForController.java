@@ -41,6 +41,7 @@ public class UITemplateModelForController implements Serializable {
 	setDocument(new ArrayList<Page>());
 	int count = 3 + (int) (Math.random() * ((10 - 3) + 1));
 	for (int i = 0; i < count; i++) {
+	    
 	    getDocument().add(new Page(i));
 	}
     }
@@ -89,11 +90,11 @@ public class UITemplateModelForController implements Serializable {
 	if(currentMenuElements==null)
 	{
 	    currentMenuElements=new ArrayList<String>();
-	    currentMenuElements.add("Topic 1");
+	    currentMenuElements.add("Topic1");
 	}
 	if(currentMenuElements.size()==0)
 	{
-	    currentMenuElements.add("Topic 1");
+	    currentMenuElements.add("Topic1");
 	}
 	return currentMenuElements;
     }

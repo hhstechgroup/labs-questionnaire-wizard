@@ -74,7 +74,8 @@ public class ManagedBean {
         this.selectedFormTemplate = selectedFormTemplate;
     }
 
-    public void start() {
+    public String start() {
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
+        return null;
     }
 }
