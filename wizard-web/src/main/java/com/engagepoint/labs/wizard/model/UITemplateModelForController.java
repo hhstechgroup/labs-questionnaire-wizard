@@ -2,6 +2,8 @@ package com.engagepoint.labs.wizard.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,8 +11,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
 @Named("uiTemplateModelForController")
 @SessionScoped
@@ -21,6 +25,13 @@ public class UITemplateModelForController implements Serializable {
     private ArrayList<Page> document;
 
     // NavData
+    
+    private int currentWizardFormID;
+    
+    private String selectedFormTemplate;
+    private String currentFormName;
+    private String currentFormID;
+
     private int currPage;
     private int currTopic;
 
@@ -28,6 +39,14 @@ public class UITemplateModelForController implements Serializable {
     private ArrayList<UIBasicQuestion> currentUIquestions;
     private ArrayList<String> currentTopicIDs;
     private ArrayList<String> currentTopicTitles;
+    
+    private WizardDocument wizardDocument;
+    private XmlController xmlController;
+    
+   
+    // only for our default xml files!
+    private List<String> XMLpathList;
+    private Map<String, String> MapOfWizardForms;
 
     private boolean needRefresh;
 
@@ -35,8 +54,8 @@ public class UITemplateModelForController implements Serializable {
     public void init() {
 	needRefresh = false;
 
-	setCurrPage(0);
-	setCurrTopic(0);
+	setCurrPage(1);
+	setCurrTopic(1);
 
 	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
 	setCurrentTopicIDs(new ArrayList<String>());
@@ -58,6 +77,16 @@ public class UITemplateModelForController implements Serializable {
 	    result = m.group(1);
 	    int index = Integer.parseInt(result);
 	    result = currentTopicTitles.get(index - 1);
+	}
+	return result;
+    }
+    
+    public int getID(String topic_id) {
+	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
+	Matcher m = p.matcher(topic_id);
+	int result = 0;
+	if (m.find()) {
+	    result = Integer.parseInt(m.group(1));
 	}
 	return result;
     }
@@ -116,5 +145,70 @@ public class UITemplateModelForController implements Serializable {
 
     public void setCurrentTopicTitles(ArrayList<String> currentTopicTitles) {
 	this.currentTopicTitles = currentTopicTitles;
+    }
+
+    public int getCurrentWizardFormID() {
+	return currentWizardFormID;
+    }
+
+
+    public void setCurrentWizardFormID(int currentWizardFormID2) {
+	this.currentWizardFormID=currentWizardFormID2;
+    }
+
+    public String getCurrentFormName() {
+	return currentFormName;
+    }
+
+    public void setCurrentFormName(String currentFormName) {
+	this.currentFormName = currentFormName;
+    }
+
+    public String getCurrentFormID() {
+	return currentFormID;
+    }
+
+    public void setCurrentFormID(String currentFormID) {
+	this.currentFormID = currentFormID;
+    }
+
+    public String getSelectedFormTemplate() {
+	return selectedFormTemplate;
+    }
+
+    public void setSelectedFormTemplate(String selectedFormTemplate) {
+	this.selectedFormTemplate = selectedFormTemplate;
+    }
+
+    public WizardDocument getWizardDocument() {
+	return wizardDocument;
+    }
+
+    public void setWizardDocument(WizardDocument wizardDocument) {
+	this.wizardDocument = wizardDocument;
+    }
+
+    public List<String> getXMLpathList() {
+	return XMLpathList;
+    }
+
+    public void setXMLpathList(List<String> xMLpathList) {
+	XMLpathList = xMLpathList;
+    }
+
+    public Map<String, String> getMapOfWizardForms() {
+	return MapOfWizardForms;
+    }
+
+    public void setMapOfWizardForms(Map<String, String> mapOfWizardForms) {
+	MapOfWizardForms = mapOfWizardForms;
+    }
+
+    public XmlController getXmlController() {
+	return xmlController;
+    }
+
+    public void setXmlController(XmlController xmlController) {
+	this.xmlController = xmlController;
     }
 }

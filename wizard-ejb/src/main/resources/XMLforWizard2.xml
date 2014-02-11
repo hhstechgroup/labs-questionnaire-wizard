@@ -1,60 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<questionnaire-forms
-    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
-    <questionnaire-form form-id="9gncv474f3x1swz">
-        <form-name>Simple Form Template 2</form-name>
-        <pages>
-            <page page-id="4dfmch" page-number="1">
-                <groups-of-questions>
-                    <group group-id="487cnh">
-                        <group-name>Group bla-bla</group-name>
-                        <questions>
-                            <question answer-required="true" question-id="zxxxx3">
-                                <question-title>Title bla-bla</question-title>
-                                <question-type>RANGE</question-type>
-                                <help-text>Help text bla-bla</help-text>
-                                <dependent-questions>
-                                </dependent-questions>
-                                <range range-begin="32" range-end="12"/>
-                                <grid>
-                                    <columns>
-                                    </columns>
-                                    <rows>
-                                    </rows>
-                                </grid>
-                            </question>
-                        </questions>
-                    </group>
-                </groups-of-questions>
-            </page>
-        </pages>
-    </questionnaire-form> 
-    <questionnaire-form form-id="589fg">
-        <form-name>Simple Form Template 3</form-name>
-        <pages>
-            <page page-id="495c" page-number="1">
-                <groups-of-questions>
-                    <group group-id="8475dn">
-                        <group-name>Super Q Group</group-name>
-                        <questions>
-                            <question answer-required="false" question-id="12vv">
-                                <question-type>GRID</question-type>
-                                <grid>
-                                    <columns>
-                                        <column>Column 1</column>
-                                        <column>Column 2</column>
-                                    </columns>
-                                    <rows>
-                                        <row>Row 1</row>
-                                        <row>Row 2</row>
-                                    </rows>
-                                </grid>
-                            </question>
-                        </questions>
-                    </group>
-                </groups-of-questions>
-            </page>
-        </pages>
-    </questionnaire-form>
+<questionnaire-forms xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
+	<questionnaire-form form-id="9gncv474f3x1swz">
+		<form-name>Simple Form Template 2</form-name>
+		<pages>
+			<page page-id="4dfmch" page-number="1">
+				<groups-of-questions>
+					<group group-id="487cnh">
+						<group-name>Group bla-bla</group-name>
+						<questions>
+							<question answer-required="true" question-id="zxxxx3">
+								<question-title>Title bla-bla</question-title>
+								<question-type>RANGE</question-type>
+								<help-text>Help text bla-bla</help-text>
+								<dependent-questions>
+								</dependent-questions>
+								<range range-begin="32" range-end="12" />
+								<grid>
+									<columns>
+									</columns>
+									<rows>
+									</rows>
+								</grid>
+							</question>
+						</questions>
+					</group>
+				</groups-of-questions>
+			</page>
+			<page page-id="4dffemch" page-number="2">
+				<groups-of-questions>
+					<group group-id="487cfefnh">
+						<group-name>Group bla-blvdda</group-name>
+						<questions>
+							<question answer-required="true" question-id="zxxxx3">
+								<question-title>Title bla-bla</question-title>
+								<question-type>RANGE</question-type>
+								<help-text>Help text bla-bla</help-text>
+								<dependent-questions>
+								</dependent-questions>
+								<range range-begin="32" range-end="12" />
+								<grid>
+									<columns>
+									</columns>
+									<rows>
+									</rows>
+								</grid>
+							</question>
+						</questions>
+					</group>
+					<group group-id="487cfefefnh">
+						<group-name>Group bla-bvdvla</group-name>
+						<questions>
+							<question answer-required="true" question-id="zxxxx3">
+								<question-title>Title bla-bla</question-title>
+								<question-type>RANGE</question-type>
+								<help-text>Help text bla-bla</help-text>
+								<dependent-questions>
+								</dependent-questions>
+								<range range-begin="32" range-end="12" />
+								<grid>
+									<columns>
+									</columns>
+									<rows>
+									</rows>
+								</grid>
+							</question>
+						</questions>
+					</group>
+				</groups-of-questions>
+			</page>
+		</pages>
+	</questionnaire-form>
+	<questionnaire-form form-id="589fg">
+		<form-name>Simple Form Template 3</form-name>
+		<pages>
+			<page page-id="495c" page-number="1">
+				<groups-of-questions>
+					<group group-id="8475dn">
+						<group-name>Group 1</group-name>
+						<questions>
+							<question answer-required="false" question-id="12vv">
+								<question-type>GRID</question-type>
+								<grid>
+									<columns>
+										<column>Column 1</column>
+										<column>Column 2</column>
+									</columns>
+									<rows>
+										<row>Row 1</row>
+										<row>Row 2</row>
+									</rows>
+								</grid>
+							</question>
+						</questions>
+					</group>
+				</groups-of-questions>
+			</page>
+		</pages>
+	</questionnaire-form>
 </questionnaire-forms>

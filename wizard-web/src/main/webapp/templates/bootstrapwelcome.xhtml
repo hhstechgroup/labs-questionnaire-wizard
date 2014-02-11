@@ -1,12 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title></title>
-</head>
-<body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="breadcrumb">
+		<!--<ui:include src="breadcrumbform.xhtml"/>-->
 
-</body>
-</html>
+		<br />
+	</ui:define>
+	<ui:define name="leftMenu">
+
+	</ui:define>
+	<ui:define name="page">
+		<h:form>
+			<h:panelGrid columns="3">
+				<h:outputLabel value="Choose XML File : " />
+				<h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
+					value="#{uiTemplateController.templateModel.selectedFormTemplate}">
+					<f:selectItems value="#{uiTemplateController.xmlsValues}" />
+				</h:selectOneListbox>
+			</h:panelGrid>
+
+			<h:commandButton value=" START " action="#{uiTemplateController.start()}" />
+<!-- 			<br /> -->
+<!-- 			<p:outputLabel value="Form Name:   " /> -->
+<!-- 			<p:outputLabel value="#{wizardForm.formName}" /> -->
+<!-- 			<br /> -->
+<!-- 			<p:outputLabel value="Form ID:   " /> -->
+<!-- 			<p:outputLabel value="#{wizardForm.id}" /> -->
+<!-- 			<br /> -->
+		</h:form>
+	</ui:define>
+</ui:composition>
