@@ -25,7 +25,6 @@ import java.util.List;
 public class UIComponentGenerator {
     private Panel questionPanel;
 
-
     public Panel getComponent(WizardQuestion wizardQuestion) {
         List<String> optionsList;
         questionPanel = new Panel();
@@ -67,8 +66,6 @@ public class UIComponentGenerator {
                 questionPanel.getChildren().add(timeCalendar);
                 break;
             // todo add: fileupload, grid, range types
-
-
 
 
         }
