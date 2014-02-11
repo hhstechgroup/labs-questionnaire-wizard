@@ -51,7 +51,7 @@ public class UINavigationBean implements Serializable {
 	navigationData.setXMLpathList(new ArrayList<String>());
 	// XMLpathList = new ArrayList<>();
 
-	navigationData.getXMLpathList().add("/XMLforWizard.xml");
+	// navigationData.getXMLpathList().add("/XMLforWizard.xml");
 	// XMLpathList.add("/XMLforWizard.xml");
 
 	navigationData.getXMLpathList().add("/XMLforWizard2.xml");
@@ -59,7 +59,7 @@ public class UINavigationBean implements Serializable {
 
 	navigationData.setXmlController(new XmlController());
 	// xmlController = new XmlController();
-	
+
 	navigationData.getMapOfWizardForms().clear();
 
 	try {
@@ -84,9 +84,15 @@ public class UINavigationBean implements Serializable {
 	navigationData.setCurrentTopicTitles(new ArrayList<String>());
 	navigationData.setCurrPage(1);
 	navigationData.setCurrTopic(1);
-	
+
 	navigationData.setBreadcrumb_model(new DefaultMenuModel());
 
+    }
+    
+    public void clear()
+    {
+	navigationData.setCurrentTopicIDs(new ArrayList<String>());
+	navigationData.setCurrentTopicTitles(new ArrayList<String>());
     }
 
     public String start() {
@@ -124,7 +130,8 @@ public class UINavigationBean implements Serializable {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
-	    item.setValue("Page "+wizardForm.getWizardPageList().get(i).getPageNumber().toString());
+	    item.setValue("Page "
+		    + wizardForm.getWizardPageList().get(i).getPageNumber().toString());
 
 	    int pageNumber = i + 1;
 
@@ -148,10 +155,12 @@ public class UINavigationBean implements Serializable {
 
 	for (int i = 0; i < getTopicCount(getNavigationData().getCurrentPage()); i++) {
 
-	    //topicID will be represented as uib:menuItem id="#{topicID}" (see leftMenu.xhtml).
-	    //Each of topicID's are put to curretTopicIDs list.
-	    //Each Topic title extracted from pagelist.topic list by arraylist index
-	    
+	    // topicID will be represented as uib:menuItem id="#{topicID}" (see
+	    // leftMenu.xhtml).
+	    // Each of topicID's are put to curretTopicIDs list.
+	    // Each Topic title extracted from pagelist.topic list by arraylist
+	    // index
+
 	    String topicID = "Topic" + (i + 1);
 	    navigationData.getCurrentTopicIDs().add(topicID);
 
@@ -204,25 +213,31 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getTopicCount(int p_id) {
-	System.out.println("Get topic counr for PID: "+p_id);
-	System.out.println("Topics: "+wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size());
+	System.out.println("Get topic counr for PID: " + p_id);
+	System.out.println("Topics: "
+		+ wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size());
 	return wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size();
     }
 
-    //This method called by action="" attribute from page. Page numbers must be in range from 1 to n
+    // This method called by action="" attribute from page. Page numbers must be
+    // in range from 1 to n
     public void changeCurrentPage(int currPage) {
 	System.out.println("P: Curr page set to: " + currPage);
 	System.out.println("P: Curr group set to: " + getNavigationData().getCurrTopic());
+	clear();
 	getNavigationData().setCurrPage(currPage);
 	getNavigationData().setCurrTopic(1);
 	initMenu();
     }
 
-    //The same
+    // The same
     public void changeCurrentTopic(String currTopic) {
+	int currentPage=getNavigationData().getCurrentPage();
 	System.out
 		.println("T: Curr page set to: " + getNavigationData().getCurrentPage());
 	System.out.println("T: Curr group set to: " + currTopic);
+	clear();
+	getNavigationData().setCurrPage(currentPage);
 	getNavigationData().setCurrTopic(navigationData.getID(currTopic));
 	createQuestions();
     }
