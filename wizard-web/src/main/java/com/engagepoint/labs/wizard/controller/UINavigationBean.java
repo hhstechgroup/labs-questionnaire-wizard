@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.model.UITemplateModelForController;
+import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.ui.UITextQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
@@ -37,7 +37,7 @@ import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 public class UINavigationBean implements Serializable {
 
     @Inject
-    private UITemplateModelForController templateModel;
+    private NavigationData templateModel;
 
     private static final long serialVersionUID = 7470581070941487130L;
 
@@ -224,11 +224,11 @@ public class UINavigationBean implements Serializable {
 	this.content = content;
     }
 
-    public UITemplateModelForController getTemplateModel() {
+    public NavigationData getTemplateModel() {
 	return templateModel;
     }
 
-    public void setTemplateModel(UITemplateModelForController templateModel) {
+    public void setTemplateModel(NavigationData templateModel) {
 	this.templateModel = templateModel;
     }
     

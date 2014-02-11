@@ -17,7 +17,7 @@
 	</h:form>
 	<h:form id="form_menu">
 		<p:menu id="menu">
-			<c:forEach items="#{uiTemplateModelForController.currentMenuElements}"
+			<c:forEach items="#{navigationData.currentMenuElements}"
 				var="topicName">
 				<p:menuitem id="#{topicName}" value="#{topicName}"
 					action="#{uiNavigationBean.chCurrTopicString(topicName)}" />

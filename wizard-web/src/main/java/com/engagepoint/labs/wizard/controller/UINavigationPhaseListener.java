@@ -13,14 +13,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.engagepoint.labs.wizard.model.UITemplateModelForController;
+import com.engagepoint.labs.wizard.model.NavigationData;
 
-public class UITemplatePhaseListener implements PhaseListener {
+public class UINavigationPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = -3163849709829451995L;
 
     @Inject
-    UITemplateModelForController modelForController;
+    NavigationData modelForController;
 
     @Override
     public void afterPhase(PhaseEvent event) {

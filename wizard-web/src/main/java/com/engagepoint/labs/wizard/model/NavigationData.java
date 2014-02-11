@@ -24,9 +24,9 @@ import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
-@Named("uiTemplateModelForController")
+@Named("navigationData")
 @SessionScoped
-public class UITemplateModelForController implements Serializable {
+public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
 
@@ -76,7 +76,7 @@ public class UITemplateModelForController implements Serializable {
 	try {
 	    setWizardDocument(getXmlController().readAllDeafultXmlFiles(getXMLpathList()));
 	} catch (SAXException | JAXBException ex) {
-	    Logger.getLogger(UITemplateModelForController.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
 	for (WizardForm wForm : getWizardDocument().getFormList()) {
