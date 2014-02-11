@@ -13,9 +13,11 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
+import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 import org.xml.sax.SAXException;
 
@@ -31,13 +33,15 @@ public class NavigationData implements Serializable {
     private static final long serialVersionUID = -3879860102027220266L;
 
     private boolean needRefresh;
+    private boolean onSelectXMLPage;
 
+    @Inject
+    private WizardForm wizardForm;
     // NavData
     private String selectedFormTemplate;
     private String currentFormName;
-    private int currentFormID;
-    private int currPage;
-    private int currTopic;
+    private String currentPageID;
+    private String currentTopic;
 
     // UI elements
     private MenuModel breadcrumb_model;
@@ -57,84 +61,69 @@ public class NavigationData implements Serializable {
     private Map<String, String> MapOfWizardForms;
 
     // Initial construction, only for bootstrapwelcome.xhtml
+
     @PostConstruct
-    public void init() {
+    public void startSelectXMLScreen() {
 
-	setMapOfWizardForms(new LinkedHashMap<String, String>());
-	// MapOfWizardForms = new LinkedHashMap<>();
+	onSelectXMLPage=true;
+	
+	MapOfWizardForms = new LinkedHashMap<String, String>();
 
-	setXMLpathList(new ArrayList<String>());
-	// XMLpathList = new ArrayList<>();
+	XMLpathList = new ArrayList<String>();
 
-	getXMLpathList().add("/XMLforWizard.xml");
-	// XMLpathList.add("/XMLforWizard.xml");
+	XMLpathList.add("/XMLforWizard.xml");
+	XMLpathList.add("/XMLforWizard2.xml");
 
-	getXMLpathList().add("/XMLforWizard2.xml");
-	// XMLpathList.add("/XMLforWizard2.xml");
-
-	setXmlController(new XmlController());
-	// xmlController = new XmlController();
+	xmlController = new XmlController();
 
 	try {
-	    setWizardDocument(getXmlController().readAllDeafultXmlFiles(getXMLpathList()));
+	    wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
 	} catch (SAXException | JAXBException ex) {
 	    Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
-	for (WizardForm wForm : getWizardDocument().getFormList()) {
-	    getMapOfWizardForms().put(wForm.getFormName(), wForm.getId());
+	for (WizardForm wForm : wizardDocument.getFormList()) {
+	    MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
 	}
+    }
+
+    public void startWizard() {
+	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
 
 	needRefresh = false;
 
-	setCurrPage(1);
-	setCurrTopic(1);
+	setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());
+	setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
 
 	setCurrentUIquestions(new ArrayList<UIBasicQuestion>());
 	setCurrentTopicIDs(new ArrayList<String>());
 	setCurrentTopicTitles(new ArrayList<String>());
+
+	setBreadcrumb_model(new DefaultMenuModel());
     }
 
-    // This method takes topicId (e.g Topic1, Topic999), extracts number and
-    // return actual topic title from model with correct index
-    public String getTitleFromID(String topicID) {
-	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
-	Matcher m = p.matcher(topicID);
-	String result = "1";
-	if (m.find()) {
-	    result = m.group(1);
-	    int index = Integer.parseInt(result);
-	    result = currentTopicTitles.get(index - 1);
-	}
-	return result;
+    public String getTopicTitleFromID(String topicID) {
+	String title;
+
+	title = wizardForm.getWizardTopicById(topicID).getGroupTitle();
+
+	return title;
     }
 
-    // This method takes topicId (e.g Topic1, Topic999), extracts number and
-    // returns topic number
-    public int getID(String topicID) {
-	Pattern p = Pattern.compile("(\\d+)(?!.*\\d)");
-	Matcher m = p.matcher(topicID);
-	int result = 0;
-	if (m.find()) {
-	    result = Integer.parseInt(m.group(1));
-	}
-	return result;
+    public String getCurrentPageID() {
+	return currentPageID;
     }
 
-    public int getCurrentPage() {
-	return currPage;
+    public void setCurrentPageID(String currentPageID) {
+	this.currentPageID = currentPageID;
     }
 
-    public void setCurrPage(int currPage) {
-	this.currPage = currPage;
+    public String getCurrentTopicID() {
+	return currentTopic;
     }
 
-    public int getCurrTopic() {
-	return currTopic;
-    }
-
-    public void setCurrTopic(int currTopic) {
-	this.currTopic = currTopic;
+    public void setCurrentTopicID(String currentTopicID) {
+	this.currentTopic = currentTopicID;
     }
 
     public ArrayList<UIBasicQuestion> getCurrentUIquestions() {
@@ -175,14 +164,6 @@ public class NavigationData implements Serializable {
 
     public void setCurrentFormName(String currentFormName) {
 	this.currentFormName = currentFormName;
-    }
-
-    public int getCurrentFormID() {
-	return currentFormID;
-    }
-
-    public void setCurrentFormID(int currentFormID) {
-	this.currentFormID = currentFormID;
     }
 
     public String getSelectedFormTemplate() {
@@ -239,5 +220,25 @@ public class NavigationData implements Serializable {
 
     public void setContent(HtmlForm content) {
 	this.content = content;
+    }
+
+    public WizardForm getWizardForm() {
+	return wizardForm;
+    }
+
+    public void setWizardForm(WizardForm wizardForm) {
+	this.wizardForm = wizardForm;
+    }
+
+    public Map<String, String> getXmlsValues() {
+	return MapOfWizardForms;
+    }
+
+    public boolean isOnSelectXMLPage() {
+	return onSelectXMLPage;
+    }
+
+    public void setOnSelectXMLPage(boolean onSelectXMLPage) {
+	this.onSelectXMLPage = onSelectXMLPage;
     }
 }

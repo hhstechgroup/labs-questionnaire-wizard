@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -21,6 +22,7 @@ import org.primefaces.model.DefaultMenuModel;
 import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.ui.UITextQuestion;
@@ -40,73 +42,24 @@ public class UINavigationBean implements Serializable {
     private ELContext elCtx;
     private ExpressionFactory expFact;
 
-    @Inject
-    private WizardForm wizardForm;
+    public void clear() {
+	navigationData.setCurrentTopicIDs(new ArrayList<String>());
+	navigationData.setCurrentTopicTitles(new ArrayList<String>());
+    }
 
+    @PostConstruct
     public void init() {
 
-	navigationData.setMapOfWizardForms(new LinkedHashMap<String, String>());
-	// MapOfWizardForms = new LinkedHashMap<>();
+	if (navigationData.isOnSelectXMLPage()) {
 
-	navigationData.setXMLpathList(new ArrayList<String>());
-	// XMLpathList = new ArrayList<>();
-
-	// navigationData.getXMLpathList().add("/XMLforWizard.xml");
-	// XMLpathList.add("/XMLforWizard.xml");
-
-	navigationData.getXMLpathList().add("/XMLforWizard2.xml");
-	// XMLpathList.add("/XMLforWizard2.xml");
-
-	navigationData.setXmlController(new XmlController());
-	// xmlController = new XmlController();
-
-	navigationData.getMapOfWizardForms().clear();
-
-	try {
-	    navigationData.setWizardDocument(navigationData.getXmlController()
-		    .readAllDeafultXmlFiles(navigationData.getXMLpathList()));
-	    // wizardDocument =
-	    // xmlController.readAllDeafultXmlFiles(XMLpathList);
-
-	} catch (SAXException | JAXBException ex) {
-	    Logger.getLogger(UINavigationBean.class.getName())
-		    .log(Level.SEVERE, null, ex);
+	    navigationData.setOnSelectXMLPage(false);
+	    navigationData.startSelectXMLScreen();
 	}
-
-	for (WizardForm wForm : navigationData.getWizardDocument().getFormList()) {
-	    navigationData.getMapOfWizardForms().put(wForm.getFormName(), wForm.getId());
-	}
-	// for (WizardForm wForm : wizardDocument.getFormList()) {
-	// MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
-	// }
-
-	navigationData.setCurrentTopicIDs(new ArrayList<String>());
-	navigationData.setCurrentTopicTitles(new ArrayList<String>());
-	navigationData.setCurrPage(1);
-	navigationData.setCurrTopic(1);
-
-	navigationData.setBreadcrumb_model(new DefaultMenuModel());
-
-    }
-    
-    public void clear()
-    {
-	navigationData.setCurrentTopicIDs(new ArrayList<String>());
-	navigationData.setCurrentTopicTitles(new ArrayList<String>());
     }
 
     public String start() {
 
-	// Call this to parse XML files
-	init();
-
-	// ID of wizard form which was selected by user. This id represents
-	// index in arrayList of wizardDocument.formList.
-	int currentWizardFormID = navigationData.getWizardDocument().getWizardFormByID(
-		navigationData.getSelectedFormTemplate(), wizardForm,
-		navigationData.getWizardDocument().getFormList());
-
-	navigationData.setCurrentFormID(currentWizardFormID);
+	navigationData.startWizard();
 
 	initBreadcrumb();
 	initMenu();
@@ -130,17 +83,16 @@ public class UINavigationBean implements Serializable {
 	    MenuItem item = new MenuItem();
 	    MethodExpression expr;
 
-	    item.setValue("Page "
-		    + wizardForm.getWizardPageList().get(i).getPageNumber().toString());
+	    WizardPage page;
+	    page = navigationData.getWizardForm().getWizardPageList().get(i);
 
-	    int pageNumber = i + 1;
+	    item.setValue("Page " + page.getPageNumber().toString());
 
 	    // Generating
-	    // action="#{uiNavigationBean.changeCurrentPage(pageNumber)}" for
+	    // action="#{uiNavigationBean.changeCurrentPage(pageID)}" for
 	    // each menuItem
-	    expr = expFact.createMethodExpression(elCtx,
-		    "#{uiNavigationBean.changeCurrentPage(" + pageNumber + ")}",
-		    void.class, new Class[] { int.class });
+	    expr = expFact.createMethodExpression(elCtx, "#{uiNavigationBean.changeCurrentPage(\"" + page.getId()
+		    + "\")}", void.class, new Class[] { String.class });
 
 	    item.setActionExpression(expr);
 
@@ -153,7 +105,7 @@ public class UINavigationBean implements Serializable {
 
 	navigationData.getCurrentTopicIDs().clear();
 
-	for (int i = 0; i < getTopicCount(getNavigationData().getCurrentPage()); i++) {
+	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
 
 	    // topicID will be represented as uib:menuItem id="#{topicID}" (see
 	    // leftMenu.xhtml).
@@ -161,12 +113,13 @@ public class UINavigationBean implements Serializable {
 	    // Each Topic title extracted from pagelist.topic list by arraylist
 	    // index
 
-	    String topicID = "Topic" + (i + 1);
+	    String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+		    .getTopicList().get(i).getId();
+
 	    navigationData.getCurrentTopicIDs().add(topicID);
 
-	    String topic_title = wizardForm.getWizardPageList()
-		    .get(navigationData.getCurrentPage() - 1).getTopicList().get(i)
-		    .getGroupTitle();
+	    String topic_title = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+		    .getTopicList().get(i).getGroupTitle();
 
 	    navigationData.getCurrentTopicTitles().add(topic_title);
 	}
@@ -178,10 +131,11 @@ public class UINavigationBean implements Serializable {
 
 	getNavigationData().getCurrentUIquestions().clear();
 
-	UIBasicQuestion q1 = new UITextQuestion((getNavigationData().getCurrentPage())
-		+ " - " + (getNavigationData().getCurrTopic() + 1));
-
-	getNavigationData().getCurrentUIquestions().add(q1);
+	// UIBasicQuestion q1 = new
+	// UITextQuestion((getNavigationData().getCurrentPageID()) + " - "
+	// + (getNavigationData().getCurrTopic() + 1));
+	//
+	// getNavigationData().getCurrentUIquestions().add(q1);
 
 	// TODO: get model data here and convert to UIComponents
 
@@ -209,36 +163,36 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getPageCount() {
-	return wizardForm.getWizardPageList().size();
+	return navigationData.getWizardForm().getWizardPageList().size();
     }
 
-    private int getTopicCount(int p_id) {
-	System.out.println("Get topic counr for PID: " + p_id);
-	System.out.println("Topics: "
-		+ wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size());
-	return wizardForm.getWizardPageList().get(p_id - 1).getTopicList().size();
+    private int getTopicCount(String pageID) {
+	System.out.println("Get topic counr for PID: " + pageID);
+	System.out.println("Topics: " + navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size());
+	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
     // This method called by action="" attribute from page. Page numbers must be
     // in range from 1 to n
-    public void changeCurrentPage(int currPage) {
-	System.out.println("P: Curr page set to: " + currPage);
-	System.out.println("P: Curr group set to: " + getNavigationData().getCurrTopic());
+    public void changeCurrentPage(String currentPage) {
+	System.out.println("P: Curr page set to: " + currentPage);
+	System.out.println("P: Curr group set to: " + navigationData.getCurrentTopicID());
 	clear();
-	getNavigationData().setCurrPage(currPage);
-	getNavigationData().setCurrTopic(1);
+	getNavigationData().setCurrentPageID(currentPage);
+	navigationData.setCurrentTopicID(navigationData.getWizardForm()
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
 	initMenu();
     }
 
     // The same
-    public void changeCurrentTopic(String currTopic) {
-	int currentPage=getNavigationData().getCurrentPage();
-	System.out
-		.println("T: Curr page set to: " + getNavigationData().getCurrentPage());
-	System.out.println("T: Curr group set to: " + currTopic);
+    public void changeCurrentTopic(String currTopicID) {
+	String currentPageID = navigationData.getCurrentPageID();
+	System.out.println("T: Curr page set to: " + currentPageID);
+	System.out.println("T: Curr group set to: " + currTopicID);
 	clear();
-	getNavigationData().setCurrPage(currentPage);
-	getNavigationData().setCurrTopic(navigationData.getID(currTopic));
+	getNavigationData().setCurrentPageID(currentPageID);
+	navigationData.setCurrentTopicID(navigationData.getWizardForm()
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
 	createQuestions();
     }
 
@@ -248,10 +202,6 @@ public class UINavigationBean implements Serializable {
 
     public void setNavigationData(NavigationData navigationData) {
 	this.navigationData = navigationData;
-    }
-
-    public Map<String, String> getXmlsValues() {
-	return navigationData.getMapOfWizardForms();
     }
 
 }

@@ -23,24 +23,19 @@ public class WizardDocument {
 	this.formList = formList;
     }
 
-    public int getWizardFormByID(String formID, WizardForm cdiWizardForm,
-	    List<WizardForm> formList) {
-	int index = 0;
+    public void getWizardFormByID(String formID, WizardForm cdiWizardForm, List<WizardForm> formList) {
 	if (cdiWizardForm != null) {
 	    this.formList = formList;
 	    for (int i = 0; i < formList.size(); i++) {
-		WizardForm wizardForm=formList.get(i);
+		WizardForm wizardForm = formList.get(i);
 		if (wizardForm.getId().equals(formID)) {
 		    cdiWizardForm.setFormName(wizardForm.getFormName());
 		    cdiWizardForm.setId(wizardForm.getId());
 		    List<WizardPage> allWizardPages = wizardForm.getWizardPageList();
 		    cdiWizardForm.setWizardPageList(allWizardPages);
-		    index=i;
-		    break;
 		}
 	    }
 	}
-	return index;
     }
 
 }
