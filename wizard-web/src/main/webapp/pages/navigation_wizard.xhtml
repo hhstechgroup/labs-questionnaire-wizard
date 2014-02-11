@@ -13,17 +13,17 @@
 	<br />
 	<h:form id="form_breadcrumb">
 		<p:breadCrumb id="breadcrumb"
-			model="#{uiTemplateController.breadcrumb_model}" />
+			model="#{uiNavigationBean.breadcrumb_model}" />
 	</h:form>
 	<h:form id="form_menu">
 		<p:menu id="menu">
 			<c:forEach items="#{uiTemplateModelForController.currentMenuElements}"
 				var="topicName">
 				<p:menuitem id="#{topicName}" value="#{topicName}"
-					action="#{uiTemplateController.chCurrTopicString(topicName)}" />
+					action="#{uiNavigationBean.chCurrTopicString(topicName)}" />
 			</c:forEach>>
 		</p:menu>
 	</h:form>
-	<h:form id="form_content" binding="#{uiTemplateController.content}" />
+	<h:form id="form_content" binding="#{uiNavigationBean.content}" />
 </h:body>
 </html>

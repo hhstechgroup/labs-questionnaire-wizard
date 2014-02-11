@@ -27,15 +27,14 @@ import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.jsfbean.ManagedBean;
 import com.engagepoint.labs.wizard.model.UITemplateModelForController;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.ui.UITextQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
-@Named("uiTemplateController")
+@Named("uiNavigationBean")
 @RequestScoped
-public class UITemplateController implements Serializable {
+public class UINavigationBean implements Serializable {
 
     @Inject
     private UITemplateModelForController templateModel;
@@ -71,7 +70,7 @@ public class UITemplateController implements Serializable {
 	    // wizardDocument =
 	    // xmlController.readAllDeafultXmlFiles(XMLpathList);
 	} catch (SAXException | JAXBException ex) {
-	    Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(UINavigationBean.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
 	for (WizardForm wForm : templateModel.getWizardDocument().getFormList()) {
@@ -128,7 +127,7 @@ public class UITemplateController implements Serializable {
 
 	    int pageNumber = i + 1;
 	    expr = expFact.createMethodExpression(elCtx,
-		    "#{uiTemplateController.changeCurrentPage(" + pageNumber + ")}",
+		    "#{uiNavigationBean.changeCurrentPage(" + pageNumber + ")}",
 		    void.class, new Class[] { int.class });
 
 	    item.setActionExpression(expr);

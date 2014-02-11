@@ -16,12 +16,12 @@
 			<h:panelGrid columns="3">
 				<h:outputLabel value="Choose XML File : " />
 				<h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
-					value="#{uiTemplateController.templateModel.selectedFormTemplate}">
-					<f:selectItems value="#{uiTemplateController.xmlsValues}" />
+					value="#{uiNavigationBean.templateModel.selectedFormTemplate}">
+					<f:selectItems value="#{uiNavigationBean.xmlsValues}" />
 				</h:selectOneListbox>
 			</h:panelGrid>
 
-			<h:commandButton value=" START " action="#{uiTemplateController.start()}" />
+			<h:commandButton value=" START " action="#{uiNavigationBean.start()}" />
 <!-- 			<br /> -->
 <!-- 			<p:outputLabel value="Form Name:   " /> -->
 <!-- 			<p:outputLabel value="#{wizardForm.formName}" /> -->

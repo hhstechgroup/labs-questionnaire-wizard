@@ -12,17 +12,14 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.html.HtmlForm;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
-import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.jsfbean.ManagedBean;
 import com.engagepoint.labs.wizard.model.data.Page;
 import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
@@ -79,7 +76,7 @@ public class UITemplateModelForController implements Serializable {
 	try {
 	    setWizardDocument(getXmlController().readAllDeafultXmlFiles(getXMLpathList()));
 	} catch (SAXException | JAXBException ex) {
-	    Logger.getLogger(ManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(UITemplateModelForController.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
 	for (WizardForm wForm : getWizardDocument().getFormList()) {
