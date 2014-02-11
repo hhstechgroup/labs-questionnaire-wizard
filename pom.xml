@@ -11,7 +11,7 @@
 		<module>wizard-ear</module>
 		<module>wizard-web</module>
 		<module>wizard-ejb</module>
-        <module>wizard-jbehave-test</module>
+<!--         <module>wizard-jbehave-test</module> -->
     </modules>
 	<dependencies>
 		<!-- <dependency> -->
