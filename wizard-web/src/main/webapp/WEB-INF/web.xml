@@ -59,7 +59,7 @@
     </context-param>
 
     <welcome-file-list>
-        <welcome-file>faces/pages/index.xhtml</welcome-file>
+        <welcome-file>faces/pages/wizard-welcome.xhtml</welcome-file>
     </welcome-file-list>
 
     <mime-mapping>
