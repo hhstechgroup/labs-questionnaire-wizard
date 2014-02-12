@@ -3,16 +3,16 @@ package com.engagepoint.labs.wizard.ui;
 import com.engagepoint.component.UIDatePicker;
 import com.engagepoint.component.UIEditor;
 import com.engagepoint.component.UIInput;
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.questions.*;
 import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.component.slider.Slider;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -23,53 +23,99 @@ import java.util.List;
  * Created by igor.guzenko on 2/11/14.
  */
 public class UIComponentGenerator {
-    private Panel questionPanel;
+    private Panel mainPanel;
 
-    public Panel getComponent(WizardQuestion wizardQuestion) {
-        List<String> optionsList;
-        questionPanel = new Panel();
-        questionPanel.setMenuTitle(wizardQuestion.getTitle());
-        questionPanel.setCollapsed(false);
+    public UIComponentGenerator() {
+        mainPanel = new Panel();
+    }
 
-        switch (wizardQuestion.getQuestionType()) {
+    public Panel getMainPanel(List<WizardQuestion> wizardQuestionList) {
+        mainPanel.getChildren().clear();
+        for (WizardQuestion question : wizardQuestionList) {
+            analyzeQuestion(question);
+        }
+        return mainPanel;
+    }
+
+    private void analyzeQuestion(WizardQuestion question) {
+        addComponentToMainPanel(getLabel(question));
+        UIComponent component = null;
+
+        switch (question.getQuestionType()) {
             case TEXT:
-                questionPanel.getChildren().add(new UIInput());
+                component = getUIInput();
                 break;
             case PARAGRAPHTEXT:
-                questionPanel.getChildren().add(new UIEditor());
-                break;
-            case CHECKBOX:
-                SelectManyCheckbox checkbox = new SelectManyCheckbox();
-                optionsList = ((CheckBoxesQuestion) wizardQuestion).getOptionsList();
-                checkbox.getChildren().add(getSelectItems(optionsList));
-                questionPanel.getChildren().add(checkbox);
-                break;
-            case CHOOSEFROMLIST:
-                optionsList = ((DropDownQuestion) wizardQuestion).getOptionsList();
-                SelectOneMenu selectOneMenu = new SelectOneMenu();
-                selectOneMenu.getChildren().add(getSelectItems(optionsList));
-                questionPanel.getChildren().add(selectOneMenu);
+                component = getUIEditor();
                 break;
             case MULTIPLECHOICE:
-                optionsList = ((MultipleChoiseQuestion) wizardQuestion).getOptionsList();
-                SelectOneListbox selectOneListbox = new SelectOneListbox();
-                selectOneListbox.getChildren().add(getSelectItems(optionsList));
-                questionPanel.getChildren().add(selectOneListbox);
+                component = getSelectOneListbox(question);
+                break;
+            case CHECKBOX:
+                component = getSelectManyCheckbox(question);
+                break;
+            case CHOOSEFROMLIST:
+                component = getSelectOneMenu(question);
                 break;
             case DATE:
-                questionPanel.getChildren().add(new UIDatePicker());
+                component = getUIDatePicker();
                 break;
             case TIME:
-                Calendar timeCalendar = new Calendar();
-                timeCalendar.setPattern("HH:mm");
-                timeCalendar.setTimeOnly(true);
-                questionPanel.getChildren().add(timeCalendar);
+                component = getCalendar();
                 break;
-            // todo add: fileupload, grid, range types
-
+            case RANGE:
+                component = getSlider(question);
+                break;
+            //todo
 
         }
-        return questionPanel;
+        addComponentToMainPanel(component);
+
+    }
+
+    private Slider getSlider(WizardQuestion question) {
+        RangeQuestion rangeQuestion = (RangeQuestion)question;
+        Slider slider = new Slider();
+        slider.setMinValue(rangeQuestion.getStartRange());
+        slider.setMaxValue(rangeQuestion.getEndRange());
+        return slider;
+    }
+
+
+    private SelectOneListbox getSelectOneListbox(WizardQuestion question) {
+        List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
+        SelectOneListbox selectOneListbox = new SelectOneListbox();
+        selectOneListbox.getChildren().add(getSelectItems(optionsList));
+        return selectOneListbox;
+    }
+
+
+    private void addComponentToMainPanel(UIComponent component) {
+        mainPanel.getChildren().add(component);
+    }
+
+    private UIInput getUIInput() {
+        return new UIInput();
+    }
+
+    private OutputLabel getLabel(WizardQuestion question) {
+        OutputLabel label = new OutputLabel();
+        label.setValue(question.getTitle());
+        return label;
+    }
+
+    private SelectOneMenu getSelectOneMenu(WizardQuestion question) {
+        List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
+        SelectOneMenu selectOneMenu = new SelectOneMenu();
+        selectOneMenu.getChildren().add(getSelectItems(optionsList));
+        return selectOneMenu;
+    }
+
+    private SelectManyCheckbox getSelectManyCheckbox(WizardQuestion question) {
+        SelectManyCheckbox checkbox = new SelectManyCheckbox();
+        List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
+        checkbox.getChildren().add(getSelectItems(optionsList));
+        return checkbox;
 
     }
 
@@ -85,4 +131,18 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
+    private UIEditor getUIEditor() {
+        return new UIEditor();
+    }
+
+    private UIDatePicker getUIDatePicker() {
+       return new UIDatePicker();
+    }
+
+    private Calendar getCalendar() {
+        Calendar timeCalendar = new Calendar();
+        timeCalendar.setPattern("HH:mm");
+        timeCalendar.setTimeOnly(true);
+        return timeCalendar;
+    }
 }
