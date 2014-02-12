@@ -22,11 +22,16 @@ import org.xml.sax.SAXException;
 
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.ui.UIBasicQuestion;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
 @Named("navigationData")
 @SessionScoped
+/**
+ * 
+ * @author vyacheslav.mysak
+ * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
+ *
+ */
 public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
@@ -36,24 +41,6 @@ public class NavigationData implements Serializable {
 
     @Inject
     private WizardForm wizardForm;
-    // NavData
-    private String selectedFormTemplate;
-    private String currentFormName;
-    private String currentPageID;
-    private String currentTopicID;
-
-    private String currentPageTitle;
-    private String currentTopicTitle;
-
-    // UI elements
-    private MenuModel breadcrumb_model;
-
-    // Binding on form in maincontent.xhtml
-    private HtmlForm mainContentForm;
-
-    private ArrayList<String> currentTopicIDs;
-    private ArrayList<String> currentTopicTitles;
-    private HtmlOutputText currentOutputText;
 
     // Wizard XML items
     private WizardDocument wizardDocument;
@@ -63,8 +50,31 @@ public class NavigationData implements Serializable {
     private List<String> XMLpathList;
     private Map<String, String> MapOfWizardForms;
 
-    // Initial construction, only for bootstrapwelcome.xhtml
+    // NavData
+    private String selectedFormTemplate;
 
+    private ArrayList<String> currentTopicIDs;
+    private ArrayList<String> currentTopicTitles;
+
+    private String currentFormName;
+    private String currentPageID;
+    private String currentTopicID;
+
+    private String currentPageTitle;
+    private String currentTopicTitle;
+
+    // UI elements
+    private MenuModel breadcrumb_model;
+    // Binding on form in maincontent.xhtml
+    private HtmlForm mainContentForm;
+    private HtmlOutputText currentOutputText;
+
+    /**
+     * Method parses our XML's. Created because out first page must know the
+     * list of available templates. Then when you click on start button, method
+     * 
+     * @see startWizard() must be called.
+     */
     @PostConstruct
     public void startSelectXMLScreen() {
 
@@ -90,6 +100,13 @@ public class NavigationData implements Serializable {
 	}
     }
 
+    /**
+     * Method uses parsed XML for creating actual wizardForm for user. Sets
+     * currentPage and currentTopic to '1' - first in the list. Method creates
+     * new empty breadCrumbModel for our breadcrumb and empty list of our
+     * current topicID's for menu, because menu uses forEach that iterates over
+     * this topicID's
+     */
     public void startWizard() {
 	mainContentForm = new HtmlForm();
 
@@ -107,6 +124,7 @@ public class NavigationData implements Serializable {
     }
 
     public String getTopicTitleFromID(String topicID) {
+	
 	String title;
 
 	title = wizardForm.getWizardTopicById(topicID).getGroupTitle();
@@ -119,6 +137,7 @@ public class NavigationData implements Serializable {
     }
 
     public void setCurrentPageID(String currentPageID) {
+	
 	this.currentPageID = currentPageID;
 	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
@@ -128,14 +147,34 @@ public class NavigationData implements Serializable {
     }
 
     public void setCurrentTopicID(String currentTopicID) {
+	
 	this.currentTopicID = currentTopicID;
 	this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
 
+    /**
+     * Get flag, that determines need of refreshing current page in
+     * NavigationPhaseListener. Made because of new content must be shown on UI
+     * properly and old UI content must be deleted, for example, after choosing
+     * new page or topic
+     * 
+     * @return flag
+     * @author vyacheslav.mysak
+     */
     public boolean isNeedRefresh() {
 	return needRefresh;
     }
 
+    /**
+     * Set flag, that determines need of refreshing current page in
+     * NavigationPhaseListener. Made because of new content must be shown on UI
+     * properly and old UI content must be deleted, for example, after choosing
+     * new page or topic
+     * 
+     * @param needRefresh
+     *            flag
+     * @author vyacheslav.mysak
+     */
     public void setNeedRefresh(boolean needRefresh) {
 	this.needRefresh = needRefresh;
     }
@@ -232,10 +271,30 @@ public class NavigationData implements Serializable {
 	return MapOfWizardForms;
     }
 
+    /**
+     * Get flag, that determines our position in our application. Necessary for
+     * correct XML processing - first we are parsing XML, and show templates on
+     * our start page. Then this flag sets to false - in next steps we don't
+     * need to parse XML. If a new XML appears, this flag must be set again to
+     * true
+     * 
+     * @return flag
+     * @author vyacheslav.mysak
+     */
     public boolean isOnSelectXMLPage() {
 	return onSelectXMLPage;
     }
 
+    /**
+     * Set flag, that determines our position in our application. Necessary for
+     * correct XML processing - first we are parsing XML, and show templates on
+     * our start page. Then this flag sets to false - in next steps we don't
+     * need to parse XML. If a new XML appears, this flag must be set again to
+     * true
+     * 
+     * @return flag
+     * @author vyacheslav.mysak
+     */
     public void setOnSelectXMLPage(boolean onSelectXMLPage) {
 	this.onSelectXMLPage = onSelectXMLPage;
     }

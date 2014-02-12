@@ -33,6 +33,7 @@ public class UINavigationBean implements Serializable {
     private ExpressionFactory expFact;
 
     public void clearCurrentTopicsData() {
+	
 	navigationData.setCurrentTopicIDs(new ArrayList<String>());
 	navigationData.setCurrentTopicTitles(new ArrayList<String>());
     }
@@ -62,12 +63,20 @@ public class UINavigationBean implements Serializable {
 	return "bootstrapindex";
     }
 
+    /**
+     * A BIG method (magic here! :D). Method is used for pushing elements
+     * (menuitems) to breadcrumb. Each element (menuitem) must have
+     * action="#{someBean.someMethod(something)}" attribute. In our case
+     * 'something' is ID of each page. Please see docs of FacesContext and
+     * ELContext
+     */
     private void initBreadcrumb() {
 
 	facesCtx = FacesContext.getCurrentInstance();
 	elCtx = facesCtx.getELContext();
 	expFact = facesCtx.getApplication().getExpressionFactory();
 
+	//Iterating over all pages from model
 	for (int i = 0; i < getPageCount(); i++) {
 
 	    MenuItem item = new MenuItem();
@@ -88,6 +97,11 @@ public class UINavigationBean implements Serializable {
 
     }
 
+    /**
+     * This method is used to insert values to our left menu. Values are
+     * extracted from currentTopicIDs list. If we know topic's ID, we can select
+     * topic's title
+     */
     private void initMenu() {
 
 	navigationData.getCurrentTopicIDs().clear();
@@ -99,8 +113,7 @@ public class UINavigationBean implements Serializable {
 
 	    navigationData.getCurrentTopicIDs().add(topicID);
 
-	    String topic_title = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
-		    .getTopicList().get(i).getGroupTitle();
+	    String topic_title = navigationData.getWizardForm().getWizardTopicById(topicID).getGroupTitle();
 
 	    navigationData.getCurrentTopicTitles().add(topic_title);
 	}
@@ -108,6 +121,9 @@ public class UINavigationBean implements Serializable {
 	createQuestions();
     }
 
+    /**
+     * Method that can insert many different questions to UI form. Stub here.
+     */
     private void createQuestions() {
 
 	navigationData.getMainContentForm().getChildren().clear();
@@ -122,21 +138,20 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getPageCount() {
+	
 	return navigationData.getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
-	System.out.println("Get topic counr for PID: " + pageID);
-	System.out.println("Topics: " + navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size());
+	
 	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
-    // This method called by action="" attribute from page. Page numbers must be
-    // in range from 1 to n
+
     public void changeCurrentPage(String currentPage) {
-	System.out.println("P: Curr page set to: " + currentPage);
-	System.out.println("P: Curr group set to: " + navigationData.getCurrentTopicID());
+	
 	clearCurrentTopicsData();
+	
 	navigationData.setCurrentPageID(currentPage);
 
 	navigationData.setCurrentTopicID(navigationData.getWizardForm()
@@ -147,19 +162,19 @@ public class UINavigationBean implements Serializable {
 
     // The same
     public void changeCurrentTopic(String currentTopicID) {
-	String currentPageID = navigationData.getCurrentPageID();
-	System.out.println("T: Curr page set to: " + currentPageID);
-	System.out.println("T: Curr group set to: " + currentTopicID);
-
+	
 	navigationData.setCurrentTopicID(currentTopicID);
+	
 	createQuestions();
     }
 
     public NavigationData getNavigationData() {
+	
 	return navigationData;
     }
 
     public void setNavigationData(NavigationData navigationData) {
+	
 	this.navigationData = navigationData;
     }
 
