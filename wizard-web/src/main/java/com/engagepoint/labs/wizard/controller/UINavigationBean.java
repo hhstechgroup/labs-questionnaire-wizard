@@ -34,8 +34,8 @@ public class UINavigationBean implements Serializable {
 
     public void clearCurrentTopicsData() {
 	
-	navigationData.setCurrentTopicIDs(new ArrayList<String>());
-	navigationData.setCurrentTopicTitles(new ArrayList<String>());
+	navigationData.getCurrentTopicIDs().clear();
+	navigationData.getCurrentTopicTitles().clear();
     }
 
     @PostConstruct
@@ -60,7 +60,7 @@ public class UINavigationBean implements Serializable {
 	// to bootstrapindex page and see our wizard
 	navigationData.setNeedRefresh(false);
 
-	return "bootstrapindex";
+	return "wizard-index";
     }
 
     /**
