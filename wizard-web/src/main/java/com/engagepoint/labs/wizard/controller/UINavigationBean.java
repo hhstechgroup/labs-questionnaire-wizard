@@ -60,7 +60,7 @@ public class UINavigationBean implements Serializable {
 	// to bootstrapindex page and see our wizard
 	navigationData.setNeedRefresh(false);
 
-	return "bootstrapindex";
+	return "wizard-index";
     }
 
     /**
