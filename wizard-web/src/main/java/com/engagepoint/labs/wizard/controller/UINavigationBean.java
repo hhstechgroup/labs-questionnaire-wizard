@@ -1,7 +1,8 @@
 package com.engagepoint.labs.wizard.controller;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.model.NavigationData;
+import org.primefaces.component.menuitem.MenuItem;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -12,11 +13,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.component.menuitem.MenuItem;
-
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.model.NavigationData;
+import java.io.Serializable;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -176,6 +173,20 @@ public class UINavigationBean implements Serializable {
     public void setNavigationData(NavigationData navigationData) {
 	
 	this.navigationData = navigationData;
+    }
+
+    public void nextButtonClick(){
+        System.out.println("Inside method");
+     if(navigationData.setCurrentTopicToNext()){
+         changeCurrentTopic(navigationData.getCurrentTopicID());
+     }else if(navigationData.setCurrentPageToNext()){
+         changeCurrentPage(navigationData.getCurrentPageID());
+     } else{
+         // if currentTopic is last and currentPage is last we navigate to confirmation page
+         // for more details @see setCurrentPageToNext() method in NavigationData class
+
+     }
+
     }
 
 }

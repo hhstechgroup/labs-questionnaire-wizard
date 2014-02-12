@@ -1,12 +1,12 @@
 package com.engagepoint.labs.wizard.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -15,14 +15,13 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
-
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
-import org.xml.sax.SAXException;
-
-import com.engagepoint.labs.wizard.bean.WizardDocument;
-import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Named("navigationData")
 @SessionScoped
@@ -122,6 +121,42 @@ public class NavigationData implements Serializable {
 
 	setBreadcrumb_model(new DefaultMenuModel());
     }
+
+    public boolean setCurrentTopicToNext(){
+        for(int index=0;index<currentTopicIDs.size();index++){
+            if(currentTopicID.equals(currentTopicIDs.get(index))){
+                if(index ==currentTopicIDs.size()-1){
+                    return false;
+                }
+                else {
+                    currentTopicID =currentTopicIDs.get(index+1);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentPageToNext(){
+        // get pageList from model
+        List<WizardPage> pageList = wizardForm.getWizardPageList();
+        // start searching current page
+        for(int index=0;index<pageList.size();index++){
+            if(currentPageID.equals(pageList.get(index))){
+                if(index == pageList.size()-1){
+                    return false;// if finded page is last
+                }
+                else {
+                    currentPageID =pageList.get(index+1).getId();// change pageId to next id
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
 
     public String getTopicTitleFromID(String topicID) {
 	
