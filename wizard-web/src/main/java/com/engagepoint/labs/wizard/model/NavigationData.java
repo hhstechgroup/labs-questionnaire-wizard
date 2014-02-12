@@ -141,8 +141,8 @@ public class NavigationData implements Serializable {
         // get pageList from model
         List<WizardPage> pageList = wizardForm.getWizardPageList();
         // start searching current page
-        for(int index=0;index<pageList.size();index++){
-            if(currentPageID.equals(pageList.get(index))){
+        for(int index=0; index<pageList.size(); index++){
+            if(currentPageID.equals(pageList.get(index).getId())){
                 if(index == pageList.size()-1){
                     return false;// if finded page is last
                 }

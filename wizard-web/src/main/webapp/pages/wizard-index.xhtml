@@ -12,10 +12,9 @@
     </ui:define>
     <ui:define name="mainContent">
         <ui:include src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml"/>
-
-            <!--<h:commandButton value="NEXT" type="button" id="buttonid" action="wizard-welcome" style="text-align: center; position: relative; float:right; " />-->
         <h:form>
-        <h:commandButton value="START_BUTT" action="#{uiNavigationBean.nextButtonClick}" />
+            <p:commandButton value="NEXT"  id="buttonid" action="#{uiNavigationBean.nextButtonClick()}" style="text-align:center;position:relative;float:right;" />
         </h:form>
+
     </ui:define>
 </ui:composition>
