@@ -5,7 +5,7 @@
     <parent>
         <artifactId>wizard</artifactId>
         <groupId>com.engagepoint.labs</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1.0-DEMO</version>
     </parent>
 
     <artifactId>wizard-ejb</artifactId>
@@ -16,6 +16,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javax.xml.bind.version>2.2.6</javax.xml.bind.version>
     </properties>
 
     <dependencies>
@@ -28,7 +29,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.2.6</version>
+            <version>${javax.xml.bind.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.xml</groupId>

@@ -49,6 +49,7 @@ target/
 # Maven
 log/
 target/
+*.versionsBackup
 
 # Intellij
 .idea/
