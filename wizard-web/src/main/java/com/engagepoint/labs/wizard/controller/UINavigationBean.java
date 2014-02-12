@@ -34,8 +34,8 @@ public class UINavigationBean implements Serializable {
 
     public void clearCurrentTopicsData() {
 	
-	navigationData.setCurrentTopicIDs(new ArrayList<String>());
-	navigationData.setCurrentTopicTitles(new ArrayList<String>());
+	navigationData.getCurrentTopicIDs().clear();
+	navigationData.getCurrentTopicTitles().clear();
     }
 
     @PostConstruct
