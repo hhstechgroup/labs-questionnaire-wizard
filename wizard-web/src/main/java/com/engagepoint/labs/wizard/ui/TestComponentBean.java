@@ -21,7 +21,7 @@ import java.util.List;
 public class TestComponentBean implements Serializable {
     private Panel mainPanel;
     private WizardQuestion question;
-    CheckBoxesQuestion cquestion;
+    private CheckBoxesQuestion cquestion;
     private UIComponent component;
     private UIComponentGenerator uiComponentGenerator;
 
