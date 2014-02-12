@@ -1,16 +1,18 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
-	<ui:define name="breadcrumb">
-		<ui:include src="../WEB-INF/bootstrap-templates/bootstrap-breadcrumbform.xhtml" />
-		<br />
-	</ui:define>
-	<ui:define name="leftMenu">
-		<ui:include src="../WEB-INF/bootstrap-templates/bootstrap-leftMenu.xhtml" />
-	</ui:define>
-	<ui:define name="mainContent">
-		<ui:include src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml" />
-	</ui:define>
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
+    <ui:define name="breadcrumb">
+        <ui:include src="../WEB-INF/bootstrap-templates/bootstrap-breadcrumbform.xhtml"/>
+        <br/>
+    </ui:define>
+    <ui:define name="leftMenu">
+        <ui:include src="../WEB-INF/bootstrap-templates/bootstrap-leftMenu.xhtml"/>
+    </ui:define>
+    <ui:define name="mainContent">
+        <ui:include src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml"/>
+
+            <p:commandButton value="NEXT" type="button" id="buttonid" style="text-align: center; position: relative; float:right; " />
+
+    </ui:define>
 </ui:composition>
