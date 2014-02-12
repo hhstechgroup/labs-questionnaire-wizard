@@ -2,7 +2,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="bootstrap-template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
 	<ui:define name="breadcrumb">
 		<!--<ui:include src="breadcrumbform.xhtml"/>-->
 
@@ -17,18 +18,19 @@
 				<h:outputLabel value="Choose XML File : " />
 				<h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
 					value="#{uiNavigationBean.navigationData.selectedFormTemplate}">
-					<f:selectItems value="#{uiNavigationBean.navigationData.xmlsValues}" />
+					<f:selectItems
+						value="#{uiNavigationBean.navigationData.xmlsValues}" />
 				</h:selectOneListbox>
 			</h:panelGrid>
 
 			<h:commandButton value=" START " action="#{uiNavigationBean.start()}" />
-<!-- 			<br /> -->
-<!-- 			<p:outputLabel value="Form Name:   " /> -->
-<!-- 			<p:outputLabel value="#{wizardForm.formName}" /> -->
-<!-- 			<br /> -->
-<!-- 			<p:outputLabel value="Form ID:   " /> -->
-<!-- 			<p:outputLabel value="#{wizardForm.id}" /> -->
-<!-- 			<br /> -->
+			<!-- 			<br /> -->
+			<!-- 			<p:outputLabel value="Form Name:   " /> -->
+			<!-- 			<p:outputLabel value="#{wizardForm.formName}" /> -->
+			<!-- 			<br /> -->
+			<!-- 			<p:outputLabel value="Form ID:   " /> -->
+			<!-- 			<p:outputLabel value="#{wizardForm.id}" /> -->
+			<!-- 			<br /> -->
 		</h:form>
 	</ui:define>
 </ui:composition>
