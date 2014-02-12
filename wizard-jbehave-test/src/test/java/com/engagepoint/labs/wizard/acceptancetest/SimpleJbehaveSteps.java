@@ -27,13 +27,18 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
     @When("the user choose template with name '$name'")
     public void chooseTemplate(String name) {
-        selectListBoxValue(name, "j_idt6-default_xml");
-        clickBySelector("j_idt6-submit");
+        selectListBoxValue(name, "j_idt21-default_xml");
+//        clickBySelector("j_idt6-submit");
+        clickBySelector("j_idt21-j_idt25");
     }
 
     @Then("element id '$id' has text '$textContent'")
     public void checkElementInnerText(String id, String textContent) {
         assertThat(getTextAndSuppressNextLineChar(uIBootstrapBasePage.element(findVisibleElementAndGetSelector(id))), is(equalTo(textContent)));
+    }
+
+    public void clickAllPagesAndTopics(){
+
     }
 
 
