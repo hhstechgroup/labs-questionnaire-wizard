@@ -8,7 +8,7 @@
             <page page-number="1" page-id="dcvxd">
                 <groups-of-questions>
                     <group group-id="bcugyrfn">
-                        <group-name>test group name</group-name>
+                        <group-name>Test group 1</group-name>
                         <questions>
                             <question answer-required="true" question-id="1">
                                 <question-title>Error Q</question-title>
@@ -30,7 +30,7 @@
                                     </rows>
                                 </grid>
                             </question>
-                            <question>
+                            <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHECKBOX</question-type>
                                 <help-text>help</help-text>
@@ -40,6 +40,110 @@
                                 <options>
                                     <option>Option 1</option>
                                     <option>Option 2</option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="hboidbfo">
+                        <group-name>Test group 2</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="kdkdk">
+                                <question-title>QT</question-title>
+                                <question-type>MULTIPLECHOICE</question-type>
+                                <help-text>Help text</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="hdhdhplplpl">
+                        <group-name>Test group 3</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="iuquququ">
+                                <question-title>QT</question-title>
+                                <question-type>MULTIPLECHOICE</question-type>
+                                <help-text>Help</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+            <page page-number="2" page-id="allalalsqioioi">
+                <groups-of-questions>
+                    <group group-id="pqpqpqowowowo">
+                        <group-name>Super Puper Topic 1</group-name>
+                        <questions>
+                            <question answer-required="true" question-id="oqoqoklalalksks">
+                                <question-title>QT</question-title>
+                                <question-type>DATE</question-type>
+                                <help-text>TODO</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="pqplakdhfg">
+                        <group-name>Super Puper Topic 2</group-name>
+                        <questions>
+                            <question>
+                                <question-title>QT</question-title>
+                                <question-type>MULTIPLECHOICE</question-type>
+                                <help-text>HELLP</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
+                                <options>
+                                    <option></option>
                                 </options>
                                 <range/>
                                 <grid>
