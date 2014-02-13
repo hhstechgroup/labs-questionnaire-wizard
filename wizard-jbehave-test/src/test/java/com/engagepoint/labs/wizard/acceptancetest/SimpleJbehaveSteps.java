@@ -23,9 +23,8 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
     @When("the user choose template with name '$name'")
     public void chooseTemplate(String name) {
-        selectListBoxValue(name, "j_idt21-default_xml");
-//        clickBySelector("j_idt6-submit");
-        clickBySelector("j_idt21-j_idt25");
+        selectListBoxValue(name, "formid-default_xml");
+        clickBySelector("formid-butt");
     }
 
 
@@ -42,6 +41,11 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
     @When("user click on logo")
     public void clickOnLogo() {
         clickBySelector("logo");
+    }
+
+    @When("user click 'Next' button")
+    public void clickNextButton() {
+        clickOnButtonText("NEXT");
     }
 
     @Then("element id '$id' has text '$textContent'")
