@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 @Named("navigationData")
 @SessionScoped
 /**
- * 
+ *
  * @author vyacheslav.mysak
  * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
  *
@@ -71,32 +71,32 @@ public class NavigationData implements Serializable {
     /**
      * Method parses our XML's. Created because out first page must know the
      * list of available templates. Then when you click on start button, method
-     * 
+     *
      * @see startWizard() must be called.
      */
     @PostConstruct
     public void startSelectXMLScreen() {
 
-	onSelectXMLPage = true;
+        onSelectXMLPage = true;
 
-	MapOfWizardForms = new LinkedHashMap<String, String>();
+        MapOfWizardForms = new LinkedHashMap<String, String>();
 
-	XMLpathList = new ArrayList<String>();
+        XMLpathList = new ArrayList<String>();
 
-	XMLpathList.add("/XMLforWizard.xml");
-	XMLpathList.add("/XMLforWizard2.xml");
+        XMLpathList.add("/XMLforWizard.xml");
+        XMLpathList.add("/XMLforWizard2.xml");
 
-	xmlController = new XmlController();
+        xmlController = new XmlController();
 
-	try {
-	    wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
-	} catch (SAXException | JAXBException ex) {
-	    Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
-	}
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
+        } catch (SAXException | JAXBException ex) {
+            Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-	for (WizardForm wForm : wizardDocument.getFormList()) {
-	    MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
-	}
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
+        }
     }
 
     /**
@@ -107,29 +107,23 @@ public class NavigationData implements Serializable {
      * this topicID's
      */
     public void startWizard() {
-	mainContentForm = new HtmlForm();
-
-	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
-
-	needRefresh = false;
-
-	setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());
-	setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
-
-	setCurrentTopicIDs(new ArrayList<String>());
-	setCurrentTopicTitles(new ArrayList<String>());
-
-	setBreadcrumb_model(new DefaultMenuModel());
+        mainContentForm = new HtmlForm();
+        wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
+        needRefresh = false;
+        setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());
+        setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
+        setCurrentTopicIDs(new ArrayList<String>());
+        setCurrentTopicTitles(new ArrayList<String>());
+        setBreadcrumb_model(new DefaultMenuModel());
     }
 
-    public boolean setCurrentTopicToNext(){
-        for(int index=0;index<currentTopicIDs.size();index++){
-            if(currentTopicID.equals(currentTopicIDs.get(index))){
-                if(index ==currentTopicIDs.size()-1){
+    public boolean setCurrentTopicToNext() {
+        for (int index = 0; index < currentTopicIDs.size(); index++) {
+            if (currentTopicID.equals(currentTopicIDs.get(index))) {
+                if (index == currentTopicIDs.size() - 1) {
                     return false;
-                }
-                else {
-                    currentTopicID =currentTopicIDs.get(index+1);
+                } else {
+                    currentTopicID = currentTopicIDs.get(index + 1);
                     return true;
                 }
             }
@@ -137,17 +131,16 @@ public class NavigationData implements Serializable {
         return false;
     }
 
-    public boolean setCurrentPageToNext(){
+    public boolean setCurrentPageToNext() {
         // get pageList from model
         List<WizardPage> pageList = wizardForm.getWizardPageList();
         // start searching current page
-        for(int index=0; index<pageList.size(); index++){
-            if(currentPageID.equals(pageList.get(index).getId())){
-                if(index == pageList.size()-1){
+        for (int index = 0; index < pageList.size(); index++) {
+            if (currentPageID.equals(pageList.get(index).getId())) {
+                if (index == pageList.size() - 1) {
                     return false;// if finded page is last
-                }
-                else {
-                    currentPageID =pageList.get(index+1).getId();// change pageId to next id
+                } else {
+                    currentPageID = pageList.get(index + 1).getId();// change pageId to next id
                     return true;
                 }
             }
@@ -156,35 +149,33 @@ public class NavigationData implements Serializable {
     }
 
 
-
-
     public String getTopicTitleFromID(String topicID) {
-	
-	String title;
 
-	title = wizardForm.getWizardTopicById(topicID).getGroupTitle();
+        String title;
 
-	return title;
+        title = wizardForm.getWizardTopicById(topicID).getGroupTitle();
+
+        return title;
     }
 
     public String getCurrentPageID() {
-	return currentPageID;
+        return currentPageID;
     }
 
     public void setCurrentPageID(String currentPageID) {
-	
-	this.currentPageID = currentPageID;
-	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
+
+        this.currentPageID = currentPageID;
+        this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
 
     public String getCurrentTopicID() {
-	return currentTopicID;
+        return currentTopicID;
     }
 
     public void setCurrentTopicID(String currentTopicID) {
-	
-	this.currentTopicID = currentTopicID;
-	this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
+
+        this.currentTopicID = currentTopicID;
+        this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
 
     /**
@@ -192,12 +183,12 @@ public class NavigationData implements Serializable {
      * NavigationPhaseListener. Made because of new content must be shown on UI
      * properly and old UI content must be deleted, for example, after choosing
      * new page or topic
-     * 
+     *
      * @return flag
      * @author vyacheslav.mysak
      */
     public boolean isNeedRefresh() {
-	return needRefresh;
+        return needRefresh;
     }
 
     /**
@@ -205,105 +196,104 @@ public class NavigationData implements Serializable {
      * NavigationPhaseListener. Made because of new content must be shown on UI
      * properly and old UI content must be deleted, for example, after choosing
      * new page or topic
-     * 
-     * @param needRefresh
-     *            flag
+     *
+     * @param needRefresh flag
      * @author vyacheslav.mysak
      */
     public void setNeedRefresh(boolean needRefresh) {
-	this.needRefresh = needRefresh;
+        this.needRefresh = needRefresh;
     }
 
     public ArrayList<String> getCurrentTopicIDs() {
-	return currentTopicIDs;
+        return currentTopicIDs;
     }
 
     public void setCurrentTopicIDs(ArrayList<String> currentTopicIDs) {
-	this.currentTopicIDs = currentTopicIDs;
+        this.currentTopicIDs = currentTopicIDs;
     }
 
     public ArrayList<String> getCurrentTopicTitles() {
-	return currentTopicTitles;
+        return currentTopicTitles;
     }
 
     public void setCurrentTopicTitles(ArrayList<String> currentTopicTitles) {
-	this.currentTopicTitles = currentTopicTitles;
+        this.currentTopicTitles = currentTopicTitles;
     }
 
     public String getCurrentFormName() {
-	return currentFormName;
+        return currentFormName;
     }
 
     public void setCurrentFormName(String currentFormName) {
-	this.currentFormName = currentFormName;
+        this.currentFormName = currentFormName;
     }
 
     public String getSelectedFormTemplate() {
-	return selectedFormTemplate;
+        return selectedFormTemplate;
     }
 
     public void setSelectedFormTemplate(String selectedFormTemplate) {
-	this.selectedFormTemplate = selectedFormTemplate;
+        this.selectedFormTemplate = selectedFormTemplate;
     }
 
     public WizardDocument getWizardDocument() {
-	return wizardDocument;
+        return wizardDocument;
     }
 
     public void setWizardDocument(WizardDocument wizardDocument) {
-	this.wizardDocument = wizardDocument;
+        this.wizardDocument = wizardDocument;
     }
 
     public List<String> getXMLpathList() {
-	return XMLpathList;
+        return XMLpathList;
     }
 
     public void setXMLpathList(List<String> xMLpathList) {
-	XMLpathList = xMLpathList;
+        XMLpathList = xMLpathList;
     }
 
     public Map<String, String> getMapOfWizardForms() {
-	return MapOfWizardForms;
+        return MapOfWizardForms;
     }
 
     public void setMapOfWizardForms(Map<String, String> mapOfWizardForms) {
-	MapOfWizardForms = mapOfWizardForms;
+        MapOfWizardForms = mapOfWizardForms;
     }
 
     public XmlController getXmlController() {
-	return xmlController;
+        return xmlController;
     }
 
     public void setXmlController(XmlController xmlController) {
-	this.xmlController = xmlController;
+        this.xmlController = xmlController;
     }
 
     public MenuModel getBreadcrumb_model() {
-	return breadcrumb_model;
+        return breadcrumb_model;
     }
 
     public void setBreadcrumb_model(MenuModel breadcrumb_model) {
-	this.breadcrumb_model = breadcrumb_model;
+        this.breadcrumb_model = breadcrumb_model;
     }
 
     public HtmlForm getMainContentForm() {
-	return mainContentForm;
+        return mainContentForm;
     }
 
     public void setMainContentForm(HtmlForm content) {
-	this.mainContentForm = content;
+        this.mainContentForm = content;
     }
 
     public WizardForm getWizardForm() {
-	return wizardForm;
+        return wizardForm;
     }
 
     public void setWizardForm(WizardForm wizardForm) {
-	this.wizardForm = wizardForm;
+        this.wizardForm = wizardForm;
     }
 
     public Map<String, String> getXmlsValues() {
-	return MapOfWizardForms;
+        return MapOfWizardForms;
     }
 
     /**
@@ -312,12 +302,12 @@ public class NavigationData implements Serializable {
      * our start page. Then this flag sets to false - in next steps we don't
      * need to parse XML. If a new XML appears, this flag must be set again to
      * true
-     * 
+     *
      * @return flag
      * @author vyacheslav.mysak
      */
     public boolean isOnSelectXMLPage() {
-	return onSelectXMLPage;
+        return onSelectXMLPage;
     }
 
     /**
@@ -326,35 +316,35 @@ public class NavigationData implements Serializable {
      * our start page. Then this flag sets to false - in next steps we don't
      * need to parse XML. If a new XML appears, this flag must be set again to
      * true
-     * 
+     *
      * @return flag
      * @author vyacheslav.mysak
      */
     public void setOnSelectXMLPage(boolean onSelectXMLPage) {
-	this.onSelectXMLPage = onSelectXMLPage;
+        this.onSelectXMLPage = onSelectXMLPage;
     }
 
     public HtmlOutputText getCurrentOutputText() {
-	return currentOutputText;
+        return currentOutputText;
     }
 
     public void setCurrentOutputText(HtmlOutputText currentOutputText) {
-	this.currentOutputText = currentOutputText;
+        this.currentOutputText = currentOutputText;
     }
 
     public String getCurrentPageTitle() {
-	return currentPageTitle;
+        return currentPageTitle;
     }
 
     public void setCurrentPageTitle(String currentPageTitle) {
-	this.currentPageTitle = currentPageTitle;
+        this.currentPageTitle = currentPageTitle;
     }
 
     public String getCurrentTopicTitle() {
-	return currentTopicTitle;
+        return currentTopicTitle;
     }
 
     public void setCurrentTopicTitle(String currentTopicTitle) {
-	this.currentTopicTitle = currentTopicTitle;
+        this.currentTopicTitle = currentTopicTitle;
     }
 }
