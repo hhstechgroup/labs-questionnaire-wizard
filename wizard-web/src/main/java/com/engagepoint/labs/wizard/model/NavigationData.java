@@ -63,7 +63,7 @@ public class NavigationData implements Serializable {
     private String currentTopicTitle;
 
     // UI elements
-    private MenuModel breadcrumb_model;
+    private MenuModel breadcrumbModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private HtmlOutputText currentOutputText;
@@ -110,11 +110,11 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
         needRefresh = false;
-        setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());
-        setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
+        setCurrentPageIDAndTitle(wizardForm.getWizardPageList().get(0).getId());
+        setCurrentTopicIDAndTitle(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
         setCurrentTopicIDs(new ArrayList<String>());
         setCurrentTopicTitles(new ArrayList<String>());
-        setBreadcrumb_model(new DefaultMenuModel());
+        setBreadcrumbModel(new DefaultMenuModel());
     }
 
     public boolean setCurrentTopicToNext() {
@@ -162,7 +162,11 @@ public class NavigationData implements Serializable {
         return currentPageID;
     }
 
-    public void setCurrentPageID(String currentPageID) {
+    /**
+     * Sets current page's ID and title to a new values - topic's title will be showed on the page
+     * @param currentPageID
+     */
+    public void setCurrentPageIDAndTitle(String currentPageID) {
 
         this.currentPageID = currentPageID;
         this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
@@ -172,7 +176,11 @@ public class NavigationData implements Serializable {
         return currentTopicID;
     }
 
-    public void setCurrentTopicID(String currentTopicID) {
+    /**
+     * Sets current topic's ID and title to a new values - topic's title will be showed on the page
+     * @param currentTopicID
+     */
+    public void setCurrentTopicIDAndTitle(String currentTopicID) {
 
         this.currentTopicID = currentTopicID;
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
@@ -268,12 +276,12 @@ public class NavigationData implements Serializable {
         this.xmlController = xmlController;
     }
 
-    public MenuModel getBreadcrumb_model() {
-        return breadcrumb_model;
+    public MenuModel getBreadcrumbModel() {
+        return breadcrumbModel;
     }
 
-    public void setBreadcrumb_model(MenuModel breadcrumb_model) {
-        this.breadcrumb_model = breadcrumb_model;
+    public void setBreadcrumbModel(MenuModel breadcrumb_model) {
+        this.breadcrumbModel = breadcrumb_model;
     }
 
     public HtmlForm getMainContentForm() {

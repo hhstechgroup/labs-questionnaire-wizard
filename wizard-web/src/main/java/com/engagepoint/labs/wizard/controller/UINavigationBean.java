@@ -2,6 +2,7 @@ package com.engagepoint.labs.wizard.controller;
 
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
+
 import org.primefaces.component.menuitem.MenuItem;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +14,9 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.Serializable;
+import java.util.List;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -21,13 +24,15 @@ public class UINavigationBean implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
     /**
-     * This is model class to hold data about XML files and Navigation data objects
+     * This is model class to hold data about XML files and Navigation data
+     * objects
      */
     @Inject
     private NavigationData navigationData;
     /**
-     * contains all of the per-request state information related to the processing
-     * of a single JavaServer Faces request, and the rendering of the corresponding response.
+     * contains all of the per-request state information related to the
+     * processing of a single JavaServer Faces request, and the rendering of the
+     * corresponding response.
      */
     private FacesContext facesContext;
     /**
@@ -40,12 +45,12 @@ public class UINavigationBean implements Serializable {
     private ExpressionFactory expressionFactory;
 
     /**
-     * Method clears current topic IDs and current topic titles
-     * It is needed when user sets next page on breadcrumb
+     * Method clears current topic IDs and current topic titles It is needed
+     * when user sets next page on breadcrumb
      */
     public void clearCurrentTopicsData() {
-        navigationData.getCurrentTopicIDs().clear();
-        navigationData.getCurrentTopicTitles().clear();
+	navigationData.getCurrentTopicIDs().clear();
+	navigationData.getCurrentTopicTitles().clear();
     }
 
     /**
@@ -54,167 +59,211 @@ public class UINavigationBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        if (navigationData.isOnSelectXMLPage()) {
-            navigationData.setOnSelectXMLPage(false);
-            navigationData.startSelectXMLScreen();
-        }
+	if (navigationData.isOnSelectXMLPage()) {
+	    navigationData.setOnSelectXMLPage(false);
+	    navigationData.startSelectXMLScreen();
+	}
     }
 
     /**
-     * At first this method configure navigationData (set pageId to first, set topicId to first etc.)
-     * then calls init breadcrumb and init menu
-     * set needRefresh to false
-     * and redirect user to page wizard-index
+     * At first this method configure navigationData (set pageId to first, set
+     * topicId to first etc.) then calls init breadcrumb and init menu set
+     * needRefresh to false and redirect user to page wizard-index
+     * 
      * @return wizard index page name
      */
     public String start() {
-        navigationData.startWizard();
-        initBreadcrumb();
-        initMenu();
-        // Refresh Processed in UINavigationPhaseListener.
-        // Now we set refresh flag to false, because of we need to be redirected
-        // to bootstrapindex page and see our wizard
-        navigationData.setNeedRefresh(false);
-        return "wizard-index";
+	navigationData.startWizard();
+	initBreadcrumb();
+	initMenu();
+	// Refresh Processed in UINavigationPhaseListener.
+	// Now we set refresh flag to false, because of we need to be redirected
+	// to bootstrapindex page and see our wizard
+	navigationData.setNeedRefresh(false);
+	return "wizard-index";
     }
 
     /**
-     * Method used for dynamic initialization breadcrumb component for template form
+     * Method used for dynamic initialization breadcrumb component for template
+     * form
      */
     private void initBreadcrumb() {
-        // get facesContext for current response
-        facesContext = FacesContext.getCurrentInstance();
-        // get elContext (super container for EL expressions)
-        elContext = facesContext.getELContext();
-        // get expression factory for creating EL expressions in following cycle
-        expressionFactory = facesContext.getApplication().getExpressionFactory();
-        // Iterating over all pages in model
-        for (int i = 0; i < getPageCount(); i++) {
-            // creating menu item
-            MenuItem item = new MenuItem();
-            MethodExpression elExpression;
-            WizardPage wizardPage;
-            // get page from navigationData by index
-            wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
-            // set titles for breadcrumb items
-            item.setValue("Page " + wizardPage.getPageNumber().toString());
-            item.setStyleClass("wizard-topic-selected");
-            // creating EL expressions for all items in breadcrumb
-            elExpression = expressionFactory.createMethodExpression(elContext,
-                    "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}",
-                    void.class, new Class[]{String.class});
-            // set elExpression on item action attribute
-            item.setActionExpression(elExpression);
-            navigationData.getBreadcrumb_model().addMenuItem(item);
-        }
+	// get facesContext for current response
+	facesContext = FacesContext.getCurrentInstance();
+	// get elContext (super container for EL expressions)
+	elContext = facesContext.getELContext();
+	// get expression factory for creating EL expressions in following cycle
+	expressionFactory = facesContext.getApplication().getExpressionFactory();
+	// Iterating over all pages in model
+	for (int i = 0; i < getPageCount(); i++) {
+	    // creating menu item
+	    MenuItem item = new MenuItem();
+	    MethodExpression elExpression;
+	    WizardPage wizardPage;
+	    // get page from navigationData by index
+	    wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
+	    // set titles for breadcrumb items
+	    item.setValue("Page " + wizardPage.getPageNumber().toString());
+	    // creating EL expressions for all items in breadcrumb
+	    elExpression = expressionFactory.createMethodExpression(elContext,
+		    "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}", void.class,
+		    new Class[] { String.class });
+	    // set elExpression on item action attribute
+	    item.setActionExpression(elExpression);
+	    navigationData.getBreadcrumbModel().addMenuItem(item);
+	}
 
     }
 
     /**
      * This method is used to insert values to our left menu. Values are
      * extracted from currentTopicIDs list. If we know topic's ID, we can select
-     * topic's title.
-     * Method will be called every time when user change page on breadcrumb
+     * topic's title. Method will be called every time when user change page on
+     * breadcrumb
      */
     private void initMenu() {
-        //clearing current topics id's. It needed for navigation.
-        navigationData.getCurrentTopicIDs().clear();
-        // now we start create new topics for page
-        for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
-            // retrieve topicID from navigation data
-            String topicID = navigationData.getWizardForm()
-                    .getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
-                    .get(i).getId();
-            // add topicID to topics ID's list
-            navigationData.getCurrentTopicIDs().add(topicID);
-            // get topics title by id
-            String topic_title = navigationData.getWizardForm()
-                    .getWizardTopicById(topicID).getGroupTitle();
-            // add title to topic titles
-            navigationData.getCurrentTopicTitles().add(topic_title);
-        }
-        // after initialization menu questions creator method called
-        //todo THIS METHOD MUST NOT BE CALLED HERE
-        createQuestions();
+	// clearing current topics id's. It needed for navigation.
+	navigationData.getCurrentTopicIDs().clear();
+	// now we start create new topics for page
+	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
+	    // retrieve topicID from navigation data
+	    String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+		    .getTopicList().get(i).getId();
+	    // add topicID to topics ID's list
+	    navigationData.getCurrentTopicIDs().add(topicID);
+	    // get topics title by id
+	    String topic_title = navigationData.getWizardForm().getWizardTopicById(topicID).getGroupTitle();
+	    // add title to topic titles
+	    navigationData.getCurrentTopicTitles().add(topic_title);
+	}
+	// after initialization menu questions creator method called
+	createQuestions();
     }
 
     /**
      * Create questions, method must be called for every navigation case
      */
     private void createQuestions() {
-        navigationData.getMainContentForm().getChildren().clear();
-        navigationData.setCurrentOutputText(new HtmlOutputText());
-        navigationData.getCurrentOutputText().setValue(
-                "Page " + navigationData.getCurrentPageTitle() + " - "
-                        + navigationData.getCurrentTopicTitle());
-        navigationData.getMainContentForm().getChildren()
-                .add(navigationData.getCurrentOutputText());
-        getNavigationData().setNeedRefresh(true);
+	navigationData.getMainContentForm().getChildren().clear();
+	navigationData.setCurrentOutputText(new HtmlOutputText());
+	navigationData.getCurrentOutputText().setValue(
+		"Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
+	navigationData.getMainContentForm().getChildren().add(navigationData.getCurrentOutputText());
+	getNavigationData().setNeedRefresh(true);
     }
 
     private int getPageCount() {
 
-        return navigationData.getWizardForm().getWizardPageList().size();
+	return navigationData.getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
 
-        return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList()
-                .size();
+	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
     /**
      * Method called every time for changing current page.
+     * 
      * @param currentPageID
      */
     public void changeCurrentPage(String currentPageID) {
-        clearCurrentTopicsData();
-        navigationData.setCurrentPageID(currentPageID);
-        //set current topic to first on new page
-        navigationData.setCurrentTopicID(navigationData.getWizardForm()
-                .getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
-                .get(0).getId());
-        // create new menu for page
-        initMenu();
+	clearCurrentTopicsData();
+	// Refreshing current style to BootStrap defaults
+	changeStyleOfCurrentPageButton("");
+	navigationData.setCurrentPageIDAndTitle(currentPageID);
+	// After changing current page to a new one, mark it with a new style
+	changeStyleOfCurrentPageButton("wizard-page-selected");
+	// set current topic to first on new page
+	navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+	// create new menu for page
+	initMenu();
     }
 
     /**
      * change topic by id
+     * 
      * @param currentTopicID
      */
     public void changeCurrentTopic(String currentTopicID) {
-        navigationData.setCurrentTopicID(currentTopicID);
-        createQuestions();
+	navigationData.setCurrentTopicIDAndTitle(currentTopicID);
+	createQuestions();
     }
 
     public NavigationData getNavigationData() {
-        return navigationData;
+	return navigationData;
     }
 
     public void setNavigationData(NavigationData navigationData) {
-        this.navigationData = navigationData;
+	this.navigationData = navigationData;
     }
 
     /**
      * Method used as action attribute for NEXT button
      */
     public void nextButtonClick() {
-        System.out.println("Inside method");
-        // in if condition we try to change current topic id
+	System.out.println("Inside method");
+	// in if condition we try to change current topic id
 
-        if (navigationData.setCurrentTopicToNext()) {
-            // if topic id was changed successfully
-            changeCurrentTopic(navigationData.getCurrentTopicID());
-            // if topic id was last id on page we go to "else-if" and try to change page id
-        } else if (navigationData.setCurrentPageToNext()) {
-            // if page id was changed successfully
-            changeCurrentPage(navigationData.getCurrentPageID());
-        } else {
-            // if current topic was last on last page we will be here
-            //todo submit, validation, and confirmation calls actions here
+	if (navigationData.setCurrentTopicToNext()) {
+	    // if topic id was changed successfully
+	    changeCurrentTopic(navigationData.getCurrentTopicID());
+	    // if topic id was last id on page we go to "else-if" and try to
+	    // change page id
+	} else if (navigationData.setCurrentPageToNext()) {
+	    // if page id was changed successfully
+	    changeCurrentPage(navigationData.getCurrentPageID());
+	} else {
+	    // if current topic was last on last page we will be here
+	    // todo submit, validation, and confirmation calls actions here
 
-        }
+	}
 
+    }
+
+    /**
+     * Method changes CSS Style of current selected PageButton from breadcrumb
+     * 
+     * @param styleClass
+     *            style class from CSS file
+     */
+    private void changeStyleOfCurrentPageButton(String styleClass) {
+	List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
+	int currentPageButtonIndex = 0;
+
+	// here we can find position number of page button from breadcrumb
+	// (numbers are from 0 to n). Page buttons on breadcrumb have same
+	// order, as in wizard page list from our XML
+	for (int i = 0; i < pageList.size(); i++) {
+	    WizardPage page = pageList.get(i);
+	    if (page.getId().equals(navigationData.getCurrentPageID())) {
+		currentPageButtonIndex = i;
+		break;
+	    }
+	}
+
+	MenuItem currentPageButtonMenuItem;
+	MenuItem pageOneButtonMenuItem;
+
+	// Get our menuItem from breadcrumb using our index we've found
+	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
+		.get(currentPageButtonIndex);
+	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+	// Setting style to current page button menuItem
+	if (currentPageButtonIndex == 0) {
+	    // On page one we can't set style class, styles only set to id
+	    // #brd-j_id1
+	    // NOTE: brd is an ID of a parent object - breadcrumb,
+	    // those it added automatically, so in next step we print only j_id1
+	    // If we have changed page one's ID before, return it to default
+	    pageOneButtonMenuItem.setId("j_id1");
+	} else {
+	    // Setting our class style
+	    currentPageButtonMenuItem.setStyleClass(styleClass);
+	    // and changing our page one generated id to another one
+	    pageOneButtonMenuItem.setId(pageOneButtonMenuItem.getId() + "a");
+	}
     }
 
 }

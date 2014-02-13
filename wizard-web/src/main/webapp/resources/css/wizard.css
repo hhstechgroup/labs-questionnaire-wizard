@@ -1,4 +1,10 @@
-.wizard-topic-selected, #brd-j_id1
+.wizard-page-selected
+{
+	background-color: red;
+	background: red;
+}
+
+#brd-j_id1
 {
 	background-color: red;
 	background: red;
