@@ -1,7 +1,8 @@
 package com.engagepoint.labs.wizard.controller;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.model.NavigationData;
+import org.primefaces.component.menuitem.MenuItem;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -12,11 +13,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.component.menuitem.MenuItem;
-
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.model.NavigationData;
+import java.io.Serializable;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -33,7 +30,7 @@ public class UINavigationBean implements Serializable {
     private ExpressionFactory expFact;
 
     public void clearCurrentTopicsData() {
-	
+
 	navigationData.getCurrentTopicIDs().clear();
 	navigationData.getCurrentTopicTitles().clear();
     }
@@ -76,7 +73,7 @@ public class UINavigationBean implements Serializable {
 	elCtx = facesCtx.getELContext();
 	expFact = facesCtx.getApplication().getExpressionFactory();
 
-	//Iterating over all pages from model
+	// Iterating over all pages from model
 	for (int i = 0; i < getPageCount(); i++) {
 
 	    MenuItem item = new MenuItem();
@@ -87,8 +84,9 @@ public class UINavigationBean implements Serializable {
 
 	    item.setValue("Page " + page.getPageNumber().toString());
 
-	    expr = expFact.createMethodExpression(elCtx, "#{uiNavigationBean.changeCurrentPage(\"" + page.getId()
-		    + "\")}", void.class, new Class[] { String.class });
+	    expr = expFact.createMethodExpression(elCtx,
+		    "#{uiNavigationBean.changeCurrentPage(\"" + page.getId() + "\")}",
+		    void.class, new Class[] { String.class });
 
 	    item.setActionExpression(expr);
 
@@ -108,12 +106,14 @@ public class UINavigationBean implements Serializable {
 
 	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
 
-	    String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
-		    .getTopicList().get(i).getId();
+	    String topicID = navigationData.getWizardForm()
+		    .getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
+		    .get(i).getId();
 
 	    navigationData.getCurrentTopicIDs().add(topicID);
 
-	    String topic_title = navigationData.getWizardForm().getWizardTopicById(topicID).getGroupTitle();
+	    String topic_title = navigationData.getWizardForm()
+		    .getWizardTopicById(topicID).getGroupTitle();
 
 	    navigationData.getCurrentTopicTitles().add(topic_title);
 	}
@@ -131,51 +131,68 @@ public class UINavigationBean implements Serializable {
 	navigationData.setCurrentOutputText(new HtmlOutputText());
 
 	navigationData.getCurrentOutputText().setValue(
-		"Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
+		"Page " + navigationData.getCurrentPageTitle() + " - "
+			+ navigationData.getCurrentTopicTitle());
 
-	navigationData.getMainContentForm().getChildren().add(navigationData.getCurrentOutputText());
+	navigationData.getMainContentForm().getChildren()
+		.add(navigationData.getCurrentOutputText());
 	getNavigationData().setNeedRefresh(true);
     }
 
     private int getPageCount() {
-	
+
 	return navigationData.getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
-	
-	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
+
+	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList()
+		.size();
     }
 
-
     public void changeCurrentPage(String currentPage) {
-	
+
 	clearCurrentTopicsData();
-	
+
 	navigationData.setCurrentPageID(currentPage);
 
 	navigationData.setCurrentTopicID(navigationData.getWizardForm()
-		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
+		.get(0).getId());
 
 	initMenu();
     }
 
     // The same
     public void changeCurrentTopic(String currentTopicID) {
-	
+
 	navigationData.setCurrentTopicID(currentTopicID);
-	
+
 	createQuestions();
     }
 
     public NavigationData getNavigationData() {
-	
+
 	return navigationData;
     }
 
     public void setNavigationData(NavigationData navigationData) {
-	
+
 	this.navigationData = navigationData;
+    }
+
+    public void nextButtonClick(){
+        System.out.println("Inside method");
+     if(navigationData.setCurrentTopicToNext()){
+         changeCurrentTopic(navigationData.getCurrentTopicID());
+     }else if(navigationData.setCurrentPageToNext()){
+         changeCurrentPage(navigationData.getCurrentPageID());
+     } else{
+         // if currentTopic is last and currentPage is last we navigate to confirmation page
+         // for more details @see setCurrentPageToNext() method in NavigationData class
+
+     }
+
     }
 
 }

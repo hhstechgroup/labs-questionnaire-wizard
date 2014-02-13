@@ -62,6 +62,7 @@ public class UIComponentGenerator {
                 break;
             case TIME:
                 component = getCalendar();
+                break;
             case RANGE:
                 component = getSlider(question);
                 break;
