@@ -1,4 +1,12 @@
 #leftmenuid .page .page-content .page-body {
-    padding: 0px;
-    overflow: hidden;
+	padding: 0px;
+	overflow: hidden;
+}
+
+#leftmenuid:focus {
+	background: none repeat scroll 0 0 #ff75AC;
+	border-bottom: medium none;
+	border-left: 5px solid #0075AC;
+	color: #FFFFFF;
+	padding-left: 25px;
 }

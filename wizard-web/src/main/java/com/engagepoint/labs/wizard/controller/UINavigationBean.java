@@ -98,6 +98,7 @@ public class UINavigationBean implements Serializable {
             wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
             // set titles for breadcrumb items
             item.setValue("Page " + wizardPage.getPageNumber().toString());
+            item.setStyleClass("wizard-topic-selected");
             // creating EL expressions for all items in breadcrumb
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}",
