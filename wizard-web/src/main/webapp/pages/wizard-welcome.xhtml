@@ -1,0 +1,36 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
+    <ui:define name="breadcrumb">
+    </ui:define>
+    <ui:define name="leftMenu"/>
+
+    <ui:define name="mainContent">
+        <h:form id="formid">
+
+            <p:treeTable id="dataTable" summary="basic table">
+                <f:facet name="header">
+                    <p style="text-align: center"> Choose template to start questionnary!</p>
+                </f:facet>
+            </p:treeTable>
+
+            <div style="margin-left: auto;margin-right: auto;width:30%;">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5"
+                             columnClasses="label, column">
+                    <h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
+                                        value="#{uiNavigationBean.navigationData.selectedFormTemplate}"
+                                        style="height:100px;overflow-y:scroll;width:300px">
+                        <f:selectItems value="#{uiNavigationBean.navigationData.xmlsValues}"/>
+                    </h:selectOneListbox>
+                </h:panelGrid>
+            </div>
+
+            <p:commandButton value="START" action="#{uiNavigationBean.start()}" id="butt"
+                             style="position: relative; float: right"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
