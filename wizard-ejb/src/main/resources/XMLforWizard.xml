@@ -3,7 +3,7 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
     <questionnaire-form form-id="bcdmlpq1">
-        <form-name>Simple Form Template 1</form-name>
+        <form-name>Simple Form Template 1*</form-name>
         <pages>
             <page page-number="1" page-id="dcvxd">
                 <groups-of-questions>

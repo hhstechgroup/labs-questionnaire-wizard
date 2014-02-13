@@ -181,17 +181,19 @@ public class UINavigationBean implements Serializable {
 	this.navigationData = navigationData;
     }
 
-    public void nextButtonClick(){
-        System.out.println("Inside method");
-     if(navigationData.setCurrentTopicToNext()){
-         changeCurrentTopic(navigationData.getCurrentTopicID());
-     }else if(navigationData.setCurrentPageToNext()){
-         changeCurrentPage(navigationData.getCurrentPageID());
-     } else{
-         // if currentTopic is last and currentPage is last we navigate to confirmation page
-         // for more details @see setCurrentPageToNext() method in NavigationData class
+    public void nextButtonClick() {
+	System.out.println("Inside method");
+	if (navigationData.setCurrentTopicToNext()) {
+	    changeCurrentTopic(navigationData.getCurrentTopicID());
+	} else if (navigationData.setCurrentPageToNext()) {
+	    changeCurrentPage(navigationData.getCurrentPageID());
+	} else {
+	    // if currentTopic is last and currentPage is last we navigate to
+	    // confirmation page
+	    // for more details @see setCurrentPageToNext() method in
+	    // NavigationData class
 
-     }
+	}
 
     }
 
