@@ -57,8 +57,8 @@
                         <group-name>Test group 2</group-name>
                         <questions>
                             <question answer-required="false" question-id="kdkdk">
-                                <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-title>QT paragraph</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help text</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -82,8 +82,8 @@
                         <group-name>Test group 3</group-name>
                         <questions>
                             <question answer-required="false" question-id="iuquququ">
-                                <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-title>QT text 52452452</question-title>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -111,8 +111,8 @@
                         <group-name>Super Puper Topic 1</group-name>
                         <questions>
                             <question answer-required="true" question-id="oqoqoklalalksks">
-                                <question-title>QT</question-title>
-                                <question-type>DATE</question-type>
+                                <question-title>SUPER title for QUESTION</question-title>
+                                <question-type>TEXT</question-type>
                                 <help-text>TODO</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -136,8 +136,8 @@
                         <group-name>Super Puper Topic 2</group-name>
                         <questions>
                             <question>
-                                <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-title>QT313131313131</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>HELLP</help-text>
                                 <dependent-questions>
                                     <dependent-question/>

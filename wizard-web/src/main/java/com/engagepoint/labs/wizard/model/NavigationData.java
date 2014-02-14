@@ -4,6 +4,8 @@ import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 import org.xml.sax.SAXException;
@@ -67,12 +69,30 @@ public class NavigationData implements Serializable {
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private HtmlOutputText currentOutputText;
+    private PanelGrid panelGrid;
+    private List<Panel> panelList;
+
+    public List<Panel> getPanelList() {
+        return panelList;
+    }
+
+    public void setPanelList(List<Panel> panelList) {
+        this.panelList = panelList;
+    }
+
+    public PanelGrid getPanelGrid() {
+        return panelGrid;
+    }
+
+    public void setPanelGrid(PanelGrid panelGrid) {
+        this.panelGrid = panelGrid;
+    }
 
     /**
      * Method parses our XML's. Created because out first page must know the
      * list of available templates. Then when you click on start button, method
      *
-     * @see startWizard() must be called.
+     * @see  must be called.
      */
     @PostConstruct
     public void startSelectXMLScreen() {
@@ -108,6 +128,9 @@ public class NavigationData implements Serializable {
      */
     public void startWizard() {
         mainContentForm = new HtmlForm();
+        panelGrid = new PanelGrid();
+        panelGrid.setColumns(1);
+        mainContentForm.getChildren().add(panelGrid);
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
         needRefresh = false;
         setCurrentPageID(wizardForm.getWizardPageList().get(0).getId());

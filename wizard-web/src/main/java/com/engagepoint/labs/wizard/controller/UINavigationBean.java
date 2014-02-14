@@ -1,19 +1,26 @@
 package com.engagepoint.labs.wizard.controller;
 
+import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.panel.Panel;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -65,6 +72,7 @@ public class UINavigationBean implements Serializable {
      * then calls init breadcrumb and init menu
      * set needRefresh to false
      * and redirect user to page wizard-index
+     *
      * @return wizard index page name
      */
     public String start() {
@@ -140,15 +148,23 @@ public class UINavigationBean implements Serializable {
     /**
      * Create questions, method must be called for every navigation case
      */
-    private void createQuestions() {
-        navigationData.getMainContentForm().getChildren().clear();
-        navigationData.setCurrentOutputText(new HtmlOutputText());
-        navigationData.getCurrentOutputText().setValue(
-                "Page " + navigationData.getCurrentPageTitle() + " - "
-                        + navigationData.getCurrentTopicTitle());
-        navigationData.getMainContentForm().getChildren()
-                .add(navigationData.getCurrentOutputText());
+    public void createQuestions() {
+
+        UIComponentGenerator generator = new UIComponentGenerator();
+
+        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
+        List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
+
+        navigationData.setPanelList(panelList);
+
+        navigationData.getPanelGrid().getChildren().clear();
+
+        for (Panel panel : navigationData.getPanelList()) {
+            navigationData.getPanelGrid().getChildren().add(panel);
+        }
         getNavigationData().setNeedRefresh(true);
+
     }
 
     private int getPageCount() {
@@ -164,6 +180,7 @@ public class UINavigationBean implements Serializable {
 
     /**
      * Method called every time for changing current page.
+     *
      * @param currentPageID
      */
     public void changeCurrentPage(String currentPageID) {
@@ -179,6 +196,7 @@ public class UINavigationBean implements Serializable {
 
     /**
      * change topic by id
+     *
      * @param currentTopicID
      */
     public void changeCurrentTopic(String currentTopicID) {
@@ -211,7 +229,6 @@ public class UINavigationBean implements Serializable {
         } else {
             // if current topic was last on last page we will be here
             //todo submit, validation, and confirmation calls actions here
-
         }
 
     }

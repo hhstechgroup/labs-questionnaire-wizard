@@ -23,22 +23,24 @@ import java.util.List;
  * Created by igor.guzenko on 2/11/14.
  */
 public class UIComponentGenerator {
-    private Panel mainPanel;
+    private Panel panel;
 
     public UIComponentGenerator() {
-        mainPanel = new Panel();
     }
 
-    public Panel getMainPanel(List<WizardQuestion> wizardQuestionList) {
-        mainPanel.getChildren().clear();
+    public List<Panel> getPanelList(List<WizardQuestion> wizardQuestionList) {
+        List<Panel> panelList = new ArrayList<>();
         for (WizardQuestion question : wizardQuestionList) {
-            analyzeQuestion(question);
+            panelList.add(analyzeQuestion(question));
         }
-        return mainPanel;
+        return panelList;
     }
 
-    private void analyzeQuestion(WizardQuestion question) {
-        addComponentToMainPanel(getLabel(question));
+    private Panel analyzeQuestion(WizardQuestion question) {
+
+        panel = new Panel();
+        panel.getChildren().add(getLabel(question));
+
         UIComponent component = null;
 
         switch (question.getQuestionType()) {
@@ -69,12 +71,13 @@ public class UIComponentGenerator {
             //todo
 
         }
-        addComponentToMainPanel(component);
+        panel.getChildren().add(component);
 
+        return panel;
     }
 
     private Slider getSlider(WizardQuestion question) {
-        RangeQuestion rangeQuestion = (RangeQuestion)question;
+        RangeQuestion rangeQuestion = (RangeQuestion) question;
         Slider slider = new Slider();
         slider.setMinValue(rangeQuestion.getStartRange());
         slider.setMaxValue(rangeQuestion.getEndRange());
@@ -87,11 +90,6 @@ public class UIComponentGenerator {
         SelectOneListbox selectOneListbox = new SelectOneListbox();
         selectOneListbox.getChildren().add(getSelectItems(optionsList));
         return selectOneListbox;
-    }
-
-
-    private void addComponentToMainPanel(UIComponent component) {
-        mainPanel.getChildren().add(component);
     }
 
     private UIInput getUIInput() {
@@ -136,7 +134,7 @@ public class UIComponentGenerator {
     }
 
     private UIDatePicker getUIDatePicker() {
-       return new UIDatePicker();
+        return new UIDatePicker();
     }
 
     private Calendar getCalendar() {

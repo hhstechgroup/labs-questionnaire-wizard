@@ -10,8 +10,8 @@
                         <group-name>Topic bla-bla From page 1</group-name>
                         <questions>
                             <question answer-required="true" question-id="zxxxx3">
-                                <question-title>Title nnnnsa</question-title>
-                                <question-type>RANGE</question-type>
+                                <question-title>Super Text</question-title>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help text jhdfkosd</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -19,7 +19,7 @@
                                 <options>
                                     <option></option>
                                 </options>
-                                <range range-begin="32" range-end="12"/>
+                                <range/>
                                 <grid>
                                     <columns>
                                         <column></column>
@@ -35,8 +35,8 @@
                         <group-name>Topic bla-bla 2 From page 1</group-name>
                         <questions>
                             <question answer-required="true" question-id="yqtrwrer">
-                                <question-title>QT</question-title>
-                                <question-type>FILEUPLOAD</question-type>
+                                <question-title>Super Paragraph</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>TODO later\</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -64,8 +64,8 @@
                         <group-name>Topic First from page 2</group-name>
                         <questions>
                             <question answer-required="true" question-id="zxxxx3">
-                                <question-title>Title Super</question-title>
-                                <question-type>RANGE</question-type>
+                                <question-title>Second SUPER paragraph</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help text jhkjh</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -73,7 +73,7 @@
                                 <options>
                                     <option></option>
                                 </options>
-                                <range range-begin="32" range-end="12"/>
+                                <range/>
                                 <grid>
                                     <columns>
                                         <column></column>
@@ -90,7 +90,7 @@
                         <questions>
                             <question answer-required="true" question-id="zxxxx3">
                                 <question-title>Title MegaSuper</question-title>
-                                <question-type>RANGE</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help </help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -98,7 +98,7 @@
                                 <options>
                                     <option></option>
                                 </options>
-                                <range range-begin="32" range-end="12"/>
+                                <range/>
                                 <grid>
                                     <columns>
                                         <column></column>
@@ -118,7 +118,7 @@
                         <group-name>Topic 1 from Page 3</group-name>
                         <questions>
                             <question answer-required="false" question-id="mgvln">
-                                <question-title>QT</question-title>
+                                <question-title>PARAGRAPH *************</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help here</help-text>
                                 <dependent-questions>
@@ -143,7 +143,7 @@
                         <group-name>Topic 2 from Page 3</group-name>
                         <questions>
                             <question answer-required="false" question-id="fpgbvmf">
-                                <question-title>QT</question-title>
+                                <question-title>simple paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
@@ -168,7 +168,7 @@
                         <group-name>Topic 3 from Page 3</group-name>
                         <questions>
                             <question answer-required="false" question-id="eog">
-                                <question-title>QT</question-title>
+                                <question-title>text need to be hrere</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>help ohvf</help-text>
                                 <dependent-questions>
@@ -203,7 +203,7 @@
                         <questions>
                             <question answer-required="false" question-id="hjkhjvv">
                                 <question-title>Prime Title</question-title>
-                                <question-type>GRID</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help for junior</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -229,7 +229,7 @@
                         <group-name>Prime Topic 2 ***</group-name>
                         <questions>
                             <question answer-required="false" question-id="vknvnvn">
-                                <question-title>QQT</question-title>
+                                <question-title>tittle for text q</question-title>
                                 <question-type>TEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
@@ -254,7 +254,7 @@
                         <group-name>Prime Topic 3 ***</group-name>
                         <questions>
                             <question>
-                                <question-title>QT</question-title>
+                                <question-title>QT 12999</question-title>
                                 <question-type>TEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
@@ -308,8 +308,8 @@
                         <group-name>Mega Topic 2</group-name>
                         <questions>
                             <question answer-required="false" question-id="dwpoejkrwpok">
-                                <question-title>QT</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-title>QT9043-9832</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -333,7 +333,7 @@
                         <group-name>Mega Topic 3</group-name>
                         <questions>
                             <question answer-required="false" question-id="wfwfwf">
-                                <question-title>QT</question-title>
+                                <question-title>Date Question</question-title>
                                 <question-type>DATE</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
