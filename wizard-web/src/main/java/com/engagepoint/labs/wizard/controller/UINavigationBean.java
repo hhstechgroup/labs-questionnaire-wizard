@@ -9,7 +9,6 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -141,13 +140,13 @@ public class UINavigationBean implements Serializable {
      * Create questions, method must be called for every navigation case
      */
     private void createQuestions() {
-        navigationData.getMainContentForm().getChildren().clear();
-        navigationData.setCurrentOutputText(new HtmlOutputText());
-        navigationData.getCurrentOutputText().setValue(
-                "Page " + navigationData.getCurrentPageTitle() + " - "
-                        + navigationData.getCurrentTopicTitle());
-        navigationData.getMainContentForm().getChildren()
-                .add(navigationData.getCurrentOutputText());
+//        navigationData.getMainContentForm().getChildren().clear();
+//        navigationData.setCurrentOutputText(new HtmlOutputText());
+//        navigationData.getCurrentOutputText().setValue(
+//                "Page " + navigationData.getCurrentPageTitle() + " - "
+//                        + navigationData.getCurrentTopicTitle());
+//        navigationData.getMainContentForm().getChildren()
+//                .add(navigationData.getCurrentOutputText());
         getNavigationData().setNeedRefresh(true);
     }
 
@@ -198,14 +197,13 @@ public class UINavigationBean implements Serializable {
      * Method used as action attribute for NEXT button
      */
     public void nextButtonClick() {
-        System.out.println("Inside method");
-        // in if condition we try to change current topic id
 
-        if (navigationData.setCurrentTopicToNext()) {
+        // in if condition we try to change current topic id
+        if (navigationData.setCurrentTopicIDtoNext()) {
             // if topic id was changed successfully
             changeCurrentTopic(navigationData.getCurrentTopicID());
             // if topic id was last id on page we go to "else-if" and try to change page id
-        } else if (navigationData.setCurrentPageToNext()) {
+        } else if (navigationData.setCurrentPageIDtoNext()) {
             // if page id was changed successfully
             changeCurrentPage(navigationData.getCurrentPageID());
         } else {
@@ -215,5 +213,6 @@ public class UINavigationBean implements Serializable {
         }
 
     }
+
 
 }

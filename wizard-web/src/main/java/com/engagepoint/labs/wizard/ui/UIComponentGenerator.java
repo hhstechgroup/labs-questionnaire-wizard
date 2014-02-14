@@ -7,14 +7,17 @@ import com.engagepoint.labs.wizard.questions.*;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.slider.Slider;
 
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,15 +25,19 @@ import java.util.List;
 /**
  * Created by igor.guzenko on 2/11/14.
  */
+@Named
+@SessionScoped
 public class UIComponentGenerator {
     private Panel mainPanel;
+    private PanelGrid panelGrid;
 
     public UIComponentGenerator() {
+        panelGrid = new PanelGrid();
         mainPanel = new Panel();
     }
 
     public Panel getMainPanel(List<WizardQuestion> wizardQuestionList) {
-        mainPanel.getChildren().clear();
+
         for (WizardQuestion question : wizardQuestionList) {
             analyzeQuestion(question);
         }
@@ -38,6 +45,7 @@ public class UIComponentGenerator {
     }
 
     private void analyzeQuestion(WizardQuestion question) {
+
         addComponentToMainPanel(getLabel(question));
         UIComponent component = null;
 
@@ -45,32 +53,33 @@ public class UIComponentGenerator {
             case TEXT:
                 component = getUIInput();
                 break;
-            case PARAGRAPHTEXT:
-                component = getUIEditor();
-                break;
-            case MULTIPLECHOICE:
-                component = getSelectOneListbox(question);
-                break;
-            case CHECKBOX:
-                component = getSelectManyCheckbox(question);
-                break;
-            case CHOOSEFROMLIST:
-                component = getSelectOneMenu(question);
-                break;
-            case DATE:
-                component = getUIDatePicker();
-                break;
-            case TIME:
-                component = getCalendar();
-                break;
-            case RANGE:
-                component = getSlider(question);
-                break;
-            //todo
+//            case PARAGRAPHTEXT:
+//                component = getUIEditor();
+//                break;
+//            case MULTIPLECHOICE:
+//                component = getSelectOneListbox(question);
+//                break;
+//            case CHECKBOX:
+//                component = getSelectManyCheckbox(question);
+//                break;
+//            case CHOOSEFROMLIST:
+//                component = getSelectOneMenu(question);
+//                break;
+//            case DATE:
+//                component = getUIDatePicker();
+//                break;
+//            case TIME:
+//                component = getCalendar();
+//                break;
+//            case RANGE:
+//                component = getSlider(question);
+//                break;
+//            //todo
 
         }
-        addComponentToMainPanel(component);
-
+        if(component!=null){
+            addComponentToMainPanel(component);
+        }
     }
 
     private Slider getSlider(WizardQuestion question) {

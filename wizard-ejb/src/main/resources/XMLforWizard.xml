@@ -11,7 +11,7 @@
                         <group-name>Test group 1</group-name>
                         <questions>
                             <question answer-required="true" question-id="1">
-                                <question-title>Error Q</question-title>
+                                <question-title>This is text question?</question-title>
                                 <question-type>TEXT</question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
@@ -31,15 +31,15 @@
                                 </grid>
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
-                                <question-title>CheckBox Q</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-title>Is this checkbox question?</question-title>
+                                <question-type>TEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
                                 </dependent-questions>
                                 <options>
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -57,14 +57,15 @@
                         <group-name>Test group 2</group-name>
                         <questions>
                             <question answer-required="false" question-id="kdkdk">
-                                <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-title>Is this multiplechoise question?</question-title>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help text</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
                                 </dependent-questions>
                                 <options>
-                                    <option></option>
+                                    <option>Yes</option>
+                                    <option>No</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -83,7 +84,7 @@
                         <questions>
                             <question answer-required="false" question-id="iuquququ">
                                 <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text>Help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -137,7 +138,7 @@
                         <questions>
                             <question>
                                 <question-title>QT</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text>HELLP</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
