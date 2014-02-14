@@ -1,11 +1,14 @@
 .wizard-page-selected {
-	background-color: red;
-	background: red;
+	font-size: 16px;
+	font-weight:bold;
+	color:white !important;
+	text-decoration: underline !important;
 }
 
 #brd-j_id1 {
-	background-color: red;
-	background: red;
+	font-size: 16px;
+	font-weight:bold;
+	text-decoration: underline !important;
 }
 
 :focus,a:focus,input:focus,button:focus,.ui-state-focus {
@@ -14,6 +17,6 @@
 
 .ui-breadcrumb ul li a:hover,.ui-breadcrumb ul li a:focus {
 	text-decoration: none !important;
-	background-color: red;
-	background: red;
+	font-size: 14px;
+	text-decoration: underline !important;
 }

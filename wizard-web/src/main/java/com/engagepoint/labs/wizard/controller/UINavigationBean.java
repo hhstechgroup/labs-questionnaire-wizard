@@ -4,6 +4,8 @@ import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.outputlabel.OutputLabel;
+import org.primefaces.component.panel.Panel;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -144,11 +146,17 @@ public class UINavigationBean implements Serializable {
      * Create questions, method must be called for every navigation case
      */
     private void createQuestions() {
-	navigationData.getMainContentForm().getChildren().clear();
+	navigationData.getPanelGrid().getChildren().clear();
+	navigationData.setLabel(new OutputLabel());
 	navigationData.setCurrentOutputText(new HtmlOutputText());
+	navigationData.getLabel().setId("bkah");
+	navigationData.getLabel().setValue("Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
 	navigationData.getCurrentOutputText().setValue(
 		"Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
-	navigationData.getMainContentForm().getChildren().add(navigationData.getCurrentOutputText());
+	navigationData.setPanel(new Panel());
+	navigationData.getPanel().getChildren().add(navigationData.getLabel());
+	
+	navigationData.getPanelGrid().getChildren().add(navigationData.getPanel());
 	getNavigationData().setNeedRefresh(true);
     }
 
