@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.controller;
 
-import java.io.IOException;
+import com.engagepoint.labs.wizard.model.NavigationData;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
@@ -12,8 +12,7 @@ import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.engagepoint.labs.wizard.model.NavigationData;
+import java.io.IOException;
 
 public class UINavigationPhaseListener implements PhaseListener {
 
@@ -41,7 +40,7 @@ public class UINavigationPhaseListener implements PhaseListener {
 	    response.setHeader("Cache-Control", "no-store");
 	    response.addHeader("Cache-Control", "must-revalidate");
 	    response.addHeader("Cache-Control", "max-age=0");
-	}
+    }
 	System.out.println("Before phase");
     }
 

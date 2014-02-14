@@ -3,6 +3,8 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
@@ -88,6 +90,15 @@ public class NavigationData implements Serializable {
         this.panelGrid = panelGrid;
     }
 
+    UIComponentGenerator generator;
+    private Panel mainPanel;
+    private UIComponentGenerator uiComponentGenerator;
+    private PanelGrid panelGrid;
+
+    public void setMainPanel(Panel mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
     /**
      * Method parses our XML's. Created because out first page must know the
      * list of available templates. Then when you click on start button, method
@@ -96,27 +107,22 @@ public class NavigationData implements Serializable {
      */
     @PostConstruct
     public void startSelectXMLScreen() {
-
+        uiComponentGenerator = new UIComponentGenerator();
         onSelectXMLPage = true;
-
         MapOfWizardForms = new LinkedHashMap<String, String>();
-
         XMLpathList = new ArrayList<String>();
-
         XMLpathList.add("/XMLforWizard.xml");
         XMLpathList.add("/XMLforWizard2.xml");
-
         xmlController = new XmlController();
-
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
         } catch (SAXException | JAXBException ex) {
             Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
         }
+        generator = new UIComponentGenerator();
     }
 
     /**
@@ -140,7 +146,7 @@ public class NavigationData implements Serializable {
         setBreadcrumb_model(new DefaultMenuModel());
     }
 
-    public boolean setCurrentTopicToNext() {
+    public boolean setCurrentTopicIDtoNext() {
         for (int index = 0; index < currentTopicIDs.size(); index++) {
             if (currentTopicID.equals(currentTopicIDs.get(index))) {
                 if (index == currentTopicIDs.size() - 1) {
@@ -154,7 +160,7 @@ public class NavigationData implements Serializable {
         return false;
     }
 
-    public boolean setCurrentPageToNext() {
+    public boolean setCurrentPageIDtoNext() {
         // get pageList from model
         List<WizardPage> pageList = wizardForm.getWizardPageList();
         // start searching current page
@@ -370,4 +376,11 @@ public class NavigationData implements Serializable {
     public void setCurrentTopicTitle(String currentTopicTitle) {
         this.currentTopicTitle = currentTopicTitle;
     }
+
+    public Panel getMainPanel() {
+        List<WizardQuestion> wqList = wizardForm.getWizardTopicById(currentTopicID).getWizardQuestionList();
+        mainPanel = uiComponentGenerator.getMainPanel(wqList);
+        return mainPanel;
+    }
+
 }
