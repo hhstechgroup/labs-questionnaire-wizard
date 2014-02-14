@@ -98,9 +98,9 @@ public class WizardForm implements Serializable {
     }
 
     public List<WizardQuestion> getAllWizardQuestions() {
-        List<WizardTopic> allWizarlTopics = getAllWizardTopics();
+        List<WizardTopic> allWizardTopics = getAllWizardTopics();
         List<WizardQuestion> allWizardQuestions = new ArrayList<>();
-        for (WizardTopic wizardTopic : allWizarlTopics) {
+        for (WizardTopic wizardTopic : allWizardTopics) {
             List<WizardQuestion> wizardQuestionList = wizardTopic.getWizardQuestionList();
             for (WizardQuestion wizardQuestion : wizardQuestionList) {
                 allWizardQuestions.add(wizardQuestion);

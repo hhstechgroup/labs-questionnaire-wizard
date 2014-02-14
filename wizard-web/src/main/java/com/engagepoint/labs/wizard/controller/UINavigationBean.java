@@ -146,17 +146,12 @@ public class UINavigationBean implements Serializable {
      * Create questions, method must be called for every navigation case
      */
     public void createQuestions() {
-
         UIComponentGenerator generator = new UIComponentGenerator();
-
         WizardForm wizardForm = navigationData.getWizardForm();
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
         List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
-
         navigationData.setPanelList(panelList);
-
         navigationData.getPanelGrid().getChildren().clear();
-
         for (Panel panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
@@ -165,12 +160,10 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getPageCount() {
-
         return navigationData.getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
-
         return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList()
                 .size();
     }
@@ -215,7 +208,6 @@ public class UINavigationBean implements Serializable {
     public void nextButtonClick() {
         System.out.println("Inside method");
         // in if condition we try to change current topic id
-
         if (navigationData.setCurrentTopicIDtoNext()) {
             // if topic id was changed successfully
             changeCurrentTopic(navigationData.getCurrentTopicID());
@@ -227,7 +219,6 @@ public class UINavigationBean implements Serializable {
             // if current topic was last on last page we will be here
             //todo submit, validation, and confirmation calls actions here
         }
-
     }
 
 }

@@ -44,7 +44,6 @@ public class NavigationData implements Serializable {
     private WizardDocument wizardDocument;
     private XmlController xmlController;
     // only for our default xml files!
-    private List<String> XMLpathList;
     private Map<String, String> MapOfWizardForms;
     // NavData
     private String selectedFormTemplate;
@@ -53,12 +52,11 @@ public class NavigationData implements Serializable {
     private String currentFormName;
     private String currentPageID;
     private String currentTopicID;
-     private String currentPageTitle;
+    private String currentPageTitle;
     private String currentTopicTitle;
     private MenuModel breadcrumb_model;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
-    private HtmlOutputText currentOutputText;
     private List<Panel> panelList;
     private PanelGrid panelGrid;
 
@@ -73,12 +71,9 @@ public class NavigationData implements Serializable {
     public void startSelectXMLScreen() {
         onSelectXMLPage = true;
         MapOfWizardForms = new LinkedHashMap<String, String>();
-        XMLpathList = new ArrayList<String>();
-        XMLpathList.add("/XMLforWizard.xml");
-        XMLpathList.add("/XMLforWizard2.xml");
         xmlController = new XmlController();
         try {
-            wizardDocument = xmlController.readAllDeafultXmlFiles(XMLpathList);
+            wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {
             Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,11 +136,8 @@ public class NavigationData implements Serializable {
 
 
     public String getTopicTitleFromID(String topicID) {
-
         String title;
-
         title = wizardForm.getWizardTopicById(topicID).getGroupTitle();
-
         return title;
     }
 
@@ -154,7 +146,6 @@ public class NavigationData implements Serializable {
     }
 
     public void setCurrentPageID(String currentPageID) {
-
         this.currentPageID = currentPageID;
         this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
@@ -164,7 +155,6 @@ public class NavigationData implements Serializable {
     }
 
     public void setCurrentTopicID(String currentTopicID) {
-
         this.currentTopicID = currentTopicID;
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
@@ -233,14 +223,6 @@ public class NavigationData implements Serializable {
 
     public void setWizardDocument(WizardDocument wizardDocument) {
         this.wizardDocument = wizardDocument;
-    }
-
-    public List<String> getXMLpathList() {
-        return XMLpathList;
-    }
-
-    public void setXMLpathList(List<String> xMLpathList) {
-        XMLpathList = xMLpathList;
     }
 
     public Map<String, String> getMapOfWizardForms() {
@@ -313,14 +295,6 @@ public class NavigationData implements Serializable {
      */
     public void setOnSelectXMLPage(boolean onSelectXMLPage) {
         this.onSelectXMLPage = onSelectXMLPage;
-    }
-
-    public HtmlOutputText getCurrentOutputText() {
-        return currentOutputText;
-    }
-
-    public void setCurrentOutputText(HtmlOutputText currentOutputText) {
-        this.currentOutputText = currentOutputText;
     }
 
     public String getCurrentPageTitle() {
