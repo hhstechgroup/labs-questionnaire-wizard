@@ -4,7 +4,6 @@ import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
@@ -18,9 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -219,11 +216,11 @@ public class UINavigationBean implements Serializable {
         System.out.println("Inside method");
         // in if condition we try to change current topic id
 
-        if (navigationData.setCurrentTopicToNext()) {
+        if (navigationData.setCurrentTopicIDtoNext()) {
             // if topic id was changed successfully
             changeCurrentTopic(navigationData.getCurrentTopicID());
             // if topic id was last id on page we go to "else-if" and try to change page id
-        } else if (navigationData.setCurrentPageToNext()) {
+        } else if (navigationData.setCurrentPageIDtoNext()) {
             // if page id was changed successfully
             changeCurrentPage(navigationData.getCurrentPageID());
         } else {
