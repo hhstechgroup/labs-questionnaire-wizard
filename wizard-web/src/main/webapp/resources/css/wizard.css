@@ -1,11 +1,19 @@
-.wizard-page-selected
-{
+.wizard-page-selected {
 	background-color: red;
 	background: red;
 }
 
-#brd-j_id1
-{
+#brd-j_id1 {
+	background-color: red;
+	background: red;
+}
+
+:focus,a:focus,input:focus,button:focus,.ui-state-focus {
+	box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.7) !important;
+}
+
+.ui-breadcrumb ul li a:hover,.ui-breadcrumb ul li a:focus {
+	text-decoration: none !important;
 	background-color: red;
 	background: red;
 }
