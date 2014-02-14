@@ -1,5 +1,6 @@
 package com.engagepoint.labs.wizard.controller;
 
+import com.engagepoint.component.menu.UIMenuSection;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
 
@@ -125,6 +126,8 @@ public class UINavigationBean implements Serializable {
      */
     private void initMenu() {
 	// clearing current topics id's. It needed for navigation.
+	
+	
 	navigationData.getCurrentTopicIDs().clear();
 	// now we start create new topics for page
 	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
