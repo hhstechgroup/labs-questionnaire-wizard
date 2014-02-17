@@ -1,12 +1,7 @@
 package com.engagepoint.labs.wizard.controller;
 
-import com.engagepoint.component.menu.UIMenuSection;
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.model.NavigationData;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.component.panel.Panel;
+import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -18,8 +13,13 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import java.io.Serializable;
-import java.util.List;
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.outputlabel.OutputLabel;
+import org.primefaces.component.panel.Panel;
+
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -109,8 +109,8 @@ public class UINavigationBean implements Serializable {
 	    item.setValue("Page " + wizardPage.getPageNumber().toString());
 	    // creating EL expressions for all items in breadcrumb
 	    elExpression = expressionFactory.createMethodExpression(elContext,
-		    "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}", void.class,
-		    new Class[] { String.class });
+		    "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId()
+			    + "\")}", void.class, new Class[] { String.class });
 	    // set elExpression on item action attribute
 	    item.setActionExpression(elExpression);
 	    navigationData.getBreadcrumbModel().addMenuItem(item);
@@ -126,18 +126,19 @@ public class UINavigationBean implements Serializable {
      */
     private void initMenu() {
 	// clearing current topics id's. It needed for navigation.
-	
-	
+
 	navigationData.getCurrentTopicIDs().clear();
 	// now we start create new topics for page
 	for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
 	    // retrieve topicID from navigation data
-	    String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
-		    .getTopicList().get(i).getId();
+	    String topicID = navigationData.getWizardForm()
+		    .getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
+		    .get(i).getId();
 	    // add topicID to topics ID's list
 	    navigationData.getCurrentTopicIDs().add(topicID);
 	    // get topics title by id
-	    String topic_title = navigationData.getWizardForm().getWizardTopicById(topicID).getGroupTitle();
+	    String topic_title = navigationData.getWizardForm()
+		    .getWizardTopicById(topicID).getGroupTitle();
 	    // add title to topic titles
 	    navigationData.getCurrentTopicTitles().add(topic_title);
 	}
@@ -153,12 +154,15 @@ public class UINavigationBean implements Serializable {
 	navigationData.setLabel(new OutputLabel());
 	navigationData.setCurrentOutputText(new HtmlOutputText());
 	navigationData.getLabel().setId("bkah");
-	navigationData.getLabel().setValue("Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
+	navigationData.getLabel().setValue(
+		"Page " + navigationData.getCurrentPageTitle() + " - "
+			+ navigationData.getCurrentTopicTitle());
 	navigationData.getCurrentOutputText().setValue(
-		"Page " + navigationData.getCurrentPageTitle() + " - " + navigationData.getCurrentTopicTitle());
+		"Page " + navigationData.getCurrentPageTitle() + " - "
+			+ navigationData.getCurrentTopicTitle());
 	navigationData.setPanel(new Panel());
 	navigationData.getPanel().getChildren().add(navigationData.getLabel());
-	
+
 	navigationData.getPanelGrid().getChildren().add(navigationData.getPanel());
 	getNavigationData().setNeedRefresh(true);
     }
@@ -170,7 +174,8 @@ public class UINavigationBean implements Serializable {
 
     private int getTopicCount(String pageID) {
 
-	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
+	return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList()
+		.size();
     }
 
     /**
@@ -181,13 +186,14 @@ public class UINavigationBean implements Serializable {
     public void changeCurrentPage(String currentPageID) {
 	clearCurrentTopicsData();
 	// Refreshing current style to BootStrap defaults
-	changeStyleOfCurrentPageButton("");
+	changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
 	navigationData.setCurrentPageIDAndTitle(currentPageID);
 	// After changing current page to a new one, mark it with a new style
-	changeStyleOfCurrentPageButton("wizard-page-selected");
+	changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
 	// set current topic to first on new page
 	navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
-		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList()
+		.get(0).getId());
 	// create new menu for page
 	initMenu();
     }
@@ -258,9 +264,10 @@ public class UINavigationBean implements Serializable {
 	MenuItem pageOneButtonMenuItem;
 
 	// Get our menuItem from breadcrumb using our index we've found
-	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
-		.get(currentPageButtonIndex);
-	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
+		.getContents().get(currentPageButtonIndex);
+	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
+		.getContents().get(0);
 	// Setting style to current page button menuItem
 	if (currentPageButtonIndex == 0) {
 	    // On page one we can't set style class, styles only set to id
