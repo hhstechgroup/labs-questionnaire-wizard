@@ -1,27 +1,38 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.answers.Answer;
-import java.util.List;
-import super_binding.DependentQuestion;
+import com.engagepoint.labs.wizard.answers.Value;
 import super_binding.QType;
 
 /**
  * Created by igor.guzenko on 2/4/14.
  *
- * @param <B>
+ *
  */
-public abstract class WizardQuestion {
+public class WizardQuestion {
 
     protected String id;
     protected String title;
     protected QType questionType;
     protected String helpText;
-    private List<DependentQuestion> dependentQuestionsList; // need to be done later!!!
     protected Boolean answerRequired;
+    protected Value answer;
+    protected Value defaultAnswer;
 
-    public abstract Object getAnswer();
+    public Value getAnswer() {
+        return answer;
+    }
 
-    public abstract void setAnswer(Object answers);
+    public void setAnswer(Value answer) {
+        this.answer = answer;
+    }
+
+    public Value getDefaultAnswer() {
+        return defaultAnswer;
+    }
+
+    public void setDefaultAnswer(Value defaultAnswer) {
+        this.defaultAnswer = defaultAnswer;
+    }
 
     public String getHelpText() {
         return helpText;

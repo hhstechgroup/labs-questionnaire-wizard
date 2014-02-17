@@ -1,16 +1,12 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.answers.RangeAnswer;
-
 /**
  * Created by igor.guzenko on 2/4/14.
  */
 public class RangeQuestion extends WizardQuestion {
-
     private int startRange;
     private int endRange;
     private String value;
-    private RangeAnswer rangeAnswer;
 
     public String getValue() {
         return value;
@@ -31,15 +27,5 @@ public class RangeQuestion extends WizardQuestion {
 
     public int getEndRange() {
         return endRange;
-    }
-
-    @Override
-    public RangeAnswer getAnswer() {
-        return rangeAnswer;
-    }
-
-    @Override
-    public void setAnswer(Object answers) {
-        rangeAnswer = (RangeAnswer) answers;
     }
 }
