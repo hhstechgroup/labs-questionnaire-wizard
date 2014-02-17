@@ -82,6 +82,13 @@ and open the template in the editor.
                                                                                                             </xs:sequence>
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
+                                                                                                    <xs:element name="default-answers">
+                                                                                                        <xs:complexType>
+                                                                                                            <xs:sequence>
+                                                                                                                <xs:element type="xs:string" name="default-answer" maxOccurs="unbounded"/>
+                                                                                                            </xs:sequence>
+                                                                                                        </xs:complexType>
+                                                                                                    </xs:element>
                                                                                                 </xs:sequence>
                                                                                                 <xs:attribute type="xs:boolean" name="answer-required"/>
                                                                                                 <xs:attribute type="xs:string" name="question-id"/>
