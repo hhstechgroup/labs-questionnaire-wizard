@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.answers.Value;
+import com.engagepoint.labs.wizard.values.Value;
 import super_binding.QType;
 
 /**
