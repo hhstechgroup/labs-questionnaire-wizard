@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.engagepoint.labs.wizard.values.*;
-import com.engagepoint.labs.wizard.values.oblects.Range;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Page;
