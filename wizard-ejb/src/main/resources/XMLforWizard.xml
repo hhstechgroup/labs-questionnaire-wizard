@@ -22,7 +22,7 @@
                                     <option>Option Number 2</option>
                                     <option>Option Number 3</option>
                                 </options>
-                                <range/>
+                                <range range-begin="5" range-end="16" value="range value"/>
                                 <grid>
                                     <columns>
                                         <column></column>
@@ -34,7 +34,7 @@
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>FILEUPLOAD</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
