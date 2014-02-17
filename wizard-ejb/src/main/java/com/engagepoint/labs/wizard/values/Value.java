@@ -9,4 +9,18 @@ package com.engagepoint.labs.wizard.values;
  */
 
 public abstract class Value {
+    protected ValueType type;
+    protected Object value;
+
+    public ValueType getType() {
+        return type;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
 }

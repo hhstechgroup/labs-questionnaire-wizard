@@ -1,5 +1,7 @@
 package com.engagepoint.labs.wizard.values;
 
+import com.engagepoint.labs.wizard.values.oblects.Range;
+
 /**
  * Created with IntelliJ IDEA.
  * User: andrii.sotnyk
@@ -8,22 +10,19 @@ package com.engagepoint.labs.wizard.values;
  * To change this template use File | Settings | File Templates.
  */
 public class RangeValue extends Value {
-    private int startValue;
-    private int endValue;
 
-    public int getStartValue() {
-        return startValue;
+
+    public RangeValue() {
+        type = ValueType.RANGE;
     }
 
-    public void setStartValue(int startValue) {
-        this.startValue = startValue;
-    }
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof Range) {
+            super.setValue(value);
+        } else {
+            throw new ClassCastException("You must provide Range for this method!");
+        }
 
-    public int getEndValue() {
-        return endValue;
-    }
-
-    public void setEndValue(int endValue) {
-        this.endValue = endValue;
     }
 }
