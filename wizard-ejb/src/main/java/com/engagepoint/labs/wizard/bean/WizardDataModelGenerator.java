@@ -21,10 +21,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.*;
+import com.engagepoint.labs.wizard.values.oblects.Range;
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Page;
@@ -119,7 +117,7 @@ public class WizardDataModelGenerator {
                 checkBoxesQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     ListTextValue checkboxDefaults = new ListTextValue();
-                    checkboxDefaults.setTextAnswersList(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                    checkboxDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
                     wizardQuestion.setDefaultAnswer(checkboxDefaults);
                 }
                 wizardQuestion = checkBoxesQuestion;
@@ -129,7 +127,7 @@ public class WizardDataModelGenerator {
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     ListTextValue chooseFromListDefaults = new ListTextValue();
-                    chooseFromListDefaults.setTextAnswersList(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                    chooseFromListDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
                     wizardQuestion.setDefaultAnswer(chooseFromListDefaults);
                 }
                 wizardQuestion = dropDownQuestion;
@@ -138,7 +136,7 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new DateQuestion();
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     DateValue dateDefaults = new DateValue();
-                    dateDefaults.setDate(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                    dateDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
                     wizardQuestion.setDefaultAnswer(dateDefaults);
                 }
                 break;
@@ -156,7 +154,7 @@ public class WizardDataModelGenerator {
                 multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     ListTextValue multipleChoiceDefaults = new ListTextValue();
-                    multipleChoiceDefaults.setTextAnswersList(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                    multipleChoiceDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
                     wizardQuestion.setDefaultAnswer(multipleChoiceDefaults);
                 }
                 wizardQuestion = multipleChoiseQuestion;
@@ -165,13 +163,20 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new TextAreaQuestion();
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     TextValue paragraphDefaults = new TextValue();
-                    paragraphDefaults.setText(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                    paragraphDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                     wizardQuestion.setDefaultAnswer(paragraphDefaults);
                 }
                 break;
             case RANGE:
                 RangeQuestion rangeQuestion = new RangeQuestion();
-                rangeQuestion.setValue(xmlQuestion.getRange().getValue());
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    RangeValue rangeDefaults = new RangeValue();
+                    Range range = new Range();
+                    range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                    range.setEnd(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(1)));
+                    rangeDefaults.setValue(range);
+                    wizardQuestion.setDefaultAnswer(rangeDefaults);
+                }
                 rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(), xmlQuestion.getRange().getRangeEnd());
                 wizardQuestion = rangeQuestion;
                 break;
@@ -179,7 +184,7 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new TextQuestion();
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     TextValue textDefaults = new TextValue();
-                    textDefaults.setText(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                    textDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                     wizardQuestion.setDefaultAnswer(textDefaults);
                 }
                 break;
@@ -187,7 +192,7 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new TimeQuestion();
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     DateValue timeDefaults = new DateValue();
-                    timeDefaults.setDate(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                    timeDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
                     wizardQuestion.setDefaultAnswer(timeDefaults);
                 }
                 break;
