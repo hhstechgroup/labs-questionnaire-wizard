@@ -1,12 +1,18 @@
 package com.engagepoint.labs.wizard.controller;
 
+import com.engagepoint.component.menu.UIMenu;
+import com.engagepoint.component.menu.UIMenuItem;
+import com.engagepoint.component.menu.model.MenuModel;
 import com.engagepoint.labs.wizard.bean.WizardForm;
+
 import java.io.Serializable;
 import java.util.List;
+
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 
@@ -15,9 +21,15 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.util.List;
 
 import org.primefaces.component.menuitem.MenuItem;
@@ -27,6 +39,7 @@ import org.primefaces.component.panel.Panel;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
+import com.sun.faces.component.visit.FullVisitContext;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -80,7 +93,7 @@ public class UINavigationBean implements Serializable {
      * topicId to first etc.) then calls init breadcrumb and init menu set
      * needRefresh to false and redirect user to page wizard-index
      * 
-     *
+     * 
      * @return wizard index page name
      */
     public String start() {
@@ -158,16 +171,18 @@ public class UINavigationBean implements Serializable {
      * Create questions, method must be called for every navigation case
      */
     public void createQuestions() {
-        UIComponentGenerator generator = new UIComponentGenerator();
-        WizardForm wizardForm = navigationData.getWizardForm();
-        WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
-        List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
-        navigationData.setPanelList(panelList);
-        navigationData.getPanelGrid().getChildren().clear();
-        for (Panel panel : navigationData.getPanelList()) {
-            navigationData.getPanelGrid().getChildren().add(panel);
-        }
-        getNavigationData().setNeedRefresh(true);
+	UIComponentGenerator generator = new UIComponentGenerator();
+	WizardForm wizardForm = navigationData.getWizardForm();
+	WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData
+		.getCurrentTopicID());
+	List<Panel> panelList = generator.getPanelList(wizardTopic
+		.getWizardQuestionList());
+	navigationData.setPanelList(panelList);
+	navigationData.getPanelGrid().getChildren().clear();
+	for (Panel panel : navigationData.getPanelList()) {
+	    navigationData.getPanelGrid().getChildren().add(panel);
+	}
+	getNavigationData().setNeedRefresh(true);
     }
 
     private int getPageCount() {
@@ -207,7 +222,9 @@ public class UINavigationBean implements Serializable {
      * @param currentTopicID
      */
     public void changeCurrentTopic(String currentTopicID) {
+	changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_DEFAULT);
 	navigationData.setCurrentTopicIDAndTitle(currentTopicID);
+	changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
 	createQuestions();
     }
 
@@ -285,6 +302,58 @@ public class UINavigationBean implements Serializable {
 	    // and changing our page one generated id to another one
 	    pageOneButtonMenuItem.setId(pageOneButtonMenuItem.getId() + "a");
 	}
+    }
+
+    private void changeStyleOfCurrentTopicButton(String styleClass) {
+	List<WizardTopic> topicList = navigationData.getWizardForm()
+		.getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
+	int currentTopicButtonIndex = 0;
+
+	// here we can find position number of topic button from menu
+	// (numbers are from 0 to n). topic buttons on menu have same
+	// order, as in wizard topic list from our XML
+	for (int i = 0; i < topicList.size(); i++) {
+	    WizardTopic topic = topicList.get(i);
+	    if (topic.getId().equals(navigationData.getCurrentTopicID())) {
+		currentTopicButtonIndex = i;
+		break;
+	    }
+	}
+
+	UIMenuItem currentTopicButtonMenuItem;
+
+	UIMenu leftMenu;
+
+	leftMenu = (UIMenu) findComponent("leftMenu");
+
+	// Get our menuItem from breadcrumb using our index we've found
+	currentTopicButtonMenuItem = (UIMenuItem) leftMenu.getChildren().get(
+		currentTopicButtonIndex);
+	// // Setting style to current page button menuItem
+	// // Setting our class style
+	currentTopicButtonMenuItem.setStyleClass(styleClass);
+	// and changing our page one generated id to another one
+    }
+
+    public UIComponent findComponent(final String componentID) {
+
+	FacesContext context = FacesContext.getCurrentInstance();
+	UIViewRoot root = context.getViewRoot();
+	final UIComponent[] found = new UIComponent[1];
+	root.visitTree(new FullVisitContext(context), new VisitCallback() {
+	    @Override
+	    public VisitResult visit(VisitContext context, UIComponent component) {
+		System.out.println(component.getId());
+		if (component.getId().equals(componentID)) {
+		    found[0] = component;
+		    return VisitResult.COMPLETE;
+		}
+		return VisitResult.ACCEPT;
+	    }
+	});
+	System.out
+		.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+	return found[0];
     }
 
 }
