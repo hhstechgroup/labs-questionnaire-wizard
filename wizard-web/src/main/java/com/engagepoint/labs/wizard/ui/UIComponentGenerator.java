@@ -5,6 +5,8 @@ import com.engagepoint.component.UIEditor;
 import com.engagepoint.component.UIInput;
 import com.engagepoint.labs.wizard.questions.*;
 import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.datagrid.DataGrid;
+import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
@@ -13,9 +15,12 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.slider.Slider;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.UISelectOne;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -60,16 +65,31 @@ public class UIComponentGenerator {
                 component = getSelectOneMenu(question);
                 break;
             case DATE:
-                component = getUIDatePicker();
+//                Calendar calendar = new Calendar();
+//                calendar.setValue(new Date());
+//                calendar.setId("calendarID");
+//                calendar.setInView(true);
+//
+////                calendar.setShowOn("button");
+////                calendar.setNavigator(true);
+                // to do
+                component = new Calendar();
                 break;
             case TIME:
+                // to do
                 component = getCalendar();
                 break;
             case RANGE:
+                // to do
                 component = getSlider(question);
                 break;
-            //todo
-
+            case FILEUPLOAD:
+                component = new FileUpload();
+                break;
+            case GRID:
+                // to do
+                component = new DataGrid();
+                break;
         }
         panel.getChildren().add(component);
 
@@ -85,11 +105,12 @@ public class UIComponentGenerator {
     }
 
 
-    private SelectOneListbox getSelectOneListbox(WizardQuestion question) {
+    private UISelectOne getSelectOneListbox(WizardQuestion question) {
+        UISelectOne uiSelectOne = new UISelectOne();
+        uiSelectOne.setRendererType("javax.faces.Listbox");
         List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
-        SelectOneListbox selectOneListbox = new SelectOneListbox();
-        selectOneListbox.getChildren().add(getSelectItems(optionsList));
-        return selectOneListbox;
+        uiSelectOne.getChildren().add(getSelectItems(optionsList));
+        return uiSelectOne;
     }
 
     private UIInput getUIInput() {
@@ -102,11 +123,11 @@ public class UIComponentGenerator {
         return label;
     }
 
-    private SelectOneMenu getSelectOneMenu(WizardQuestion question) {
+    private UISelectOne getSelectOneMenu(WizardQuestion question) {
+        UISelectOne uiSelectOne = new UISelectOne();
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
-        SelectOneMenu selectOneMenu = new SelectOneMenu();
-        selectOneMenu.getChildren().add(getSelectItems(optionsList));
-        return selectOneMenu;
+        uiSelectOne.getChildren().add(getSelectItems(optionsList));
+        return uiSelectOne;
     }
 
     private SelectManyCheckbox getSelectManyCheckbox(WizardQuestion question) {
@@ -122,7 +143,7 @@ public class UIComponentGenerator {
         UISelectItems selectItems = new UISelectItems();
         List<SelectItem> itemsList = new ArrayList<>();
         for (int i = 0; i < optionsList.size(); i++) {
-            item = new SelectItem((i + 1), optionsList.get(i));
+            item = new SelectItem(optionsList.get(i));
             itemsList.add(item);
         }
         selectItems.setValue(itemsList);

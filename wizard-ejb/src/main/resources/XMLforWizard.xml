@@ -12,13 +12,15 @@
                         <questions>
                             <question answer-required="true" question-id="1">
                                 <question-title>Error Q</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>DATE</question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
                                 <options>
-                                    <option></option>
+                                    <option>Option Numebr 1</option>
+                                    <option>Option Number 2</option>
+                                    <option>Option Number 3</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -32,7 +34,7 @@
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-type>MULTIPLECHOICE</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
