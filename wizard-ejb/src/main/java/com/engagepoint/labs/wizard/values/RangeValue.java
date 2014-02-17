@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.values;
 
-import com.engagepoint.labs.wizard.values.oblects.Range;
+import com.engagepoint.labs.wizard.values.objects.Range;
 
 /**
  * Created with IntelliJ IDEA.

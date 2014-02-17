@@ -9,15 +9,18 @@ import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.component.slidemenu.SlideMenu;
 import org.primefaces.component.slider.Slider;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UISelectOne;
+import javax.faces.component.html.HtmlBody;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,10 +53,10 @@ public class UIComponentGenerator {
 
         switch (question.getQuestionType()) {
             case TEXT:
-                component = getUIInput();
+                component = getUIInput(question);
                 break;
             case PARAGRAPHTEXT:
-                component = getUIEditor();
+                component = getUIEditor(question);
                 break;
             case MULTIPLECHOICE:
                 component = getSelectOneListbox(question);
@@ -65,26 +68,18 @@ public class UIComponentGenerator {
                 component = getSelectOneMenu(question);
                 break;
             case DATE:
-//                Calendar calendar = new Calendar();
-//                calendar.setValue(new Date());
-//                calendar.setId("calendarID");
-//                calendar.setInView(true);
-//
-////                calendar.setShowOn("button");
-////                calendar.setNavigator(true);
-                // to do
-                component = new Calendar();
+                component = getCalendar(question);
                 break;
             case TIME:
                 // to do
-                component = getCalendar();
+                component = getTime(question);
                 break;
             case RANGE:
                 // to do
                 component = getSlider(question);
                 break;
             case FILEUPLOAD:
-                component = new FileUpload();
+                component = getFileUpload(question);
                 break;
             case GRID:
                 // to do
@@ -99,8 +94,9 @@ public class UIComponentGenerator {
     private Slider getSlider(WizardQuestion question) {
         RangeQuestion rangeQuestion = (RangeQuestion) question;
         Slider slider = new Slider();
-        slider.setMinValue(rangeQuestion.getStartRange());
-        slider.setMaxValue(rangeQuestion.getEndRange());
+        slider.setMinValue(1);
+        slider.setMaxValue(13);
+        slider.setFor("maincontentid-j_id3");
         return slider;
     }
 
@@ -113,7 +109,7 @@ public class UIComponentGenerator {
         return uiSelectOne;
     }
 
-    private UIInput getUIInput() {
+    private UIInput getUIInput(WizardQuestion question) {
         return new UIInput();
     }
 
@@ -150,18 +146,26 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
-    private UIEditor getUIEditor() {
+    private UIEditor getUIEditor(WizardQuestion question) {
         return new UIEditor();
     }
 
-    private UIDatePicker getUIDatePicker() {
-        return new UIDatePicker();
+    private Calendar getCalendar(WizardQuestion question) {
+        Calendar calendar = new Calendar();
+        calendar.setValue(new Date());
+        return calendar;
     }
 
-    private Calendar getCalendar() {
+    private Calendar getTime(WizardQuestion question) {
         Calendar timeCalendar = new Calendar();
+        timeCalendar.setValue(new Date());
         timeCalendar.setPattern("HH:mm");
         timeCalendar.setTimeOnly(true);
         return timeCalendar;
+    }
+
+    private FileUpload getFileUpload(WizardQuestion question){
+        FileUpload fileUpload = new FileUpload();
+        return fileUpload;
     }
 }

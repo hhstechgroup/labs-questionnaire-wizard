@@ -1,4 +1,4 @@
-package com.engagepoint.labs.wizard.values.oblects;
+package com.engagepoint.labs.wizard.values.objects;
 
 /**
  * Created by igor.guzenko on 2/17/14.

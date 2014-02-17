@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.values;
 
-import com.engagepoint.labs.wizard.values.oblects.Grid;
+import com.engagepoint.labs.wizard.values.objects.Grid;
 
 /**
  * Created with IntelliJ IDEA.
