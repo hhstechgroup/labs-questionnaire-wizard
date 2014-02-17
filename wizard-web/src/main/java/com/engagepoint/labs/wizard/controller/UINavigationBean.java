@@ -1,17 +1,24 @@
 package com.engagepoint.labs.wizard.controller;
 
+import com.engagepoint.labs.wizard.bean.WizardForm;
 import java.io.Serializable;
 import java.util.List;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.panel.Panel;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -73,6 +80,7 @@ public class UINavigationBean implements Serializable {
      * topicId to first etc.) then calls init breadcrumb and init menu set
      * needRefresh to false and redirect user to page wizard-index
      * 
+     *
      * @return wizard index page name
      */
     public String start() {
@@ -113,7 +121,7 @@ public class UINavigationBean implements Serializable {
 			    + "\")}", void.class, new Class[] { String.class });
 	    // set elExpression on item action attribute
 	    item.setActionExpression(elExpression);
-	    navigationData.getBreadcrumbModel().addMenuItem(item);
+	    navigationData.getBreadcrumb_model().addMenuItem(item);
 	}
 
     }
@@ -149,22 +157,17 @@ public class UINavigationBean implements Serializable {
     /**
      * Create questions, method must be called for every navigation case
      */
-    private void createQuestions() {
-	navigationData.getPanelGrid().getChildren().clear();
-	navigationData.setLabel(new OutputLabel());
-	navigationData.setCurrentOutputText(new HtmlOutputText());
-	navigationData.getLabel().setId("bkah");
-	navigationData.getLabel().setValue(
-		"Page " + navigationData.getCurrentPageTitle() + " - "
-			+ navigationData.getCurrentTopicTitle());
-	navigationData.getCurrentOutputText().setValue(
-		"Page " + navigationData.getCurrentPageTitle() + " - "
-			+ navigationData.getCurrentTopicTitle());
-	navigationData.setPanel(new Panel());
-	navigationData.getPanel().getChildren().add(navigationData.getLabel());
-
-	navigationData.getPanelGrid().getChildren().add(navigationData.getPanel());
-	getNavigationData().setNeedRefresh(true);
+    public void createQuestions() {
+        UIComponentGenerator generator = new UIComponentGenerator();
+        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
+        List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
+        navigationData.setPanelList(panelList);
+        navigationData.getPanelGrid().getChildren().clear();
+        for (Panel panel : navigationData.getPanelList()) {
+            navigationData.getPanelGrid().getChildren().add(panel);
+        }
+        getNavigationData().setNeedRefresh(true);
     }
 
     private int getPageCount() {

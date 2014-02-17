@@ -65,7 +65,7 @@ public class WizardForm implements Serializable {
         return null;
     }
 
-    public List<WizardTopic> getAllWizarlTopics() {
+    public List<WizardTopic> getAllWizardTopics() {
         List<WizardTopic> allTopicsInForm = new ArrayList<>();
         for (WizardPage wizardPage : wizardPageList) {
             List<WizardTopic> topicList = wizardPage.getTopicList();
@@ -84,7 +84,7 @@ public class WizardForm implements Serializable {
      * id
      */
     public WizardTopic getWizardTopicById(String topicId) {
-        List<WizardTopic> allTopics = getAllWizarlTopics();
+        List<WizardTopic> allTopics = getAllWizardTopics();
         WizardTopic result = null;
 
         for (WizardTopic wizardTopic : allTopics) {
@@ -98,9 +98,9 @@ public class WizardForm implements Serializable {
     }
 
     public List<WizardQuestion> getAllWizardQuestions() {
-        List<WizardTopic> allWizarlTopics = getAllWizarlTopics();
+        List<WizardTopic> allWizardTopics = getAllWizardTopics();
         List<WizardQuestion> allWizardQuestions = new ArrayList<>();
-        for (WizardTopic wizardTopic : allWizarlTopics) {
+        for (WizardTopic wizardTopic : allWizardTopics) {
             List<WizardQuestion> wizardQuestionList = wizardTopic.getWizardQuestionList();
             for (WizardQuestion wizardQuestion : wizardQuestionList) {
                 allWizardQuestions.add(wizardQuestion);

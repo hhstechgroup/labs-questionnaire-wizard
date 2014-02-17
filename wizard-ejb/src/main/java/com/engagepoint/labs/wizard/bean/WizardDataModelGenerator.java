@@ -16,8 +16,10 @@ import com.engagepoint.labs.wizard.questions.TextAreaQuestion;
 import com.engagepoint.labs.wizard.questions.TextQuestion;
 import com.engagepoint.labs.wizard.questions.TimeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Page;
@@ -28,7 +30,6 @@ import super_binding.QuestionnaireForms;
 import super_binding.Questions;
 
 /**
- *
  * @author artem.pylypenko
  */
 public class WizardDataModelGenerator {
@@ -116,6 +117,7 @@ public class WizardDataModelGenerator {
             case CHOOSEFROMLIST:
                 DropDownQuestion dropDownQuestion = new DropDownQuestion();
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
+                wizardQuestion = dropDownQuestion;
                 break;
             case DATE:
                 wizardQuestion = new DateQuestion();
