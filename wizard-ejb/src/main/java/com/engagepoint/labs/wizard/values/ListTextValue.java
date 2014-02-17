@@ -11,13 +11,18 @@ import java.util.List;
  */
 
 public class ListTextValue extends Value {
-    private List<String> textAnswersList;
 
-    public List<String> getTextAnswersList() {
-        return textAnswersList;
+    public ListTextValue() {
+        type = ValueType.LIST;
     }
 
-    public void setTextAnswersList(List<String> textAnswersList) {
-        this.textAnswersList = textAnswersList;
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof List) {
+            super.setValue(value);
+        } else {
+            throw new ClassCastException("You must provide List for this method!");
+        }
+
     }
 }
