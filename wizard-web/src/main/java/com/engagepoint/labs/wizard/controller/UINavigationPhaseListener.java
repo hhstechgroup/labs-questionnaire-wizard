@@ -34,7 +34,8 @@ public class UINavigationPhaseListener implements PhaseListener {
 	    modelForController.setNeedRefresh(false);
 	    redirectPage();
 	    FacesContext facesContext = event.getFacesContext();
-	    HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+	    HttpServletResponse response = (HttpServletResponse) facesContext
+		    .getExternalContext().getResponse();
 	    response.addHeader("Pragma", "no-cache");
 	    response.addHeader("Cache-Control", "no-cache");
 	    response.setHeader("Cache-Control", "no-store");
@@ -59,9 +60,10 @@ public class UINavigationPhaseListener implements PhaseListener {
     }
 
     private void redirectPage() {
-	HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
-		.getRequest();
-	ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	HttpServletRequest origRequest = (HttpServletRequest) FacesContext
+		.getCurrentInstance().getExternalContext().getRequest();
+	ExternalContext externalContext = FacesContext.getCurrentInstance()
+		.getExternalContext();
 	try {
 	    externalContext.redirect(origRequest.getRequestURI());
 
