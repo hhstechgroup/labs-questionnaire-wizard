@@ -54,7 +54,7 @@ public class NavigationData implements Serializable {
     private String currentTopicID;
     private String currentPageTitle;
     private String currentTopicTitle;
-    private MenuModel breadcrumb_model;
+    private MenuModel breadcrumbModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private List<Panel> panelList;
@@ -100,7 +100,7 @@ public class NavigationData implements Serializable {
         setCurrentTopicID(wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId());
         setCurrentTopicIDs(new ArrayList<String>());
         setCurrentTopicTitles(new ArrayList<String>());
-        setBreadcrumb_model(new DefaultMenuModel());
+        setBreadcrumbModel(new DefaultMenuModel());
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -248,12 +248,12 @@ public class NavigationData implements Serializable {
         this.xmlController = xmlController;
     }
 
-    public MenuModel getBreadcrumb_model() {
-        return breadcrumb_model;
+    public MenuModel getBreadcrumbModel() {
+        return breadcrumbModel;
     }
 
-    public void setBreadcrumb_model(MenuModel breadcrumb_model) {
-        this.breadcrumb_model = breadcrumb_model;
+    public void setBreadcrumbModel(MenuModel breadcrumbModel) {
+        this.breadcrumbModel = breadcrumbModel;
     }
 
     public HtmlForm getMainContentForm() {

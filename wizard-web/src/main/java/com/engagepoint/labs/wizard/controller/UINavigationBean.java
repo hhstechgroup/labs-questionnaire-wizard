@@ -121,7 +121,7 @@ public class UINavigationBean implements Serializable {
 			    + "\")}", void.class, new Class[] { String.class });
 	    // set elExpression on item action attribute
 	    item.setActionExpression(elExpression);
-	    navigationData.getBreadcrumb_model().addMenuItem(item);
+	    navigationData.getBreadcrumbModel().addMenuItem(item);
 	}
 
     }
@@ -267,9 +267,9 @@ public class UINavigationBean implements Serializable {
 	MenuItem pageOneButtonMenuItem;
 
 	// Get our menuItem from breadcrumb using our index we've found
-	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumb_model()
+	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
 		.getContents().get(currentPageButtonIndex);
-	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumb_model()
+	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
 		.getContents().get(0);
 	// Setting style to current page button menuItem
 	if (currentPageButtonIndex == 0) {
