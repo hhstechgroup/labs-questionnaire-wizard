@@ -1,8 +1,5 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.answers.ListTextAnswer;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +7,6 @@ import java.util.List;
  */
 public class CheckBoxesQuestion extends WizardQuestion {
 
-    private ListTextAnswer listTextAnswer;
     private List<String> optionsList;
 
     public List<String> getOptionsList() {
@@ -19,15 +15,5 @@ public class CheckBoxesQuestion extends WizardQuestion {
 
     public void setOptionsList(List<String> optionsList) {
         this.optionsList = optionsList;
-    }
-
-    @Override
-    public ListTextAnswer getAnswer() {
-        return listTextAnswer;
-    }
-
-    @Override
-    public void setAnswer(Object answers) {
-        listTextAnswer = (ListTextAnswer) answers;
     }
 }
