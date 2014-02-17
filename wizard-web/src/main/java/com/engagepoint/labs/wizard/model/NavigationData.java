@@ -145,9 +145,13 @@ public class NavigationData implements Serializable {
         return currentPageID;
     }
 
-    public void setCurrentPageID(String currentPageID) {
+    public void setCurrentPageIDAndTitle(String currentPageID) {
         this.currentPageID = currentPageID;
         this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
+    }
+    
+    public void setCurrentPageID(String currentPageID) {
+        this.currentPageID = currentPageID;
     }
 
     public String getCurrentTopicID() {
@@ -155,6 +159,9 @@ public class NavigationData implements Serializable {
     }
 
     public void setCurrentTopicID(String currentTopicID) {
+        this.currentTopicID = currentTopicID;
+    }
+    public void setCurrentTopicIDAndTitle(String currentTopicID) {
         this.currentTopicID = currentTopicID;
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }

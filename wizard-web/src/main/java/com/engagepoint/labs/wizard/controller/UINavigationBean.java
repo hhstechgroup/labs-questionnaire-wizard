@@ -226,12 +226,12 @@ public class UINavigationBean implements Serializable {
 	System.out.println("Inside method");
 	// in if condition we try to change current topic id
 
-	if (navigationData.setCurrentTopicToNext()) {
+	if (navigationData.setCurrentTopicIDtoNext()) {
 	    // if topic id was changed successfully
 	    changeCurrentTopic(navigationData.getCurrentTopicID());
 	    // if topic id was last id on page we go to "else-if" and try to
 	    // change page id
-	} else if (navigationData.setCurrentPageToNext()) {
+	} else if (navigationData.setCurrentPageIDtoNext()) {
 	    // if page id was changed successfully
 	    changeCurrentPage(navigationData.getCurrentPageID());
 	} else {
@@ -267,9 +267,9 @@ public class UINavigationBean implements Serializable {
 	MenuItem pageOneButtonMenuItem;
 
 	// Get our menuItem from breadcrumb using our index we've found
-	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
+	currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumb_model()
 		.getContents().get(currentPageButtonIndex);
-	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
+	pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumb_model()
 		.getContents().get(0);
 	// Setting style to current page button menuItem
 	if (currentPageButtonIndex == 0) {
