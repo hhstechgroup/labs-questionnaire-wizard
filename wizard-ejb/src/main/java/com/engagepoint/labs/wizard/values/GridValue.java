@@ -1,5 +1,7 @@
 package com.engagepoint.labs.wizard.values;
 
+import com.engagepoint.labs.wizard.values.oblects.Grid;
+
 /**
  * Created with IntelliJ IDEA.
  * User: andrii.sotnyk
@@ -8,22 +10,17 @@ package com.engagepoint.labs.wizard.values;
  * To change this template use File | Settings | File Templates.
  */
 public class GridValue extends Value {
-    private String row;
-    private String column;
 
-    public String getRow() {
-        return row;
+    public GridValue() {
+        type = ValueType.GRID;
     }
 
-    public void setRow(String row) {
-        this.row = row;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public void setColumn(String column) {
-        this.column = column;
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof Grid) {
+            super.setValue(value);
+        } else {
+            throw new ClassCastException("You must provide Grid for this method!");
+        }
     }
 }

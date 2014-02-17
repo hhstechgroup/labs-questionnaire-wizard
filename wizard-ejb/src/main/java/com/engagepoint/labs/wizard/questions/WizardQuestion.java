@@ -8,31 +8,19 @@ import super_binding.QType;
  *
  *
  */
-public class WizardQuestion {
+public abstract class WizardQuestion {
 
     protected String id;
     protected String title;
     protected QType questionType;
     protected String helpText;
     protected Boolean answerRequired;
-    protected Value answer;
-    protected Value defaultAnswer;
 
-    public Value getAnswer() {
-        return answer;
-    }
 
-    public void setAnswer(Value answer) {
-        this.answer = answer;
-    }
-
-    public Value getDefaultAnswer() {
-        return defaultAnswer;
-    }
-
-    public void setDefaultAnswer(Value defaultAnswer) {
-        this.defaultAnswer = defaultAnswer;
-    }
+    public abstract Value getAnswer();
+    public abstract void setAnswer(Value answer);
+    public abstract Value getDefaultAnswer();
+    public abstract void setDefaultAnswer(Value defaultAnswer);
 
     public String getHelpText() {
         return helpText;
@@ -73,5 +61,4 @@ public class WizardQuestion {
     public void setQuestionType(QType questionType) {
         this.questionType = questionType;
     }
-
 }

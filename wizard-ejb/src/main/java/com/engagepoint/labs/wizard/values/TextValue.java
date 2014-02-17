@@ -8,13 +8,18 @@ package com.engagepoint.labs.wizard.values;
  * To change this template use File | Settings | File Templates.
  */
 public class TextValue extends Value {
-    private String text;
 
-    public String getText() {
-        return text;
+    public TextValue() {
+        type = ValueType.STRING;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof String) {
+            super.setValue(value);
+        } else {
+            throw new ClassCastException("You must provide String for this method!");
+        }
+
     }
 }

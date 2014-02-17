@@ -11,13 +11,17 @@ import java.util.Date;
  */
 
 public class DateValue extends Value {
-    private Date date;
 
-    public Date getDate() {
-        return date;
+    public DateValue() {
+        type = ValueType.DATE;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    @Override
+    public void setValue(Object value) {
+        if (value instanceof Date) {
+            super.setValue(value);
+        } else {
+            throw new ClassCastException("You must provide Date for this method!");
+        }
     }
 }
