@@ -1,26 +1,22 @@
 package com.engagepoint.labs.wizard.ui;
 
-import com.engagepoint.component.UIDatePicker;
 import com.engagepoint.component.UIEditor;
 import com.engagepoint.component.UIInput;
 import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
-import org.primefaces.component.selectonelistbox.SelectOneListbox;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.component.slidemenu.SlideMenu;
 import org.primefaces.component.slider.Slider;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UISelectOne;
-import javax.faces.component.html.HtmlBody;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,10 +49,10 @@ public class UIComponentGenerator {
 
         switch (question.getQuestionType()) {
             case TEXT:
-                component = getUIInput(question);
+                component = getInputText(question);
                 break;
             case PARAGRAPHTEXT:
-                component = getUIEditor(question);
+                component = getInputTextArea(question);
                 break;
             case MULTIPLECHOICE:
                 component = getSelectOneListbox(question);
@@ -109,8 +105,16 @@ public class UIComponentGenerator {
         return uiSelectOne;
     }
 
-    private UIInput getUIInput(WizardQuestion question) {
-        return new UIInput();
+    private InputText getInputText(WizardQuestion question) {
+        InputText inputText = new InputText();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
+        if(defaultAnswer !=null && answer == null){
+            inputText.setValue(defaultAnswer.getValue().toString());
+        }else if(answer != null) {
+            inputText.setValue(answer.getValue().toString());
+        }
+        return inputText;
     }
 
     private OutputLabel getLabel(WizardQuestion question) {
@@ -146,8 +150,16 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
-    private UIEditor getUIEditor(WizardQuestion question) {
-        return new UIEditor();
+    private InputTextarea getInputTextArea(WizardQuestion question) {
+        InputTextarea inputTextarea = new InputTextarea();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
+        if(defaultAnswer !=null && answer == null){
+            inputTextarea.setValue(defaultAnswer.getValue().toString());
+        }else if(answer != null) {
+            inputTextarea.setValue(answer.getValue().toString());
+        }
+        return inputTextarea;
     }
 
     private Calendar getCalendar(WizardQuestion question) {
