@@ -12,7 +12,7 @@
                         <questions>
                             <question answer-required="true" question-id="1">
                                 <question-title>Error Q</question-title>
-                                <question-type>DATE</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text></help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
@@ -31,10 +31,13 @@
                                         <row></row>
                                     </rows>
                                 </grid>
+                                <default-answers>
+                                    <default-answer>Default Answer for Text Question =)</default-answer>
+                                </default-answers>
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>FILEUPLOAD</question-type>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -52,6 +55,9 @@
                                         <row></row>
                                     </rows>
                                 </grid>
+                                <default-answers>
+                                    <default-answer>Default Answer for Paragraph Text !</default-answer>
+                                </default-answers>
                             </question>
                         </questions>
                     </group>
@@ -77,6 +83,9 @@
                                         <row></row>
                                     </rows>
                                 </grid>
+                                <default-answers>
+                                    <default-answer>Default Answer for Paragraph Text !</default-answer>
+                                </default-answers>
                             </question>
                         </questions>
                     </group>
