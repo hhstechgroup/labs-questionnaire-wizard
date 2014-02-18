@@ -17,6 +17,9 @@ import org.primefaces.component.slider.Slider;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UISelectOne;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,6 +112,12 @@ public class UIComponentGenerator {
         InputText inputText = new InputText();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
+        inputText.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+
+            }
+        });
         if(defaultAnswer !=null && answer == null){
             inputText.setValue(defaultAnswer.getValue().toString());
         }else if(answer != null) {
