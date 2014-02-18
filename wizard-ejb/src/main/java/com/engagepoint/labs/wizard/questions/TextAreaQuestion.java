@@ -18,8 +18,8 @@ public class TextAreaQuestion extends WizardQuestion {
 
     @Override
     public void setAnswer(Value answer) {
-        if(answer.getType().equals(ValueType.STRING)){
-            this.answer = (TextValue)answer;
+        if (answer.getType().equals(ValueType.STRING)) {
+            this.answer = (TextValue) answer;
 
         }
     }
@@ -32,8 +32,8 @@ public class TextAreaQuestion extends WizardQuestion {
 
     @Override
     public void setDefaultAnswer(Value defaultAnswer) {
-        if(defaultAnswer.getType().equals(ValueType.STRING)){
-            this.defaultAnswer = (TextValue)defaultAnswer;
+        if (defaultAnswer.getType().equals(ValueType.STRING)) {
+            this.defaultAnswer = (TextValue) defaultAnswer;
         }
     }
 }

@@ -31,7 +31,7 @@ public class TimeQuestion extends WizardQuestion {
     @Override
     public void setDefaultAnswer(Value defaultAnswer) {
         if(defaultAnswer.getType().equals(ValueType.DATE)){
-
+                this.defaultAnswer =(DateValue) defaultAnswer;
         }
     }
 }

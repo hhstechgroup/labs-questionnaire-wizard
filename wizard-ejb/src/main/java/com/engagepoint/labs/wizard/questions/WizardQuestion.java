@@ -5,8 +5,6 @@ import super_binding.QType;
 
 /**
  * Created by igor.guzenko on 2/4/14.
- *
- *
  */
 public abstract class WizardQuestion {
 
@@ -18,8 +16,11 @@ public abstract class WizardQuestion {
 
 
     public abstract Value getAnswer();
+
     public abstract void setAnswer(Value answer);
+
     public abstract Value getDefaultAnswer();
+
     public abstract void setDefaultAnswer(Value defaultAnswer);
 
     public String getHelpText() {

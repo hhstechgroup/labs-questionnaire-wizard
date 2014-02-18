@@ -26,7 +26,6 @@ public class TextQuestion extends WizardQuestion {
     public void setAnswer(Value answer) {
         if(answer.getType().equals(ValueType.STRING)){
             this.answer = (TextValue)answer;
-
         }
     }
 

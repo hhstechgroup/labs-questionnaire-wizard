@@ -22,8 +22,8 @@ public class FileUploadQuestion extends WizardQuestion {
 
     @Override
     public void setAnswer(Value answer) {
-        if(answer.getType().equals(ValueType.FILE)){
-            this.answer = (FileValue)answer;
+        if (answer.getType().equals(ValueType.FILE)) {
+            this.answer = (FileValue) answer;
         }
 
     }
@@ -35,8 +35,8 @@ public class FileUploadQuestion extends WizardQuestion {
 
     @Override
     public void setDefaultAnswer(Value defaultAnswer) {
-        if(defaultAnswer.getType().equals(ValueType.FILE)){
-            this.defaultAnswer = (FileValue)defaultAnswer;
+        if (defaultAnswer.getType().equals(ValueType.FILE)) {
+            this.defaultAnswer = (FileValue) defaultAnswer;
         }
 
     }

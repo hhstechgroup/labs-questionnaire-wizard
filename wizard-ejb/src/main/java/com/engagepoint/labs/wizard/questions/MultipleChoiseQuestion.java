@@ -29,8 +29,8 @@ public class MultipleChoiseQuestion extends WizardQuestion {
 
     @Override
     public void setAnswer(Value answer) {
-        if(answer.getType().equals(ValueType.LIST)){
-            this.answer = (TextValue)answer;
+        if (answer.getType().equals(ValueType.LIST)) {
+            this.answer = (TextValue) answer;
         }
 
     }
@@ -42,8 +42,8 @@ public class MultipleChoiseQuestion extends WizardQuestion {
 
     @Override
     public void setDefaultAnswer(Value defaultAnswer) {
-        if(defaultAnswer.getType().equals(ValueType.LIST)){
-            this.defaultAnswer = (TextValue)defaultAnswer;
+        if (defaultAnswer.getType().equals(ValueType.LIST)) {
+            this.defaultAnswer = (TextValue) defaultAnswer;
         }
 
     }
