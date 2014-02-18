@@ -13,7 +13,7 @@
                             <question answer-required="true" question-id="1">
                                 <question-title>Error Q</question-title>
                                 <question-type>TEXT</question-type>
-                                <help-text></help-text>
+                                <help-text>First Help Text for Question</help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
