@@ -4,6 +4,7 @@ import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.component.button.Button;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
@@ -58,6 +59,8 @@ public class NavigationData implements Serializable {
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private List<Panel> panelList;
+    private List<Button> buttonsList;
+
     private PanelGrid panelGrid;
 
 
@@ -149,7 +152,7 @@ public class NavigationData implements Serializable {
         this.currentPageID = currentPageID;
         this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
-    
+
     public void setCurrentPageID(String currentPageID) {
         this.currentPageID = currentPageID;
     }
@@ -161,6 +164,7 @@ public class NavigationData implements Serializable {
     public void setCurrentTopicID(String currentTopicID) {
         this.currentTopicID = currentTopicID;
     }
+
     public void setCurrentTopicIDAndTitle(String currentTopicID) {
         this.currentTopicID = currentTopicID;
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
@@ -334,6 +338,17 @@ public class NavigationData implements Serializable {
 
     public void setPanelGrid(PanelGrid panelGrid) {
         this.panelGrid = panelGrid;
+    }
+
+    public List<Button> getButtonsList() {
+        if (buttonsList == null) {
+            buttonsList = new ArrayList<Button>();
+        }
+        return buttonsList;
+    }
+
+    public void setButtonsList(List<Button> buttonsList) {
+        this.buttonsList = buttonsList;
     }
 
 }

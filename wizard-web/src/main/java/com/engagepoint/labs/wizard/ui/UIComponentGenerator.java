@@ -5,6 +5,7 @@ import com.engagepoint.component.UIInput;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.fileupload.FileUpload;
@@ -87,6 +88,13 @@ public class UIComponentGenerator {
                 break;
         }
         panel.getChildren().add(component);
+
+        Button tooltip = new Button();
+        tooltip.setId("tooltip_" + question.getId());
+        tooltip.setTitle(question.getHelpText());
+        tooltip.setIcon("ui-icon-question");
+        tooltip.setStyleClass("custom");
+        panel.getChildren().add(tooltip);
 
         return panel;
     }
