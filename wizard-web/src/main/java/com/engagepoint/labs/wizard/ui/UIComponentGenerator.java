@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.ui;
 import com.engagepoint.component.UIEditor;
 import com.engagepoint.component.UIInput;
 import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
@@ -108,19 +109,23 @@ public class UIComponentGenerator {
         return uiSelectOne;
     }
 
-    private InputText getInputText(WizardQuestion question) {
+    private InputText getInputText(final WizardQuestion question) {
         InputText inputText = new InputText();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
+        inputText.setOnchange("submit()");
+        // Creating Listener interface implamintation
         inputText.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
-
+                Value value = new TextValue();
+                value.setValue(event.getNewValue());
+                question.setAnswer(value);
             }
         });
-        if(defaultAnswer !=null && answer == null){
+        if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
-        }else if(answer != null) {
+        } else if (answer != null) {
             inputText.setValue(answer.getValue().toString());
         }
         return inputText;
@@ -159,13 +164,23 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
-    private InputTextarea getInputTextArea(WizardQuestion question) {
+    private InputTextarea getInputTextArea(final WizardQuestion question) {
         InputTextarea inputTextarea = new InputTextarea();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
-        if(defaultAnswer !=null && answer == null){
+        inputTextarea.setOnchange("submit()");
+        // Creating Listener interface implamintation
+        inputTextarea.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+                Value value = new TextValue();
+                value.setValue(event.getNewValue());
+                question.setAnswer(value);
+            }
+        });
+        if (defaultAnswer != null && answer == null) {
             inputTextarea.setValue(defaultAnswer.getValue().toString());
-        }else if(answer != null) {
+        } else if (answer != null) {
             inputTextarea.setValue(answer.getValue().toString());
         }
         return inputTextarea;
@@ -185,7 +200,7 @@ public class UIComponentGenerator {
         return timeCalendar;
     }
 
-    private FileUpload getFileUpload(WizardQuestion question){
+    private FileUpload getFileUpload(WizardQuestion question) {
         FileUpload fileUpload = new FileUpload();
         return fileUpload;
     }
