@@ -17,9 +17,12 @@ import com.engagepoint.labs.wizard.questions.TextQuestion;
 import com.engagepoint.labs.wizard.questions.TimeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.engagepoint.labs.wizard.values.*;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import super_binding.Group;
 import super_binding.GroupsOfQuestions;
 import super_binding.Page;
@@ -103,7 +106,7 @@ public class WizardDataModelGenerator {
     }
 
     private WizardQuestion createWizardQuestionFromXmlQuestion(Question xmlQuestion) {
-//        DependentQuestions dependentQuestions = xmlQuestion.getDependentQuestions(); // not suported yet
+//        DependentQuestions dependentQuestions = xmlQuestion.getDependentQuestions(); // not supported yet
         WizardQuestion wizardQuestion = null;
         if (xmlQuestion.getQuestionType() == null) {
             return null;
@@ -112,15 +115,36 @@ public class WizardDataModelGenerator {
             case CHECKBOX:
                 CheckBoxesQuestion checkBoxesQuestion = new CheckBoxesQuestion();
                 checkBoxesQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        ListTextValue checkboxDefaults = new ListTextValue();
+                        checkboxDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                        wizardQuestion.setDefaultAnswer(checkboxDefaults);
+                    }
+                }
                 wizardQuestion = checkBoxesQuestion;
                 break;
             case CHOOSEFROMLIST:
                 DropDownQuestion dropDownQuestion = new DropDownQuestion();
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        ListTextValue chooseFromListDefaults = new ListTextValue();
+                        chooseFromListDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                        wizardQuestion.setDefaultAnswer(chooseFromListDefaults);
+                    }
+                }
                 wizardQuestion = dropDownQuestion;
                 break;
             case DATE:
                 wizardQuestion = new DateQuestion();
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        DateValue dateDefaults = new DateValue();
+                        dateDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                        wizardQuestion.setDefaultAnswer(dateDefaults);
+                    }
+                }
                 break;
             case FILEUPLOAD:
                 wizardQuestion = new FileUploadQuestion();
@@ -134,25 +158,62 @@ public class WizardDataModelGenerator {
             case MULTIPLECHOICE:
                 MultipleChoiseQuestion multipleChoiseQuestion = new MultipleChoiseQuestion();
                 multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        ListTextValue multipleChoiceDefaults = new ListTextValue();
+                        multipleChoiceDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
+                        wizardQuestion.setDefaultAnswer(multipleChoiceDefaults);
+                    }
+                }
                 wizardQuestion = multipleChoiseQuestion;
                 break;
             case PARAGRAPHTEXT:
                 wizardQuestion = new TextAreaQuestion();
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        TextValue paragraphDefaults = new TextValue();
+                        paragraphDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                        wizardQuestion.setDefaultAnswer(paragraphDefaults);
+                    }
+                }
                 break;
             case RANGE:
                 RangeQuestion rangeQuestion = new RangeQuestion();
-                rangeQuestion.setValue(xmlQuestion.getRange().getValue());
-                rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(),
-                        xmlQuestion.getRange().getRangeEnd());
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        RangeValue rangeDefaults = new RangeValue();
+                        Range range = new Range();
+                        range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                        range.setEnd(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(1)));
+                        rangeDefaults.setValue(range);
+                        wizardQuestion.setDefaultAnswer(rangeDefaults);
+                    }
+                }
+                rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(), xmlQuestion.getRange().getRangeEnd());
                 wizardQuestion = rangeQuestion;
                 break;
             case TEXT:
                 wizardQuestion = new TextQuestion();
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        TextValue textDefaults = new TextValue();
+                        textDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                        wizardQuestion.setDefaultAnswer(textDefaults);
+                    }
+                }
                 break;
             case TIME:
                 wizardQuestion = new TimeQuestion();
+                if(xmlQuestion.getDefaultAnswers() != null) {
+                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                        DateValue timeDefaults = new DateValue();
+                        timeDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
+                        wizardQuestion.setDefaultAnswer(timeDefaults);
+                    }
+                }
                 break;
         }
+
         if (wizardQuestion != null) {
             wizardQuestion.setId(xmlQuestion.getQuestionId());
             wizardQuestion.setTitle(xmlQuestion.getQuestionTitle());
@@ -163,4 +224,5 @@ public class WizardDataModelGenerator {
 
         return wizardQuestion;
     }
+
 }

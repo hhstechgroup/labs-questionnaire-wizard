@@ -1,4 +1,4 @@
-package com.engagepoint.labs.wizard.controller;
+package com.engagepoint.labs.wizard.listener;
 
 import com.engagepoint.labs.wizard.model.NavigationData;
 

@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
+import org.primefaces.component.button.Button;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
@@ -62,6 +63,8 @@ public class NavigationData implements Serializable {
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private List<Panel> panelList;
+    private List<Button> buttonsList;
+
     private PanelGrid panelGrid;
 
     /**
@@ -341,6 +344,17 @@ public class NavigationData implements Serializable {
 
     public void setPanelGrid(PanelGrid panelGrid) {
 	this.panelGrid = panelGrid;
+    }
+
+    public List<Button> getButtonsList() {
+	if (buttonsList == null) {
+	    buttonsList = new ArrayList<Button>();
+	}
+	return buttonsList;
+    }
+
+    public void setButtonsList(List<Button> buttonsList) {
+	this.buttonsList = buttonsList;
     }
 
     public MenuModel getMenuModel() {

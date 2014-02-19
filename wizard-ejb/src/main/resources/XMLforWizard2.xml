@@ -11,7 +11,7 @@
                         <questions>
                             <question answer-required="true" question-id="zxxxx3">
                                 <question-title>Super Text</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>DATE</question-type>
                                 <help-text>Help text jhdfkosd</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -36,7 +36,7 @@
                         <questions>
                             <question answer-required="true" question-id="yqtrwrer">
                                 <question-title>Super Paragraph</question-title>
-                                <question-type>PARAGRAPHTEXT</question-type>
+                                <question-type>TIME</question-type>
                                 <help-text>TODO later\</help-text>
                                 <dependent-questions>
                                     <dependent-question/>

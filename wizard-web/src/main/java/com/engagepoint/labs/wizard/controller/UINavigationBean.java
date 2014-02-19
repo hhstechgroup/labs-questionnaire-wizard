@@ -19,6 +19,7 @@ import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 
@@ -133,7 +134,7 @@ public class UINavigationBean implements Serializable {
 	navigationData.getCurrentTopicIDs().clear();
 	navigationData.getCurrentTopicTitles().clear();
 	navigationData.getMenuModel().getContents().clear();
-	
+
 	// now we start create new topics for page
 	facesContext = FacesContext.getCurrentInstance();
 	// get elContext (super container for EL expressions)
@@ -203,6 +204,7 @@ public class UINavigationBean implements Serializable {
      * @param currentPageID
      */
     public void changeCurrentPage(String currentPageID) {
+	commitAnswers();
 	clearCurrentTopicsData();
 	// Refreshing current style to BootStrap defaults
 	changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
@@ -222,6 +224,7 @@ public class UINavigationBean implements Serializable {
      * @param currentTopicID
      */
     public void changeCurrentTopic(String currentTopicID) {
+	commitAnswers();
 	changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_DEFAULT);
 	navigationData.setCurrentTopicIDAndTitle(currentTopicID);
 	changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
@@ -301,6 +304,22 @@ public class UINavigationBean implements Serializable {
 	    // and changing our page one generated id to another one
 	    pageOneButtonMenuItem.setId(pageOneButtonMenuItem.getId() + "a");
 	}
+    }
+
+    private void commitAnswers() {
+	List<WizardQuestion> wizardQuestionList = getQuestionListFromCurrentTopic();
+	for (WizardQuestion question : wizardQuestionList) {
+	    if (question.getAnswer() == null && question.getDefaultAnswer() != null) {
+		question.setAnswer(question.getDefaultAnswer());
+	    }
+	}
+    }
+
+    private List<WizardQuestion> getQuestionListFromCurrentTopic() {
+	WizardForm wizardForm = navigationData.getWizardForm();
+	String currentTopicID = navigationData.getCurrentTopicID();
+	WizardTopic wizardTopic = wizardForm.getWizardTopicById(currentTopicID);
+	return wizardTopic.getWizardQuestionList();
     }
 
     private void changeStyleOfCurrentTopicButton(String styleClass) {
