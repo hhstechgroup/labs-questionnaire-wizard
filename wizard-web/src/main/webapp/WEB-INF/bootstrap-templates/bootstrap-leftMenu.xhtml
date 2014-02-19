@@ -6,12 +6,6 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	template="bootstrap-template.xhtml">
 
-	<uib:menu id="leftMenu">
-		<c:forEach items="#{uiNavigationBean.navigationData.currentTopicIDs}"
-			var="topicID">
-			<uib:menuItem id="#{topicID}"
-				title="#{uiNavigationBean.navigationData.getTopicTitleFromID(topicID)}"
-				action="#{uiNavigationBean.changeCurrentTopic(topicID)}" />
-		</c:forEach>
-	</uib:menu>
+	<p:menu id="leftMenu"
+		model="#{uiNavigationBean.navigationData.menuModel}" />
 </h:form>

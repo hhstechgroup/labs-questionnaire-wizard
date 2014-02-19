@@ -1,9 +1,19 @@
 package com.engagepoint.labs.wizard.model;
 
-import com.engagepoint.labs.wizard.bean.WizardDocument;
-import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.JAXBException;
 
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
@@ -11,22 +21,10 @@ import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 import org.xml.sax.SAXException;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlOutputText;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.JAXBException;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 
 @Named("navigationData")
 @SessionScoped
@@ -60,6 +58,7 @@ public class NavigationData implements Serializable {
     private String currentPageTitle;
     private String currentTopicTitle;
     private MenuModel breadcrumbModel;
+    private MenuModel menuModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
     private List<Panel> panelList;
@@ -98,15 +97,14 @@ public class NavigationData implements Serializable {
 	panelGrid = new PanelGrid();
 	panelGrid.setColumns(1);
 	mainContentForm.getChildren().add(panelGrid);
-	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
-		wizardDocument.getFormList());
+	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
 	needRefresh = false;
 	currentPageID = wizardForm.getWizardPageList().get(0).getId();
-	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList()
-		.get(0).getId();
+	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId();
 	currentTopicIDs = new ArrayList<String>();
 	currentTopicTitles = new ArrayList<String>();
 	breadcrumbModel = new DefaultMenuModel();
+	menuModel = new DefaultMenuModel();
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -154,8 +152,7 @@ public class NavigationData implements Serializable {
 
     public void setCurrentPageIDAndTitle(String currentPageID) {
 	this.currentPageID = currentPageID;
-	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID)
-		.getPageNumber().toString();
+	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
 
     public void setCurrentPageID(String currentPageID) {
@@ -344,6 +341,14 @@ public class NavigationData implements Serializable {
 
     public void setPanelGrid(PanelGrid panelGrid) {
 	this.panelGrid = panelGrid;
+    }
+
+    public MenuModel getMenuModel() {
+	return menuModel;
+    }
+
+    public void setMenuModel(MenuModel menuModel) {
+	this.menuModel = menuModel;
     }
 
 }
