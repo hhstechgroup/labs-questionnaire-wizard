@@ -93,6 +93,8 @@ public class UIComponentGenerator {
 	tooltip.setTitle(question.getHelpText());
 	tooltip.setIcon("ui-icon-question");
 	tooltip.setStyleClass("custom");
+    tooltip.setStyle("position: absolute; left: auto; bottom: auto; padding: 1px");
+    tooltip.setDisabled(true);
 	panel.getChildren().add(tooltip);
 
 	return panel;
