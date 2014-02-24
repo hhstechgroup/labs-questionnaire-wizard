@@ -10,19 +10,24 @@ import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +60,9 @@ public class UIComponentGenerator {
         switch (question.getQuestionType()) {
             case TEXT:
                 component = getInputText(question);
+                Message message = new Message();
+                message.setFor("maincontentid-" + question.getId());
+                panel.getChildren().add(message);
                 break;
             case PARAGRAPHTEXT:
                 component = getInputTextArea(question);
@@ -107,13 +115,13 @@ public class UIComponentGenerator {
         List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
         sOneListbox.getChildren().add(getSelectItems(optionsList));
         // hardcoded default answers
-        if(question.getDefaultAnswer()==null){
+        if (question.getDefaultAnswer() == null) {
             TextValue defHardValue = new TextValue();
             defHardValue.setValue(optionsList.get(0));
             question.setDefaultAnswer(defHardValue);
         }
-        int height  = ONE_SELECT_ITEM_HEIGHT*optionsList.size();
-        sOneListbox.setStyle("height:"+height+"px");
+        int height = ONE_SELECT_ITEM_HEIGHT * optionsList.size();
+        sOneListbox.setStyle("height:" + height + "px");
 
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
@@ -142,7 +150,23 @@ public class UIComponentGenerator {
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputText.setOnchange("submit()");
-        // Creating Listener interface implamintation
+        inputText.setId(question.getId());
+        // Creating Listener for Validation
+        if (question.isRequired()) {
+            inputText.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                    if (value == null || value.toString().isEmpty()) {
+                        question.setValid(false);
+                        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "Empty field is not allowed here"));
+                    } else {
+                        question.setValid(true);
+                    }
+                }
+            });
+        }
+        // Creating Listener for Value Change
         inputText.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
@@ -151,6 +175,7 @@ public class UIComponentGenerator {
                 question.setAnswer(value);
             }
         });
+        // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
         } else if (answer != null) {
@@ -161,7 +186,11 @@ public class UIComponentGenerator {
 
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
-        label.setValue(question.getTitle());
+        if (question.isRequired()) {
+            label.setValue(question.getTitle() + " *");
+        } else {
+            label.setValue(question.getTitle());
+        }
         label.getChildren().add(getButtonTooltip(question));
         return label;
     }
@@ -171,7 +200,7 @@ public class UIComponentGenerator {
         HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
         selectOneMenu.setOnchange("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
-        if(question.getDefaultAnswer()==null){
+        if (question.getDefaultAnswer() == null) {
             TextValue defHardValue = new TextValue();
             defHardValue.setValue(optionsList.get(0));
             question.setDefaultAnswer(defHardValue);
@@ -191,7 +220,7 @@ public class UIComponentGenerator {
             selectOneMenu.setValue(defaultAnswer.getValue());
         } else if (answer != null) {
 
-           selectOneMenu.setValue(answer.getValue());
+            selectOneMenu.setValue(answer.getValue());
         }
 
 
@@ -288,7 +317,7 @@ public class UIComponentGenerator {
         return fileUpload;
     }
 
-    private Button getButtonTooltip(WizardQuestion question){
+    private Button getButtonTooltip(WizardQuestion question) {
         Button tooltip = new Button();
         tooltip.setId("tooltip_" + question.getId());
         tooltip.setTitle(question.getHelpText());
