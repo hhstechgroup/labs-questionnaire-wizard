@@ -2,6 +2,7 @@ package com.engagepoint.labs.wizard.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,8 @@ public class NavigationData implements Serializable {
 
     private PanelGrid panelGrid;
 
+    private Date dateStub;
+
     /**
      * Method parses our XML's. Created because out first page must know the
      * list of available templates. Then when you click on start button, method
@@ -100,10 +103,12 @@ public class NavigationData implements Serializable {
 	panelGrid = new PanelGrid();
 	panelGrid.setColumns(1);
 	mainContentForm.getChildren().add(panelGrid);
-	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
+	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
+		wizardDocument.getFormList());
 	needRefresh = false;
 	currentPageID = wizardForm.getWizardPageList().get(0).getId();
-	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId();
+	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList()
+		.get(0).getId();
 	currentTopicIDs = new ArrayList<String>();
 	currentTopicTitles = new ArrayList<String>();
 	breadcrumbModel = new DefaultMenuModel();
@@ -155,7 +160,8 @@ public class NavigationData implements Serializable {
 
     public void setCurrentPageIDAndTitle(String currentPageID) {
 	this.currentPageID = currentPageID;
-	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
+	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID)
+		.getPageNumber().toString();
     }
 
     public void setCurrentPageID(String currentPageID) {
@@ -363,6 +369,18 @@ public class NavigationData implements Serializable {
 
     public void setMenuModel(MenuModel menuModel) {
 	this.menuModel = menuModel;
+    }
+
+    public Date getDateStub() {
+	if (dateStub == null) {
+	    System.out.println("JI");
+	    dateStub = new Date();
+	}
+	return dateStub;
+    }
+
+    public void setDateStub(Date dateStub) {
+	this.dateStub = dateStub;
     }
 
 }

@@ -39,23 +39,23 @@ public class XmlCustomParser {
         unmarshaller.setEventHandler(new ValidationEventHandler() {
             @Override
             public boolean handleEvent(ValidationEvent event) {
-                System.out.println("\nEVENT");
-                System.out.println("SEVERITY:  " + event.getSeverity());
-                System.out.println("MESSAGE:  " + event.getMessage());
-                System.out.println("LINKED EXCEPTION:  "
-                        + event.getLinkedException());
-                System.out.println("LOCATOR");
-                System.out.println("    LINE NUMBER:  "
-                        + event.getLocator().getLineNumber());
-                System.out.println("    COLUMN NUMBER:  "
-                        + event.getLocator().getColumnNumber());
-                System.out.println("    OFFSET:  "
-                        + event.getLocator().getOffset());
-                System.out.println("    OBJECT:  "
-                        + event.getLocator().getObject());
-                System.out
-                        .println("    NODE:  " + event.getLocator().getNode());
-                System.out.println("    URL:  " + event.getLocator().getURL());
+//                SYSTEM.OUT.PRINTLN("\NEVENT");
+//                SYSTEM.OUT.PRINTLN("SEVERITY:  " + EVENT.GETSEVERITY());
+//                SYSTEM.OUT.PRINTLN("MESSAGE:  " + EVENT.GETMESSAGE());
+//                SYSTEM.OUT.PRINTLN("LINKED EXCEPTION:  "
+//                        + EVENT.GETLINKEDEXCEPTION());
+//                SYSTEM.OUT.PRINTLN("LOCATOR");
+//                SYSTEM.OUT.PRINTLN("    LINE NUMBER:  "
+//                        + EVENT.GETLOCATOR().GETLINENUMBER());
+//                SYSTEM.OUT.PRINTLN("    COLUMN NUMBER:  "
+//                        + EVENT.GETLOCATOR().GETCOLUMNNUMBER());
+//                SYSTEM.OUT.PRINTLN("    OFFSET:  "
+//                        + EVENT.GETLOCATOR().GETOFFSET());
+//                SYSTEM.OUT.PRINTLN("    OBJECT:  "
+//                        + EVENT.GETLOCATOR().GETOBJECT());
+//                SYSTEM.OUT
+//                        .PRINTLN("    NODE:  " + EVENT.GETLOCATOR().GETNODE());
+//                SYSTEM.OUT.PRINTLN("    URL:  " + EVENT.GETLOCATOR().GETURL());
                 return true;
             }
         });

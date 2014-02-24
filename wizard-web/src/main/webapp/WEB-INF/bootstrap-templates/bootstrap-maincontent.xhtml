@@ -1,10 +1,18 @@
 <h:form enctype="multipart/form-data" style=" height: 658px;"
-        xmlns:uib="http://engagepoint.com/uib" id="maincontentid"
-        xmlns:p="http://primefaces.org/ui"
-        xmlns:h="http://java.sun.com/jsf/html"
-        template="bootstrap-template.xhtml"
-        xmlns:ui="http://java.sun.com/jsf/facelets" markupType="html5"
-        binding="#{uiNavigationBean.navigationData.mainContentForm}">
+	xmlns:uib="http://engagepoint.com/uib" id="maincontentid"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="bootstrap-template.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" markupType="html5"
+	binding="#{uiNavigationBean.navigationData.mainContentForm}">
 
+	<!-- DO NOT TOUCH -->
+	<p:calendar value="#{uiNavigationBean.navigationData.dateStub}"
+		pattern="HH:mm" timeOnly="true" rendered="true" showOn="both" />
+	<!-- DO NOT TOUCH -->
+	<!-- DO NOT TOUCH -->
+	<p:calendar value="#{uiNavigationBean.navigationData.dateStub}"
+		pattern="HH:mm" timeOnly="true" rendered="true" mode="inline" id="popupButtonCal" />
+	<!-- DO NOT TOUCH -->
 
 </h:form>
