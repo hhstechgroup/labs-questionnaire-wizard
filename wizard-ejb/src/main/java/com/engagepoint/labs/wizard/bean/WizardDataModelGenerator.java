@@ -5,32 +5,17 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DateQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.FileUploadQuestion;
-import com.engagepoint.labs.wizard.questions.GridQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.RangeQuestion;
-import com.engagepoint.labs.wizard.questions.TextAreaQuestion;
-import com.engagepoint.labs.wizard.questions.TextQuestion;
-import com.engagepoint.labs.wizard.questions.TimeQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.values.DateValue;
+import com.engagepoint.labs.wizard.values.ListTextValue;
+import com.engagepoint.labs.wizard.values.RangeValue;
+import com.engagepoint.labs.wizard.values.TextValue;
+import com.engagepoint.labs.wizard.values.objects.Range;
+import super_binding.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.engagepoint.labs.wizard.values.*;
-import com.engagepoint.labs.wizard.values.objects.Range;
-import super_binding.Group;
-import super_binding.GroupsOfQuestions;
-import super_binding.Page;
-import super_binding.Pages;
-import super_binding.Question;
-import super_binding.QuestionnaireForm;
-import super_binding.QuestionnaireForms;
-import super_binding.Questions;
 
 /**
  * @author artem.pylypenko
@@ -100,7 +85,9 @@ public class WizardDataModelGenerator {
         List<Question> questionList = questions.getQuestion();
         wizardQuestionList = new ArrayList<>();
         for (Question question : questionList) {
-            wizardQuestionList.add(createWizardQuestionFromXmlQuestion(question));
+            if(createWizardQuestionFromXmlQuestion(question)!=null){
+                wizardQuestionList.add(createWizardQuestionFromXmlQuestion(question));
+            }
         }
         return wizardQuestionList;
     }
@@ -119,19 +106,20 @@ public class WizardDataModelGenerator {
                     if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         ListTextValue checkboxDefaults = new ListTextValue();
                         checkboxDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
-                        wizardQuestion.setDefaultAnswer(checkboxDefaults);
+                         checkBoxesQuestion.setDefaultAnswer(checkboxDefaults);
                     }
                 }
                 wizardQuestion = checkBoxesQuestion;
                 break;
+
             case CHOOSEFROMLIST:
                 DropDownQuestion dropDownQuestion = new DropDownQuestion();
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-                        ListTextValue chooseFromListDefaults = new ListTextValue();
-                        chooseFromListDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
-                        wizardQuestion.setDefaultAnswer(chooseFromListDefaults);
+                        TextValue chooseFromListDefaults = new TextValue();
+                        chooseFromListDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                        dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);
                     }
                 }
                 wizardQuestion = dropDownQuestion;
@@ -160,9 +148,9 @@ public class WizardDataModelGenerator {
                 multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
                 if(xmlQuestion.getDefaultAnswers() != null) {
                     if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-                        ListTextValue multipleChoiceDefaults = new ListTextValue();
-                        multipleChoiceDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
-                        wizardQuestion.setDefaultAnswer(multipleChoiceDefaults);
+                        TextValue multipleChoiceDefaults = new TextValue();
+                        multipleChoiceDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+                        multipleChoiseQuestion.setDefaultAnswer(multipleChoiceDefaults);
                     }
                 }
                 wizardQuestion = multipleChoiseQuestion;
@@ -186,7 +174,7 @@ public class WizardDataModelGenerator {
                         range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
                         range.setEnd(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(1)));
                         rangeDefaults.setValue(range);
-                        wizardQuestion.setDefaultAnswer(rangeDefaults);
+                        rangeQuestion.setDefaultAnswer(rangeDefaults);
                     }
                 }
                 rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(), xmlQuestion.getRange().getRangeEnd());
