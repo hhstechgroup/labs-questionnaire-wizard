@@ -112,9 +112,18 @@ public class UIComponentGenerator {
     private HtmlSelectOneListbox getSelectOneListbox(final WizardQuestion question) {
         HtmlSelectOneListbox sOneListbox = new HtmlSelectOneListbox();
         sOneListbox.setOnchange("submit()");
+
+
+
+        List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
+        if(question.getDefaultAnswer()==null){
+            TextValue defHardValue = new TextValue();
+            defHardValue.setValue(optionsList.get(0));
+            question.setDefaultAnswer(defHardValue);
+        }
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
-        List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
+
         sOneListbox.getChildren().add(getSelectItems(optionsList));
         sOneListbox.addValueChangeListener(new ValueChangeListener() {
             @Override
