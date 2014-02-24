@@ -1,7 +1,5 @@
 package com.engagepoint.labs.wizard.ui;
 
-import com.engagepoint.component.UIEditor;
-import com.engagepoint.component.UIInput;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
@@ -20,12 +18,12 @@ import org.primefaces.component.slider.Slider;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UISelectOne;
+import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -111,12 +109,31 @@ public class UIComponentGenerator {
         return slider;
     }
 
-    private UISelectOne getSelectOneListbox(WizardQuestion question) {
-        UISelectOne uiSelectOne = new UISelectOne();
-        uiSelectOne.setRendererType("javax.faces.Listbox");
+    private HtmlSelectOneListbox getSelectOneListbox(final WizardQuestion question) {
+        HtmlSelectOneListbox sOneListbox = new HtmlSelectOneListbox();
+        sOneListbox.setOnchange("submit()");
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
         List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
-        uiSelectOne.getChildren().add(getSelectItems(optionsList));
-        return uiSelectOne;
+        sOneListbox.getChildren().add(getSelectItems(optionsList));
+        sOneListbox.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+                TextValue value = new TextValue();
+                value.setValue(event.getNewValue().toString());
+                question.setAnswer(value);
+            }
+        });
+        if(answer!=null)
+        System.err.print("ANSWER = "+answer.getValue());
+        if (defaultAnswer != null && answer == null) {
+            sOneListbox.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+
+            sOneListbox.setValue(answer.getValue());
+        }
+
+        return sOneListbox;
     }
 
     private InputText getInputText(final WizardQuestion question) {
