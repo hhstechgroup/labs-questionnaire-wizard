@@ -17,8 +17,8 @@ import org.primefaces.component.slider.Slider;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
-import javax.faces.component.UISelectOne;
 import javax.faces.component.html.HtmlSelectOneListbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
@@ -112,19 +112,20 @@ public class UIComponentGenerator {
     private HtmlSelectOneListbox getSelectOneListbox(final WizardQuestion question) {
         HtmlSelectOneListbox sOneListbox = new HtmlSelectOneListbox();
         sOneListbox.setOnchange("submit()");
-
-
-
         List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
+        sOneListbox.getChildren().add(getSelectItems(optionsList));
+        // hardcoded default answers
         if(question.getDefaultAnswer()==null){
             TextValue defHardValue = new TextValue();
             defHardValue.setValue(optionsList.get(0));
             question.setDefaultAnswer(defHardValue);
         }
+        int height  = 17*optionsList.size();
+        sOneListbox.setStyle("height:"+height+"px");
+
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
 
-        sOneListbox.getChildren().add(getSelectItems(optionsList));
         sOneListbox.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
@@ -133,8 +134,7 @@ public class UIComponentGenerator {
                 question.setAnswer(value);
             }
         });
-        if(answer!=null)
-        System.err.print("ANSWER = "+answer.getValue());
+
         if (defaultAnswer != null && answer == null) {
             sOneListbox.setValue(defaultAnswer.getValue());
         } else if (answer != null) {
@@ -173,11 +173,36 @@ public class UIComponentGenerator {
         return label;
     }
 
-    private UISelectOne getSelectOneMenu(WizardQuestion question) {
-        UISelectOne uiSelectOne = new UISelectOne();
+    private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question) {
+
+        HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
+        selectOneMenu.setOnchange("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
-        uiSelectOne.getChildren().add(getSelectItems(optionsList));
-        return uiSelectOne;
+        if(question.getDefaultAnswer()==null){
+            TextValue defHardValue = new TextValue();
+            defHardValue.setValue(optionsList.get(0));
+            question.setDefaultAnswer(defHardValue);
+        }
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
+        selectOneMenu.getChildren().add(getSelectItems(optionsList));
+        selectOneMenu.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+                TextValue newValue = new TextValue();
+                newValue.setValue(event.getNewValue());
+                question.setAnswer(newValue);
+            }
+        });
+        if (defaultAnswer != null && answer == null) {
+            selectOneMenu.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+
+           selectOneMenu.setValue(answer.getValue());
+        }
+
+
+        return selectOneMenu;
     }
 
     private SelectManyCheckbox getSelectManyCheckbox(final WizardQuestion question) {

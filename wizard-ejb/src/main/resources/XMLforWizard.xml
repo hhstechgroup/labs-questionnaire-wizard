@@ -45,6 +45,8 @@
                                 <options>
                                     <option>Option 1</option>
                                     <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -59,6 +61,8 @@
 
                                 </default-answers>
                             </question>
+
+
                         </questions>
                     </group>
                     <group group-id="hboidbfo">
