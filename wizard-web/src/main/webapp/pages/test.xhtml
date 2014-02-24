@@ -10,12 +10,13 @@
 <h:body>
 	<br />
 	<h:form>
-		<!-- DO NOT TOUCH -->
-		<p:calendar value="#{uiNavigationBean.navigationData.dateStub}"
-			pattern="HH:mm" timeOnly="true" rendered="true" showOn="both"
-			id="popupButtonCal" />
-		<!-- DO NOT TOUCH -->
+		<p:panel menuTitle="fff">
+			<!-- DO NOT TOUCH -->
+			<p:calendar value="#{uiNavigationBean.navigationData.dateStub}"
+				pattern="HH:mm" timeOnly="true" rendered="true" showOn="both"
+				id="popupButtonCal" mode="inline" />
+			<!-- DO NOT TOUCH -->
+		</p:panel>
 	</h:form>
-
 </h:body>
 </html>
