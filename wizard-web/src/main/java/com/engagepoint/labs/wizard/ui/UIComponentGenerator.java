@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class UIComponentGenerator {
     private Panel panel;
+    private final int ONE_SELECT_ITEM_HEIGHT = 17;
 
     public UIComponentGenerator() {
     }
@@ -111,7 +112,7 @@ public class UIComponentGenerator {
             defHardValue.setValue(optionsList.get(0));
             question.setDefaultAnswer(defHardValue);
         }
-        int height  = 17*optionsList.size();
+        int height  = ONE_SELECT_ITEM_HEIGHT*optionsList.size();
         sOneListbox.setStyle("height:"+height+"px");
 
         Value defaultAnswer = question.getDefaultAnswer();
