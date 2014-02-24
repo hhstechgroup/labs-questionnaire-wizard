@@ -88,15 +88,6 @@ public class UIComponentGenerator {
         }
         panel.getChildren().add(component);
 
-        Button tooltip = new Button();
-        tooltip.setId("tooltip_" + question.getId());
-        tooltip.setTitle(question.getHelpText());
-        tooltip.setIcon("ui-icon-question");
-        tooltip.setStyleClass("custom");
-        tooltip.setStyle("position: absolute; left: auto; bottom: auto; padding: 1px");
-        tooltip.setDisabled(true);
-        panel.getChildren().add(tooltip);
-
         return panel;
     }
 
@@ -170,6 +161,7 @@ public class UIComponentGenerator {
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
         label.setValue(question.getTitle());
+        label.getChildren().add(getButtonTooltip(question));
         return label;
     }
 
@@ -293,5 +285,16 @@ public class UIComponentGenerator {
     private FileUpload getFileUpload(WizardQuestion question) {
         FileUpload fileUpload = new FileUpload();
         return fileUpload;
+    }
+
+    private Button getButtonTooltip(WizardQuestion question){
+        Button tooltip = new Button();
+        tooltip.setId("tooltip_" + question.getId());
+        tooltip.setTitle(question.getHelpText());
+        tooltip.setIcon("ui-icon-help");
+        tooltip.setStyleClass("custom");
+        tooltip.setStyle("position: absolute; left: auto; right: 15px; bottom: auto; padding: 1px");
+        tooltip.setDisabled(true);
+        return tooltip;
     }
 }
