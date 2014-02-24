@@ -17,6 +17,7 @@ import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
 import org.primefaces.component.button.Button;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
@@ -63,6 +64,7 @@ public class NavigationData implements Serializable {
     private MenuModel menuModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
+    private HtmlForm testForm;
     private List<Panel> panelList;
     private List<Button> buttonsList;
 
@@ -103,12 +105,10 @@ public class NavigationData implements Serializable {
 	panelGrid = new PanelGrid();
 	panelGrid.setColumns(1);
 	mainContentForm.getChildren().add(panelGrid);
-	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
-		wizardDocument.getFormList());
+	wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
 	needRefresh = false;
 	currentPageID = wizardForm.getWizardPageList().get(0).getId();
-	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList()
-		.get(0).getId();
+	currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId();
 	currentTopicIDs = new ArrayList<String>();
 	currentTopicTitles = new ArrayList<String>();
 	breadcrumbModel = new DefaultMenuModel();
@@ -160,8 +160,7 @@ public class NavigationData implements Serializable {
 
     public void setCurrentPageIDAndTitle(String currentPageID) {
 	this.currentPageID = currentPageID;
-	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID)
-		.getPageNumber().toString();
+	this.currentPageTitle = wizardForm.getWizardPageById(currentPageID).getPageNumber().toString();
     }
 
     public void setCurrentPageID(String currentPageID) {
@@ -381,6 +380,29 @@ public class NavigationData implements Serializable {
 
     public void setDateStub(Date dateStub) {
 	this.dateStub = dateStub;
+    }
+
+    public HtmlForm getTestForm() {
+	if (testForm == null) {
+	    testForm = new HtmlForm();
+
+	    Calendar timeCalendar = new Calendar();
+	    Panel panel=new Panel();
+	    panel.setMenuTitle("Mega panel");
+	    Date date = new Date();
+	    timeCalendar = new Calendar();
+	    timeCalendar.setTimeOnly(true);
+	    timeCalendar.setPattern("HH:mm");
+	    timeCalendar.setValue(date);
+	    timeCalendar.setMode("inline");
+	    panel.getChildren().add(timeCalendar);
+	    testForm.getChildren().add(panel);
+	}
+	return testForm;
+    }
+
+    public void setTestForm(HtmlForm testForm) {
+	this.testForm = testForm;
     }
 
 }

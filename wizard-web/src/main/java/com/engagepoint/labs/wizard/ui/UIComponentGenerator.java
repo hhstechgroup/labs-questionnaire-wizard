@@ -1,9 +1,11 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.component.UIDatePicker;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.renderer.DatePickerRenderer;
 
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;

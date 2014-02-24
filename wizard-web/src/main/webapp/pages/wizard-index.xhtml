@@ -1,3 +1,4 @@
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -12,6 +13,10 @@
 		<ui:include
 			src="../WEB-INF/bootstrap-templates/bootstrap-leftMenu.xhtml" />
 	</ui:define>
+	<ui:define name="mainContentStub">
+		<ui:include
+			src="../WEB-INF/bootstrap-templates/bootstrap-maincontent-stub.xhtml" />
+	</ui:define>
 	<ui:define name="mainContent">
 		<ui:include
 			src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml" />
@@ -21,7 +26,5 @@
 				action="#{uiNavigationBean.nextButtonClick()}"
 				style="text-align:center;position:relative;float:right;" />
 		</h:form>
-
-
 	</ui:define>
 </ui:composition>

@@ -339,7 +339,6 @@ public class UINavigationBean implements Serializable {
 	}
 
 	MenuItem currentTopicButtonMenuItem;
-
 	// Get our menuItem from menu using our index we've found
 	currentTopicButtonMenuItem = (MenuItem) navigationData.getMenuModel().getContents()
 		.get(currentTopicButtonIndex);

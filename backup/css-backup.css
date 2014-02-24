@@ -1,0 +1,148 @@
+.ui-helper-clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+.ui-helper-clearfix {
+	display: inline-block;
+}
+
+* html .ui-helper-clearfix {
+	height: 1%;
+}
+
+.ui-helper-clearfix {
+	display: block;
+}
+
+.ui-state-disabled {
+	cursor: default !important;
+}
+
+.ui-icon {
+	background-repeat: no-repeat;
+	display: block;
+	overflow: hidden;
+	text-indent: -99999px;
+}
+
+.ui-slider {
+	position: relative;
+	text-align: left;
+}
+
+.ui-slider .ui-slider-handle {
+	cursor: default;
+	height: 1.2em;
+	position: absolute;
+	width: 1.2em;
+	z-index: 2;
+}
+
+.ui-slider-horizontal {
+	height: 0.8em;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+	margin-left: -0.6em;
+	top: -0.3em;
+}
+
+.ui-datepicker {
+	display: none;
+	padding: 0.2em 0.2em 0;
+	width: 17em;
+}
+
+.ui-datepicker .ui-datepicker-header {
+	padding: 0.2em 0;
+	position: relative;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+	right: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+	right: 2px;
+}
+
+.ui-datepicker .ui-datepicker-prev span,.ui-datepicker .ui-datepicker-next span
+	{
+	display: block;
+	left: 50%;
+	margin-left: -8px;
+	margin-top: -8px;
+	position: absolute;
+	top: 50%;
+}
+
+.ui-datepicker .ui-datepicker-title {
+	line-height: 1.8em;
+	margin: 0 2.3em;
+	text-align: center;
+}
+
+.ui-datepicker table {
+	border-collapse: collapse;
+	font-size: 0.9em;
+	margin: 0 0 0.4em;
+	width: 100%;
+}
+
+.ui-datepicker th {
+	border: 0 none;
+	font-weight: bold;
+	padding: 0.7em 0.3em;
+	text-align: center;
+}
+
+.ui-datepicker td {
+	border: 0 none;
+	padding: 1px;
+}
+
+.ui-datepicker td a {
+	display: block;
+	padding: 0.2em;
+	text-align: right;
+	text-decoration: none;
+}
+
+.ui-timepicker-div .ui-widget-header {
+	margin-bottom: 8px;
+}
+
+.ui-timepicker-div dl {
+	text-align: left;
+}
+
+.ui-timepicker-div dl dt {
+	height: 25px;
+	margin-bottom: -25px;
+}
+
+.ui-timepicker-div dl dd {
+	margin: 0 10px 10px 65px;
+}
+
+.ui-panel {
+	padding: 0.2em;
+}
+
+.ui-panel .ui-panel-content {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	padding: 0.5em 1em;
+}
