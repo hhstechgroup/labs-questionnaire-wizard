@@ -260,13 +260,13 @@ public class UIComponentGenerator {
 
     private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question) {
         final HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
+        final UISelectItems defaultItem = new UISelectItems();
         selectOneMenu.setOnchange("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
         Value defaultAnswer = question.getDefaultAnswer();
         final Value answer = question.getAnswer();
         if(defaultAnswer==null || answer== null){
-        UISelectItems defaultItem = new UISelectItems();
-        defaultItem.setValue(new SelectItem("", "Set answer please"));
+            defaultItem.setValue(new SelectItem("", "Set answer please"));
         selectOneMenu.getChildren().add(defaultItem);
         }
 
@@ -290,6 +290,7 @@ public class UIComponentGenerator {
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                 "Answer must be selected for this question!"));
                     } else {
+                        selectOneMenu.getChildren().remove(defaultItem);
                         question.setValid(true);
                     }
                 }
