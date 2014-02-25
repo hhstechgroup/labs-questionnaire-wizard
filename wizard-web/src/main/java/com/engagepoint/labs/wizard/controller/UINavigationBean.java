@@ -198,17 +198,21 @@ public class UINavigationBean implements Serializable {
     /**
      * Method called every time for changing current page.
      *
-     * @param currentPageID
+     * @param newCurrentPageID
      */
-    public void changeCurrentPage(String currentPageID) {
+    public void changeCurrentPage(String newCurrentPageID) {
         commitAnswers(getQuestionListFromCurrentTopic());
+        Integer newCurrentPageNumber = navigationData.getWizardForm().getWizardPageById(newCurrentPageID).getPageNumber();
+        if (newCurrentPageNumber > navigationData.getPageLimit()) {
+            return;
+        }
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
         }
         clearCurrentTopicsData();
         // Refreshing current style to BootStrap defaults
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
-        navigationData.setCurrentPageIDAndTitle(currentPageID);
+        navigationData.setCurrentPageIDAndTitle(newCurrentPageID);
         // After changing current page to a new one, mark it with a new style
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         // set current topic to first on new page
