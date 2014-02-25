@@ -32,6 +32,7 @@
 .ui-slider {
 	position: relative;
 	text-align: left;
+	background-color: #87cefa;
 }
 
 .ui-slider .ui-slider-handle {
