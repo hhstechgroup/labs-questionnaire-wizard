@@ -4,6 +4,7 @@ import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
@@ -28,6 +29,8 @@ import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -382,6 +385,7 @@ public class UIComponentGenerator {
 	calendar = new Calendar();
 	calendar.setValue(date);
 	calendar.setShowOn("both");
+	calendar.setStyle("padding:1px");
 	return calendar;
     }
 
@@ -393,6 +397,7 @@ public class UIComponentGenerator {
 	timeCalendar.setPattern("HH:mm");
 	timeCalendar.setValue(date);
 	timeCalendar.setShowOn("both");
+	timeCalendar.setStyle("padding:1px");
 	return timeCalendar;
     }
 
