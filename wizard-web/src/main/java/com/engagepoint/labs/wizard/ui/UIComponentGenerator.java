@@ -70,6 +70,8 @@ public class UIComponentGenerator {
                 break;
             case MULTIPLECHOICE:
                 component = getSelectOneListbox(question);
+                message = new Message();
+                message.setFor("maincontentid-" + question.getId());
                 break;
             case CHECKBOX:
                 component = getSelectManyCheckbox(question);
@@ -118,18 +120,11 @@ public class UIComponentGenerator {
         sOneListbox.setOnchange("submit()");
         List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
         sOneListbox.getChildren().add(getSelectItems(optionsList));
-        // hardcoded default answers
-        if (question.getDefaultAnswer() == null) {
-            TextValue defHardValue = new TextValue();
-            defHardValue.setValue(optionsList.get(0));
-            question.setDefaultAnswer(defHardValue);
-        }
         int height = ONE_SELECT_ITEM_HEIGHT * optionsList.size();
         sOneListbox.setStyle("height:" + height + "px");
-
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
-
+        // added value change listener
         sOneListbox.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
@@ -138,14 +133,15 @@ public class UIComponentGenerator {
                 question.setAnswer(value);
             }
         });
+        if(question.isRequired()){
+
+        }
 
         if (defaultAnswer != null && answer == null) {
             sOneListbox.setValue(defaultAnswer.getValue());
         } else if (answer != null) {
-
             sOneListbox.setValue(answer.getValue());
         }
-
         return sOneListbox;
     }
 
