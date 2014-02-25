@@ -158,7 +158,6 @@ public class UIComponentGenerator {
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputText.setOnchange("submit()");
-        inputText.setId(question.getId());
         // Creating Listener for Validation
         if (question.isRequired()) {
             inputText.addValidator(new Validator() {
@@ -206,7 +205,6 @@ public class UIComponentGenerator {
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputTextarea.setOnchange("submit()");
-        inputTextarea.setId(question.getId());
         // Creating Listener for Validation
         if (question.isRequired()) {
             inputTextarea.addValidator(new Validator() {
@@ -310,7 +308,6 @@ public class UIComponentGenerator {
         List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
         checkbox.setLayout("pageDirection");
         checkbox.setOnchange("submit()");
-        checkbox.setId(question.getId());
         // Creating Listener for Validation
         if (question.isRequired()) {
             checkbox.addValidator(new Validator() {
