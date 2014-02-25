@@ -150,7 +150,7 @@
                     <group group-id="pqplakdhfg">
                         <group-name>Super Puper Topic 2</group-name>
                         <questions>
-                            <question>
+                            <question answer-required="false" question-id="xvxvxvxss">
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>HELLP</help-text>

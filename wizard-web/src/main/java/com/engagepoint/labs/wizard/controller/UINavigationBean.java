@@ -317,16 +317,17 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : wizardQuestionList) {
             if (question.getAnswer() == null && question.getDefaultAnswer() != null) {
                 question.setAnswer(question.getDefaultAnswer());
+                question.setValid(true);
             }
         }
     }
 
     private boolean checkAllRequiredQuestions(List<WizardQuestion> wizardQuestionList) {
-//        for (WizardQuestion question : wizardQuestionList) {
-//            if (question.isRequired() && !question.isValid()) {
-//                return false;
-//            }
-//        }
+        for (WizardQuestion question : wizardQuestionList) {
+            if (question.isRequired() && !question.isValid()) {
+                return false;
+            }
+        }
         return true;
     }
 
