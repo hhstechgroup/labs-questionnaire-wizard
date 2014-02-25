@@ -296,7 +296,7 @@ public class UIComponentGenerator {
 	timeCalendar.setTimeOnly(true);
 	timeCalendar.setPattern("HH:mm");
 	timeCalendar.setValue(date);
-//	timeCalendar.setMode("inline");
+	timeCalendar.setShowOn("both");
 	return timeCalendar;
     }
 

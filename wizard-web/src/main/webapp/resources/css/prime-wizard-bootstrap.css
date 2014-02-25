@@ -19,6 +19,14 @@
 }
 
 
+.ui-outputlabel {
+    color: #4D4D4D;
+    display: inline-block;
+    font-family: "MuseoSans700",sans-serif;
+    font-size: 12px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+}
 
 
 
