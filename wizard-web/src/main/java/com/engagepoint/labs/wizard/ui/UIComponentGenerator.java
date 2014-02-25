@@ -282,10 +282,8 @@ public class UIComponentGenerator {
 	Calendar calendar = new Calendar();
 	Date date = new Date();
 	calendar = new Calendar();
-	calendar.setTimeOnly(true);
-	calendar.setPattern("HH:mm");
 	calendar.setValue(date);
-
+	calendar.setShowOn("both");
 	return calendar;
     }
 
