@@ -35,9 +35,9 @@
                                     <default-answer>Default !</default-answer>
                                 </default-answers>
                             </question>
-                            <question answer-required="false" question-id="ckxcbxk">
+                            <question answer-required="true" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-type>CHOOSEFROMLIST</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -58,8 +58,8 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                        <default-answer>Option 1</default-answer>
-                                        <default-answer>Option 2</default-answer>
+                                        <!--<default-answer>Option 1</default-answer>-->
+                                        <!--<default-answer>Option 2</default-answer>-->
                                 </default-answers>
                             </question>
 

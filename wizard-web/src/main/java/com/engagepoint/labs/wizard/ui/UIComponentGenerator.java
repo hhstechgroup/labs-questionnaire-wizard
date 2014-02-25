@@ -51,36 +51,23 @@ public class UIComponentGenerator {
     }
 
     private Panel analyzeQuestion(WizardQuestion question) {
-
         panel = new Panel();
         panel.getChildren().add(getLabel(question));
-
+        panel.getChildren().add(getValidationMessage(question));
         UIComponent component = null;
 
-        Message message;
         switch (question.getQuestionType()) {
             case TEXT:
                 component = getInputText(question);
-                message = new Message();
-                message.setFor("maincontentid-" + question.getId());
-                panel.getChildren().add(message);
                 break;
             case PARAGRAPHTEXT:
                 component = getInputTextArea(question);
-                message = new Message();
-                message.setFor("maincontentid-" + question.getId());
-                panel.getChildren().add(message);
                 break;
             case MULTIPLECHOICE:
                 component = getSelectOneListbox(question);
-                message = new Message();
-                message.setFor("maincontentid-" + question.getId());
                 break;
             case CHECKBOX:
                 component = getSelectManyCheckbox(question);
-                message = new Message();
-                message.setFor("maincontentid-" + question.getId());
-                panel.getChildren().add(message);
                 break;
             case CHOOSEFROMLIST:
                 component = getSelectOneMenu(question);
@@ -104,9 +91,16 @@ public class UIComponentGenerator {
                 component = new DataGrid();
                 break;
         }
+        component.setId(question.getId());
         panel.getChildren().add(component);
 
         return panel;
+    }
+
+    private Message getValidationMessage(WizardQuestion question){
+        Message message = new Message();
+        message.setFor("maincontentid-" + question.getId());
+        return message;
     }
 
     private Slider getSlider(WizardQuestion question) {
@@ -137,7 +131,18 @@ public class UIComponentGenerator {
             }
         });
         if(question.isRequired()){
-
+            sOneListbox.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                    if (value == null || value.toString().isEmpty()) {
+                        question.setValid(false);
+                        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "Answer must be selected for this question!"));
+                    } else {
+                        question.setValid(true);
+                    }
+                }
+            });
         }
 
         if (defaultAnswer != null && answer == null) {
@@ -238,16 +243,16 @@ public class UIComponentGenerator {
     }
 
     private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question) {
-        HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
+        final HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
         selectOneMenu.setOnchange("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
-        if (question.getDefaultAnswer() == null) {
-            TextValue defHardValue = new TextValue();
-            defHardValue.setValue(optionsList.get(0));
-            question.setDefaultAnswer(defHardValue);
-        }
         Value defaultAnswer = question.getDefaultAnswer();
-        Value answer = question.getAnswer();
+        final Value answer = question.getAnswer();
+        if(defaultAnswer==null){
+        UISelectItems defaultItem = new UISelectItems();
+        defaultItem.setValue(new SelectItem("", "Set answer please"));
+        selectOneMenu.getChildren().add(defaultItem);
+        }
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
         selectOneMenu.addValueChangeListener(new ValueChangeListener() {
             @Override
@@ -257,14 +262,26 @@ public class UIComponentGenerator {
                 question.setAnswer(newValue);
             }
         });
+        if(question.isRequired()){
+            selectOneMenu.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                    if (value == null || value.toString().isEmpty()) {
+                        question.setValid(false);
+                        selectOneMenu.setValue("");
+                        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "Answer must be selected for this question!"));
+                    } else {
+                        question.setValid(true);
+                    }
+                }
+            });
+        }
         if (defaultAnswer != null && answer == null) {
             selectOneMenu.setValue(defaultAnswer.getValue());
         } else if (answer != null) {
-
             selectOneMenu.setValue(answer.getValue());
         }
-
-
         return selectOneMenu;
     }
 
