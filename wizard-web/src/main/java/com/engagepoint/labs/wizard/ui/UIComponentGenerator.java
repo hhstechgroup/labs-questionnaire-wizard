@@ -154,7 +154,7 @@ public class UIComponentGenerator {
     }
 
     private InputText getInputText(final WizardQuestion question) {
-        InputText inputText = new InputText();
+        final InputText inputText = new InputText();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputText.setOnchange("submit()");
@@ -168,8 +168,17 @@ public class UIComponentGenerator {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                 "Empty field is not allowed here!"));
-                    } else {
-                        question.setValid(true);
+                    } else if (value != null) {
+                        String currentValue = value.toString();
+                        currentValue = currentValue.replaceAll("\\s", "");
+                        if (currentValue.isEmpty()) {
+                            question.setValid(false);
+                            inputText.resetValue();
+                            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                    "Empty field is not allowed here!"));
+                        } else {
+                            question.setValid(true);
+                        }
                     }
                 }
             });
@@ -193,7 +202,7 @@ public class UIComponentGenerator {
     }
 
     private InputTextarea getInputTextArea(final WizardQuestion question) {
-        InputTextarea inputTextarea = new InputTextarea();
+        final InputTextarea inputTextarea = new InputTextarea();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputTextarea.setOnchange("submit()");
@@ -207,8 +216,17 @@ public class UIComponentGenerator {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                 "Empty field is not allowed here!"));
-                    } else {
-                        question.setValid(true);
+                    } else if (value != null) {
+                        String currentValue = value.toString();
+                        currentValue = currentValue.replaceAll("\\s", "");
+                        if (currentValue.isEmpty()) {
+                            question.setValid(false);
+                            inputTextarea.resetValue();
+                            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                    "Empty field is not allowed here!"));
+                        } else {
+                            question.setValid(true);
+                        }
                     }
                 }
             });
