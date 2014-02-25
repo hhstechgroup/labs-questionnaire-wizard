@@ -1,7 +1,14 @@
 package com.engagepoint.labs.wizard.controller;
 
-import java.io.Serializable;
-import java.util.List;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.style.WizardComponentStyles;
+import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.panel.Panel;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -11,17 +18,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.panel.Panel;
-
-import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.bean.WizardTopic;
-import com.engagepoint.labs.wizard.model.NavigationData;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.style.WizardComponentStyles;
-import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import java.io.Serializable;
+import java.util.List;
 
 @Named("uiNavigationBean")
 @RequestScoped
@@ -230,7 +228,7 @@ public class UINavigationBean implements Serializable {
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
         }
-        changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_DEFAULT);
+
         navigationData.setCurrentTopicIDAndTitle(currentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
@@ -278,13 +276,13 @@ public class UINavigationBean implements Serializable {
     private void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
         int currentPageButtonIndex = 0;
-
         // here we can find position number of page button from breadcrumb
         // (numbers are from 0 to n). Page buttons on breadcrumb have same
         // order, as in wizard page list from our XML
+        WizardPage wizardPage;
         for (int i = 0; i < pageList.size(); i++) {
-            WizardPage page = pageList.get(i);
-            if (page.getId().equals(navigationData.getCurrentPageID())) {
+            wizardPage = pageList.get(i);
+            if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
                 currentPageButtonIndex = i;
                 break;
             }
@@ -341,25 +339,17 @@ public class UINavigationBean implements Serializable {
     private void changeStyleOfCurrentTopicButton(String styleClass) {
         List<WizardTopic> topicList = navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
-        int currentTopicButtonIndex = 0;
-
-        // here we can find position number of topic button from left menu
-        // (numbers are from 0 to n). Topic buttons on menu have same
-        // order, as in wizard topic list from our XML
+        WizardTopic topic;
+        MenuItem item;
         for (int i = 0; i < topicList.size(); i++) {
-            WizardTopic topic = topicList.get(i);
+            topic = topicList.get(i);
+            item = (MenuItem) navigationData.getMenuModel().getContents()
+                    .get(i);
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
-                currentTopicButtonIndex = i;
-                break;
+                item.setStyleClass(styleClass);
+            } else {
+                item.setStyleClass("");
             }
         }
-
-        MenuItem currentTopicButtonMenuItem;
-
-        // Get our menuItem from menu using our index we've found
-        currentTopicButtonMenuItem = (MenuItem) navigationData.getMenuModel().getContents()
-                .get(currentTopicButtonIndex);
-        // Setting style to current page button menuItem
-        currentTopicButtonMenuItem.setStyleClass(styleClass);
     }
 }

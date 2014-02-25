@@ -13,10 +13,10 @@
 }
 
 .wizard-topic-selected {
-	background: none repeat scroll 0 0 #9DA0A4 !important;
+
 	border-bottom: medium none;
-	border-left: 5px solid #0075AC;
-	color: #FFFFFF;
+	border-left: 5px solid #0075ac;
+
 	padding-left: 25px;
 }
 
