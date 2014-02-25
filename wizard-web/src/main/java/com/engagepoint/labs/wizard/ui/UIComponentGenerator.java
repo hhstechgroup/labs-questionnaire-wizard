@@ -130,7 +130,7 @@ public class UIComponentGenerator {
                 question.setAnswer(value);
             }
         });
-        if(question.isRequired()){
+        if (question.isRequired()) {
             sOneListbox.addValidator(new Validator() {
                 @Override
                 public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -158,6 +158,7 @@ public class UIComponentGenerator {
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
         inputText.setOnchange("submit()");
+        inputText.setOnblur("submit()");
         // Creating Listener for Validation
         if (question.isRequired()) {
             inputText.addValidator(new Validator() {
@@ -177,6 +178,9 @@ public class UIComponentGenerator {
                                     "Empty field is not allowed here!"));
                         } else {
                             question.setValid(true);
+                            Value textValue = new TextValue();
+                            textValue.setValue(value);
+                            question.setAnswer(textValue);
                         }
                     }
                 }
@@ -251,9 +255,9 @@ public class UIComponentGenerator {
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
         Value defaultAnswer = question.getDefaultAnswer();
         final Value answer = question.getAnswer();
-        if(defaultAnswer==null || answer== null){
+        if (defaultAnswer == null || answer == null) {
             defaultItem.setValue(new SelectItem("", "Set answer please"));
-        selectOneMenu.getChildren().add(defaultItem);
+            selectOneMenu.getChildren().add(defaultItem);
         }
 
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
@@ -323,7 +327,6 @@ public class UIComponentGenerator {
             });
         }
         // Showing Answer or Default Answer
-        checkbox.getChildren().add(getSelectItems(optionsList));
         if (defaultAnswer != null && answer == null) {
             checkbox.setValue(defaultAnswer.getValue());
         } else if (answer != null) {
