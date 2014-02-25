@@ -10,15 +10,15 @@
                     <group group-id="bcugyrfn">
                         <group-name>Test group 1</group-name>
                         <questions>
-                            <question answer-required="true" question-id="1">
+                            <question answer-required="true" question-id="xxssx">
                                 <question-title>Error Q</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>First Help Text for Question</help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
                                 <options>
-                                    <option>Option Numebr 1</option>
+                                    <option>Option Number 1</option>
                                     <option>Option Number 2</option>
                                     <option>Option Number 3</option>
                                 </options>
@@ -32,12 +32,12 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>Default Answer for Text Question =)</default-answer>
+                                    <default-answer>Default !</default-answer>
                                 </default-answers>
                             </question>
-                            <question answer-required="false" question-id="ckxcbxk">
+                            <question answer-required="true" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>CHOOSEFROMLIST</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -58,7 +58,8 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-
+                                        <!--<default-answer>Option 1</default-answer>-->
+                                        <!--<default-answer>Option 2</default-answer>-->
                                 </default-answers>
                             </question>
 
@@ -150,7 +151,7 @@
                     <group group-id="pqplakdhfg">
                         <group-name>Super Puper Topic 2</group-name>
                         <questions>
-                            <question>
+                            <question answer-required="false" question-id="xvxvxvxss">
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>HELLP</help-text>

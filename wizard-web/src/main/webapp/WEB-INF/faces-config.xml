@@ -8,4 +8,5 @@
 		<phase-listener>com.engagepoint.labs.wizard.listener.UINavigationPhaseListener</phase-listener>
         <phase-listener>com.engagepoint.labs.wizard.listener.UIRestoreViewListener</phase-listener>
 	</lifecycle>
+
 </faces-config>

@@ -11,7 +11,7 @@
     <ui:define name="leftMenu"/>
 
     <ui:define name="mainContent">
-        <h:form id="formid">
+        <h:form id="formid" enctype="multipart/form-data">
 
             <p:treeTable id="dataTable" summary="basic table">
                 <f:facet name="header">
@@ -31,6 +31,11 @@
             </div>
             <h:commandButton value="START" action="#{uiNavigationBean.start()}" id="butt"  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                              style="position: relative; left: 645px; bottom: 10px;" />
+
+
+                <h:inputFile id="file" value="#{fileUploadController.file}"/>
+                <h:commandButton value="Upload"
+                                 action="#{fileUploadController.upload}"/>
 
         </h:form>
 

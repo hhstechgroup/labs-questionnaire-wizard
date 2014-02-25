@@ -28,14 +28,19 @@ public class XmlCustomParser {
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
+        // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
         Schema schema = SchemaFactory.newInstance(
                 XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
                         new File(getClass().getClassLoader()
                                 .getResource("/XSDforWizard.xsd").getFile()));
-
+        // Creating Unmarshaller and select Class
+        // that we wont to get after XML file parsing
         Unmarshaller unmarshaller = JAXBContext.newInstance(
                 QuestionnaireForms.class).createUnmarshaller();
+        // Setting XSD schema in our Unmarshaller
         unmarshaller.setSchema(schema);
+        // Setting ValidationEventHandler interface in out Unmarshaller (it's optional)
+        // All messages during validation will be written  in console
         unmarshaller.setEventHandler(new ValidationEventHandler() {
             @Override
             public boolean handleEvent(ValidationEvent event) {
@@ -59,6 +64,8 @@ public class XmlCustomParser {
                 return true;
             }
         });
+        // Getting filled QuestionnaireForms using Unmarshaller depends
+        //  on XML file from our Resources package (wizard-ejb/src/main/resources)
         QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
                 .unmarshal(new File(getClass().getResource(XMLpath).getFile()));
         return forms;

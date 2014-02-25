@@ -13,7 +13,15 @@ public abstract class WizardQuestion {
     protected QType questionType;
     protected String helpText;
     protected Boolean answerRequired;
+    protected Boolean valid;
 
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
 
     public abstract Value getAnswer();
 
