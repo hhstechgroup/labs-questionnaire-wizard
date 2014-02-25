@@ -67,6 +67,9 @@ public class UIComponentGenerator {
                 break;
             case PARAGRAPHTEXT:
                 component = getInputTextArea(question);
+                message = new Message();
+                message.setFor("maincontentid-" + question.getId());
+                panel.getChildren().add(message);
                 break;
             case MULTIPLECHOICE:
                 component = getSelectOneListbox(question);
@@ -188,6 +191,45 @@ public class UIComponentGenerator {
         return inputText;
     }
 
+    private InputTextarea getInputTextArea(final WizardQuestion question) {
+        InputTextarea inputTextarea = new InputTextarea();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
+        inputTextarea.setOnchange("submit()");
+        inputTextarea.setId(question.getId());
+        // Creating Listener for Validation
+        if (question.isRequired()) {
+            inputTextarea.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                    if (value == null || value.toString().isEmpty()) {
+                        question.setValid(false);
+                        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "Empty field is not allowed here!"));
+                    } else {
+                        question.setValid(true);
+                    }
+                }
+            });
+        }
+        // Creating Listener for Value Change
+        inputTextarea.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+                Value value = new TextValue();
+                value.setValue(event.getNewValue());
+                question.setAnswer(value);
+            }
+        });
+        // Showing Answer or Default Answer
+        if (defaultAnswer != null && answer == null) {
+            inputTextarea.setValue(defaultAnswer.getValue().toString());
+        } else if (answer != null) {
+            inputTextarea.setValue(answer.getValue().toString());
+        }
+        return inputTextarea;
+    }
+
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
         if (question.isRequired()) {
@@ -200,7 +242,6 @@ public class UIComponentGenerator {
     }
 
     private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question) {
-
         HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
         selectOneMenu.setOnchange("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
@@ -235,23 +276,11 @@ public class UIComponentGenerator {
         SelectManyCheckbox checkbox = new SelectManyCheckbox();
         Value defaultAnswer = question.getDefaultAnswer();
         Value answer = question.getAnswer();
+        List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
         checkbox.setLayout("pageDirection");
         checkbox.setOnchange("submit()");
         checkbox.setId(question.getId());
-        List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
-        checkbox.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
-                ListTextValue listTextValue = new ListTextValue();
-                Object[] arr = (Object[]) event.getNewValue();
-                List answersList = new ArrayList();
-                for (int i = 0; i < arr.length; i++) {
-                    answersList.add(arr[i]);
-                }
-                listTextValue.setValue(answersList);
-                question.setAnswer(listTextValue);
-            }
-        });
+        // Creating Listener for Validation
         if (question.isRequired()) {
             checkbox.addValidator(new Validator() {
                 @Override
@@ -266,6 +295,21 @@ public class UIComponentGenerator {
                 }
             });
         }
+        // Creating Listener for Value Change
+        checkbox.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
+                ListTextValue listTextValue = new ListTextValue();
+                Object[] arr = (Object[]) event.getNewValue();
+                List answersList = new ArrayList();
+                for (int i = 0; i < arr.length; i++) {
+                    answersList.add(arr[i]);
+                }
+                listTextValue.setValue(answersList);
+                question.setAnswer(listTextValue);
+            }
+        });
+        // Showing Answer or Default Answer
         checkbox.getChildren().add(getSelectItems(optionsList));
         if (defaultAnswer != null && answer == null) {
             checkbox.setValue(defaultAnswer.getValue());
@@ -285,28 +329,6 @@ public class UIComponentGenerator {
         }
         selectItems.setValue(itemsList);
         return selectItems;
-    }
-
-    private InputTextarea getInputTextArea(final WizardQuestion question) {
-        InputTextarea inputTextarea = new InputTextarea();
-        Value defaultAnswer = question.getDefaultAnswer();
-        Value answer = question.getAnswer();
-        inputTextarea.setOnchange("submit()");
-        // Creating Listener interface implamintation
-        inputTextarea.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
-                Value value = new TextValue();
-                value.setValue(event.getNewValue());
-                question.setAnswer(value);
-            }
-        });
-        if (defaultAnswer != null && answer == null) {
-            inputTextarea.setValue(defaultAnswer.getValue().toString());
-        } else if (answer != null) {
-            inputTextarea.setValue(answer.getValue().toString());
-        }
-        return inputTextarea;
     }
 
     private Calendar getCalendar(WizardQuestion question) {
