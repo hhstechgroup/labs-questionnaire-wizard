@@ -284,6 +284,7 @@ public class UIComponentGenerator {
 	    selectOneMenu.getChildren().add(defaultItem);
 	}
 	selectOneMenu.getChildren().add(getSelectItems(optionsList));
+	selectOneMenu.setOnblur("submit()");
 	selectOneMenu.addValueChangeListener(new ValueChangeListener() {
 	    @Override
 	    public void processValueChange(ValueChangeEvent event)
