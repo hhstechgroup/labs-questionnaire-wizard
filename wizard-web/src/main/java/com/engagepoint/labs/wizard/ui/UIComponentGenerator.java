@@ -160,15 +160,15 @@ public class UIComponentGenerator {
         inputText.setOnchange("submit()");
         inputText.setOnblur("submit()");
         // Creating Listener for Validation
-        if (question.isRequired()) {
-            inputText.addValidator(new Validator() {
-                @Override
-                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-                    if (value == null || value.toString().isEmpty()) {
+        inputText.addValidator(new Validator() {
+            @Override
+            public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                if (question.isRequired()) {
+                    if (value == null) {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                 "Empty field is not allowed here!"));
-                    } else if (value != null) {
+                    } else {
                         String currentValue = value.toString();
                         currentValue = currentValue.replaceAll("\\s", "");
                         if (currentValue.isEmpty()) {
@@ -176,16 +176,15 @@ public class UIComponentGenerator {
                             inputText.resetValue();
                             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                     "Empty field is not allowed here!"));
-                        } else {
-                            question.setValid(true);
-                            Value textValue = new TextValue();
-                            textValue.setValue(value);
-                            question.setAnswer(textValue);
                         }
                     }
                 }
-            });
-        }
+                question.setValid(true);
+                Value textValue = new TextValue();
+                textValue.setValue(value);
+                question.setAnswer(textValue);
+            }
+        });
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
@@ -202,15 +201,15 @@ public class UIComponentGenerator {
         inputTextarea.setOnchange("submit()");
         inputTextarea.setOnblur("submit()");
         // Creating Listener for Validation
-        if (question.isRequired()) {
-            inputTextarea.addValidator(new Validator() {
-                @Override
-                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-                    if (value == null || value.toString().isEmpty()) {
+        inputTextarea.addValidator(new Validator() {
+            @Override
+            public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                if (question.isRequired()) {
+                    if (value == null) {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                 "Empty field is not allowed here!"));
-                    } else if (value != null) {
+                    } else {
                         String currentValue = value.toString();
                         currentValue = currentValue.replaceAll("\\s", "");
                         if (currentValue.isEmpty()) {
@@ -218,16 +217,15 @@ public class UIComponentGenerator {
                             inputTextarea.resetValue();
                             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
                                     "Empty field is not allowed here!"));
-                        } else {
-                            question.setValid(true);
-                            Value textValue = new TextValue();
-                            textValue.setValue(value);
-                            question.setAnswer(textValue);
                         }
                     }
                 }
-            });
-        }
+                question.setValid(true);
+                Value textValue = new TextValue();
+                textValue.setValue(value);
+                question.setAnswer(textValue);
+            }
+        });
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputTextarea.setValue(defaultAnswer.getValue().toString());
@@ -304,28 +302,27 @@ public class UIComponentGenerator {
         checkbox.setOnchange("submit()");
         checkbox.setOnblur("submit()");
         // Creating Listener for Validation
-        if (question.isRequired()) {
-            checkbox.addValidator(new Validator() {
-                @Override
-                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        checkbox.addValidator(new Validator() {
+            @Override
+            public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                if (question.isRequired()) {
                     if (value == null || ((Object[]) value).length == 0) {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
-                                "You need to choose at least one option!"));
-                    } else {
-                        question.setValid(true);
-                        ListTextValue listTextValue = new ListTextValue();
-                        Object[] arr = (Object[]) value;
-                        List answersList = new ArrayList();
-                        for (int i = 0; i < arr.length; i++) {
-                            answersList.add(arr[i]);
-                        }
-                        listTextValue.setValue(answersList);
-                        question.setAnswer(listTextValue);
+                                "Empty field is not allowed here!"));
                     }
                 }
-            });
-        }
+                question.setValid(true);
+                ListTextValue listTextValue = new ListTextValue();
+                Object[] arr = (Object[]) value;
+                List answersList = new ArrayList();
+                for (int i = 0; i < arr.length; i++) {
+                    answersList.add(arr[i]);
+                }
+                listTextValue.setValue(answersList);
+                question.setAnswer(listTextValue);
+            }
+        });
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             checkbox.setValue(defaultAnswer.getValue());
