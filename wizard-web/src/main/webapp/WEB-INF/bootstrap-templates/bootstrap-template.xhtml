@@ -20,19 +20,19 @@
 	<h:outputStylesheet library="css" name="example_components.css"
 		target="head" />
 
-	<h:outputScript>
-        jQuery(document).ready(function() {
-        prettyPrint();
-        if ($.cookie('scheme')) {
-        $('body').removeAttr('class').addClass($.cookie('scheme'));
-        }
-        });
-        function setScheme(scheme) {
-        $.cookie('scheme', scheme, { expires: 7, path: '/' });
-        $('body').removeAttr('class').addClass($.cookie('scheme'));
-        return;
-        }
-    </h:outputScript>
+<!-- 	<h:outputScript> -->
+<!--         jQuery(document).ready(function() { -->
+<!--         prettyPrint(); -->
+<!--         if ($.cookie('scheme')) { -->
+<!--         $('body').removeAttr('class').addClass($.cookie('scheme')); -->
+<!--         } -->
+<!--         }); -->
+<!--         function setScheme(scheme) { -->
+<!--         $.cookie('scheme', scheme, { expires: 7, path: '/' }); -->
+<!--         $('body').removeAttr('class').addClass($.cookie('scheme')); -->
+<!--         return; -->
+<!--         } -->
+<!--     </h:outputScript> -->
 
 	<uib:pageLayout>
 		<div id="topmenuid">
