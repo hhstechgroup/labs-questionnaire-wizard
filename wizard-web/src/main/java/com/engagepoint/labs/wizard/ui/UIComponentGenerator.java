@@ -57,10 +57,11 @@ public class UIComponentGenerator {
 
         UIComponent component = null;
 
+        Message message;
         switch (question.getQuestionType()) {
             case TEXT:
                 component = getInputText(question);
-                Message message = new Message();
+                message = new Message();
                 message.setFor("maincontentid-" + question.getId());
                 panel.getChildren().add(message);
                 break;
@@ -72,6 +73,9 @@ public class UIComponentGenerator {
                 break;
             case CHECKBOX:
                 component = getSelectManyCheckbox(question);
+                message = new Message();
+                message.setFor("maincontentid-" + question.getId());
+                panel.getChildren().add(message);
                 break;
             case CHOOSEFROMLIST:
                 component = getSelectOneMenu(question);
@@ -159,7 +163,7 @@ public class UIComponentGenerator {
                     if (value == null || value.toString().isEmpty()) {
                         question.setValid(false);
                         throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
-                                "Empty field is not allowed here"));
+                                "Empty field is not allowed here!"));
                     } else {
                         question.setValid(true);
                     }
@@ -229,8 +233,11 @@ public class UIComponentGenerator {
 
     private SelectManyCheckbox getSelectManyCheckbox(final WizardQuestion question) {
         SelectManyCheckbox checkbox = new SelectManyCheckbox();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
         checkbox.setLayout("pageDirection");
         checkbox.setOnchange("submit()");
+        checkbox.setId(question.getId());
         List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
         checkbox.addValueChangeListener(new ValueChangeListener() {
             @Override
@@ -245,21 +252,25 @@ public class UIComponentGenerator {
                 question.setAnswer(listTextValue);
             }
         });
-        //creating default answer
-        ListTextValue listTextValue;
-        List<String> defaultAnswer;
-        if (!optionsList.isEmpty()) {
-            listTextValue = new ListTextValue();
-            defaultAnswer = new ArrayList<>();
-            defaultAnswer.add(optionsList.get(0));
-            listTextValue.setValue(defaultAnswer);
-            question.setDefaultAnswer(listTextValue);
+        if (question.isRequired()) {
+            checkbox.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+                    if (value == null || ((Object[]) value).length == 0) {
+                        question.setValid(false);
+                        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "You need to choose at least one option!"));
+                    } else {
+                        question.setValid(true);
+                    }
+                }
+            });
         }
         checkbox.getChildren().add(getSelectItems(optionsList));
-        if (question.getDefaultAnswer() != null && question.getAnswer() == null) {
-            checkbox.setValue(question.getDefaultAnswer().getValue());
-        } else if (question.getAnswer() != null) {
-            checkbox.setValue(question.getAnswer().getValue());
+        if (defaultAnswer != null && answer == null) {
+            checkbox.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+            checkbox.setValue(answer.getValue());
         }
         return checkbox;
     }
