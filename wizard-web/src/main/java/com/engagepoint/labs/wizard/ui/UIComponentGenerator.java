@@ -264,12 +264,14 @@ public class UIComponentGenerator {
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
         Value defaultAnswer = question.getDefaultAnswer();
         final Value answer = question.getAnswer();
-        if(defaultAnswer==null){
+        if(defaultAnswer==null || answer== null){
         UISelectItems defaultItem = new UISelectItems();
         defaultItem.setValue(new SelectItem("", "Set answer please"));
         selectOneMenu.getChildren().add(defaultItem);
         }
+
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
+        selectOneMenu.setOnblur("submit()");
         selectOneMenu.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
