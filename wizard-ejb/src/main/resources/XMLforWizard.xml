@@ -12,7 +12,7 @@
                         <questions>
                             <question answer-required="true" question-id="xxssx">
                                 <question-title>Error Q</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>First Help Text for Question</help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
@@ -32,13 +32,12 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>Option Number 1</default-answer>
-                                    <default-answer>Option Number 2</default-answer>
+                                    <default-answer>Default !</default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>CHECKBOX</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -59,7 +58,8 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-
+                                        <default-answer>Option 1</default-answer>
+                                        <default-answer>Option 2</default-answer>
                                 </default-answers>
                             </question>
 
