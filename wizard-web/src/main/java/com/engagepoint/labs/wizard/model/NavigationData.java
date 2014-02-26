@@ -1,5 +1,22 @@
 package com.engagepoint.labs.wizard.model;
 
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.component.button.Button;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+import org.xml.sax.SAXException;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.JAXBException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,33 +25,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.component.html.HtmlForm;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 
-import org.primefaces.component.button.Button;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
-import org.xml.sax.SAXException;
-
-import com.engagepoint.labs.wizard.bean.WizardDocument;
-import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.xml.controllers.XmlController;
-
+/**
+ * @author vyacheslav.mysak
+ *         Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
+ */
 @Named("navigationData")
 @SessionScoped
-/**
- *
- * @author vyacheslav.mysak
- * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
- *
- */
 public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
@@ -89,6 +86,20 @@ public class NavigationData implements Serializable {
         }
     }
 
+    public void refreshXMLScreen(String path) {
+        onSelectXMLPage = true;
+        MapOfWizardForms = new LinkedHashMap<String, String>();
+        xmlController.getXmlPathList().add(path);
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles();
+        } catch (SAXException | JAXBException ex) {
+            Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
+        }
+    }
+
     /**
      * Method uses parsed XML for creating actual wizardForm for user. Sets
      * currentPage and currentTopic to '1' - first in the list. Method creates
@@ -102,6 +113,7 @@ public class NavigationData implements Serializable {
         panelGrid.setColumns(1);
         mainContentForm.getChildren().add(panelGrid);
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
+
         needRefresh = false;
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId();
@@ -230,10 +242,12 @@ public class NavigationData implements Serializable {
     }
 
     public String getSelectedFormTemplate() {
+        System.err.print("---------------------------selectedFormTemplateSet = " + selectedFormTemplate + "----------------------------------------");
         return selectedFormTemplate;
     }
 
     public void setSelectedFormTemplate(String selectedFormTemplate) {
+
         this.selectedFormTemplate = selectedFormTemplate;
     }
 

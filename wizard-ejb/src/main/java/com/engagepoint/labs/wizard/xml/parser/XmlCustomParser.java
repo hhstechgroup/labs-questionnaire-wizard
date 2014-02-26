@@ -5,22 +5,16 @@
  */
 package com.engagepoint.labs.wizard.xml.parser;
 
-import java.io.File;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
+import javax.xml.XMLConstants;
+import javax.xml.bind.*;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.File;
+
 /**
- *
  * @author artem
  */
 
@@ -31,8 +25,8 @@ public class XmlCustomParser {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
         Schema schema = SchemaFactory.newInstance(
                 XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-                        new File(getClass().getClassLoader()
-                                .getResource("/XSDforWizard.xsd").getFile()));
+                new File(getClass().getClassLoader()
+                        .getResource("/XSDforWizard.xsd").getFile()));
         // Creating Unmarshaller and select Class
         // that we wont to get after XML file parsing
         Unmarshaller unmarshaller = JAXBContext.newInstance(
@@ -44,30 +38,57 @@ public class XmlCustomParser {
         unmarshaller.setEventHandler(new ValidationEventHandler() {
             @Override
             public boolean handleEvent(ValidationEvent event) {
-//                SYSTEM.OUT.PRINTLN("\NEVENT");
-//                SYSTEM.OUT.PRINTLN("SEVERITY:  " + EVENT.GETSEVERITY());
-//                SYSTEM.OUT.PRINTLN("MESSAGE:  " + EVENT.GETMESSAGE());
-//                SYSTEM.OUT.PRINTLN("LINKED EXCEPTION:  "
+//                System.out.print("\NEVENT");
+//                System.out.print("SEVERITY:  " + EVENT.GETSEVERITY());
+//                System.out.print("MESSAGE:  " + EVENT.GETMESSAGE());
+//                System.out.print("LINKED EXCEPTION:  "
 //                        + EVENT.GETLINKEDEXCEPTION());
-//                SYSTEM.OUT.PRINTLN("LOCATOR");
-//                SYSTEM.OUT.PRINTLN("    LINE NUMBER:  "
+//                System.out.print("LOCATOR");
+//                System.out.print("    LINE NUMBER:  "
 //                        + EVENT.GETLOCATOR().GETLINENUMBER());
-//                SYSTEM.OUT.PRINTLN("    COLUMN NUMBER:  "
+//                System.out.print("    COLUMN NUMBER:  "
 //                        + EVENT.GETLOCATOR().GETCOLUMNNUMBER());
-//                SYSTEM.OUT.PRINTLN("    OFFSET:  "
+//                System.out.print("    OFFSET:  "
 //                        + EVENT.GETLOCATOR().GETOFFSET());
-//                SYSTEM.OUT.PRINTLN("    OBJECT:  "
+//                System.out.print("    OBJECT:  "
 //                        + EVENT.GETLOCATOR().GETOBJECT());
-//                SYSTEM.OUT
-//                        .PRINTLN("    NODE:  " + EVENT.GETLOCATOR().GETNODE());
-//                SYSTEM.OUT.PRINTLN("    URL:  " + EVENT.GETLOCATOR().GETURL());
+//                System.out.print("    NODE:  " + EVENT.GETLOCATOR().GETNODE());
+//                System.out.print("    URL:  " + EVENT.GETLOCATOR().GETURL());
                 return true;
             }
         });
         // Getting filled QuestionnaireForms using Unmarshaller depends
         //  on XML file from our Resources package (wizard-ejb/src/main/resources)
-        QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
-                .unmarshal(new File(getClass().getResource(XMLpath).getFile()));
-        return forms;
+        if (XMLpath.startsWith("/")) {
+            QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
+                    .unmarshal(new File(getClass().getResource(XMLpath).getFile()));
+            return forms;
+        } else {
+            QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
+                    //new File(getClass().getResource(XMLpath).getFile())
+                    .unmarshal(new File(XMLpath));
+            return forms;
+        }
+
     }
+
+//    public QuestionnaireForms parseXmlFromFile(String XMLpath) throws SAXException,
+//            JAXBException {
+//        Schema schema = SchemaFactory.newInstance(
+//                XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+//                new File(getClass().getClassLoader()
+//                        .getResource("/XSDforWizard.xsd").getFile()));
+//        Unmarshaller unmarshaller = JAXBContext.newInstance(
+//                QuestionnaireForms.class).createUnmarshaller();
+//        unmarshaller.setSchema(schema);
+//        unmarshaller.setEventHandler(new ValidationEventHandler() {
+//            @Override
+//            public boolean handleEvent(ValidationEvent event) {
+//                return true;
+//            }
+//        });
+//
+//    }
+
+
 }

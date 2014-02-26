@@ -1,5 +1,4 @@
 <!-- vyacheslav.mysak -->
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -19,8 +18,8 @@
                 </f:facet>
             </p:treeTable>
 
-            <div style="margin-left: auto;margin-right: auto;width:60%;">
-                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5"
+            <div id="selectid" style="margin-left: auto;margin-right: auto;width:60%;">
+                <h:panelGrid id="panelid" columns="2" style="margin-bottom:10px" cellpadding="5"
                              columnClasses="label, column">
                     <h:selectOneListbox id="default_xml" hideNoSelectionOption="false"
                                         value="#{uiNavigationBean.navigationData.selectedFormTemplate}"
@@ -29,15 +28,22 @@
                     </h:selectOneListbox>
                 </h:panelGrid>
             </div>
-            <h:commandButton value="START" action="#{uiNavigationBean.start()}" id="butt"  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                             style="position: relative; left: 645px; bottom: 10px;" />
 
+            <h:inputFile id="fileid" label="Choosed" title="Please choose your xml template"
+                         value="#{fileUploadController.file}" style="position: relative; left: 200px; bottom: 10px;"/>
+            <br/>
 
-                <h:inputFile id="file" value="#{fileUploadController.file}"/>
-                <h:commandButton value="Upload"
-                                 action="#{fileUploadController.upload}"/>
+            <h:commandButton class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                             value="Upload" style="position: relative; left: 200px; bottom: 10px;"
+                             action="#{uiNavigationBean.refresh(fileUploadController.path)}"
+                             actionListener="#{fileUploadController.upload}">
+                <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
+
+            <h:commandButton value="START" action="#{uiNavigationBean.start}" id="butt"
+                             class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                             style="position: relative; left: 500px; bottom: 10px;"/>
 
         </h:form>
-
     </ui:define>
 </ui:composition>
