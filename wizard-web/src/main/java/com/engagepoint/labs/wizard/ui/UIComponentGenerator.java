@@ -73,7 +73,7 @@ public class UIComponentGenerator {
                 component = getSelectOneMenu(question);
                 break;
             case DATE:
-                component = getCalendar(question);
+                component = getDate(question);
                 break;
             case TIME:
                 // to do
@@ -347,11 +347,11 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
-    private Calendar getCalendar(WizardQuestion question) {
-        Calendar calendar = new Calendar();
-        calendar.setValue(new Date());
-        calendar.setStyle("padding:1000px");
-        return calendar;
+    private Calendar getDate(WizardQuestion question) {
+        Calendar dateCalendar = new Calendar();
+        dateCalendar.setValue(new Date());
+        dateCalendar.setStyle("padding:1px");
+        return dateCalendar;
     }
 
     private Calendar getTime(WizardQuestion question) {
@@ -359,7 +359,7 @@ public class UIComponentGenerator {
         timeCalendar.setValue(new Date());
         timeCalendar.setPattern("HH:mm");
         timeCalendar.setTimeOnly(true);
-        timeCalendar.setStyle("padding:1000px");
+        timeCalendar.setStyle("padding:1px");
         return timeCalendar;
     }
 
