@@ -282,39 +282,25 @@ public class UINavigationBean implements Serializable {
      */
     private void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
-        int currentPageButtonIndex = 0;
-        // here we can find position number of page button from breadcrumb
-        // (numbers are from 0 to n). Page buttons on breadcrumb have same
-        // order, as in wizard page list from our XML
         WizardPage wizardPage;
-        for (int i = 0; i < pageList.size(); i++) {
-            wizardPage = pageList.get(i);
+        MenuItem pageMenuItem;
+        MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+        for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
+            wizardPage = pageList.get(pageIndex);
+            pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
+                    .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
-                currentPageButtonIndex = i;
-                break;
+                if (pageIndex == 0) {
+                    pageMenuItem.setId("j_id1");
+                } else {
+                    pageMenuItem.setStyleClass(styleClass);
+                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                }
+                pageMenuItem.setStyleClass(styleClass);
+
+            } else {
+                pageMenuItem.setStyleClass("");
             }
-        }
-
-        MenuItem currentPageButtonMenuItem;
-        MenuItem pageOneButtonMenuItem;
-
-        // Get our menuItem from breadcrumb using our index we've found
-        currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
-                .get(currentPageButtonIndex);
-        pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
-        // Setting style to current page button menuItem
-        if (currentPageButtonIndex == 0) {
-            // On page one we can't set style class, styles only set to id
-            // #brd-j_id1
-            // NOTE: brd is an ID of a parent object - breadcrumb,
-            // those it added automatically, so in next step we print only j_id1
-            // If we have changed page one's ID before, return it to default
-            pageOneButtonMenuItem.setId("j_id1");
-        } else {
-            // Setting our class style
-            currentPageButtonMenuItem.setStyleClass(styleClass);
-            // and changing our page one generated id to another one
-            pageOneButtonMenuItem.setId(pageOneButtonMenuItem.getId() + "a");
         }
     }
 
