@@ -210,8 +210,6 @@ public class UINavigationBean implements Serializable {
             return;
         }
         clearCurrentTopicsData();
-        // Refreshing current style to BootStrap defaults
-        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
         navigationData.setCurrentPageIDAndTitle(newCurrentPageID);
         // After changing current page to a new one, mark it with a new style
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
@@ -291,19 +289,18 @@ public class UINavigationBean implements Serializable {
                     .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
                 if (pageIndex == 0) {
-                    if(pageMenuItem.getId()!=null)
-                    pageMenuItem.setId("j_id1");
+                    if (pageMenuItem.getId() != null)
+                        pageMenuItem.setId("j_id1");
                 } else {
-                   firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
                 pageMenuItem.setStyleClass(styleClass);
 
             } else {
 
-                if(pageIndex > (navigationData.getPageLimit()-1)){
+                if (pageIndex > (navigationData.getPageLimit() - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
-                } else
-                {
+                } else {
                     pageMenuItem.setStyleClass("");
                 }
             }
@@ -342,14 +339,19 @@ public class UINavigationBean implements Serializable {
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;
         MenuItem item;
-        for (int i = 0; i < topicList.size(); i++) {
-            topic = topicList.get(i);
+        for (int topicIndex = 0; topicIndex < topicList.size(); topicIndex++) {
+            topic = topicList.get(topicIndex);
             item = (MenuItem) navigationData.getMenuModel().getContents()
-                    .get(i);
+                    .get(topicIndex);
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-                item.setStyleClass("");
+
+                if (topic.getTopicNumber() > navigationData.getTopicLimit()) {
+                    item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    item.setStyleClass("");
+                }
             }
         }
     }

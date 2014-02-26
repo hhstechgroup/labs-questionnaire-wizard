@@ -1,18 +1,10 @@
 package com.engagepoint.labs.wizard.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
+import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
+import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
+import com.engagepoint.labs.wizard.values.DateValue;
+import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
@@ -25,15 +17,18 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.RangeQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.Value;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlSelectOneListbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/11/14.
@@ -136,7 +131,6 @@ public class UIComponentGenerator {
     private InputText getInputText(final WizardQuestion question, Value answer, Value defaultAnswer) {
         final InputText inputText = new InputText();
         inputText.setOnchange("submit()");
-        inputText.setOnblur("submit()");
         inputText.addValidator(new ComponentValidator(question));
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -150,7 +144,6 @@ public class UIComponentGenerator {
     private InputTextarea getInputTextArea(final WizardQuestion question, Value answer, Value defaultAnswer) {
         final InputTextarea inputTextarea = new InputTextarea();
         inputTextarea.setOnchange("submit()");
-        inputTextarea.setOnblur("submit()");
         // Creating Listener for Validation
         inputTextarea.addValidator(new ComponentValidator(question));
         // Showing Answer or Default Answer
@@ -164,10 +157,12 @@ public class UIComponentGenerator {
 
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
+        label.setValue(question.getTitle());
         if (question.isRequired()) {
-            label.setValue(question.getTitle() + " *");
-        } else {
-            label.setValue(question.getTitle());
+            HtmlOutputText outputText = new HtmlOutputText();
+            outputText.setValue(" *");
+            outputText.setStyle("color:red");
+            label.getChildren().add(outputText);
         }
         label.getChildren().add(getButtonTooltip(question));
         return label;
@@ -177,7 +172,6 @@ public class UIComponentGenerator {
         final HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
         final UISelectItems defaultItem = new UISelectItems();
         selectOneMenu.setOnchange("submit()");
-        selectOneMenu.setOnblur("submit()");
         List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
         if (defaultAnswer == null && answer == null) {
             defaultItem.setValue(new SelectItem("", "Set answer please"));
@@ -200,7 +194,6 @@ public class UIComponentGenerator {
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
         checkbox.setOnchange("submit()");
-        checkbox.setOnblur("submit()");
         // Creating Listener for Validation
         checkbox.addValidator(new ComponentValidator(question));
         // Showing Answer or Default Answer
@@ -225,80 +218,79 @@ public class UIComponentGenerator {
     }
 
     private Calendar getDate(final WizardQuestion question) {
- 	Calendar dateCalendar = new Calendar();
- 	Value defaultAnswer = question.getDefaultAnswer();
- 	Value answer = question.getAnswer();
+        Calendar dateCalendar = new Calendar();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
 
- 	dateCalendar.setStyle("padding:1px");
+        dateCalendar.setStyle("padding:1px");
 
- 	dateCalendar.setOnchange("submit()");
- 	// Creating Listener for Validation
- 	    dateCalendar.addValidator(new Validator() {
- 		@Override
- 		public void validate(FacesContext context, UIComponent component,
- 			Object value) throws ValidatorException {
- 		    if (value == null) {
- 			question.setValid(false);
- 			throw new ValidatorException(new FacesMessage(
-			    FacesMessage.SEVERITY_ERROR, "Validation Error",
- 				"You need to choose a date!"));
- 		    } else {
- 			question.setValid(true);
- 			Value dateValue = new DateValue();
- 			dateValue.setValue(value);
- 			question.setAnswer(dateValue);
- 		    }
- 		}
- 	    });
- 	// Showing Answer or Default Answer
- 	if (defaultAnswer != null && answer == null) {
- 	    dateCalendar.setValue(defaultAnswer.getValue());
- 	} else if (answer != null) {
- 	    dateCalendar.setValue(answer.getValue());
- 	}
+        dateCalendar.setOnchange("submit()");
+        // Creating Listener for Validation
+        dateCalendar.addValidator(new Validator() {
+            @Override
+            public void validate(FacesContext context, UIComponent component,
+                                 Object value) throws ValidatorException {
+                if (value == null) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            "You need to choose a date!"));
+                } else {
+                    question.setValid(true);
+                    Value dateValue = new DateValue();
+                    dateValue.setValue(value);
+                    question.setAnswer(dateValue);
+                }
+            }
+        });
+        // Showing Answer or Default Answer
+        if (defaultAnswer != null && answer == null) {
+            dateCalendar.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+            dateCalendar.setValue(answer.getValue());
+        }
 
- 	return dateCalendar;
-     }
+        return dateCalendar;
+    }
 
-     private Calendar getTime(final WizardQuestion question) {
- 	Calendar timeCalendar = new Calendar();
- 	Value defaultAnswer = question.getDefaultAnswer();
- 	Value answer = question.getAnswer();
- 	timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
- 	timeCalendar.setTimeOnly(true);
- 	timeCalendar.setStyle("padding:1px");
+    private Calendar getTime(final WizardQuestion question) {
+        Calendar timeCalendar = new Calendar();
+        Value defaultAnswer = question.getDefaultAnswer();
+        Value answer = question.getAnswer();
+        timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
+        timeCalendar.setTimeOnly(true);
+        timeCalendar.setStyle("padding:1px");
 
- 	timeCalendar.setOnchange("submit()");
- 	timeCalendar.setOnblur("submit()");
- 	// Creating Listener for Validation
- 	if (question.isRequired()) {
- 	    timeCalendar.addValidator(new Validator() {
- 		@Override
- 		public void validate(FacesContext context, UIComponent component,
- 			Object value) throws ValidatorException {
- 		    if (value == null) {
- 			question.setValid(false);
- 			throw new ValidatorException(new FacesMessage(
- 				FacesMessage.SEVERITY_ERROR, "Validation Error",
- 				"You need to choose a time!"));
- 		    } else {
- 			question.setValid(true);
- 			Value dateValue = new DateValue();
- 			dateValue.setValue(value);
- 			question.setAnswer(dateValue);
- 		    }
- 		}
- 	    });
- 	}
- 	// Showing Answer or Default Answer
- 	if (defaultAnswer != null && answer == null) {
- 	    timeCalendar.setValue(defaultAnswer.getValue());
- 	} else if (answer != null) {
- 	    timeCalendar.setValue(answer.getValue());
- 	}
+        timeCalendar.setOnchange("submit()");
+        // Creating Listener for Validation
+        if (question.isRequired()) {
+            timeCalendar.addValidator(new Validator() {
+                @Override
+                public void validate(FacesContext context, UIComponent component,
+                                     Object value) throws ValidatorException {
+                    if (value == null) {
+                        question.setValid(false);
+                        throw new ValidatorException(new FacesMessage(
+                                FacesMessage.SEVERITY_ERROR, "Validation Error",
+                                "You need to choose a time!"));
+                    } else {
+                        question.setValid(true);
+                        Value dateValue = new DateValue();
+                        dateValue.setValue(value);
+                        question.setAnswer(dateValue);
+                    }
+                }
+            });
+        }
+        // Showing Answer or Default Answer
+        if (defaultAnswer != null && answer == null) {
+            timeCalendar.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+            timeCalendar.setValue(answer.getValue());
+        }
 
- 	return timeCalendar;
-     }
+        return timeCalendar;
+    }
 
     private FileUpload getFileUpload(WizardQuestion question) {
         FileUpload fileUpload = new FileUpload();
