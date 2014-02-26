@@ -115,7 +115,7 @@ public class UINavigationBean implements Serializable {
             item.setActionExpression(elExpression);
             navigationData.getBreadcrumbModel().addMenuItem(item);
         }
-
+        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         initMenu();
     }
 
@@ -296,15 +296,21 @@ public class UINavigationBean implements Serializable {
                     .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
                 if (pageIndex == 0) {
+                    if(pageMenuItem.getId()!=null)
                     pageMenuItem.setId("j_id1");
                 } else {
-                    pageMenuItem.setStyleClass(styleClass);
-                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                   firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
                 pageMenuItem.setStyleClass(styleClass);
 
             } else {
-                pageMenuItem.setStyleClass("");
+
+                if(pageIndex > (navigationData.getPageLimit()-1)){
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else
+                {
+                    pageMenuItem.setStyleClass("");
+                }
             }
         }
     }
