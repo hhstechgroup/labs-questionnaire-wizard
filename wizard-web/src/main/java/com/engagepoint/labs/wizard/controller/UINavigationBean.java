@@ -218,8 +218,11 @@ public class UINavigationBean implements Serializable {
         // set current topic to first on new page
         navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
-        navigationData.setTopicLimit(navigationData.getWizardForm()
-                .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getTopicNumber());
+        Integer newTopicNumber = navigationData.getWizardForm()
+                .getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
+        if (newTopicNumber > navigationData.getTopicLimit()) {
+            navigationData.setTopicLimit(newTopicNumber);
+        }
         // create new menu for page
         initMenu();
     }
