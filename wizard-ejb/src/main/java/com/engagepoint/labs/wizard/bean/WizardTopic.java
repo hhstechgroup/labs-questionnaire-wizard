@@ -5,10 +5,10 @@
 package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+
 import java.util.List;
 
 /**
- *
  * @author artem.pylypenko
  */
 public class WizardTopic {
@@ -16,6 +16,7 @@ public class WizardTopic {
     private String id;
     private String groupTitle;
     private List<WizardQuestion> wizardQuestionList;
+    private Integer topicNumber;
 
     public WizardTopic() {
     }
@@ -26,6 +27,14 @@ public class WizardTopic {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getTopicNumber() {
+        return topicNumber;
+    }
+
+    public void setTopicNumber(Integer topicNumber) {
+        this.topicNumber = topicNumber;
     }
 
     public List<WizardQuestion> getWizardQuestionList() {

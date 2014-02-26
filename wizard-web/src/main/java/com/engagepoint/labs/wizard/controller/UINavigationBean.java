@@ -225,15 +225,18 @@ public class UINavigationBean implements Serializable {
     /**
      * change topic by id
      *
-     * @param currentTopicID
+     * @param newCurrentTopicID
      */
-    public void changeCurrentTopic(String currentTopicID) {
+    public void changeCurrentTopic(String newCurrentTopicID) {
         commitAnswers(getQuestionListFromCurrentTopic());
+//        Integer newCurrentTopicNumber = navigationData.getWizardForm().getWizardTopicById(newCurrentTopicID).getTopicNumber();
+//        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
+//            return;
+//        }
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
         }
-
-        navigationData.setCurrentTopicIDAndTitle(currentTopicID);
+        navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
     }
