@@ -123,7 +123,7 @@ public class UINavigationBean implements Serializable {
             item.setActionExpression(elExpression);
             navigationData.getBreadcrumbModel().addMenuItem(item);
         }
-
+        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         initMenu();
     }
 
@@ -218,8 +218,6 @@ public class UINavigationBean implements Serializable {
             return;
         }
         clearCurrentTopicsData();
-        // Refreshing current style to BootStrap defaults
-        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
         navigationData.setCurrentPageIDAndTitle(newCurrentPageID);
         // After changing current page to a new one, mark it with a new style
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
@@ -233,15 +231,18 @@ public class UINavigationBean implements Serializable {
     /**
      * change topic by id
      *
-     * @param currentTopicID
+     * @param newCurrentTopicID
      */
-    public void changeCurrentTopic(String currentTopicID) {
+    public void changeCurrentTopic(String newCurrentTopicID) {
         commitAnswers(getQuestionListFromCurrentTopic());
+        Integer newCurrentTopicNumber = navigationData.getWizardForm().getWizardTopicById(newCurrentTopicID).getTopicNumber();
+        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
+            return;
+        }
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
         }
-
-        navigationData.setCurrentTopicIDAndTitle(currentTopicID);
+        navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
     }
@@ -287,39 +288,30 @@ public class UINavigationBean implements Serializable {
      */
     private void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
-        int currentPageButtonIndex = 0;
-        // here we can find position number of page button from breadcrumb
-        // (numbers are from 0 to n). Page buttons on breadcrumb have same
-        // order, as in wizard page list from our XML
         WizardPage wizardPage;
-        for (int i = 0; i < pageList.size(); i++) {
-            wizardPage = pageList.get(i);
+        MenuItem pageMenuItem;
+        MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+        for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
+            wizardPage = pageList.get(pageIndex);
+            pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
+                    .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
-                currentPageButtonIndex = i;
-                break;
+                if (pageIndex == 0) {
+                    if (pageMenuItem.getId() != null)
+                        pageMenuItem.setId("j_id1");
+                } else {
+                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                }
+                pageMenuItem.setStyleClass(styleClass);
+
+            } else {
+
+                if (pageIndex > (navigationData.getPageLimit() - 1)) {
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    pageMenuItem.setStyleClass("");
+                }
             }
-        }
-
-        MenuItem currentPageButtonMenuItem;
-        MenuItem pageOneButtonMenuItem;
-
-        // Get our menuItem from breadcrumb using our index we've found
-        currentPageButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents()
-                .get(currentPageButtonIndex);
-        pageOneButtonMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
-        // Setting style to current page button menuItem
-        if (currentPageButtonIndex == 0) {
-            // On page one we can't set style class, styles only set to id
-            // #brd-j_id1
-            // NOTE: brd is an ID of a parent object - breadcrumb,
-            // those it added automatically, so in next step we print only j_id1
-            // If we have changed page one's ID before, return it to default
-            pageOneButtonMenuItem.setId("j_id1");
-        } else {
-            // Setting our class style
-            currentPageButtonMenuItem.setStyleClass(styleClass);
-            // and changing our page one generated id to another one
-            pageOneButtonMenuItem.setId(pageOneButtonMenuItem.getId() + "a");
         }
     }
 
@@ -355,14 +347,19 @@ public class UINavigationBean implements Serializable {
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;
         MenuItem item;
-        for (int i = 0; i < topicList.size(); i++) {
-            topic = topicList.get(i);
+        for (int topicIndex = 0; topicIndex < topicList.size(); topicIndex++) {
+            topic = topicList.get(topicIndex);
             item = (MenuItem) navigationData.getMenuModel().getContents()
-                    .get(i);
+                    .get(topicIndex);
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-                item.setStyleClass("");
+
+                if (topic.getTopicNumber() > navigationData.getTopicLimit()) {
+                    item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    item.setStyleClass("");
+                }
             }
         }
     }

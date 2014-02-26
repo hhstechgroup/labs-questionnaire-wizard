@@ -1,5 +1,5 @@
 .ui-widget {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	font-size: 1.1em;
 }
 
@@ -13,9 +13,9 @@
 }
 
 .ui-widget-content {
-	border: 0px solid #dddddd;
-	background: #ffffff;
-	color: #333333;
+	/*border: 0px solid #dddddd;*/
+	/*background: #ffffff;*/
+	/*color: #333333;*/
 }
 
 
@@ -143,5 +143,5 @@
 .ui-panel .ui-panel-content {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border: 0 none;
-	padding: 0.5em 1em;
+	/*padding: 0.5em 1em;*/
 }

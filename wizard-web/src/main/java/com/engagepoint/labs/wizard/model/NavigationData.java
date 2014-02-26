@@ -17,6 +17,23 @@ import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.component.button.Button;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+import org.xml.sax.SAXException;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.JAXBException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,8 +44,10 @@ import java.util.logging.Logger;
 
 
 /**
+ *
  * @author vyacheslav.mysak
- *         Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
+ * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
+ *
  */
 @Named("navigationData")
 @SessionScoped
@@ -113,7 +132,6 @@ public class NavigationData implements Serializable {
         panelGrid.setColumns(1);
         mainContentForm.getChildren().add(panelGrid);
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm, wizardDocument.getFormList());
-
         needRefresh = false;
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID).getTopicList().get(0).getId();
@@ -122,7 +140,7 @@ public class NavigationData implements Serializable {
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
         pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
-        topicLimit = 1;
+        topicLimit = wizardForm.getWizardTopicById(currentTopicID).getTopicNumber();
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -132,6 +150,10 @@ public class NavigationData implements Serializable {
                     return false;
                 } else {
                     currentTopicID = currentTopicIDs.get(index + 1);
+                    Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(currentTopicID).getTopicNumber();
+                    if (newCurrentTopicNumber > topicLimit) {
+                        topicLimit = newCurrentTopicNumber;
+                    }
                     return true;
                 }
             }
@@ -151,7 +173,10 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();// change
                     // pageId to
                     // next id
-                    pageLimit++;
+                    Integer newCurrentPageNumber = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+                    if (newCurrentPageNumber > pageLimit) {
+                        pageLimit = newCurrentPageNumber;
+                    }
                     return true;
                 }
             }
@@ -242,12 +267,10 @@ public class NavigationData implements Serializable {
     }
 
     public String getSelectedFormTemplate() {
-        System.err.print("---------------------------selectedFormTemplateSet = " + selectedFormTemplate + "----------------------------------------");
         return selectedFormTemplate;
     }
 
     public void setSelectedFormTemplate(String selectedFormTemplate) {
-
         this.selectedFormTemplate = selectedFormTemplate;
     }
 
