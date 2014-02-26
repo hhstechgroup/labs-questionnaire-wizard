@@ -47,15 +47,6 @@ public class UINavigationPhaseListener implements PhaseListener {
         return PhaseId.RENDER_RESPONSE;
     }
 
-    private void refreshPage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String viewId = context.getViewRoot().getViewId();
-        ViewHandler handler = context.getApplication().getViewHandler();
-        UIViewRoot root = handler.createView(context, viewId);
-        root.setViewId(viewId);
-        context.setViewRoot(root);
-    }
-
     private void redirectPage() {
         HttpServletRequest origRequest = (HttpServletRequest) FacesContext
                 .getCurrentInstance().getExternalContext().getRequest();
