@@ -49,3 +49,6 @@
     color: #E9E9E9;
     line-height: 40px !important;
 }
+.wizard-menu-item-disabled {
+    opacity: 0.5;
+}

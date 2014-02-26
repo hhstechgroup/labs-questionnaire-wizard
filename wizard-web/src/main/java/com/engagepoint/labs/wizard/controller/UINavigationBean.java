@@ -115,7 +115,7 @@ public class UINavigationBean implements Serializable {
             item.setActionExpression(elExpression);
             navigationData.getBreadcrumbModel().addMenuItem(item);
         }
-
+        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         initMenu();
     }
 
@@ -218,11 +218,6 @@ public class UINavigationBean implements Serializable {
         // set current topic to first on new page
         navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
-        Integer newTopicNumber = navigationData.getWizardForm()
-                .getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newTopicNumber > navigationData.getTopicLimit()) {
-            navigationData.setTopicLimit(newTopicNumber);
-        }
         // create new menu for page
         initMenu();
     }
@@ -296,15 +291,21 @@ public class UINavigationBean implements Serializable {
                     .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
                 if (pageIndex == 0) {
+                    if(pageMenuItem.getId()!=null)
                     pageMenuItem.setId("j_id1");
                 } else {
-                    pageMenuItem.setStyleClass(styleClass);
-                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                   firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
                 pageMenuItem.setStyleClass(styleClass);
 
             } else {
-                pageMenuItem.setStyleClass("");
+
+                if(pageIndex > (navigationData.getPageLimit()-1)){
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else
+                {
+                    pageMenuItem.setStyleClass("");
+                }
             }
         }
     }
