@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -33,7 +32,6 @@ import com.engagepoint.labs.wizard.questions.RangeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
 import com.engagepoint.labs.wizard.ui.validators.DateTimeValidator;
-import com.engagepoint.labs.wizard.ui.validators.SliderOrdinaryValidator;
 import com.engagepoint.labs.wizard.values.Value;
 
 /**
@@ -239,7 +237,7 @@ public class UIComponentGenerator {
 
 	dateCalendar.setPattern(WizardDataModelGenerator.DATE_FORMAT);
 	dateCalendar.setStyle("padding:1px");
-	dateCalendar.setOnchange("submit()");
+//	dateCalendar.setOnchange("submit()");
 
 	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
 		.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
@@ -256,56 +254,30 @@ public class UIComponentGenerator {
 	return dateCalendar;
     }
 
-    //
-    // private Calendar getTime(final WizardQuestion question) {
-    // Calendar timeCalendar = new Calendar();
-    // Value defaultAnswer = question.getDefaultAnswer();
-    // Value answer = question.getAnswer();
-    // AjaxBehavior ajaxBehavior;
-    //
-    // timeCalendar.setTimeOnly(true);
-    // timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
-    // timeCalendar.setStyle("padding:1px");
-    // timeCalendar.setOnchange("submit()");
-    //
-    // ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
-    // .getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
-    // ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
-    //
-    // // Showing Answer or Default Answer
-    // if (defaultAnswer != null && answer == null) {
-    // timeCalendar.setValue(defaultAnswer.getValue());
-    // } else if (answer != null) {
-    // timeCalendar.setValue(answer.getValue());
-    // }
-    //
-    // return timeCalendar;
-    // }
-
-    private UIComponent getTime(final WizardQuestion question) {
-	HtmlForm timeCalendarForm = new HtmlForm();
-	Slider sliderHours = new Slider();
-	HtmlOutputText textHours = new HtmlOutputText();
+    private Calendar getTime(final WizardQuestion question) {
+	Calendar timeCalendar = new Calendar();
+	Value defaultAnswer = question.getDefaultAnswer();
+	Value answer = question.getAnswer();
 	AjaxBehavior ajaxBehavior;
 
-	timeCalendarForm.setId(question.getId());
-
-	textHours.setId(question.getId() + "_textHours");
-	textHours.setValue("5");
-	sliderHours.setId(question.getId() + "_sliderHours");
-	sliderHours.setMinValue(0);
-	sliderHours.setMaxValue(24);
-
-	sliderHours.setFor(textHours.getId());
+	timeCalendar.setTimeOnly(true);
+	timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
+	timeCalendar.setStyle("padding:1px");
+//	dateCalendar.setOnchange("submit()");
 
 	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
 		.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
-	ajaxBehavior.addAjaxBehaviorListener(new SliderOrdinaryValidator());
-	sliderHours.addClientBehavior("slideEnd", ajaxBehavior);
+	ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
+	timeCalendar.addClientBehavior("dateSelect", ajaxBehavior);
 
-	timeCalendarForm.getChildren().add(textHours);
-	timeCalendarForm.getChildren().add(sliderHours);
-	return timeCalendarForm;
+	// Showing Answer or Default Answer
+	if (defaultAnswer != null && answer == null) {
+	    timeCalendar.setValue(defaultAnswer.getValue());
+	} else if (answer != null) {
+	    timeCalendar.setValue(answer.getValue());
+	}
+
+	return timeCalendar;
     }
 
     private FileUpload getFileUpload(WizardQuestion question) {
