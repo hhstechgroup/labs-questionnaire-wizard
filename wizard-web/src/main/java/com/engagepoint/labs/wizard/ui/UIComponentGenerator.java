@@ -1,11 +1,17 @@
 package com.engagepoint.labs.wizard.ui;
 
-import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
-import com.engagepoint.labs.wizard.questions.*;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.Value;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlSelectOneListbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
@@ -19,17 +25,15 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.model.SelectItem;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DropDownQuestion;
+import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
+import com.engagepoint.labs.wizard.questions.RangeQuestion;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
+import com.engagepoint.labs.wizard.values.DateValue;
+import com.engagepoint.labs.wizard.values.Value;
 
 /**
  * Created by igor.guzenko on 2/11/14.
@@ -236,7 +240,7 @@ public class UIComponentGenerator {
  		    if (value == null) {
  			question.setValid(false);
  			throw new ValidatorException(new FacesMessage(
- 				FacesMessage.SEVERITY_ERROR, "Validation Error",
+			    FacesMessage.SEVERITY_ERROR, "Validation Error",
  				"You need to choose a date!"));
  		    } else {
  			question.setValid(true);
