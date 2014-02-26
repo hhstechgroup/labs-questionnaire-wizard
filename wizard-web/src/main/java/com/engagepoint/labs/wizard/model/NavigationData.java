@@ -121,7 +121,10 @@ public class NavigationData implements Serializable {
                     return false;
                 } else {
                     currentTopicID = currentTopicIDs.get(index + 1);
-                    topicLimit = wizardForm.getWizardTopicById(currentTopicID).getTopicNumber();
+                    Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(currentTopicID).getTopicNumber();
+                    if (newCurrentTopicNumber > topicLimit) {
+                        topicLimit = newCurrentTopicNumber;
+                    }
                     return true;
                 }
             }
@@ -141,7 +144,10 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();// change
                     // pageId to
                     // next id
-                    pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+                    Integer newCurrentPageNumber = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+                    if (newCurrentPageNumber > pageLimit) {
+                        pageLimit = newCurrentPageNumber;
+                    }
                     return true;
                 }
             }
