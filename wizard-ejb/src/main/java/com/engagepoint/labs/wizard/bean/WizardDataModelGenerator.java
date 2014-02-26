@@ -27,6 +27,7 @@ public class WizardDataModelGenerator {
     private List<WizardPage> wizardPageList;
     private List<WizardTopic> wizardTopicList;
     private List<WizardQuestion> wizardQuestionList;
+    private int topicNumber;
 
     public WizardDataModelGenerator() {
     }
@@ -38,6 +39,7 @@ public class WizardDataModelGenerator {
     }
 
     private List<WizardForm> getWizardForms(List<QuestionnaireForms> forms) {
+        topicNumber = 1;
         wizardFormList = new ArrayList<>();
         WizardForm wizardForm;
         for (QuestionnaireForms questionnaireForms : forms) {
@@ -76,7 +78,9 @@ public class WizardDataModelGenerator {
             wizardTopic.setId(group.getGroupId());
             wizardTopic.setGroupTitle(group.getGroupName());
             wizardTopic.setWizardQuestionList(getWizardQuestions(group.getQuestions()));
+            wizardTopic.setTopicNumber(topicNumber);
             wizardTopicList.add(wizardTopic);
+            topicNumber++;
         }
         return wizardTopicList;
     }
@@ -85,7 +89,7 @@ public class WizardDataModelGenerator {
         List<Question> questionList = questions.getQuestion();
         wizardQuestionList = new ArrayList<>();
         for (Question question : questionList) {
-            if(createWizardQuestionFromXmlQuestion(question)!=null){
+            if (createWizardQuestionFromXmlQuestion(question) != null) {
                 wizardQuestionList.add(createWizardQuestionFromXmlQuestion(question));
             }
         }
@@ -102,11 +106,11 @@ public class WizardDataModelGenerator {
             case CHECKBOX:
                 CheckBoxesQuestion checkBoxesQuestion = new CheckBoxesQuestion();
                 checkBoxesQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         ListTextValue checkboxDefaults = new ListTextValue();
                         checkboxDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer());
-                         checkBoxesQuestion.setDefaultAnswer(checkboxDefaults);
+                        checkBoxesQuestion.setDefaultAnswer(checkboxDefaults);
                     }
                 }
                 wizardQuestion = checkBoxesQuestion;
@@ -115,8 +119,8 @@ public class WizardDataModelGenerator {
             case CHOOSEFROMLIST:
                 DropDownQuestion dropDownQuestion = new DropDownQuestion();
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         TextValue chooseFromListDefaults = new TextValue();
                         chooseFromListDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                         dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);
@@ -126,8 +130,8 @@ public class WizardDataModelGenerator {
                 break;
             case DATE:
                 wizardQuestion = new DateQuestion();
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         DateValue dateDefaults = new DateValue();
                         dateDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
                         wizardQuestion.setDefaultAnswer(dateDefaults);
@@ -146,8 +150,8 @@ public class WizardDataModelGenerator {
             case MULTIPLECHOICE:
                 MultipleChoiseQuestion multipleChoiseQuestion = new MultipleChoiseQuestion();
                 multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions().getOption());
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         TextValue multipleChoiceDefaults = new TextValue();
                         multipleChoiceDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                         multipleChoiseQuestion.setDefaultAnswer(multipleChoiceDefaults);
@@ -157,8 +161,8 @@ public class WizardDataModelGenerator {
                 break;
             case PARAGRAPHTEXT:
                 wizardQuestion = new TextAreaQuestion();
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         TextValue paragraphDefaults = new TextValue();
                         paragraphDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                         wizardQuestion.setDefaultAnswer(paragraphDefaults);
@@ -167,8 +171,8 @@ public class WizardDataModelGenerator {
                 break;
             case RANGE:
                 RangeQuestion rangeQuestion = new RangeQuestion();
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         RangeValue rangeDefaults = new RangeValue();
                         Range range = new Range();
                         range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
@@ -182,8 +186,8 @@ public class WizardDataModelGenerator {
                 break;
             case TEXT:
                 wizardQuestion = new TextQuestion();
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         TextValue textDefaults = new TextValue();
                         textDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                         wizardQuestion.setDefaultAnswer(textDefaults);
@@ -192,8 +196,8 @@ public class WizardDataModelGenerator {
                 break;
             case TIME:
                 wizardQuestion = new TimeQuestion();
-                if(xmlQuestion.getDefaultAnswers() != null) {
-                    if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+                if (xmlQuestion.getDefaultAnswers() != null) {
+                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
                         DateValue timeDefaults = new DateValue();
                         timeDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
                         wizardQuestion.setDefaultAnswer(timeDefaults);

@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 
+import com.engagepoint.labs.wizard.bean.WizardTopic;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
@@ -110,7 +111,7 @@ public class NavigationData implements Serializable {
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
         pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
-        topicLimit = 1;
+        topicLimit = wizardForm.getWizardTopicById(currentTopicID).getTopicNumber();
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -120,6 +121,7 @@ public class NavigationData implements Serializable {
                     return false;
                 } else {
                     currentTopicID = currentTopicIDs.get(index + 1);
+                    topicLimit++;
                     return true;
                 }
             }
