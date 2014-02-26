@@ -11,9 +11,12 @@ import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.RangeValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.objects.Range;
+
 import super_binding.*;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,9 @@ import java.util.List;
  * @author artem.pylypenko
  */
 public class WizardDataModelGenerator {
+    
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
+    public static final String TIME_FORMAT = "hh:mm";
 
     private WizardDocument wizardDocument;
     private List<WizardForm> wizardFormList;
@@ -128,16 +134,43 @@ public class WizardDataModelGenerator {
                 }
                 wizardQuestion = dropDownQuestion;
                 break;
-            case DATE:
-                wizardQuestion = new DateQuestion();
-                if (xmlQuestion.getDefaultAnswers() != null) {
-                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-                        DateValue dateDefaults = new DateValue();
-                        dateDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
-                        wizardQuestion.setDefaultAnswer(dateDefaults);
-                    }
-                }
-                break;
+    	case DATE:
+	    wizardQuestion = new DateQuestion();
+	    Date date=null;
+	    if (xmlQuestion.getDefaultAnswers() != null) {
+		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+		    DateValue dateDefault = new DateValue();
+		    SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+		    try {
+			date = formatter.parse(xmlQuestion.getDefaultAnswers()
+				.getDefaultAnswer().get(0));
+
+		    } catch (ParseException e) {
+			e.printStackTrace();
+		    }
+		    dateDefault.setValue(date);
+		    wizardQuestion.setDefaultAnswer(dateDefault);
+		}
+	    }
+	    break;
+	case TIME:
+	    wizardQuestion = new TimeQuestion();
+	    Date time = null;
+	    if (xmlQuestion.getDefaultAnswers() != null) {
+		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+		    DateValue timeDefault = new DateValue();
+		    SimpleDateFormat formatter = new SimpleDateFormat(WizardDataModelGenerator.TIME_FORMAT);
+		    try {
+			time = formatter.parse(xmlQuestion.getDefaultAnswers()
+				.getDefaultAnswer().get(0));
+					    } catch (ParseException e) {
+			e.printStackTrace();
+		    }
+		    timeDefault.setValue(time);
+		    wizardQuestion.setDefaultAnswer(timeDefault);
+		}
+	    }
+	    break;
             case FILEUPLOAD:
                 wizardQuestion = new FileUploadQuestion();
                 break;
@@ -191,16 +224,6 @@ public class WizardDataModelGenerator {
                         TextValue textDefaults = new TextValue();
                         textDefaults.setValue(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
                         wizardQuestion.setDefaultAnswer(textDefaults);
-                    }
-                }
-                break;
-            case TIME:
-                wizardQuestion = new TimeQuestion();
-                if (xmlQuestion.getDefaultAnswers() != null) {
-                    if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-                        DateValue timeDefaults = new DateValue();
-                        timeDefaults.setValue(Date.valueOf(xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0)));
-                        wizardQuestion.setDefaultAnswer(timeDefaults);
                     }
                 }
                 break;
