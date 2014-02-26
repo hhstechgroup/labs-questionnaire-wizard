@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class WizardDataModelGenerator {
 
-    public static final String DATE_FORMAT = "dd-MMM-yyyy";
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
     public static final String TIME_FORMAT = "hh:mm";
 
     private WizardDocument wizardDocument;
@@ -137,20 +137,38 @@ public class WizardDataModelGenerator {
 	    break;
 	case DATE:
 	    wizardQuestion = new DateQuestion();
+	    Date date=null;
 	    if (xmlQuestion.getDefaultAnswers() != null) {
 		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-		    DateValue dateDefaults = new DateValue();
+		    DateValue dateDefault = new DateValue();
 		    SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
 		    try {
-			Date date = formatter.parse(xmlQuestion.getDefaultAnswers()
+			date = formatter.parse(xmlQuestion.getDefaultAnswers()
 				.getDefaultAnswer().get(0));
-			System.out.println(date);
-			System.out.println(formatter.format(date));
 
 		    } catch (ParseException e) {
 			e.printStackTrace();
 		    }
-		    wizardQuestion.setDefaultAnswer(dateDefaults);
+		    dateDefault.setValue(date);
+		    wizardQuestion.setDefaultAnswer(dateDefault);
+		}
+	    }
+	    break;
+	case TIME:
+	    wizardQuestion = new TimeQuestion();
+	    Date time = null;
+	    if (xmlQuestion.getDefaultAnswers() != null) {
+		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
+		    DateValue timeDefault = new DateValue();
+		    SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
+		    try {
+			time = formatter.parse(xmlQuestion.getDefaultAnswers()
+				.getDefaultAnswer().get(0));
+					    } catch (ParseException e) {
+			e.printStackTrace();
+		    }
+		    timeDefault.setValue(time);
+		    wizardQuestion.setDefaultAnswer(timeDefault);
 		}
 	    }
 	    break;
@@ -213,25 +231,6 @@ public class WizardDataModelGenerator {
 		    textDefaults.setValue(xmlQuestion.getDefaultAnswers()
 			    .getDefaultAnswer().get(0));
 		    wizardQuestion.setDefaultAnswer(textDefaults);
-		}
-	    }
-	    break;
-	case TIME:
-	    wizardQuestion = new TimeQuestion();
-	    if (xmlQuestion.getDefaultAnswers() != null) {
-		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer().isEmpty()) {
-		    DateValue dateDefaults = new DateValue();
-		    SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
-		    try {
-			Date time = formatter.parse(xmlQuestion.getDefaultAnswers()
-				.getDefaultAnswer().get(0));
-			System.out.println(time);
-			System.out.println(formatter.format(time));
-
-		    } catch (ParseException e) {
-			e.printStackTrace();
-		    }
-		    wizardQuestion.setDefaultAnswer(dateDefaults);
 		}
 	    }
 	    break;

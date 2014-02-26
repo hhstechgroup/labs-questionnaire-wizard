@@ -14,9 +14,7 @@
 								<question-type>DATE</question-type>
 								<help-text>Help text jhdfkosd</help-text>
 								<default-answers>
-									<default-answer>
-									21-11-1899
-									</default-answer>
+									<default-answer>21-11-1899</default-answer>
 								</default-answers>
 								<dependent-questions>
 									<dependent-question />
@@ -44,9 +42,7 @@
 								<question-type>TIME</question-type>
 								<help-text>TODO later\</help-text>
 								<default-answers>
-									<default-answer>
-									21:17
-									</default-answer>
+									<default-answer>21:17</default-answer>
 								</default-answers>
 								<dependent-questions>
 									<dependent-question />
