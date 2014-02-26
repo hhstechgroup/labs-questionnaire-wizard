@@ -1,11 +1,16 @@
 package com.engagepoint.labs.wizard.ui;
 
-import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
-import com.engagepoint.labs.wizard.questions.*;
-import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.ui.validators.DateTimeValidator;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.Value;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlSelectOneListbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
@@ -20,19 +25,16 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DropDownQuestion;
+import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
+import com.engagepoint.labs.wizard.questions.RangeQuestion;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
+import com.engagepoint.labs.wizard.ui.validators.DateTimeValidator;
+import com.engagepoint.labs.wizard.ui.validators.SliderOrdinaryValidator;
+import com.engagepoint.labs.wizard.values.Value;
 
 /**
  * Created by igor.guzenko on 2/11/14.
@@ -254,29 +256,56 @@ public class UIComponentGenerator {
 	return dateCalendar;
     }
 
-    private Calendar getTime(final WizardQuestion question) {
-	Calendar timeCalendar = new Calendar();
-	Value defaultAnswer = question.getDefaultAnswer();
-	Value answer = question.getAnswer();
+    //
+    // private Calendar getTime(final WizardQuestion question) {
+    // Calendar timeCalendar = new Calendar();
+    // Value defaultAnswer = question.getDefaultAnswer();
+    // Value answer = question.getAnswer();
+    // AjaxBehavior ajaxBehavior;
+    //
+    // timeCalendar.setTimeOnly(true);
+    // timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
+    // timeCalendar.setStyle("padding:1px");
+    // timeCalendar.setOnchange("submit()");
+    //
+    // ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
+    // .getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
+    // ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
+    //
+    // // Showing Answer or Default Answer
+    // if (defaultAnswer != null && answer == null) {
+    // timeCalendar.setValue(defaultAnswer.getValue());
+    // } else if (answer != null) {
+    // timeCalendar.setValue(answer.getValue());
+    // }
+    //
+    // return timeCalendar;
+    // }
+
+    private UIComponent getTime(final WizardQuestion question) {
+	HtmlForm timeCalendarForm = new HtmlForm();
+	Slider sliderHours = new Slider();
+	HtmlOutputText textHours = new HtmlOutputText();
 	AjaxBehavior ajaxBehavior;
 
-	timeCalendar.setTimeOnly(true);
-	timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
-	timeCalendar.setStyle("padding:1px");
-	timeCalendar.setOnchange("submit()");
+	timeCalendarForm.setId(question.getId());
+
+	textHours.setId(question.getId() + "_textHours");
+	textHours.setValue("5");
+	sliderHours.setId(question.getId() + "_sliderHours");
+	sliderHours.setMinValue(0);
+	sliderHours.setMaxValue(24);
+
+	sliderHours.setFor(textHours.getId());
 
 	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
 		.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
-	ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
+	ajaxBehavior.addAjaxBehaviorListener(new SliderOrdinaryValidator());
+	sliderHours.addClientBehavior("slideEnd", ajaxBehavior);
 
-	// Showing Answer or Default Answer
-	if (defaultAnswer != null && answer == null) {
-	    timeCalendar.setValue(defaultAnswer.getValue());
-	} else if (answer != null) {
-	    timeCalendar.setValue(answer.getValue());
-	}
-
-	return timeCalendar;
+	timeCalendarForm.getChildren().add(textHours);
+	timeCalendarForm.getChildren().add(sliderHours);
+	return timeCalendarForm;
     }
 
     private FileUpload getFileUpload(WizardQuestion question) {
