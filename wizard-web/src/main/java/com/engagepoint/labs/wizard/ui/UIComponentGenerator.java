@@ -116,10 +116,12 @@ public class UIComponentGenerator {
 	return slider;
     }
 
-    private HtmlSelectOneListbox getSelectOneListbox(final WizardQuestion question, Value answer, Value defaultAnswer) {
+    private HtmlSelectOneListbox getSelectOneListbox(
+	    final WizardQuestion question, Value answer, Value defaultAnswer) {
 	HtmlSelectOneListbox sOneListbox = new HtmlSelectOneListbox();
 	sOneListbox.setOnchange("submit()");
-	List<String> optionsList = ((MultipleChoiseQuestion) question).getOptionsList();
+	List<String> optionsList = ((MultipleChoiseQuestion) question)
+		.getOptionsList();
 	sOneListbox.getChildren().add(getSelectItems(optionsList));
 	int height = ONE_SELECT_ITEM_HEIGHT * optionsList.size();
 	sOneListbox.setStyle("height:" + height + "px");
@@ -132,7 +134,8 @@ public class UIComponentGenerator {
 	return sOneListbox;
     }
 
-    private InputText getInputText(final WizardQuestion question, Value answer, Value defaultAnswer) {
+    private InputText getInputText(final WizardQuestion question, Value answer,
+	    Value defaultAnswer) {
 	final InputText inputText = new InputText();
 	inputText.setOnchange("submit()");
 	inputText.addValidator(new ComponentValidator(question));
@@ -145,7 +148,8 @@ public class UIComponentGenerator {
 	return inputText;
     }
 
-    private InputTextarea getInputTextArea(final WizardQuestion question, Value answer, Value defaultAnswer) {
+    private InputTextarea getInputTextArea(final WizardQuestion question,
+	    Value answer, Value defaultAnswer) {
 	final InputTextarea inputTextarea = new InputTextarea();
 	inputTextarea.setOnchange("submit()");
 	// Creating Listener for Validation
@@ -172,11 +176,13 @@ public class UIComponentGenerator {
 	return label;
     }
 
-    private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question, Value answer, Value defaultAnswer) {
+    private HtmlSelectOneMenu getSelectOneMenu(final WizardQuestion question,
+	    Value answer, Value defaultAnswer) {
 	final HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
 	final UISelectItems defaultItem = new UISelectItems();
 	selectOneMenu.setOnchange("submit()");
-	List<String> optionsList = ((DropDownQuestion) question).getOptionsList();
+	List<String> optionsList = ((DropDownQuestion) question)
+		.getOptionsList();
 	if (defaultAnswer == null && answer == null) {
 	    defaultItem.setValue(new SelectItem("", "Set answer please"));
 	    defaultItem.setId("defaultItem");
@@ -192,9 +198,11 @@ public class UIComponentGenerator {
 	return selectOneMenu;
     }
 
-    private SelectManyCheckbox getSelectManyCheckbox(final WizardQuestion question, Value answer, Value defaultAnswer) {
+    private SelectManyCheckbox getSelectManyCheckbox(
+	    final WizardQuestion question, Value answer, Value defaultAnswer) {
 	SelectManyCheckbox checkbox = new SelectManyCheckbox();
-	List<String> optionsList = ((CheckBoxesQuestion) question).getOptionsList();
+	List<String> optionsList = ((CheckBoxesQuestion) question)
+		.getOptionsList();
 	checkbox.getChildren().add(getSelectItems(optionsList));
 	checkbox.setLayout("pageDirection");
 	checkbox.setOnchange("submit()");
@@ -231,8 +239,8 @@ public class UIComponentGenerator {
 	dateCalendar.setStyle("padding:1px");
 	dateCalendar.setOnchange("submit()");
 
-	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance().getApplication()
-		.createBehavior(AjaxBehavior.BEHAVIOR_ID);
+	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
+		.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
 	ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
 	dateCalendar.addClientBehavior("dateSelect", ajaxBehavior);
 
@@ -256,9 +264,9 @@ public class UIComponentGenerator {
 	timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
 	timeCalendar.setStyle("padding:1px");
 	timeCalendar.setOnchange("submit()");
-	
-	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance().getApplication()
-		.createBehavior(AjaxBehavior.BEHAVIOR_ID);
+
+	ajaxBehavior = (AjaxBehavior) FacesContext.getCurrentInstance()
+		.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
 	ajaxBehavior.addAjaxBehaviorListener(new DateTimeValidator(question));
 
 	// Showing Answer or Default Answer
