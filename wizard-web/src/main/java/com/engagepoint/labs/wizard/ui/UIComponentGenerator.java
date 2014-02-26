@@ -1,8 +1,12 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
 import com.engagepoint.labs.wizard.questions.*;
-import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
+import com.engagepoint.labs.wizard.values.DateValue;
+import com.engagepoint.labs.wizard.values.ListTextValue;
+import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.datagrid.DataGrid;
@@ -20,6 +24,9 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +74,7 @@ public class UIComponentGenerator {
                 component = getSelectOneMenu(question, answer, defaultAnswer);
                 break;
             case DATE:
-                component = getCalendar(question);
+                component = getDate(question);
                 break;
             case TIME:
                 // to do
@@ -213,21 +220,81 @@ public class UIComponentGenerator {
         return selectItems;
     }
 
-    private Calendar getCalendar(WizardQuestion question) {
-        Calendar calendar = new Calendar();
-        calendar.setValue(new Date());
-        calendar.setStyle("padding:1000px");
-        return calendar;
-    }
+    private Calendar getDate(final WizardQuestion question) {
+ 	Calendar dateCalendar = new Calendar();
+ 	Value defaultAnswer = question.getDefaultAnswer();
+ 	Value answer = question.getAnswer();
 
-    private Calendar getTime(WizardQuestion question) {
-        Calendar timeCalendar = new Calendar();
-        timeCalendar.setValue(new Date());
-        timeCalendar.setPattern("HH:mm");
-        timeCalendar.setTimeOnly(true);
-        timeCalendar.setStyle("padding:1000px");
-        return timeCalendar;
-    }
+ 	dateCalendar.setStyle("padding:1px");
+
+ 	dateCalendar.setOnchange("submit()");
+ 	// Creating Listener for Validation
+ 	    dateCalendar.addValidator(new Validator() {
+ 		@Override
+ 		public void validate(FacesContext context, UIComponent component,
+ 			Object value) throws ValidatorException {
+ 		    if (value == null) {
+ 			question.setValid(false);
+ 			throw new ValidatorException(new FacesMessage(
+ 				FacesMessage.SEVERITY_ERROR, "Validation Error",
+ 				"You need to choose a date!"));
+ 		    } else {
+ 			question.setValid(true);
+ 			Value dateValue = new DateValue();
+ 			dateValue.setValue(value);
+ 			question.setAnswer(dateValue);
+ 		    }
+ 		}
+ 	    });
+ 	// Showing Answer or Default Answer
+ 	if (defaultAnswer != null && answer == null) {
+ 	    dateCalendar.setValue(defaultAnswer.getValue());
+ 	} else if (answer != null) {
+ 	    dateCalendar.setValue(answer.getValue());
+ 	}
+
+ 	return dateCalendar;
+     }
+
+     private Calendar getTime(final WizardQuestion question) {
+ 	Calendar timeCalendar = new Calendar();
+ 	Value defaultAnswer = question.getDefaultAnswer();
+ 	Value answer = question.getAnswer();
+ 	timeCalendar.setPattern(WizardDataModelGenerator.TIME_FORMAT);
+ 	timeCalendar.setTimeOnly(true);
+ 	timeCalendar.setStyle("padding:1px");
+
+ 	timeCalendar.setOnchange("submit()");
+ 	timeCalendar.setOnblur("submit()");
+ 	// Creating Listener for Validation
+ 	if (question.isRequired()) {
+ 	    timeCalendar.addValidator(new Validator() {
+ 		@Override
+ 		public void validate(FacesContext context, UIComponent component,
+ 			Object value) throws ValidatorException {
+ 		    if (value == null) {
+ 			question.setValid(false);
+ 			throw new ValidatorException(new FacesMessage(
+ 				FacesMessage.SEVERITY_ERROR, "Validation Error",
+ 				"You need to choose a time!"));
+ 		    } else {
+ 			question.setValid(true);
+ 			Value dateValue = new DateValue();
+ 			dateValue.setValue(value);
+ 			question.setAnswer(dateValue);
+ 		    }
+ 		}
+ 	    });
+ 	}
+ 	// Showing Answer or Default Answer
+ 	if (defaultAnswer != null && answer == null) {
+ 	    timeCalendar.setValue(defaultAnswer.getValue());
+ 	} else if (answer != null) {
+ 	    timeCalendar.setValue(answer.getValue());
+ 	}
+
+ 	return timeCalendar;
+     }
 
     private FileUpload getFileUpload(WizardQuestion question) {
         FileUpload fileUpload = new FileUpload();
