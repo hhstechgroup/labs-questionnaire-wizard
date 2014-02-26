@@ -218,6 +218,8 @@ public class UINavigationBean implements Serializable {
         // set current topic to first on new page
         navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
+        navigationData.setTopicLimit(navigationData.getWizardForm()
+                .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getTopicNumber());
         // create new menu for page
         initMenu();
     }
@@ -229,10 +231,10 @@ public class UINavigationBean implements Serializable {
      */
     public void changeCurrentTopic(String newCurrentTopicID) {
         commitAnswers(getQuestionListFromCurrentTopic());
-//        Integer newCurrentTopicNumber = navigationData.getWizardForm().getWizardTopicById(newCurrentTopicID).getTopicNumber();
-//        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
-//            return;
-//        }
+        Integer newCurrentTopicNumber = navigationData.getWizardForm().getWizardTopicById(newCurrentTopicID).getTopicNumber();
+        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
+            return;
+        }
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
         }
