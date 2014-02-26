@@ -22,6 +22,7 @@ import org.primefaces.component.slider.Slider;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
@@ -252,10 +253,12 @@ public class UIComponentGenerator {
 
     private OutputLabel getLabel(WizardQuestion question) {
 	OutputLabel label = new OutputLabel();
+	HtmlOutputText required=new HtmlOutputText();
+	required.setStyle("color:red");
+	required.setValue(" *");
+	label.setValue(question.getTitle());
 	if (question.isRequired()) {
-	    label.setValue(question.getTitle() + " *");
-	} else {
-	    label.setValue(question.getTitle());
+	    label.getChildren().add(required);
 	}
 	label.getChildren().add(getButtonTooltip(question));
 	return label;
