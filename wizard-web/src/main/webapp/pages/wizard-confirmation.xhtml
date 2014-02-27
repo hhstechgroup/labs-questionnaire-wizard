@@ -1,29 +1,29 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
                 template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
-    <ui:define name="breadcrumb">
-        <ui:include
-                src="../WEB-INF/bootstrap-templates/bootstrap-breadcrumbform.xhtml" />
-        <br />
-    </ui:define>
-    <ui:define name="leftMenu">
-        <ui:include
-                src="../WEB-INF/bootstrap-templates/bootstrap-leftMenu.xhtml" />
-    </ui:define>
+
+
     <ui:define name="mainContentStub">
         <ui:include
                 src="../WEB-INF/bootstrap-templates/bootstrap-maincontent-stub.xhtml" />
     </ui:define>
     <ui:define name="mainContent">
-        <ui:include
-                src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml" />
 
-        <h:form>
-            <p:commandButton value="NEXT" id="buttonid"
-                             action="#{uiNavigationBean.nextButtonClick()}"
-                             style="text-align:center;position:relative;float:right;" />
+
+        <h:form style="height: 658px;">
+            <p:treeTable id="dataTable" summary="basic table">
+                <f:facet name="header">
+                    <p style="text-align: center; font-size: 18px">Congratulations! <br/>You've run the wizard and passed all questions!<br/> There are no secret of success. It is the result of preparation, hard work and learning from failure.
+                        <br/>
+                        Well done!</p>
+                </f:facet>
+            </p:treeTable>
+
         </h:form>
+        <p:commandButton value="EXPORT" id="exportbuttonid" disabled="true"
+                         action="#{uiNavigationBean.nextButtonClick()}"
+                         style="text-align:center;position:relative;float:right;" />
     </ui:define>
 </ui:composition>

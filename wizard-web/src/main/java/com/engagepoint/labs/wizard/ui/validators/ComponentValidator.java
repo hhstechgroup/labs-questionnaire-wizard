@@ -66,7 +66,6 @@ public class ComponentValidator implements Validator {
                 }
             }
         }
-        System.err.print("CHOOSE CASE VALID");
         question.setValid(true);
         Value textValue = new TextValue();
         textValue.setValue(value.toString());

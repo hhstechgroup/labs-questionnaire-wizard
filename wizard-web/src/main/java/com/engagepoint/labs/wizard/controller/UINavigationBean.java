@@ -72,7 +72,8 @@ public class UINavigationBean implements Serializable {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();          }
+            e.printStackTrace();
+        }
         navigationData.refreshXMLScreen(path);
     }
 
@@ -269,16 +270,22 @@ public class UINavigationBean implements Serializable {
             // if topic id was changed successfully
             changeCurrentTopic(navigationData.getCurrentTopicID());
             // if topic id was last id on page we go to "else-if" and try to
-            // change page id
+            // change page id546
         } else if (navigationData.setCurrentPageIDtoNext()) {
             // if page id was changed successfully
             changeCurrentPage(navigationData.getCurrentPageID());
+
         } else {
             // if current topic was last on last page we will be here
             // todo submit, validation, and confirmation calls actions here
 
+
         }
 
+    }
+
+    public String finishButtonClick() {
+        return "wizard-confirmation";
     }
 
     /**
