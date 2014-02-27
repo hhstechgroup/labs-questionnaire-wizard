@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("uiNavigationBean")
-@RequestScoped
+@SessionScoped
 public class UINavigationBean implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
@@ -68,6 +68,14 @@ public class UINavigationBean implements Serializable {
         }
     }
 
+    public void refresh(String path) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();          }
+        navigationData.refreshXMLScreen(path);
+    }
+
     /**
      * At first this method configure navigationData (set pageId to first, set
      * topicId to first etc.) then calls init breadcrumb and init menu set
@@ -83,7 +91,7 @@ public class UINavigationBean implements Serializable {
         // Now we set refresh flag to false, because of we need to be redirected
         // to bootstrapindex page and see our wizard
         navigationData.setNeedRefresh(false);
-        return "wizard-index";
+        return "wizard-index?faces-redirect=true";
     }
 
     /**
@@ -210,8 +218,6 @@ public class UINavigationBean implements Serializable {
             return;
         }
         clearCurrentTopicsData();
-        // Refreshing current style to BootStrap defaults
-        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_DEFAULT);
         navigationData.setCurrentPageIDAndTitle(newCurrentPageID);
         // After changing current page to a new one, mark it with a new style
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
@@ -291,19 +297,18 @@ public class UINavigationBean implements Serializable {
                     .get(pageIndex);
             if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
                 if (pageIndex == 0) {
-                    if(pageMenuItem.getId()!=null)
-                    pageMenuItem.setId("j_id1");
+                    if (pageMenuItem.getId() != null)
+                        pageMenuItem.setId("j_id1");
                 } else {
-                   firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
                 pageMenuItem.setStyleClass(styleClass);
 
             } else {
 
-                if(pageIndex > (navigationData.getPageLimit()-1)){
+                if (pageIndex > (navigationData.getPageLimit() - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
-                } else
-                {
+                } else {
                     pageMenuItem.setStyleClass("");
                 }
             }
@@ -342,14 +347,19 @@ public class UINavigationBean implements Serializable {
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;
         MenuItem item;
-        for (int i = 0; i < topicList.size(); i++) {
-            topic = topicList.get(i);
+        for (int topicIndex = 0; topicIndex < topicList.size(); topicIndex++) {
+            topic = topicList.get(topicIndex);
             item = (MenuItem) navigationData.getMenuModel().getContents()
-                    .get(i);
+                    .get(topicIndex);
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-                item.setStyleClass("");
+
+                if (topic.getTopicNumber() > navigationData.getTopicLimit()) {
+                    item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    item.setStyleClass("");
+                }
             }
         }
     }
