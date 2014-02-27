@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class UIComponentGenerator {
     private Panel panel;
-    private final int ONE_SELECT_ITEM_HEIGHT = 17;
+    private final int ONE_SELECT_ITEM_HEIGHT = 20;
 
     public UIComponentGenerator() {
     }

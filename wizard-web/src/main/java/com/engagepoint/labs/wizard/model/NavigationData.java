@@ -17,23 +17,6 @@ import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
-import com.engagepoint.labs.wizard.bean.WizardDocument;
-import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.xml.controllers.XmlController;
-import org.primefaces.component.button.Button;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
-import org.xml.sax.SAXException;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.component.html.HtmlForm;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -44,10 +27,8 @@ import java.util.logging.Logger;
 
 
 /**
- *
  * @author vyacheslav.mysak
- * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
- *
+ *         Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
  */
 @Named("navigationData")
 @SessionScoped
@@ -83,6 +64,9 @@ public class NavigationData implements Serializable {
     private PanelGrid panelGrid;
     private int pageLimit;
     private int topicLimit;
+    private boolean finishButtonRendered;
+    private boolean onLastPage;
+    private boolean onLastTopic;
 
     /**
      * Method parses our XML's. Created because out first page must know the
@@ -421,4 +405,41 @@ public class NavigationData implements Serializable {
     public void setPageLimit(int pageLimit) {
         this.pageLimit = pageLimit;
     }
+
+    public boolean isFinishButtonRendered() {
+        if (isOnLastPage() && isOnLastTopic()) {
+            setFinishButtonRendered(true);
+        } else {
+            setFinishButtonRendered(false);
+        }
+        return finishButtonRendered;
+    }
+
+    public void setFinishButtonRendered(boolean finishButtonRendered) {
+        this.finishButtonRendered = finishButtonRendered;
+    }
+
+    private boolean isOnLastPage() {
+        List pagesOnTemplate = this.wizardForm.getWizardPageList();
+        WizardPage simpleWizardPage;
+        for (int pageIndex = 0; pageIndex < pagesOnTemplate.size(); pageIndex++) {
+            simpleWizardPage = (WizardPage) pagesOnTemplate.get(pageIndex);
+            if (simpleWizardPage.getId().equals(currentPageID)) {
+                if (pageIndex == pagesOnTemplate.size() - 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isOnLastTopic() {
+        for (int topicIntId = 0; topicIntId < currentTopicIDs.size(); topicIntId++) {
+            if (currentTopicID.equals(currentTopicIDs.get(topicIntId))) {
+                if (topicIntId == currentTopicIDs.size() - 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 }

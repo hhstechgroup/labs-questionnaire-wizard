@@ -1,196 +1,67 @@
-﻿
-Scenario: Open default page
+﻿Scenario: Open default page
 
 When the user opens the default page
 
-Scenario: Test wizard web (choose Simple Form Template 1)
+Scenario: Test wizard web
 
-When the user choose template with name 'Simple Form Template 1'
-Then element id 'maincontentid' has text 'Page 1 - Test group 1'
+When the user choose template with name 'ExemplaryWelcome'
 
-Scenario: Choose all Topics on all Pages and check output text in Template 1
+Scenario: First input
 
-When user choose Page with text 'Page 1'
-Then element id 'maincontentid' has text 'Page 1 - Test group 1'
 
-When user choose Topic with text 'Test group 1'
-Then element id 'maincontentid' has text 'Page 1 - Test group 1'
+When the user fills 'maincontentid-er34werwe' field with 'Petr'
+Then element 'maincontentid-er34werwe' has attribute value 'Petr'
 
-When user choose Topic with text 'Test group 2'
-Then element id 'maincontentid' has text 'Page 1 - Test group 2'
+When the user fills 'maincontentid-er34werwe' field with 'Semen'
+Then element 'maincontentid-er34werwe' has attribute value 'Semen'
 
-When user choose Topic with text 'Test group 3'
-Then element id 'maincontentid' has text 'Page 1 - Test group 3'
 
-When user choose Page with text 'Page 2'
-Then element id 'maincontentid' has text 'Page 2 - Super Puper Topic 1'
 
-When user choose Topic with text 'Super Puper Topic 1'
-Then element id 'maincontentid' has text 'Page 2 - Super Puper Topic 1'
+Scenario: Check drop-and-down
 
-When user choose Topic with text 'Super Puper Topic 2'
-Then element id 'maincontentid' has text 'Page 2 - Super Puper Topic 2'
+When choose drop-down with id 'maincontentid-oio8en9' and set value 'Five'
 
-Scenario: Back on the default page
+Scenario: Click Next button
 
-When user click on logo
+When clicks on element with id/name/className 'j_idt21-buttonid'
+
+
+Scenario: Multiple chooise
+
+When chooses text 'Male' from 'maincontentid-eryeyhg65' drop-down
+Then element 'maincontentid-eryeyhg65' has attribute value 'Male'
+
+When chooses text 'Female' from 'maincontentid-eryeyhg65' drop-down
+Then element 'maincontentid-eryeyhg65' has attribute value 'Female'
+
+Scenario: Checkbox
+
+When the checkbox id/name/className 'maincontentid-retre657-0' is unchecked make it checked
+And the checkbox id/name/className 'maincontentid-retre657-1' is unchecked make it checked
+And the checkbox id/name/className 'maincontentid-retre657-2' is unchecked make it checked
+
+Scenario: paragraph text
+
+When the user fills 'maincontentid-fdg4w56335' field with 'My name is Ievgen'
+Then element 'maincontentid-fdg4w56335' has attribute value 'My name is Ievgen'
+
+When the user fills 'maincontentid-fdg4w56335' field with 'Team B'
+Then element 'maincontentid-fdg4w56335' has attribute value 'Team B'
+
+Scenario:Back first
+
+When clicks on element with id/name/className 'leftmenuid-j_id1'
+
+Scenario: return to default page
+
+When clicks on element with id/name/className 'logo'
 Then check that current URL is 'http://localhost:8080/wizard-web/'
 
-Scenario: Test wizard web (choose Simple Form Template 2)
 
-When the user choose template with name 'Simple Form Template 2'
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla From page 1'
 
-Scenario: Choose all Topics on all Pages and check output text in Template 2
 
-When user choose Page with text 'Page 1'
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla From page 1'
 
-When user choose Topic with text 'Topic bla-bla From page 1'
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla From page 1'
 
-When user choose Topic with text 'Topic bla-bla 2 From page 1'
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla 2 From page 1'
 
-When user choose Page with text 'Page 2'
-Then element id 'maincontentid' has text 'Page 2 - Topic First from page 2'
 
-When user choose Topic with text 'Topic First from page 2'
-Then element id 'maincontentid' has text 'Page 2 - Topic First from page 2'
 
-When user choose Topic with text 'Topic Second from Page 2'
-Then element id 'maincontentid' has text 'Page 2 - Topic Second from Page 2'
-
-When user choose Page with text 'Page 3'
-Then element id 'maincontentid' has text 'Page 3 - Topic 1 from Page 3'
-
-When user choose Topic with text 'Topic 1 from Page 3'
-Then element id 'maincontentid' has text 'Page 3 - Topic 1 from Page 3'
-
-When user choose Topic with text 'Topic 2 from Page 3'
-Then element id 'maincontentid' has text 'Page 3 - Topic 2 from Page 3'
-
-When user choose Topic with text 'Topic 3 from Page 3'
-Then element id 'maincontentid' has text 'Page 3 - Topic 3 from Page 3'
-
-Scenario: Back on the default page
-
-When user click on logo
-Then check that current URL is 'http://localhost:8080/wizard-web/'
-
-Scenario: Test wizard web (choose Simple Form Template 3)
-
-When the user choose template with name 'Simple Form Template 3'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic ***'
-
-Scenario: Choose all Topics on all Pages and check output text in Template 3
-
-When user choose Page with text 'Page 1'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic ***'
-
-When user choose Topic with text 'Prime Topic ***'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic ***'
-
-When user choose Topic with text 'Prime Topic 2 ***'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic 2 ***'
-
-When user choose Topic with text 'Prime Topic 3 ***'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic 3 ***'
-
-When user choose Page with text 'Page 2'
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 1'
-
-When user choose Topic with text 'Mega Topic 1'
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 1'
-
-When user choose Topic with text 'Mega Topic 2'
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 2'
-
-When user choose Topic with text 'Mega Topic 3'
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 3'
-
-Scenario: Back on the default page
-
-When user click on logo
-Then check that current URL is 'http://localhost:8080/wizard-web/'
-
-Scenario: Test wizard web (choose Simple Form Template 1)
-
-When the user choose template with name 'Simple Form Template 1'
-Then element id 'maincontentid' has text 'Page 1 - Test group 1'
-
-Scenario: Choose all Topics on all Pages and check output text in Template 1 with NEXT button
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 1 - Test group 2'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 1 - Test group 3'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Super Puper Topic 1'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Super Puper Topic 2'
-
-Scenario: Back on the default page
-
-When user click on logo
-Then check that current URL is 'http://localhost:8080/wizard-web/'
-
-Scenario: Test wizard web (choose Simple Form Template 2)
-
-When the user choose template with name 'Simple Form Template 2'
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla From page 1'
-
-Scenario: Choose all Topics on all Pages and check output text in Template 2 with NEXT button
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 1 - Topic bla-bla 2 From page 1'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Topic First from page 2'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Topic Second from Page 2'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 3 - Topic 1 from Page 3'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 3 - Topic 2 from Page 3'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 3 - Topic 3 from Page 3'
-
-Scenario: Back on the default page
-
-When user click on logo
-Then check that current URL is 'http://localhost:8080/wizard-web/'
-
-Scenario: Test wizard web (choose Simple Form Template 3)
-
-When the user choose template with name 'Simple Form Template 3'
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic ***'
-
-Scenario: Choose all Topics on all Pages and check output text in Template 3 with NEXT button
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic 2 ***'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 1 - Prime Topic 3 ***'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 1'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 2'
-
-When user click 'Next' button
-Then element id 'maincontentid' has text 'Page 2 - Mega Topic 3'
-
-Scenario: Back on the default page
-
-When user click on logo
-Then check that current URL is 'http://localhost:8080/wizard-web/'

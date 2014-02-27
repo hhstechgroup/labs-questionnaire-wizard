@@ -172,9 +172,7 @@ public class UINavigationBean implements Serializable {
             item.setActionExpression(elExpression);
             navigationData.getMenuModel().addMenuItem(item);
         }
-
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
-
         // after initialization menu questions creator method called
         createQuestions();
     }
@@ -196,12 +194,10 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getPageCount() {
-
         return navigationData.getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
-
         return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
@@ -289,6 +285,10 @@ public class UINavigationBean implements Serializable {
 
     }
 
+    public String finishButtonClick() {
+        return "wizard-confirmation";
+    }
+
     /**
      * Method changes CSS Style of current selected PageButton from breadcrumb
      *
@@ -311,9 +311,7 @@ public class UINavigationBean implements Serializable {
                     firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
                 pageMenuItem.setStyleClass(styleClass);
-
             } else {
-
                 if (pageIndex > (navigationData.getPageLimit() - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
