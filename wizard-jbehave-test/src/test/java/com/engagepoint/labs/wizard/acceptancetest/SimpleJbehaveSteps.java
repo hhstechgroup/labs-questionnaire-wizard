@@ -1,23 +1,19 @@
 package com.engagepoint.labs.wizard.acceptancetest;
 
-import com.engagepoint.acceptancetest.base.pages.UIBootstrapBasePage;
-import com.engagepoint.acceptancetest.base.steps.JbehaveBaseSteps;
-import junit.*;
-import net.thucydides.core.Thucydides;
-import net.thucydides.core.pages.Pages;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
-
 import static com.engagepoint.acceptancetest.base.webelements.utils.WebElementsHelper.getTextAndSuppressNextLineChar;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import net.thucydides.core.pages.Pages;
+
+import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import com.engagepoint.acceptancetest.base.pages.UIBootstrapBasePage;
+import com.engagepoint.acceptancetest.base.steps.JbehaveBaseSteps;
 
 public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
