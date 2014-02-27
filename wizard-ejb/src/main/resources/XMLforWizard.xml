@@ -10,7 +10,7 @@
                     <group group-id="bcugyrfn">
                         <group-name>Test group 1</group-name>
                         <questions>
-                            <question answer-required="true" question-id="xxssx">
+                            <question answer-required="false" question-id="xxssx">
                                 <question-title>Error Q</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>First Help Text for Question</help-text>
@@ -34,7 +34,7 @@
                                 <default-answers>
                                 </default-answers>
                             </question>
-                            <question answer-required="true" question-id="ckxcbxk">
+                            <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
                                 <help-text>help</help-text>
@@ -68,7 +68,7 @@
                     <group group-id="hboidbfo">
                         <group-name>Test group 2</group-name>
                         <questions>
-                            <question answer-required="false" question-id="kdkdk">
+                            <question answer-required="true" question-id="kdkdk">
                                 <question-title>QT paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help text</help-text>

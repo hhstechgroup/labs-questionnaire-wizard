@@ -9,7 +9,6 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
@@ -21,9 +20,11 @@ import java.util.List;
  */
 public class ComponentValidator implements Validator {
     private final WizardQuestion question;
+    private QuestionAnswerValidator questionAnswerValidator;
 
     public ComponentValidator(final WizardQuestion question) {
         this.question = question;
+        this.questionAnswerValidator = new QuestionAnswerValidator(question);
     }
 
     @Override
@@ -31,59 +32,69 @@ public class ComponentValidator implements Validator {
                          Object value) throws ValidatorException {
         switch (question.getQuestionType()) {
             case TEXT:
-                validateTextQuestionComponent((InputText) component, value);
+                if (question.isRequired() && !questionAnswerValidator.validateTextQuestionComponent(value)) {
+                    ((InputText) component).resetValue();
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveTextValue(value);
                 break;
             case PARAGRAPHTEXT:
-                validateTextAreaQuestionComponent((InputTextarea) component, value);
+                if (question.isRequired() && !questionAnswerValidator.validateTextAreaQuestionComponent(value)) {
+                    ((InputTextarea) component).resetValue();
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveTextValue(value);
                 break;
             case MULTIPLECHOICE:
-                validateMultipleChoiseQuestionComponent(value);
+                if (question.isRequired() && !questionAnswerValidator.validateMultipleChoiseQuestionComponent(value)) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveTextValue(value);
                 break;
             case CHECKBOX:
-                validateCheckBoxQuestionComponent(value);
+                if (question.isRequired() && !questionAnswerValidator.validateCheckBoxQuestionComponent(value)) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveListTextValue(value);
                 break;
             case CHOOSEFROMLIST:
-                validateDropDownQuestionComponent((HtmlSelectOneMenu) component,
-                        value);
+                if (question.isRequired() && !questionAnswerValidator.validateDropDownQuestionComponent(value)) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveTextValue(value.toString());
                 break;
             default:
                 break;
         }
     }
 
-    private void validateDropDownQuestionComponent(HtmlSelectOneMenu component,
-                                                   Object value) {
-        if (question.isRequired()) {
-            if (value == null || value.toString().isEmpty()) {
-                question.setValid(false);
-                throw new ValidatorException(new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Validation Error",
-                        "Answer must be selected for this question!"));
-            } else {
-                question.setValid(true);
-                if (component.getChildren().get(0).getId().equals("defaultItem")) {
-                    component.getChildren().remove(0);
-                }
-            }
-        }
-        System.err.print("CHOOSE CASE VALID");
-        question.setValid(true);
+    private void saveTextValue(Object value) {
         Value textValue = new TextValue();
-        textValue.setValue(value.toString());
+        textValue.setValue(value);
         question.setAnswer(textValue);
-
     }
 
-    private void validateCheckBoxQuestionComponent(Object value) {
-        if (question.isRequired()) {
-            if (value == null || ((Object[]) value).length == 0) {
-                question.setValid(false);
-                throw new ValidatorException(new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Validation Error",
-                        "Empty field is not allowed here!"));
-            }
-        }
-        question.setValid(true);
+    private void saveListTextValue(Object value) {
         ListTextValue listTextValue = new ListTextValue();
         Object[] arr = (Object[]) value;
         List answersList = new ArrayList();
@@ -92,72 +103,5 @@ public class ComponentValidator implements Validator {
         }
         listTextValue.setValue(answersList);
         question.setAnswer(listTextValue);
-
-    }
-
-    private void validateMultipleChoiseQuestionComponent(Object value) {
-        if (question.isRequired()) {
-            if (value == null || value.toString().isEmpty()) {
-                question.setValid(false);
-                throw new ValidatorException(new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Validation Error",
-                        "Answer must be selected for this question!"));
-            }
-        }
-        question.setValid(true);
-        Value textValue = new TextValue();
-        textValue.setValue(value);
-        question.setAnswer(textValue);
-    }
-
-    private void validateTextAreaQuestionComponent(InputTextarea component,
-                                                   Object value) {
-        if (question.isRequired()) {
-            if (value == null) {
-                question.setValid(false);
-                throw new ValidatorException(new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Validation Error",
-                        "Empty field is not allowed here!"));
-            } else {
-                String currentValue = value.toString();
-                currentValue = currentValue.replaceAll("\\s", "");
-                if (currentValue.isEmpty()) {
-                    question.setValid(false);
-                    component.resetValue();
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-            }
-        }
-        question.setValid(true);
-        Value textValue = new TextValue();
-        textValue.setValue(value);
-        question.setAnswer(textValue);
-    }
-
-    private void validateTextQuestionComponent(InputText component, Object value) {
-        if (question.isRequired()) {
-            if (value == null) {
-                question.setValid(false);
-                throw new ValidatorException(new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Validation Error",
-                        "Empty field is not allowed here!"));
-            } else {
-                String currentValue = value.toString();
-                currentValue = currentValue.replaceAll("\\s", "");
-                if (currentValue.isEmpty()) {
-                    question.setValid(false);
-                    component.resetValue();
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-            }
-        }
-        question.setValid(true);
-        Value textValue = new TextValue();
-        textValue.setValue(value);
-        question.setAnswer(textValue);
     }
 }

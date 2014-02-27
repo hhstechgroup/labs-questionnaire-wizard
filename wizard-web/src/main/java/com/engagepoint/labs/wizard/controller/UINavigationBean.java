@@ -7,6 +7,7 @@ import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 
@@ -14,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,7 +23,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("uiNavigationBean")
-@SessionScoped
+@RequestScoped
 public class UINavigationBean implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
@@ -72,7 +73,8 @@ public class UINavigationBean implements Serializable {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();          }
+            e.printStackTrace();
+        }
         navigationData.refreshXMLScreen(path);
     }
 
@@ -210,12 +212,16 @@ public class UINavigationBean implements Serializable {
      */
     public void changeCurrentPage(String newCurrentPageID) {
         commitAnswers(getQuestionListFromCurrentTopic());
-        Integer newCurrentPageNumber = navigationData.getWizardForm().getWizardPageById(newCurrentPageID).getPageNumber();
+        WizardForm wizardForm = navigationData.getWizardForm();
+        Integer newCurrentPageNumber = wizardForm.getWizardPageById(newCurrentPageID).getPageNumber();
+        Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
         if (newCurrentPageNumber > navigationData.getPageLimit()) {
             return;
-        }
-        if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+        } else if (currentTopicNumber < navigationData.getTopicLimit()
+                && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
+        } else {
+            validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
         }
         clearCurrentTopicsData();
         navigationData.setCurrentPageIDAndTitle(newCurrentPageID);
@@ -235,12 +241,16 @@ public class UINavigationBean implements Serializable {
      */
     public void changeCurrentTopic(String newCurrentTopicID) {
         commitAnswers(getQuestionListFromCurrentTopic());
-        Integer newCurrentTopicNumber = navigationData.getWizardForm().getWizardTopicById(newCurrentTopicID).getTopicNumber();
+        WizardForm wizardForm = navigationData.getWizardForm();
+        Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(newCurrentTopicID).getTopicNumber();
+        Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
         if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
             return;
-        }
-        if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+        } else if (currentTopicNumber < navigationData.getTopicLimit()
+                && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             return;
+        } else {
+            validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
         }
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
@@ -264,7 +274,6 @@ public class UINavigationBean implements Serializable {
             return;
         }
         // in if condition we try to change current topic id
-
         if (navigationData.setCurrentTopicIDtoNext()) {
             // if topic id was changed successfully
             changeCurrentTopic(navigationData.getCurrentTopicID());
@@ -276,7 +285,6 @@ public class UINavigationBean implements Serializable {
         } else {
             // if current topic was last on last page we will be here
             // todo submit, validation, and confirmation calls actions here
-
         }
 
     }
@@ -333,6 +341,14 @@ public class UINavigationBean implements Serializable {
             }
         }
         return true;
+    }
+
+    private void validateAllRequiredQuestions(List<WizardQuestion> wizardQuestionList) {
+        QuestionAnswerValidator validator;
+        for (WizardQuestion question : wizardQuestionList) {
+            validator = new QuestionAnswerValidator(question);
+            question.setValid(validator.validate(question.getAnswer()));
+        }
     }
 
     private List<WizardQuestion> getQuestionListFromCurrentTopic() {
