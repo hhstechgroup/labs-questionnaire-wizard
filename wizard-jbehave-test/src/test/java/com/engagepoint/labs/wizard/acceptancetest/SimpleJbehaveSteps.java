@@ -2,15 +2,22 @@ package com.engagepoint.labs.wizard.acceptancetest;
 
 import com.engagepoint.acceptancetest.base.pages.UIBootstrapBasePage;
 import com.engagepoint.acceptancetest.base.steps.JbehaveBaseSteps;
+import junit.*;
 import net.thucydides.core.Thucydides;
 import net.thucydides.core.pages.Pages;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import static com.engagepoint.acceptancetest.base.webelements.utils.WebElementsHelper.getTextAndSuppressNextLineChar;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
@@ -27,7 +34,6 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         clickBySelector("formid-butt");
     }
 
-
     @When("user choose Page with text '$innerText'")
     public void choosePage(String innerText) {
         clickLinkByText(innerText);
@@ -38,9 +44,17 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         clickLinkByText(innerText);
     }
 
-    @When("user click on logo")
-    public void clickOnLogo() {
-        clickBySelector("logo");
+    @When("choose drop-down with id '$id' and set value '$value'")
+    public void dragDownNameChecker(String id, String value) {
+        clickBySelector(id);
+        WebElement webElement = uIBootstrapBasePage.getDriver().findElement(By.xpath("//*[@id=\"maincontentid-oio8en9\"]"));
+        Select clickThis = new Select(webElement);
+        clickThis.selectByValue(value);
+    }
+
+    @Then("checkbox with id '$id' is checked")
+    public void checkboxIsChecked(String id) {
+
     }
 
     @When("user click 'Next' button")
@@ -57,4 +71,5 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
     public void checkURL(String url) {
         assertThat(pages().getConfiguration().getBaseUrl(), is(equalTo(url)));
     }
+
 }

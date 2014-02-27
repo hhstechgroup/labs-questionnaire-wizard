@@ -8,18 +8,19 @@
         <version>1.1.0-DEMO</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>com.engagepoint.acceptancetest</groupId>
     <artifactId>wizard-jbehave-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>wizard-jbehave-test</name>
+    <name>wizard - Acceptance Test</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <webdriver.driver>firefox</webdriver.driver>
-        <acceptancetest.base.version>1.0-M27</acceptancetest.base.version>
+        <acceptancetest.base.version>1.0-M26</acceptancetest.base.version>
         <thucydides.version>0.9.229</thucydides.version>
         <thucydides.jbehave.version>0.9.229</thucydides.jbehave.version>
-        <thucydides.project.key>myproject_THUCJBEHAVE</thucydides.project.key>
+        <thucydides.project.key>wizard_THUCJBEHAVE</thucydides.project.key>
         <project.junit.stories.package>com.engagepoint.acceptancetest</project.junit.stories.package>
     </properties>
     <dependencies>
@@ -113,7 +114,8 @@
                                 <include>**/acceptancetest/*.java</include>
                             </includes>
                             <excludes>
-                                <exclude>**/acceptancetest/AcceptanceTestsRun$RunableIT.java</exclude>
+                                <exclude>**/acceptancetest/AcceptanceTestsRun.java</exclude>
+                                <exclude>**/acceptancetest/AcceptanceTestsRun$RunableBillspanIT.java</exclude>
                             </excludes>
                             <forkCount>4</forkCount>
                             <reuseForks>true</reuseForks>
@@ -193,5 +195,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
