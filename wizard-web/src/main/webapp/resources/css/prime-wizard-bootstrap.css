@@ -33,14 +33,6 @@
 	background-color: #87cefa;
 }
 
-.ui-slider .ui-slider-handle {
-	cursor: default;
-	height: 1.2em;
-	position: absolute;
-	width: 1.2em;
-	z-index: 2;
-}
-
 .ui-slider-horizontal {
 	height: 0.8em;
 }

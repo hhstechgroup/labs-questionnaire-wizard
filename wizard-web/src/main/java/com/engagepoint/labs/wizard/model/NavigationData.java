@@ -17,6 +17,23 @@ import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
+import com.engagepoint.labs.wizard.bean.WizardDocument;
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+import org.primefaces.component.button.Button;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
+import org.xml.sax.SAXException;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.html.HtmlForm;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.JAXBException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,14 +42,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Named("navigationData")
-@SessionScoped
+
 /**
  *
  * @author vyacheslav.mysak
  * Bean which helps UINavigationBean in storing navigation data - e.g. current page, current topic, current question list, etc.
  *
  */
+@Named("navigationData")
+@SessionScoped
 public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
@@ -77,6 +95,20 @@ public class NavigationData implements Serializable {
         onSelectXMLPage = true;
         MapOfWizardForms = new LinkedHashMap<String, String>();
         xmlController = new XmlController();
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles();
+        } catch (SAXException | JAXBException ex) {
+            Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
+        }
+    }
+
+    public void refreshXMLScreen(String path) {
+        onSelectXMLPage = true;
+        MapOfWizardForms = new LinkedHashMap<String, String>();
+        xmlController.getXmlPathList().add(path);
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {

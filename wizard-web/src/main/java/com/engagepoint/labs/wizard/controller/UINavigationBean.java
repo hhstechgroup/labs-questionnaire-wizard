@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("uiNavigationBean")
-@RequestScoped
+@SessionScoped
 public class UINavigationBean implements Serializable {
 
     private static final long serialVersionUID = 7470581070941487130L;
@@ -68,6 +68,14 @@ public class UINavigationBean implements Serializable {
         }
     }
 
+    public void refresh(String path) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();          }
+        navigationData.refreshXMLScreen(path);
+    }
+
     /**
      * At first this method configure navigationData (set pageId to first, set
      * topicId to first etc.) then calls init breadcrumb and init menu set
@@ -83,7 +91,7 @@ public class UINavigationBean implements Serializable {
         // Now we set refresh flag to false, because of we need to be redirected
         // to bootstrapindex page and see our wizard
         navigationData.setNeedRefresh(false);
-        return "wizard-index";
+        return "wizard-index?faces-redirect=true";
     }
 
     /**

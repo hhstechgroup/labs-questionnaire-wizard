@@ -8,16 +8,15 @@ package com.engagepoint.labs.wizard.xml.controllers;
 import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
+import org.xml.sax.SAXException;
+import super_binding.QuestionnaireForms;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
-
-import org.xml.sax.SAXException;
-import super_binding.QuestionnaireForms;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author artem
@@ -28,6 +27,12 @@ public class XmlController implements Serializable {
 
     private final XmlCustomParser parser;
     private WizardDocument wizardDocument;
+
+
+    public List<String> getXmlPathList() {
+        return xmlPathList;
+    }
+
     private List<String> xmlPathList;
 
     public XmlController() {
@@ -46,5 +51,4 @@ public class XmlController implements Serializable {
         wizardDocument = generator.getWizardDocument(formsList);
         return wizardDocument;
     }
-
 }
