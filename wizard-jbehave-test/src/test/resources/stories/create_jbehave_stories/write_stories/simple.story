@@ -1,5 +1,4 @@
-﻿
-Scenario: Open default page
+﻿Scenario: Open default page
 
 When the user opens the default page
 

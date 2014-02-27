@@ -8,6 +8,7 @@ import net.thucydides.core.pages.Pages;
 
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -50,7 +51,8 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
     @Then("checkbox with id '$id' is checked")
     public void checkboxIsChecked(String id) {
-
+        WebElement checkBox = uIBootstrapBasePage.element(findVisibleElementAndGetSelector(id));
+        Assert.assertTrue(checkBox.isSelected());
     }
 
     @When("user click 'Next' button")
