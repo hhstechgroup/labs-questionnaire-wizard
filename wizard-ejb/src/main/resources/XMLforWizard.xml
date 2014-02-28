@@ -36,7 +36,7 @@
                             </question>
                             <question answer-required="false" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
-                                <question-type>CHOOSEFROMLIST</question-type>
+                                <question-type>CHECKBOX</question-type>
                                 <help-text>help</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
