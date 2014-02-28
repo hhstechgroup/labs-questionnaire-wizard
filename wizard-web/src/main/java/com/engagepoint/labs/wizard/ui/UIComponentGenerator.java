@@ -246,8 +246,6 @@ public class UIComponentGenerator {
 	    dateCalendar.setValue(defaultAnswer.getValue());
 	} else if (answer != null) {
 	    dateCalendar.setValue(answer.getValue());
-	} else {
-	    dateCalendar.setValue(new Date());
 	}
 
 	return dateCalendar;
@@ -274,8 +272,6 @@ public class UIComponentGenerator {
 	    timeCalendar.setValue(defaultAnswer.getValue());
 	} else if (answer != null) {
 	    timeCalendar.setValue(answer.getValue());
-	} else {
-	    timeCalendar.setValue(new Date());
 	}
 
 	return timeCalendar;
