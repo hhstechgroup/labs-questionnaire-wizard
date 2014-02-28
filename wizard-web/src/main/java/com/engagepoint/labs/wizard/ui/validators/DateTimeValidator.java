@@ -18,30 +18,18 @@ public class DateTimeValidator extends AjaxBehaviorListenerImpl {
     private WizardQuestion question;
 
     public DateTimeValidator(WizardQuestion question) {
-	this.question = question;
+        this.question = question;
     }
 
     @Override
     public void processAjaxBehavior(AjaxBehaviorEvent event)
-	    throws AbortProcessingException {
-	Calendar component = (Calendar) event.getComponent();
-	Object value = component.getValue();
-	System.out.println("Listener for component type "
-		+ question.getQuestionType().value() + " with ID "
-		+ question.getId() + " was called.");
-
-	if (question.isRequired()) {
-	    if (value == null) {
-		question.setValid(false);
-		throw new ValidatorException(new FacesMessage(
-			FacesMessage.SEVERITY_ERROR, "Validation Error",
-			"Answer must be selected for this question!"));
-	    }
-	}
-	question.setValid(true);
-	Value dateValue = new DateValue();
-	dateValue.setValue(value);
-	question.setAnswer(dateValue);
+            throws AbortProcessingException {
+        Calendar component = (Calendar) event.getComponent();
+        Object value = component.getValue();
+        Value dateValue = new DateValue();
+        dateValue.setValue(value);
+        question.setValid(true);
+        question.setAnswer(dateValue);
     }
 
 }
