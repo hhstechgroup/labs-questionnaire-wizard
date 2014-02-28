@@ -129,7 +129,6 @@ public class WizardDataModelGenerator {
                 }
                 wizardQuestion = checkBoxesQuestion;
                 break;
-
             case CHOOSEFROMLIST:
                 DropDownQuestion dropDownQuestion = new DropDownQuestion();
                 dropDownQuestion.setOptionsList(xmlQuestion.getOptions()
