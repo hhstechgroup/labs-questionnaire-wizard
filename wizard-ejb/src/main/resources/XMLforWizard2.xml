@@ -55,6 +55,29 @@
 									</rows>
 								</grid>
 							</question>
+							<question answer-required="false" question-id="zxxfeeexrerrgx3">
+								<question-title>Super Slider</question-title>
+								<question-type>RANGE</question-type>
+								<help-text>Help text Slider</help-text>
+								<default-answers>
+									<default-answer></default-answer>
+								</default-answers>
+								<dependent-questions>
+									<dependent-question />
+								</dependent-questions>
+								<options>
+									<option></option>
+								</options>
+								<range />
+								<grid>
+									<columns>
+										<column></column>
+									</columns>
+									<rows>
+										<row></row>
+									</rows>
+								</grid>
+							</question>
 						</questions>
 					</group>
 					<group group-id="lsjdffyeye">
