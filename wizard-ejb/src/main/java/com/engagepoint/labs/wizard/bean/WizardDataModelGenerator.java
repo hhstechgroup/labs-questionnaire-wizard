@@ -140,11 +140,12 @@ public class WizardDataModelGenerator {
 	    if (xmlQuestion.getDefaultAnswers() != null) {
 		if (!xmlQuestion.getDefaultAnswers().getDefaultAnswer()
 			.isEmpty()) {
-		    TextValue chooseFromListDefaults = new TextValue();
+            if(!xmlQuestion.getDefaultAnswers().getDefaultAnswer().get(0).isEmpty()){
+            TextValue chooseFromListDefaults = new TextValue();
 		    chooseFromListDefaults.setValue(xmlQuestion
 			    .getDefaultAnswers().getDefaultAnswer().get(0));
-		    dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);
-		}
+		    dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);}
+        }
 	    }
 	    wizardQuestion = dropDownQuestion;
 	    break;

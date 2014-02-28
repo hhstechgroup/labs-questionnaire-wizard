@@ -85,6 +85,9 @@ public class ComponentValidator implements Validator {
                             questionAnswerValidator.getErrorMessage()));
                 } else if (value != null) {
                     question.setValid(true);
+                    if (component.getChildren().get(0).getId().equals("defaultItem")) {
+                        component.getChildren().remove(0);
+                    }
                     saveTextValue(value.toString());
                 }
                 break;
