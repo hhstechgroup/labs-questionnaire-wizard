@@ -38,9 +38,10 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
+                } else if (value != null) {
+                    question.setValid(true);
+                    saveTextValue(value.toString());
                 }
-                question.setValid(true);
-                saveTextValue(value);
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !questionAnswerValidator.validateTextAreaQuestionComponent(value)) {
@@ -49,9 +50,10 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
+                } else if (value != null) {
+                    question.setValid(true);
+                    saveTextValue(value.toString());
                 }
-                question.setValid(true);
-                saveTextValue(value);
                 break;
             case MULTIPLECHOICE:
                 if (question.isRequired() && !questionAnswerValidator.validateMultipleChoiseQuestionComponent(value)) {
@@ -59,9 +61,10 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
+                } else if (value != null) {
+                    question.setValid(true);
+                    saveTextValue(value.toString());
                 }
-                question.setValid(true);
-                saveTextValue(value);
                 break;
             case CHECKBOX:
                 if (question.isRequired() && !questionAnswerValidator.validateCheckBoxQuestionComponent(value)) {
@@ -69,9 +72,10 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
+                } else if (value != null) {
+                    question.setValid(true);
+                    saveListTextValue((Object[]) value);
                 }
-                question.setValid(true);
-                saveListTextValue(value);
                 break;
             case CHOOSEFROMLIST:
                 if (question.isRequired() && !questionAnswerValidator.validateDropDownQuestionComponent(value)) {
@@ -79,27 +83,27 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
+                } else if (value != null) {
+                    question.setValid(true);
+                    saveTextValue(value.toString());
                 }
-                question.setValid(true);
-                saveTextValue(value.toString());
                 break;
             default:
                 break;
         }
     }
 
-    private void saveTextValue(Object value) {
+    private void saveTextValue(String value) {
         Value textValue = new TextValue();
         textValue.setValue(value);
         question.setAnswer(textValue);
     }
 
-    private void saveListTextValue(Object value) {
+    private void saveListTextValue(Object[] values) {
         ListTextValue listTextValue = new ListTextValue();
-        Object[] arr = (Object[]) value;
         List answersList = new ArrayList();
-        for (int i = 0; i < arr.length; i++) {
-            answersList.add(arr[i]);
+        for (int i = 0; i < values.length; i++) {
+            answersList.add(values[i]);
         }
         listTextValue.setValue(answersList);
         question.setAnswer(listTextValue);
