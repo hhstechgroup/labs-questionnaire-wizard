@@ -9,7 +9,7 @@
                     <group group-id="cnh">
                         <group-name>Topic bla-bla From page 1</group-name>
                         <questions>
-                            <question answer-required="false" question-id="zxxxx3">
+                            <question answer-required="true" question-id="zxxxx3">
                                 <question-title>Super Text</question-title>
                                 <question-type>DATE</question-type>
                                 <help-text>Help text jhdfkosd</help-text>
@@ -29,7 +29,7 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>21-11-1999</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                         </questions>
