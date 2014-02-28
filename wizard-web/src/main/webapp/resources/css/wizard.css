@@ -53,3 +53,8 @@
 .wizard-menu-item-disabled {
     opacity: 0.5;
 }
+.ui-breadcrumb ul li a:hover{
+    text-decoration: none !important;
+    font-size: 14px;
+    text-decoration: underline !important;
+}

@@ -315,7 +315,7 @@ public class UINavigationBean implements Serializable {
                 if (pageIndex > (navigationData.getPageLimit() - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
-                    pageMenuItem.setStyleClass("");
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
                 }
             }
         }
