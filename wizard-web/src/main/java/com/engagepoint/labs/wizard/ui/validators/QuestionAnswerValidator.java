@@ -25,18 +25,18 @@ public class QuestionAnswerValidator {
         this.question = question;
     }
 
-    public boolean validate(Object value) {
+    public boolean validate(Value value) {
         switch (question.getQuestionType()) {
             case TEXT:
-                return validateTextQuestionComponent(value);
+                return validateTextValue(value);
             case PARAGRAPHTEXT:
-                return validateTextAreaQuestionComponent(value);
+                return validateTextValue(value);
             case MULTIPLECHOICE:
-                return validateMultipleChoiseQuestionComponent(value);
+                return validateTextValue(value);
             case CHECKBOX:
-                return validateCheckBoxQuestionComponent(value);
+                return validateListTextValue(value);
             case CHOOSEFROMLIST:
-                return validateDropDownQuestionComponent(value);
+                return validateTextValue(value);
         }
         return true;
     }
@@ -103,4 +103,21 @@ public class QuestionAnswerValidator {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    private boolean validateTextValue(Value value) {
+        TextValue textValue = (TextValue) value;
+        if (textValue == null || textValue.getValue().toString().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateListTextValue(Value value) {
+        ListTextValue listTextValue = (ListTextValue) value;
+        if (listTextValue == null || ((List) listTextValue.getValue()).isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
 }
