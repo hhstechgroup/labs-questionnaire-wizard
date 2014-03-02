@@ -96,6 +96,22 @@ public class QuestionAnswerValidator {
         return true;
     }
 
+    public boolean validateDateQuestionComponent(Object value) {
+        if (value == null) {
+            errorMessage = "Empty field is not allowed here! class";
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateTimeQuestion(Object value) {
+        if (value == null) {
+            errorMessage = "Empty field is not allowed here! class";
+            return false;
+        }
+        return true;
+    }
+
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -123,7 +139,7 @@ public class QuestionAnswerValidator {
 
     private boolean validateDateOrTimeValue(Value value) {
         DateValue timeValue = (DateValue) value;
-        if (timeValue == null || timeValue.getValue().toString().isEmpty()) {
+        if (timeValue == null) {
             return false;
         }
         return true;

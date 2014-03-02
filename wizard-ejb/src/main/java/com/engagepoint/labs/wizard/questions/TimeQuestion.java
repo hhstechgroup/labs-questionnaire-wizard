@@ -10,6 +10,7 @@ import com.engagepoint.labs.wizard.values.ValueType;
 public class TimeQuestion extends WizardQuestion {
     private DateValue answer;
     private DateValue defaultAnswer;
+    public static final String TIME_FORMAT = "hh:mm";
 
     @Override
     public Value getAnswer() {

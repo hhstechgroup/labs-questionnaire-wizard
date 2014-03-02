@@ -10,6 +10,7 @@ import com.engagepoint.labs.wizard.values.ValueType;
 public class DateQuestion extends WizardQuestion {
     private DateValue answer;
     private DateValue defaultAnswer;
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
 
     @Override
     public Value getAnswer() {
