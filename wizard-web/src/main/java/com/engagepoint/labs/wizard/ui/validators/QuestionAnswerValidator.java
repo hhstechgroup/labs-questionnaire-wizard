@@ -98,7 +98,7 @@ public class QuestionAnswerValidator {
 
     public boolean validateDateQuestionComponent(Object value) {
         if (value == null) {
-            errorMessage = "Empty field is not allowed here! class";
+            errorMessage = "Empty field is not allowed here!";
             return false;
         }
         return true;
@@ -106,7 +106,7 @@ public class QuestionAnswerValidator {
 
     public boolean validateTimeQuestion(Object value) {
         if (value == null) {
-            errorMessage = "Empty field is not allowed here! class";
+            errorMessage = "Empty field is not allowed here!";
             return false;
         }
         return true;

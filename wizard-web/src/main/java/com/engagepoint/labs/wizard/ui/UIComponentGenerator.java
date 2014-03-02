@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.ui;
 
 import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
 import com.engagepoint.labs.wizard.ui.validators.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.values.Value;
@@ -18,14 +19,21 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -115,7 +123,7 @@ public class UIComponentGenerator {
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
         selectOneListBox.addValidator(new ComponentValidator(question));
-        selectOneListBox.addClientBehavior("valueChange", getAjaxBehaivor(question));
+        selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -131,7 +139,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         inputText.addValidator(new ComponentValidator(question));
-        inputText.addClientBehavior("valueChange", getAjaxBehaivor(question));
+        inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -147,7 +155,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         inputTextarea.addValidator(new ComponentValidator(question));
-        inputTextarea.addClientBehavior("valueChange", getAjaxBehaivor(question));
+        inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -173,7 +181,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
         selectOneMenu.addValidator(new ComponentValidator(question));
-        selectOneMenu.addClientBehavior("valueChange", getAjaxBehaivor(question));
+        selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         if (defaultAnswer != null && answer == null) {
             selectOneMenu.setValue(defaultAnswer.getValue());
@@ -193,7 +201,7 @@ public class UIComponentGenerator {
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
         checkbox.addValidator(new ComponentValidator(question));
-        checkbox.addClientBehavior("valueChange", getAjaxBehaivor(question));
+        checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -212,10 +220,10 @@ public class UIComponentGenerator {
         dateCalendar.setStyle("padding:1px");
         dateCalendar.setNavigator(true);
         dateCalendar.setShowOn("both");
-        dateCalendar.setReadonlyInput(true);
+        dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
+        dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
         dateCalendar.addValidator(new ComponentValidator(question));
-        dateCalendar.addClientBehavior("valueChange", getAjaxBehaivor(question));
-        dateCalendar.addClientBehavior("dateSelect", getAjaxBehaivor(question));
+        dateCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -226,7 +234,7 @@ public class UIComponentGenerator {
         return dateCalendar;
     }
 
-    private Calendar getTime(WizardQuestion question, Value answer, Value defaultAnswer) {
+    private Calendar getTime(final WizardQuestion question, Value answer, Value defaultAnswer) {
         Calendar timeCalendar = new Calendar();
 
         // Adding all attributes to UIComponent
@@ -234,10 +242,10 @@ public class UIComponentGenerator {
         timeCalendar.setPattern(TimeQuestion.TIME_FORMAT);
         timeCalendar.setStyle("padding:1px");
         timeCalendar.setShowOn("both");
-        timeCalendar.setReadonlyInput(true);
+        timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
+        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
         timeCalendar.addValidator(new ComponentValidator(question));
-        timeCalendar.addClientBehavior("dateSelect", getAjaxBehaivor(question));
-//        timeCalendar.addClientBehavior("blur", ajaxBehavior);
+        timeCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -295,7 +303,7 @@ public class UIComponentGenerator {
         return message;
     }
 
-    private AjaxBehavior getAjaxBehaivor(WizardQuestion question) {
+    private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
         ajaxBehavior.setUpdate("maincontentid-panel_" + question.getId());
