@@ -14,8 +14,11 @@ import org.xml.sax.SAXException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -88,6 +91,12 @@ public class NavigationData implements Serializable {
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
         }
+    }
+    public void clearSession(ComponentSystemEvent event) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("uiNavigationBean", null);
+//        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+//                .getExternalContext().getSession(false);
+//        session.invalidate();
     }
 
     public void refreshXMLScreen(String path) {
