@@ -37,7 +37,7 @@
                     <group group-id="lsjdffyeye">
                         <group-name>Topic bla-bla 2 From page 1</group-name>
                         <questions>
-                            <question answer-required="false" question-id="yqtrwrer">
+                            <question answer-required="true" question-id="yqtrwrer">
                                 <question-title>Super Paragraph</question-title>
                                 <question-type>TIME</question-type>
                                 <help-text>TODO later\</help-text>
@@ -57,7 +57,7 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>21:17</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                         </questions>

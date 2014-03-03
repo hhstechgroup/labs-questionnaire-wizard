@@ -323,7 +323,8 @@ public class UINavigationBean implements Serializable {
 
     private void commitAnswers(List<WizardQuestion> wizardQuestionList) {
         for (WizardQuestion question : wizardQuestionList) {
-            if (question.getAnswer() == null && question.getDefaultAnswer() != null) {
+            if (question.getAnswer() == null
+                    && question.getDefaultAnswer() != null) {
                 question.setAnswer(question.getDefaultAnswer());
                 if (question.getValid() == null) {
                     question.setValid(true);
@@ -334,7 +335,8 @@ public class UINavigationBean implements Serializable {
 
     private boolean checkAllRequiredQuestions(List<WizardQuestion> wizardQuestionList) {
         for (WizardQuestion question : wizardQuestionList) {
-            if (question.isRequired() && !question.getValid()) {
+            if (question.isRequired()
+                    && (null == question.getValid() || !question.getValid())) {
                 return false;
             }
         }

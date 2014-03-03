@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.values.DateValue;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
@@ -13,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,10 +40,9 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
-                } else if (value != null) {
-                    question.setValid(true);
-                    saveTextValue(value.toString());
                 }
+                question.setValid(true);
+                saveTextValue(value.toString());
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !questionAnswerValidator.validateTextAreaQuestionComponent(value)) {
@@ -50,10 +51,9 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
-                } else if (value != null) {
-                    question.setValid(true);
-                    saveTextValue(value.toString());
                 }
+                question.setValid(true);
+                saveTextValue(value.toString());
                 break;
             case MULTIPLECHOICE:
                 if (question.isRequired() && !questionAnswerValidator.validateMultipleChoiseQuestionComponent(value)) {
@@ -61,10 +61,9 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
-                } else if (value != null) {
-                    question.setValid(true);
-                    saveTextValue(value.toString());
                 }
+                question.setValid(true);
+                saveTextValue(value.toString());
                 break;
             case CHECKBOX:
                 if (question.isRequired() && !questionAnswerValidator.validateCheckBoxQuestionComponent(value)) {
@@ -72,10 +71,9 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
-                } else if (value != null) {
-                    question.setValid(true);
-                    saveListTextValue((Object[]) value);
                 }
+                question.setValid(true);
+                saveListTextValue((Object[]) value);
                 break;
             case CHOOSEFROMLIST:
                 if (question.isRequired() && !questionAnswerValidator.validateDropDownQuestionComponent(value)) {
@@ -83,13 +81,32 @@ public class ComponentValidator implements Validator {
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             questionAnswerValidator.getErrorMessage()));
-                } else if (value != null) {
-                    question.setValid(true);
-                    if (component.getChildren().get(0).getId().equals("defaultItem")) {
-                        component.getChildren().remove(0);
-                    }
-                    saveTextValue(value.toString());
                 }
+                question.setValid(true);
+                if (component.getChildren().get(0).getId().equals("defaultItem")) {
+                    component.getChildren().remove(0);
+                }
+                saveTextValue(value.toString());
+                break;
+            case DATE:
+                if (question.isRequired() && !questionAnswerValidator.validateDateQuestionComponent(value)) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveDateTimeValue((Date) value);
+                break;
+            case TIME:
+                if (question.isRequired() && !questionAnswerValidator.validateTimeQuestion(value)) {
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(true);
+                saveDateTimeValue((Date) value);
                 break;
             default:
                 break;
@@ -110,5 +127,11 @@ public class ComponentValidator implements Validator {
         }
         listTextValue.setValue(answersList);
         question.setAnswer(listTextValue);
+    }
+
+    private void saveDateTimeValue(Date date) {
+        DateValue dateValue = new DateValue();
+        dateValue.setValue(date);
+        question.setAnswer(dateValue);
     }
 }

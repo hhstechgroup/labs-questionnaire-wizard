@@ -25,9 +25,6 @@ import java.util.List;
  */
 public class WizardDataModelGenerator {
 
-    public static final String DATE_FORMAT = "dd-MM-yyyy";
-    public static final String TIME_FORMAT = "hh:mm";
-
     private WizardDocument wizardDocument;
     private List<WizardForm> wizardFormList;
     private List<WizardPage> wizardPageList;
@@ -146,10 +143,9 @@ public class WizardDataModelGenerator {
                 if (checkDefaultAnswer(xmlQuestion)) {
                     DateValue dateDefault = new DateValue();
                     SimpleDateFormat formatter = new SimpleDateFormat(
-                            DATE_FORMAT);
+                            DateQuestion.DATE_FORMAT);
                     try {
                         date = formatter.parse(defaultAnswers.get(0));
-
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -163,7 +159,7 @@ public class WizardDataModelGenerator {
                 if (checkDefaultAnswer(xmlQuestion)) {
                     DateValue timeDefault = new DateValue();
                     SimpleDateFormat formatter = new SimpleDateFormat(
-                            WizardDataModelGenerator.TIME_FORMAT);
+                            TimeQuestion.TIME_FORMAT);
                     try {
                         time = formatter.parse(defaultAnswers.get(0));
                     } catch (ParseException e) {
