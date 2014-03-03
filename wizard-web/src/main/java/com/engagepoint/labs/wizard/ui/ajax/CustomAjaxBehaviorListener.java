@@ -1,4 +1,4 @@
-package com.engagepoint.labs.wizard.ui.validators;
+package com.engagepoint.labs.wizard.ui.ajax;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

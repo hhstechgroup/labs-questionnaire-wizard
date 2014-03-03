@@ -3,7 +3,7 @@ package com.engagepoint.labs.wizard.ui;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.ui.validators.CustomAjaxBehaviorListener;
+import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.values.Value;
 
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
@@ -19,21 +19,14 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
