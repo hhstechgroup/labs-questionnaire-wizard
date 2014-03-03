@@ -109,7 +109,10 @@ public class UINavigationBean implements Serializable {
 
     public void clearDataFromSession() {
 //        TODO Dont forget about user can add many template!!!
-        refresh(xmlPath);
+        if (null != xmlPath) {
+            refresh(xmlPath);
+        }
+
     }
 
     /**

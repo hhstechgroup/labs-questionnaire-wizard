@@ -92,12 +92,6 @@ public class NavigationData implements Serializable {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
         }
     }
-    public void clearSession(ComponentSystemEvent event) {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("uiNavigationBean", null);
-//        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-//                .getExternalContext().getSession(false);
-//        session.invalidate();
-    }
 
     public void refreshXMLScreen(String path) {
         onSelectXMLPage = true;
