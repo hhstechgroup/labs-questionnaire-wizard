@@ -1,11 +1,11 @@
 package com.engagepoint.labs.wizard.ui;
 
 import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.values.Value;
-
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
@@ -21,7 +21,6 @@ import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
 import javax.el.MethodExpression;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlInputFile;
@@ -29,8 +28,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.List;
