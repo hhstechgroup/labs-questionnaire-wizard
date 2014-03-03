@@ -9,6 +9,7 @@ import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.inputtext.InputText;
@@ -19,27 +20,26 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import javax.faces.application.FacesMessage;
+import javax.el.MethodExpression;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlInputFile;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/11/14.
  */
 public class UIComponentGenerator {
+    private static int MAXIMUM_SIZE_FILE_ANSWER = 1024 * 1024 * 100;
+
     private Panel panel;
     private final int ONE_SELECT_ITEM_HEIGHT = 20;
 
@@ -91,7 +91,8 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
-                component = getFileUpload(question, answer, defaultAnswer);
+                component = getFileUpload();
+                panel.getChildren().add(getButton(question));
                 break;
             case GRID:
                 // to do
@@ -309,5 +310,27 @@ public class UIComponentGenerator {
         ajaxBehavior.setUpdate("maincontentid-panel_" + question.getId());
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
+    }
+
+    private HtmlInputFile getFileUpload() {
+        HtmlInputFile fileUpload = new HtmlInputFile();
+        fileUpload.setValue("#{fileUploadController.file}");
+        fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
+        fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
+        return fileUpload;
+    }
+
+    public CommandButton getButton(WizardQuestion question) {
+        CommandButton commandButton = new CommandButton();
+        commandButton.setValue("Upload");
+        commandButton.setAjax(false);
+        commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
+        return commandButton;
+    }
+
+    public static MethodExpression createMethodExpression(String expression, Class<?> returnType, Class<?>... parameterTypes) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return facesContext.getApplication().getExpressionFactory().createMethodExpression(
+                facesContext.getELContext(), expression, returnType, parameterTypes);
     }
 }

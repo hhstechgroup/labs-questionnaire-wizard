@@ -92,7 +92,7 @@ public class UINavigationBean implements Serializable {
         // Refresh Processed in UINavigationPhaseListener.
         // Now we set refresh flag to false, because of we need to be redirected
         // to bootstrapindex page and see our wizard
-        navigationData.setNeedRefresh(false);
+        //navigationData.setNeedRefresh(false);
         return "wizard-index?faces-redirect=true";
     }
 
