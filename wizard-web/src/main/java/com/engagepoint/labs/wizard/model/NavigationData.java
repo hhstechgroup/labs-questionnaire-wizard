@@ -5,6 +5,8 @@ import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.primefaces.component.button.Button;
+import org.primefaces.component.dialog.Dialog;
+import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
@@ -119,6 +121,7 @@ public class NavigationData implements Serializable {
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
         mainContentForm.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(getDialog());
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
                 wizardDocument.getFormList());
         needRefresh = false;
@@ -472,4 +475,20 @@ public class NavigationData implements Serializable {
         return exFile;
     }
 
+    private Dialog getDialog() {
+        OutputLabel message = new OutputLabel();
+        message.setValue("Some required questions have no answers !");
+        OutputLabel header = new OutputLabel();
+        header.setValue("Validation Error");
+        Dialog dialog = new Dialog();
+        dialog.setHeader("Validation Error");
+        dialog.setId("dialog");
+        dialog.setWidgetVar("dialog");
+        dialog.setModal(true);
+        dialog.setResizable(false);
+        dialog.getChildren().add(message);
+        dialog.setHideEffect("clip");
+        dialog.setDynamic(true);
+        return dialog;
+    }
 }

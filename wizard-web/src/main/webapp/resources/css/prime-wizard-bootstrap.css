@@ -141,3 +141,19 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     border: 0 none;
     /*padding: 0.5em 1em;*/
 }
+
+.ui-dialog-title {
+    color: #FF0000 !important;
+    font-family: "MuseoSans700",sans-serif;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.ui-dialog-titlebar {
+    border-bottom: 1px solid #FF0000 !important;
+    padding: 35px 30px;
+}
+
+.ui-dialog{
+    margin-bottom: 2%;
+}
