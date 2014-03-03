@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.values;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +18,7 @@ public class FileValue extends Value {
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof File) {
+        if (value instanceof InputStream) {
             super.setValue(value);
         } else {
             throw new ClassCastException("You must provide File for this method!");
