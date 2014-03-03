@@ -3,6 +3,9 @@ package com.engagepoint.labs.wizard.export;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DropDownQuestion;
+import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import super_binding.*;
 
@@ -89,11 +92,13 @@ public class QuestionaireFormConverter {
                     break;
                 case CHOOSEFROMLIST:
                     defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setOptions(getQuestionOptions((DropDownQuestion)wizardQuestion));
                     question.setDefaultAnswers(defaultAnswers);
                     break;
                 case CHECKBOX:
                     List answersList = (ArrayList<String>)wizardQuestion.getAnswer().getValue();
                     defaultAnswers.getDefaultAnswer().addAll(answersList);
+                    question.setOptions(getQuestionOptions((CheckBoxesQuestion)wizardQuestion));
                     question.setDefaultAnswers(defaultAnswers);
                     break;
                 case RANGE:
@@ -101,7 +106,9 @@ public class QuestionaireFormConverter {
                     break;
                 case MULTIPLECHOICE:
                     defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setOptions(getQuestionOptions((MultipleChoiseQuestion)wizardQuestion));
                     question.setDefaultAnswers(defaultAnswers);
+
                     break;
                 case DATE:
                     defaultAnswers.getDefaultAnswer().add(wizardQuestion.getAnswer().getValue().toString());
@@ -120,7 +127,25 @@ public class QuestionaireFormConverter {
         return defaultAnswers;
     }
 
+    private Options getQuestionOptions(DropDownQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
+    }
+
+    private Options getQuestionOptions(CheckBoxesQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
+    }
+
     private String getTextValueAnswer(WizardQuestion wizardQuestion) {
         return wizardQuestion.getAnswer().getValue().toString();
+    }
+
+    private Options getQuestionOptions(MultipleChoiseQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
     }
 }
