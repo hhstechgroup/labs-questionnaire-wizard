@@ -8,8 +8,10 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -19,6 +21,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -237,6 +240,7 @@ public class UINavigationBean implements Serializable {
             return;
         } else if (currentTopicNumber < navigationData.getTopicLimit()
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+            RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
         } else {
             validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
@@ -266,6 +270,7 @@ public class UINavigationBean implements Serializable {
             return;
         } else if (currentTopicNumber < navigationData.getTopicLimit()
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+            RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
         } else {
             validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
@@ -286,9 +291,11 @@ public class UINavigationBean implements Serializable {
     /**
      * Method used as action attribute for NEXT button
      */
-    public void nextButtonClick() {
+    public void nextButtonClick(ActionEvent event) {
+        CommandButton component = (CommandButton) event.getComponent();
         commitAnswers(getQuestionListFromCurrentTopic());
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+            RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
         }
         // in if condition we try to change current topic id
