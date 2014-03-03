@@ -5,6 +5,8 @@
  */
 package com.engagepoint.labs.wizard.xml.parser;
 
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.export.QuestionaireFormConverter;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
@@ -13,12 +15,14 @@ import javax.xml.bind.*;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author artem
  */
 
 public class XmlCustomParser {
+    private static final String EXPORT_FILE_NAME = "C:\\Users\\igor.guzenko\\IdeaProjects\\labs-questionnaire-wizard\\wizard-ejb\\src\\main\\resources\\exportFile.xml";
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
@@ -89,6 +93,28 @@ public class XmlCustomParser {
 //        });
 //
 //    }
+
+    public File parseWizardFormToXml(WizardForm form) {
+        QuestionaireFormConverter converter = new QuestionaireFormConverter();
+        QuestionnaireForms formsToMarshall = converter.convert(form);
+
+        System.err.print("BEFORE CREATING XML FILE");
+        File exportFile = new File(EXPORT_FILE_NAME);
+        try {
+            System.err.print("EXPORT FILE NAME = "+exportFile.getName()+"FILE PATH"+exportFile.getCanonicalPath().toString());
+        } catch (IOException e) {
+            System.err.print("IO EXPORT EXCEPTION ="+e.getStackTrace());
+        }
+        try {
+            System.err.print("EXPORT PARSER TRY FOR MARSHALL");
+            Marshaller marshaller = JAXBContext.newInstance(QuestionnaireForms.class).createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(formsToMarshall, exportFile);
+        } catch (JAXBException e) {
+            System.err.print("JAXB MARSHALL EXCEPTION");
+        }
+        return exportFile;
+    }
 
 
 }

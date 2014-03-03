@@ -289,6 +289,11 @@ public class UINavigationBean implements Serializable {
         return "wizard-confirmation";
     }
 
+    public void exportButtonClick(){
+        System.err.print("EXPORT BUTTON CLICK!");
+        navigationData.getExportFile();
+    }
+
     /**
      * Method changes CSS Style of current selected PageButton from breadcrumb
      *

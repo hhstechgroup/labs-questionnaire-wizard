@@ -15,7 +15,7 @@ import java.util.List;
 public class QuestionaireFormConverter {
     private QuestionnaireForms questionnaireForms;
 
-    public QuestionnaireForms conver(WizardForm wizardForm) {
+    public QuestionnaireForms convert(WizardForm wizardForm) {
         if (wizardForm == null) {
             return null;
         }
@@ -37,7 +37,7 @@ public class QuestionaireFormConverter {
             page.setPageId(wizardPage.getId());
             page.setPageNumber(wizardPage.getPageNumber());
             page.setGroupsOfQuestions(getGroupsOfQuestions(wizardPage));
-
+            pages.getPage().add(page);
         }
         return pages;
     }
@@ -61,11 +61,11 @@ public class QuestionaireFormConverter {
         for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
             question = new Question();
             setGeneralProperties(question, wizardQuestion);
-            setQuestionPropertiesByType(question, wizardQuestion);
+            question.setDefaultAnswers(getQuestionAnswersByType(question, wizardQuestion));
             questions.getQuestion().add(question);
         }
 
-        return null;
+        return questions;
     }
 
     private void setGeneralProperties(final Question question, final WizardQuestion wizardQuestion) {
@@ -76,7 +76,7 @@ public class QuestionaireFormConverter {
         question.setQuestionType(wizardQuestion.getQuestionType());
     }
 
-    private void setQuestionPropertiesByType(final Question question, WizardQuestion wizardQuestion) {
+    private DefaultAnswers getQuestionAnswersByType(final Question question, WizardQuestion wizardQuestion) {
             DefaultAnswers defaultAnswers = new DefaultAnswers();
             switch (wizardQuestion.getQuestionType()){
                 case TEXT:
@@ -117,12 +117,10 @@ public class QuestionaireFormConverter {
                 default:
                     break;
             }
-
+        return defaultAnswers;
     }
 
-    private DefaultAnswers getTextValueAnswer(WizardQuestion wizardQuestion) {
-        return null;
+    private String getTextValueAnswer(WizardQuestion wizardQuestion) {
+        return wizardQuestion.getAnswer().getValue().toString();
     }
-
-
 }

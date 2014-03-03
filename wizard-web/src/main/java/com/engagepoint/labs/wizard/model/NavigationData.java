@@ -17,6 +17,7 @@ import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -463,6 +464,11 @@ public class NavigationData implements Serializable {
 
     public void setSliderForm(HtmlForm sliderForm) {
         this.sliderForm = sliderForm;
+    }
+
+    public File getExportFile(){
+        System.err.print("EXPORT FILE GET");
+        return xmlController.getExportFileFromWizardForm(wizardForm);
     }
 
 }
