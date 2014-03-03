@@ -29,6 +29,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
