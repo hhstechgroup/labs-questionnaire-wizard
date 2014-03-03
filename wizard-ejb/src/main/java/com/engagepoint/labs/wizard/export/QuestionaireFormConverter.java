@@ -74,13 +74,19 @@ public class QuestionaireFormConverter {
     }
 
     private void setQuestionPropertiesByType(final Question question, WizardQuestion wizardQuestion) {
+            DefaultAnswers defaultAnswers = new DefaultAnswers();
             switch (wizardQuestion.getQuestionType()){
                 case TEXT:
-                    question.setDefaultAnswers(getTextValueAnswer(wizardQuestion));
+                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case PARAGRAPHTEXT:
+                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case CHOOSEFROMLIST:
+                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case CHECKBOX:
                     break;
