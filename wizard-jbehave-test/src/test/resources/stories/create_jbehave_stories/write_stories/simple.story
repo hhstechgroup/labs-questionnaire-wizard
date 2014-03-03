@@ -12,19 +12,28 @@ Scenario: First input
 When the user fills 'maincontentid-er34werwe' field with 'Petr'
 Then element 'maincontentid-er34werwe' has attribute value 'Petr'
 
-When the user fills 'maincontentid-er34werwe' field with 'Semen'
-Then element 'maincontentid-er34werwe' has attribute value 'Semen'
+When the user fills 'maincontentid-er34werwe' field with 'Helen'
+Then element 'maincontentid-er34werwe' has attribute value 'Helen'
 
+When the user fills 'maincontentid-er34werwe' field with 'Jack'
+Then element 'maincontentid-er34werwe' has attribute value 'Jack'
 
 
 Scenario: Check drop-and-down
 
 When choose drop-down with id 'maincontentid-oio8en9' and set value 'Five'
 
+Scenario: Test calendar
+
+When the user fills 'maincontentid-mmkk54fdg_input' field with '01-11-2004'
+Then element 'maincontentid-mmkk54fdg_input' has attribute value '01-11-2004'
+
+When the user fills 'maincontentid-mmkk54fdg_input' field with '05-07-2012'
+Then element 'maincontentid-mmkk54fdg_input' has attribute value '05-07-2012'
+
 Scenario: Click Next button
 
 When clicks on element with id/name/className 'j_idt21-buttonid'
-
 
 Scenario: Multiple chooise
 
@@ -42,8 +51,8 @@ And the checkbox id/name/className 'maincontentid-retre657-2' is unchecked make 
 
 Scenario: paragraph text
 
-When the user fills 'maincontentid-fdg4w56335' field with 'My name is Ievgen'
-Then element 'maincontentid-fdg4w56335' has attribute value 'My name is Ievgen'
+When the user fills 'maincontentid-fdg4w56335' field with 'Dream Team'
+Then element 'maincontentid-fdg4w56335' has attribute value 'Dream Team'
 
 When the user fills 'maincontentid-fdg4w56335' field with 'Team B'
 Then element 'maincontentid-fdg4w56335' has attribute value 'Team B'
@@ -51,6 +60,8 @@ Then element 'maincontentid-fdg4w56335' has attribute value 'Team B'
 Scenario:Back first
 
 When clicks on element with id/name/className 'leftmenuid-j_id1'
+When clicks on element with id/name/className 'leftmenuid-j_id1'
+Then element 'maincontentid-er34werwe' has attribute value 'Jack'
 
 Scenario: return to default page
 

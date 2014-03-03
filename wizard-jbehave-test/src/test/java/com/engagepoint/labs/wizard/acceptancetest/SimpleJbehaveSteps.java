@@ -49,12 +49,6 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         clickThis.selectByValue(value);
     }
 
-    @Then("checkbox with id '$id' is checked")
-    public void checkboxIsChecked(String id) {
-        WebElement checkBox = uIBootstrapBasePage.element(findVisibleElementAndGetSelector(id));
-        Assert.assertTrue(checkBox.isSelected());
-    }
-
     @When("user click 'Next' button")
     public void clickNextButton() {
         clickOnButtonText("NEXT");
@@ -70,4 +64,9 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         assertThat(pages().getConfiguration().getBaseUrl(), is(equalTo(url)));
     }
 
+    @Then("checkbox with id '$id' is checked")
+    public void checkboxIsChecked(String id) {
+        WebElement checkBox = uIBootstrapBasePage.element(findVisibleElementAndGetSelector(id));
+        Assert.assertTrue(checkBox.isSelected());
+    }
 }
