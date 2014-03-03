@@ -6,6 +6,9 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import super_binding.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by igor.guzenko on 2/28/14.
  */
@@ -89,14 +92,23 @@ public class QuestionaireFormConverter {
                     question.setDefaultAnswers(defaultAnswers);
                     break;
                 case CHECKBOX:
+                    List answersList = (ArrayList<String>)wizardQuestion.getAnswer().getValue();
+                    defaultAnswers.getDefaultAnswer().addAll(answersList);
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case RANGE:
+
                     break;
                 case MULTIPLECHOICE:
+                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case DATE:
+                    defaultAnswers.getDefaultAnswer().add(wizardQuestion.getAnswer().getValue().toString());
+                    question.setDefaultAnswers(defaultAnswers);
                     break;
                 case TIME:
+                    defaultAnswers.getDefaultAnswer().add(wizardQuestion.getAnswer().getValue().toString());
                     break;
                 case GRID:
                     break;
