@@ -16,17 +16,24 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("uiNavigationBean")
-@RequestScoped
+@SessionScoped
 public class UINavigationBean implements Serializable {
 
+    //
     private static final long serialVersionUID = 7470581070941487130L;
+    private String xmlPath;
+    private int currentXmlPath = 0;
     /**
      * This is model class to hold data about XML files and Navigation data
      * objects
@@ -70,12 +77,15 @@ public class UINavigationBean implements Serializable {
     }
 
     public void refresh(String path) {
+        xmlPath = path;
+
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         navigationData.refreshXMLScreen(path);
+
     }
 
     /**
@@ -86,6 +96,7 @@ public class UINavigationBean implements Serializable {
      * @return wizard index page name
      */
     public String start() {
+        clearDataFromSession();
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
@@ -94,6 +105,14 @@ public class UINavigationBean implements Serializable {
         // to bootstrapindex page and see our wizard
         //navigationData.setNeedRefresh(false);
         return "wizard-index?faces-redirect=true";
+    }
+
+    public void clearDataFromSession() {
+//        TODO Dont forget about user can add many template!!!
+        if (null != xmlPath) {
+            refresh(xmlPath);
+        }
+
     }
 
     /**
