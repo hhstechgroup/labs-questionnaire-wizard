@@ -14,11 +14,8 @@ import org.xml.sax.SAXException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.Serializable;
@@ -471,8 +468,8 @@ public class NavigationData implements Serializable {
     }
 
     public File getExportFile(){
-        System.err.print("EXPORT FILE GET");
-        return xmlController.getExportFileFromWizardForm(wizardForm);
+        File exFile = xmlController.getExportFileFromWizardForm(this.wizardForm);
+        return exFile;
     }
 
 }

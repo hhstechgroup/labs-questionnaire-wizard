@@ -8,22 +8,26 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
+import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.model.DefaultStreamedContent;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("uiNavigationBean")
-@RequestScoped
+@SessionScoped
 public class UINavigationBean implements Serializable {
 
     //
@@ -36,6 +40,8 @@ public class UINavigationBean implements Serializable {
      */
     @Inject
     private NavigationData navigationData;
+    @Inject
+    private FileDownloadController fileDownloadController;
     /**
      * contains all of the per-request state information related to the
      * processing of a single JavaServer Faces request, and the rendering of the
@@ -304,12 +310,16 @@ public class UINavigationBean implements Serializable {
     }
 
     public String finishButtonClick() {
-        return "wizard-confirmation";
+        return "wizard-confirmation?faces-redirect=true";
     }
 
     public void exportButtonClick(){
-        System.err.print("EXPORT BUTTON CLICK!");
-        navigationData.getExportFile();
+        try {
+            FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
+            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream,"text/xml","exported.xml"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

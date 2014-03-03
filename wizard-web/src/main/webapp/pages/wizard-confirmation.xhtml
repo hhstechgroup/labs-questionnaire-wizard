@@ -11,8 +11,6 @@
     </ui:define>
     <ui:define name="mainContent">
 
-
-        <h:form style="height:658px;" id="confirmation_form">
             <p:treeTable id="dataTable" summary="basic table">
                 <f:facet name="header">
                     <p style="text-align: center; font-size: 18px">Congratulations! <br/>You've run the wizard and passed all questions!<br/> There are no secret of success. It is the result of preparation, hard work and learning from failure.
@@ -20,10 +18,18 @@
                         Well done!</p>
                 </f:facet>
             </p:treeTable>
-            <p:commandButton value="EXPORT" id="exportbuttonid" ajax="false"
-                             action="#{uiNavigationBean.exportButtonClick}"
-                             style="text-align:center;position:relative;float:right;" />
 
+        <h:form id="sdsdsd">
+            <div style="margin-left:auto;
+margin-right:auto;
+width:15%;">
+        <p:commandButton id="exportbuttonid" value="EXPORT"
+        ajax="false"
+        actionListener="#{uiNavigationBean.exportButtonClick}"
+        style="text-align:center;position:relative;float:right;">
+        <p:fileDownload value="#{fileDownloadController.file}"/>
+        </p:commandButton>
+            </div>
         </h:form>
 
 
