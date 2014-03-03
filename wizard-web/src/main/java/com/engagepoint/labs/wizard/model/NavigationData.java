@@ -97,6 +97,7 @@ public class NavigationData implements Serializable {
     public void refreshXMLScreen(String path) {
         onSelectXMLPage = true;
         MapOfWizardForms = new LinkedHashMap<String, String>();
+        xmlController = new XmlController();
         xmlController.getXmlPathList().add(path);
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();

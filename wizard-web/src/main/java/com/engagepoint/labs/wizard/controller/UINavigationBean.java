@@ -66,15 +66,16 @@ public class UINavigationBean implements Serializable {
      */
     @PostConstruct
     public void init() {
+
         if (navigationData.isOnSelectXMLPage()) {
             navigationData.setOnSelectXMLPage(false);
             navigationData.startSelectXMLScreen();
         }
+
     }
 
     public void refresh(String path) {
         xmlPath = path;
-
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
@@ -107,6 +108,8 @@ public class UINavigationBean implements Serializable {
 //        TODO Dont forget about user can add many template!!!
         if (null != xmlPath) {
             refresh(xmlPath);
+        } else {
+            navigationData.startSelectXMLScreen();
         }
 
     }
