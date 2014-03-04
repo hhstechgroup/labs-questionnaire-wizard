@@ -7,10 +7,9 @@ Scenario: Test wizard web
 When the user choose template with name 'ExemplaryWelcome'
 
 Scenario: First input
-
-
-When the user fills 'maincontentid-er34werwe' field with 'Petr'
-Then element 'maincontentid-er34werwe' has attribute value 'Petr'
+When clicks on element with id/name/className 'maincontentid-er34werwe'
+And the user uploads the fileName/filePath '$file' to field with '$id'
+And   clicks on element with id/name/className 'maincontentid-j_id13'
 
 When the user fills 'maincontentid-er34werwe' field with 'Helen'
 Then element 'maincontentid-er34werwe' has attribute value 'Helen'

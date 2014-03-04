@@ -10,16 +10,17 @@ import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
+import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -31,8 +32,12 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Named("uiNavigationBean")
@@ -49,6 +54,8 @@ public class UINavigationBean implements Serializable {
      */
     @Inject
     private NavigationData navigationData;
+    @Inject
+    private FileDownloadController fileDownloadController;
     /**
      * contains all of the per-request state information related to the
      * processing of a single JavaServer Faces request, and the rendering of the
@@ -143,22 +150,11 @@ public class UINavigationBean implements Serializable {
             // creating menu item
             MenuItem item = new MenuItem();
             MethodExpression elExpression;
-            final WizardPage wizardPage;
+            WizardPage wizardPage;
             // get page from navigationData by index
             wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
             // set titles for breadcrumb items
             item.setValue("Page " + wizardPage.getPageNumber().toString());
-
-//            item.setAjax(true);
-//            item.setAsync(false);
-//            item.setUpdate("brd");
-//            item.addActionListener(new ActionListener() {
-//                @Override
-//                public void processAction(ActionEvent event) throws AbortProcessingException {
-//                    changeCurrentPage(wizardPage.getId());
-//                }
-//            });
-
             // creating EL expressions for all items in breadcrumb
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}", void.class,
@@ -193,7 +189,7 @@ public class UINavigationBean implements Serializable {
         // Iterating over all pages in model
         for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
             // retrieve topicID from navigation data
-            final String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+            String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
                     .getTopicList().get(i).getId();
             // add topicID to topics ID's list
             navigationData.getCurrentTopicIDs().add(topicID);
@@ -206,15 +202,6 @@ public class UINavigationBean implements Serializable {
             MethodExpression elExpression;
             // set titles for our menu items
             item.setValue(topicTitle);
-//            item.setAjax(true);
-//            item.setAsync(false);
-//            item.setUpdate("leftmenuid");
-//            item.addActionListener(new ActionListener() {
-//                @Override
-//                public void processAction(ActionEvent event) throws AbortProcessingException {
-//                    changeCurrentTopic(topicID);
-//                }
-//            });
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID + "\")}", void.class,
@@ -241,12 +228,6 @@ public class UINavigationBean implements Serializable {
         for (Panel panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
-//        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
-//        RequestContext.getCurrentInstance().update("leftmenuid");
-//        RequestContext.getCurrentInstance().update("brd");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("maincontentid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("leftmenuid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("brd");
         getNavigationData().setNeedRefresh(true);
     }
 
@@ -286,12 +267,6 @@ public class UINavigationBean implements Serializable {
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
         // create new menu for page
         initMenu();
-//        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
-//        RequestContext.getCurrentInstance().update("leftmenuid");
-//        RequestContext.getCurrentInstance().update("brd");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("maincontentid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("leftmenuid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("brd");
     }
 
     /**
@@ -316,13 +291,6 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
-//        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
-//        RequestContext.getCurrentInstance().update("leftmenuid");
-//        RequestContext.getCurrentInstance().update("brd");
-//        throw new ValidatorException(new FacesMessage("+++++++++++++++++++"));
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("maincontentid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("leftmenuid");
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("brd");
     }
 
     public NavigationData getNavigationData() {
@@ -359,7 +327,19 @@ public class UINavigationBean implements Serializable {
     }
 
     public String finishButtonClick() {
-        return "wizard-confirmation";
+        return "wizard-confirmation?faces-redirect=true";
+    }
+
+    public void exportButtonClick(){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
+        Date date = new Date();
+        try {
+            FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
+            String fileName = String.format("%s_answers_%s.xml",navigationData.getWizardForm().getFormName(),dateFormat.format(date));
+            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream,"text/xml",fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

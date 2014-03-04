@@ -16,12 +16,10 @@ import org.xml.sax.SAXException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.html.HtmlForm;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -470,6 +468,11 @@ public class NavigationData implements Serializable {
 
     public void setSliderForm(HtmlForm sliderForm) {
         this.sliderForm = sliderForm;
+    }
+
+    public File getExportFile(){
+        File exFile = xmlController.getExportFileFromWizardForm(this.wizardForm);
+        return exFile;
     }
 
     private Dialog getDialog() {

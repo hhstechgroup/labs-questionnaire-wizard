@@ -5,6 +5,8 @@
  */
 package com.engagepoint.labs.wizard.xml.parser;
 
+import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.export.QuestionaireFormConverter;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
@@ -19,7 +21,7 @@ import java.io.File;
  */
 
 public class XmlCustomParser {
-
+    private static final String EXPORT_FILE_NAME = "C:\\Users\\igor.guzenko\\IdeaProjects\\labs-questionnaire-wizard\\wizard-ejb\\src\\main\\resources\\exportFile.xml";
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
@@ -89,6 +91,20 @@ public class XmlCustomParser {
 //        });
 //
 //    }
+
+    public File parseWizardFormToXml(WizardForm form) {
+        QuestionaireFormConverter converter = new QuestionaireFormConverter();
+        QuestionnaireForms formsToMarshall = converter.convert(form);
+        File exportFile = new File(EXPORT_FILE_NAME);
+        try {
+            Marshaller marshaller = JAXBContext.newInstance(QuestionnaireForms.class).createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(formsToMarshall, exportFile);
+        } catch (JAXBException e) {
+           return exportFile;
+        }
+        return exportFile;
+    }
 
 
 }

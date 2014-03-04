@@ -12,7 +12,7 @@
                         <questions>
                             <question answer-required="false" question-id="er34werwe">
                                 <question-title>Your name:</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>FILEUPLOAD</question-type>
                                 <help-text>First name</help-text>
                                 <dependent-questions>
                                     <dependent-question/>

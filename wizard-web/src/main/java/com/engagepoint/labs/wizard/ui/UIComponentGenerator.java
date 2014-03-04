@@ -4,7 +4,6 @@ import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
@@ -89,7 +88,7 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
-                component = getFileUpload();
+                component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
                 break;
             case GRID:
@@ -255,10 +254,11 @@ public class UIComponentGenerator {
         return timeCalendar;
     }
 
-    private FileUpload getFileUpload(WizardQuestion question, Value answer, Value defaultAnswer) {
-        FileUpload fileUpload = new FileUpload();
-        return fileUpload;
-    }
+//    private FileUpload getFileUpload(WizardQuestion question) {
+//        FileUpload fileUpload = new FileUpload();
+//        fileUpload.addValidator(new ComponentValidator(question));
+//        return fileUpload;
+//    }
 
     private UISelectItems getSelectItems(List<String> optionsList) {
         SelectItem item;
@@ -310,11 +310,12 @@ public class UIComponentGenerator {
         return ajaxBehavior;
     }
 
-    private HtmlInputFile getFileUpload() {
+    private HtmlInputFile getFileUpload(WizardQuestion question) {
         HtmlInputFile fileUpload = new HtmlInputFile();
         fileUpload.setValue("#{fileUploadController.file}");
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
+        fileUpload.addValidator(new ComponentValidator(question));
         return fileUpload;
     }
 

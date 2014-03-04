@@ -3,6 +3,9 @@ package com.engagepoint.labs.wizard.export;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DropDownQuestion;
+import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import super_binding.*;
 
@@ -15,7 +18,7 @@ import java.util.List;
 public class QuestionaireFormConverter {
     private QuestionnaireForms questionnaireForms;
 
-    public QuestionnaireForms conver(WizardForm wizardForm) {
+    public QuestionnaireForms convert(WizardForm wizardForm) {
         if (wizardForm == null) {
             return null;
         }
@@ -37,7 +40,7 @@ public class QuestionaireFormConverter {
             page.setPageId(wizardPage.getId());
             page.setPageNumber(wizardPage.getPageNumber());
             page.setGroupsOfQuestions(getGroupsOfQuestions(wizardPage));
-
+            pages.getPage().add(page);
         }
         return pages;
     }
@@ -61,11 +64,11 @@ public class QuestionaireFormConverter {
         for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
             question = new Question();
             setGeneralProperties(question, wizardQuestion);
-            setQuestionPropertiesByType(question, wizardQuestion);
+            question.setDefaultAnswers(getQuestionAnswersByType(question, wizardQuestion));
             questions.getQuestion().add(question);
         }
 
-        return null;
+        return questions;
     }
 
     private void setGeneralProperties(final Question question, final WizardQuestion wizardQuestion) {
@@ -76,53 +79,83 @@ public class QuestionaireFormConverter {
         question.setQuestionType(wizardQuestion.getQuestionType());
     }
 
-    private void setQuestionPropertiesByType(final Question question, WizardQuestion wizardQuestion) {
-            DefaultAnswers defaultAnswers = new DefaultAnswers();
-            switch (wizardQuestion.getQuestionType()){
-                case TEXT:
-                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case PARAGRAPHTEXT:
-                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case CHOOSEFROMLIST:
-                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case CHECKBOX:
-                    List answersList = (ArrayList<String>)wizardQuestion.getAnswer().getValue();
-                    defaultAnswers.getDefaultAnswer().addAll(answersList);
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case RANGE:
+    private DefaultAnswers getQuestionAnswersByType(final Question question, WizardQuestion wizardQuestion) {
+        DefaultAnswers defaultAnswers = new DefaultAnswers();
+        switch (wizardQuestion.getQuestionType()) {
+            case TEXT:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case PARAGRAPHTEXT:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case CHOOSEFROMLIST:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                question.setOptions(getQuestionOptions((DropDownQuestion) wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case CHECKBOX:
+                defaultAnswers.getDefaultAnswer().addAll(getListValueAnswer(wizardQuestion));
+                question.setOptions(getQuestionOptions((CheckBoxesQuestion) wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case RANGE:
 
-                    break;
-                case MULTIPLECHOICE:
-                    defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion).toString());
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case DATE:
-                    defaultAnswers.getDefaultAnswer().add(wizardQuestion.getAnswer().getValue().toString());
-                    question.setDefaultAnswers(defaultAnswers);
-                    break;
-                case TIME:
-                    defaultAnswers.getDefaultAnswer().add(wizardQuestion.getAnswer().getValue().toString());
-                    break;
-                case GRID:
-                    break;
-                case FILEUPLOAD:
-                    break;
-                default:
-                    break;
-            }
-
+                break;
+            case MULTIPLECHOICE:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                question.setOptions(getQuestionOptions((MultipleChoiseQuestion) wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case DATE:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                question.setDefaultAnswers(defaultAnswers);
+                break;
+            case TIME:
+                defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
+                break;
+            case GRID:
+                break;
+            case FILEUPLOAD:
+                break;
+            default:
+                break;
+        }
+        return defaultAnswers;
     }
 
-    private DefaultAnswers getTextValueAnswer(WizardQuestion wizardQuestion) {
-        return null;
+    private Options getQuestionOptions(DropDownQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
     }
 
+    private Options getQuestionOptions(CheckBoxesQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
+    }
 
+    private String getTextValueAnswer(WizardQuestion wizardQuestion) {
+        if (null == wizardQuestion.getAnswer()) {
+            return "";
+        } else {
+            return wizardQuestion.getAnswer().getValue().toString();
+        }
+    }
+
+    private Options getQuestionOptions(MultipleChoiseQuestion wizardQuestion) {
+        Options options = new Options();
+        options.getOption().addAll(wizardQuestion.getOptionsList());
+        return options;
+    }
+
+    private List getListValueAnswer(WizardQuestion wizardQuestion) {
+        if (null == wizardQuestion.getAnswer()) {
+            return new ArrayList();
+        } else {
+            return (List) wizardQuestion.getAnswer().getValue();
+        }
+    }
 }
