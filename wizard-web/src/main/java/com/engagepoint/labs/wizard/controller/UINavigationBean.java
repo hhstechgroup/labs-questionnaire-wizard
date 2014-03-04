@@ -8,8 +8,8 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
-import org.primefaces.component.commandbutton.CommandButton;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
@@ -22,12 +22,14 @@ import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Named("uiNavigationBean")
@@ -322,9 +324,12 @@ public class UINavigationBean implements Serializable {
     }
 
     public void exportButtonClick(){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
+        Date date = new Date();
         try {
             FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
-            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream,"text/xml","exported.xml"));
+            String fileName = String.format("%s_answers_%s.xml",navigationData.getWizardForm().getFormName(),dateFormat.format(date));
+            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream,"text/xml",fileName));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
