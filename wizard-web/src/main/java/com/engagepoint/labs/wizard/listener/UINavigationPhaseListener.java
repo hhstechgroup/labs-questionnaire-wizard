@@ -1,6 +1,9 @@
 package com.engagepoint.labs.wizard.listener;
 
+import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import org.primefaces.context.RequestContext;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
@@ -59,6 +62,10 @@ public class UINavigationPhaseListener implements PhaseListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+//        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
+//        RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+//        RequestContext.getCurrentInstance().update("brd-breadcrumb");
+//        RequestContext.getCurrentInstance().update("buttonid");
     }
 
 }

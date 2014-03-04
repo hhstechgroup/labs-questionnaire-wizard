@@ -7,7 +7,9 @@ import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
+import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.menuitem.MenuItem;
@@ -20,8 +22,14 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.FileInputStream;
@@ -296,8 +304,7 @@ public class UINavigationBean implements Serializable {
     /**
      * Method used as action attribute for NEXT button
      */
-    public void nextButtonClick(ActionEvent event) {
-        CommandButton component = (CommandButton) event.getComponent();
+    public void nextButtonClick() {
         commitAnswers(getQuestionListFromCurrentTopic());
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
