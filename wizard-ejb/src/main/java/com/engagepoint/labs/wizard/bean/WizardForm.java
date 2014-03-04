@@ -5,11 +5,12 @@
 package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 
 /**
  *
@@ -69,9 +70,7 @@ public class WizardForm implements Serializable {
         List<WizardTopic> allTopicsInForm = new ArrayList<>();
         for (WizardPage wizardPage : wizardPageList) {
             List<WizardTopic> topicList = wizardPage.getTopicList();
-            for (WizardTopic wizardTopic : topicList) {
-                allTopicsInForm.add(wizardTopic);
-            }
+            allTopicsInForm.addAll(topicList);
         }
         return allTopicsInForm;
     }
