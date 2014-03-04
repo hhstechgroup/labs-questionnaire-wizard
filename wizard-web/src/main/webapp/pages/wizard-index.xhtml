@@ -23,7 +23,7 @@
         <h:form>
             <p:commandButton value="NEXT" id="buttonid"
                              rendered="#{!navigationData.finishButtonRendered}"
-                             actionListener="#{uiNavigationBean.nextButtonClick}"
+                             action="#{uiNavigationBean.nextButtonClick}"
                              style="text-align:center;position:relative;float:right;"/>
             <p:commandButton value="FINISH" id="finishbuttonid"
                              rendered="#{navigationData.finishButtonRendered}"
