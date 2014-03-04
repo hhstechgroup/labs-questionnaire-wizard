@@ -12,17 +12,17 @@
                         <questions>
                             <question answer-required="false" question-id="xxssx">
                                 <question-title>Error Q</question-title>
-                                <question-type>RANGE</question-type>
+                                <question-type>TEXT</question-type>
                                 <help-text>First Help Text for Question</help-text>
                                 <dependent-questions>
                                     <dependent-question required-answer="lalalal" question-id="3"/>
                                 </dependent-questions>
-                                <!--<options>-->
-                                    <!--<option>Option Number 1</option>-->
-                                    <!--<option>Option Number 2</option>-->
-                                    <!--<option>Option Number 3</option>-->
-                                <!--</options>-->
-                                <range range-begin="5" range-end="16" value="12"></range>
+                                <options>
+                                    <option>Option Number 1</option>
+                                    <option>Option Number 2</option>
+                                    <option>Option Number 3</option>
+                                </options>
+                                <range/>
                                 <grid>
                                     <columns>
                                         <column></column>
