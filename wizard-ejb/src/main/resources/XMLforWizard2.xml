@@ -69,7 +69,7 @@
                     <group group-id="cfefnh">
                         <group-name>Topic First from page 2</group-name>
                         <questions>
-                            <question answer-required="false" question-id="zxxxx3">
+                            <question answer-required="false" question-id="xcdfvfv">
                                 <question-title>Second SUPER paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help text jhkjh</help-text>
@@ -397,6 +397,38 @@
                                 <question-title>Date Question</question-title>
                                 <question-type>DATE</question-type>
                                 <help-text>help</help-text>
+                                <dependent-questions>
+                                    <dependent-question/>
+                                </dependent-questions>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                                <default-answers>
+                                    <default-answer></default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+            <page page-id="dscvsdv" page-number="3">
+                <groups-of-questions>
+                    <group group-id="fncvghn">
+                        <group-name>Topic First from page 2</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="fgvngfhv">
+                                <question-title>Second SUPER paragraph</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
+                                <help-text>Help text jhkjh</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
                                 </dependent-questions>
