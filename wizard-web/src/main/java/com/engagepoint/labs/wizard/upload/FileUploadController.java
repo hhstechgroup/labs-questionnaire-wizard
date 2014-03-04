@@ -72,7 +72,6 @@ public class FileUploadController implements Serializable, ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("work in Answer input------------------!");
     }
 
     @Override

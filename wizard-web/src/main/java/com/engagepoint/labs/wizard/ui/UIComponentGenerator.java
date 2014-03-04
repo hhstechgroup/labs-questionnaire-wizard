@@ -316,7 +316,6 @@ public class UIComponentGenerator {
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
         fileUpload.addValidator(new ComponentValidator(question));
-        System.out.println("fileupload after validate work");
         return fileUpload;
     }
 
@@ -325,7 +324,6 @@ public class UIComponentGenerator {
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
         commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
-        System.out.println("commandbutton work");
         return commandButton;
     }
 
