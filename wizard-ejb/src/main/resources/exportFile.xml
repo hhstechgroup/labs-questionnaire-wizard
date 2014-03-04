@@ -13,7 +13,7 @@
 <question-type>TEXT</question-type>
 <help-text>First name</help-text>
 <default-answers>
-    <default-answer>dfd</default-answer>
+    <default-answer></default-answer>
 </default-answers>
                             </question>
                             <question answer-required="false" question-id="oio8en9">
@@ -26,7 +26,7 @@
     <option>Five</option>
 </options>
 <default-answers>
-    <default-answer>Two</default-answer>
+    <default-answer>One</default-answer>
 </default-answers>
                             </question>
                             <question answer-required="false" question-id="mmkk54fdg">
@@ -34,7 +34,7 @@
 <question-type>DATE</question-type>
 <help-text>Date</help-text>
 <default-answers>
-    <default-answer>Wed Nov 17 00:00:00 EET 1999</default-answer>
+    <default-answer>Sun Nov 21 00:00:00 EET 1999</default-answer>
 </default-answers>
                             </question>
                         </questions>
@@ -51,7 +51,7 @@
     <option>Female</option>
 </options>
 <default-answers>
-    <default-answer>Male</default-answer>
+    <default-answer></default-answer>
 </default-answers>
                             </question>
                             <question answer-required="false" question-id="retre657">
@@ -63,16 +63,14 @@
     <option>Two</option>
     <option>Three</option>
 </options>
-<default-answers>
-    <default-answer>One</default-answer>
-</default-answers>
+<default-answers/>
                             </question>
                             <question answer-required="false" question-id="fdg4w56335">
 <question-title>Write your</question-title>
 <question-type>PARAGRAPHTEXT</question-type>
 <help-text></help-text>
 <default-answers>
-    <default-answer>df</default-answer>
+    <default-answer></default-answer>
 </default-answers>
                             </question>
                         </questions>
@@ -89,7 +87,7 @@
 <question-type>TIME</question-type>
 <help-text>Time</help-text>
 <default-answers>
-    <default-answer>Thu Jan 01 05:29:00 EET 1970</default-answer>
+    <default-answer></default-answer>
 </default-answers>
                             </question>
                         </questions>

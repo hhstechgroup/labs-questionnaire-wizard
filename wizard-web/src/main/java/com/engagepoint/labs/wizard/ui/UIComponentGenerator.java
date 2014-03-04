@@ -4,7 +4,6 @@ import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
