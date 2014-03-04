@@ -10,7 +10,6 @@ import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datagrid.DataGrid;
-import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.message.Message;
@@ -22,10 +21,7 @@ import org.primefaces.component.slider.Slider;
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlInputFile;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -84,7 +80,7 @@ public class UIComponentGenerator {
                 component = getTime(question, answer, defaultAnswer);
                 break;
             case RANGE:
-                // to do
+
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
@@ -102,11 +98,9 @@ public class UIComponentGenerator {
     }
 
     private Slider getSlider(WizardQuestion question, Value answer, Value defaultAnswer) {
-        RangeQuestion rangeQuestion = (RangeQuestion) question;
         Slider slider = new Slider();
         slider.setMinValue(1);
         slider.setMaxValue(13);
-        slider.setFor("maincontentid-j_id3");
         return slider;
     }
 
