@@ -1,10 +1,7 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 
@@ -13,6 +10,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +19,7 @@ import java.util.List;
  * Created by igor.guzenko on 2/26/14.
  */
 public class ComponentValidator implements Validator {
+    private static final boolean VALID = true;
     private final WizardQuestion question;
     private QuestionAnswerValidator questionAnswerValidator;
 
@@ -108,6 +107,15 @@ public class ComponentValidator implements Validator {
                 question.setValid(true);
                 saveDateTimeValue((Date) value);
                 break;
+            case FILEUPLOAD:
+                if (question.isRequired() && !questionAnswerValidator.validateFileUpload(value)) {
+                    question.setValid(!VALID);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error on fileupload",
+                            questionAnswerValidator.getErrorMessage()));
+                }
+                question.setValid(VALID);
+                break;
             default:
                 break;
         }
@@ -133,5 +141,11 @@ public class ComponentValidator implements Validator {
         DateValue dateValue = new DateValue();
         dateValue.setValue(date);
         question.setAnswer(dateValue);
+    }
+
+    private void saveFileUpload(Object o) {
+        Value fileValue = new FileValue();
+        fileValue.setValue((InputStream) o);
+        question.setAnswer(fileValue);
     }
 }

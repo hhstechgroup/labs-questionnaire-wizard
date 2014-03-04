@@ -89,7 +89,7 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
-                component = getFileUpload();
+                component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
                 break;
             case GRID:
@@ -255,10 +255,11 @@ public class UIComponentGenerator {
         return timeCalendar;
     }
 
-    private FileUpload getFileUpload(WizardQuestion question, Value answer, Value defaultAnswer) {
-        FileUpload fileUpload = new FileUpload();
-        return fileUpload;
-    }
+//    private FileUpload getFileUpload(WizardQuestion question) {
+//        FileUpload fileUpload = new FileUpload();
+//        fileUpload.addValidator(new ComponentValidator(question));
+//        return fileUpload;
+//    }
 
     private UISelectItems getSelectItems(List<String> optionsList) {
         SelectItem item;
@@ -310,11 +311,13 @@ public class UIComponentGenerator {
         return ajaxBehavior;
     }
 
-    private HtmlInputFile getFileUpload() {
+    private HtmlInputFile getFileUpload(WizardQuestion question) {
         HtmlInputFile fileUpload = new HtmlInputFile();
         fileUpload.setValue("#{fileUploadController.file}");
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
+        fileUpload.addValidator(new ComponentValidator(question));
+        System.out.println("fileupload after validate work");
         return fileUpload;
     }
 
@@ -323,6 +326,7 @@ public class UIComponentGenerator {
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
         commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
+        System.out.println("commandbutton work");
         return commandButton;
     }
 

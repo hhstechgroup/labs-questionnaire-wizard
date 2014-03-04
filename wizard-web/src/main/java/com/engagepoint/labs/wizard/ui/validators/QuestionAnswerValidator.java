@@ -36,11 +36,14 @@ public class QuestionAnswerValidator {
                 return validateDateOrTimeValue(value);
             case TIME:
                 return validateDateOrTimeValue(value);
+            case FILEUPLOAD:
+                return validateFileUpload(value);
             default:
                 break;
         }
         return true;
     }
+
 
     public boolean validateDropDownQuestionComponent(Object value) {
         if (value == null || value.toString().isEmpty()) {
@@ -49,6 +52,7 @@ public class QuestionAnswerValidator {
         }
         return true;
     }
+
 
     public boolean validateCheckBoxQuestionComponent(Object value) {
         if (value == null || ((Object[]) value).length == 0) {
@@ -145,4 +149,10 @@ public class QuestionAnswerValidator {
         return true;
     }
 
+    public boolean validateFileUpload(Object value) {
+        if (null == value) {
+            return false;
+        }
+        return true;
+    }
 }
