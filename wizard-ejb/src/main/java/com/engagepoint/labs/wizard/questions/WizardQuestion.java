@@ -1,7 +1,11 @@
 package com.engagepoint.labs.wizard.questions;
 
 import com.engagepoint.labs.wizard.values.Value;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.apache.commons.jexl2.JexlEngine;
 import super_binding.QType;
+
+import java.util.List;
 
 /**
  * Created by igor.guzenko on 2/4/14.
@@ -14,6 +18,26 @@ public abstract class WizardQuestion {
     protected String helpText;
     protected Boolean answerRequired;
     protected Boolean valid;
+    protected boolean ignored;
+    protected List<String> rules;
+    public Rule rule;
+
+    public List<String> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<String> rules) {
+        this.rules = rules;
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
+    }
+
 
     public Boolean getValid() {
         return valid;
@@ -69,5 +93,10 @@ public abstract class WizardQuestion {
 
     public void setQuestionType(QType questionType) {
         this.questionType = questionType;
+    }
+
+    public void executeAllRules() {
+        JexlEngine jexlEngine = new JexlEngine();
+
     }
 }

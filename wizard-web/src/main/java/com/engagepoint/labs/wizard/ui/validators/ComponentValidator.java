@@ -5,12 +5,14 @@ import com.engagepoint.labs.wizard.values.*;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.outputlabel.OutputLabel;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.Part;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,7 +102,7 @@ public class ComponentValidator implements Validator {
                 saveDateTimeValue((Date) value);
                 break;
             case TIME:
-                if (question.isRequired() && !questionAnswerValidator.validateTimeQuestion(value)) {
+                if (question.isRequired() && !questionAnswerValidator.validateTimeQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
@@ -110,13 +112,15 @@ public class ComponentValidator implements Validator {
                 saveDateTimeValue((Date) value);
                 break;
             case FILEUPLOAD:
-                if (question.isRequired() && !questionAnswerValidator.validateFileUpload(value)) {
+                if (question.isRequired() && !questionAnswerValidator.validateFileUploadComponent(value)) {
                     question.setValid(!VALID);
                     throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error on fileupload",
+                            FacesMessage.SEVERITY_ERROR, "Error, need to choose file",
                             questionAnswerValidator.getErrorMessage()));
                 }
                 question.setValid(VALID);
+                OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
+                outputLabel.setValue("Your file  uploaded");
                 break;
             default:
                 break;
@@ -151,9 +155,20 @@ public class ComponentValidator implements Validator {
         question.setAnswer(fileValue);
     }
 
-    private void testingDependet(WizardQuestion question){
+    private void testingDependet(WizardQuestion question) {
 //         question.getAnswer().getValue().toString().equals("aaaa");
         Calendar component = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-hjkhwewewjvv");
         component.setDisabled(false);
+    }
+
+    public boolean validateFileUpload(Object value) {
+        if (value != null) {
+            long size = ((Part) value).getSize();
+            if (size == 0) return false;
+        }
+        if (value == null) {
+            if (question.getAnswer() == null) return false;
+        }
+        return true;
     }
 }

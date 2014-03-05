@@ -1,10 +1,11 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.upload.FileUploadController;
+import com.engagepoint.labs.wizard.values.*;
+
+import javax.inject.Inject;
+import javax.servlet.http.Part;
 
 import java.util.List;
 
@@ -108,10 +109,22 @@ public class QuestionAnswerValidator {
         return true;
     }
 
-    public boolean validateTimeQuestion(Object value) {
+    public boolean validateTimeQuestionComponent(Object value) {
         if (value == null) {
             errorMessage = "Empty field is not allowed here!";
             return false;
+        }
+        return true;
+    }
+
+
+    public boolean validateFileUploadComponent(Object value) {
+        if (value != null) {
+            long size = ((Part) value).getSize();
+            if (size == 0) return false;
+        }
+        if (value == null) {
+            if (question.getAnswer() == null) return false;
         }
         return true;
     }
@@ -149,8 +162,9 @@ public class QuestionAnswerValidator {
         return true;
     }
 
-    public boolean validateFileUpload(Object value) {
-        if (null == value) {
+    private boolean validateFileUpload(Value value) {
+        FileValue fileValue = (FileValue) value;
+        if (fileValue == null) {
             return false;
         }
         return true;
