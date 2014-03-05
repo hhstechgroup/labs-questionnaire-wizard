@@ -445,4 +445,11 @@ public class UINavigationBean implements Serializable {
             }
         }
     }
+
+    private void updateDependentsQuestions() {
+        WizardForm wizardForm = navigationData.getWizardForm();
+        for (WizardQuestion question : wizardForm.getAllWizardQuestions()) {
+
+        }
+    }
 }

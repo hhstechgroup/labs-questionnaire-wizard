@@ -239,6 +239,8 @@ public class UIComponentGenerator {
         timeCalendar.addValidator(new ComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
+        timeCalendar.setDisabled(true);
+
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             timeCalendar.setValue(defaultAnswer.getValue());
@@ -299,7 +301,7 @@ public class UIComponentGenerator {
     private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
-        ajaxBehavior.setUpdate("maincontentid-panel_" + question.getId());
+        ajaxBehavior.setUpdate("maincontentid-j_id1");
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
     }
