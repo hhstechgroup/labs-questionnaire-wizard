@@ -48,7 +48,8 @@ and open the template in the editor.
                                                                                                             <xs:sequence>
                                                                                                                 <xs:element
                                                                                                                         type="xs:string"
-                                                                                                                        name="rule"/>
+                                                                                                                        name="rule"
+                                                                                                                        maxOccurs="unbounded"/>
                                                                                                             </xs:sequence>
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
