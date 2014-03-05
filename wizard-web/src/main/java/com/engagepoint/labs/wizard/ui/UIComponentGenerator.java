@@ -281,6 +281,7 @@ public class UIComponentGenerator {
 
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
+        label.setId("labelIdFor-"+question.getId());
         label.setValue(question.getTitle());
         if (question.isRequired()) {
             HtmlOutputText outputText = new HtmlOutputText();
