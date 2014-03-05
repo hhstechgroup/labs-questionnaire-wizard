@@ -12,10 +12,10 @@
                             <question answer-required="true" question-id="zxxxx3">
                                 <question-title>Super Text</question-title>
                                 <question-type>DATE</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help text jhdfkosd</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -40,10 +40,10 @@
                             <question answer-required="true" question-id="yqtrwrer">
                                 <question-title>Super Paragraph</question-title>
                                 <question-type>TIME</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>TODO later\</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -72,10 +72,10 @@
                             <question answer-required="false" question-id="xcdfvfv">
                                 <question-title>Second SUPER paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help text jhkjh</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -100,10 +100,10 @@
                             <question answer-required="false" question-id="zxxxx3">
                                 <question-title>Title MegaSuper</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -132,10 +132,10 @@
                             <question answer-required="false" question-id="mgvln">
                                 <question-title>PARAGRAPH *************</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help here</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -160,10 +160,10 @@
                             <question answer-required="false" question-id="fpgbvmf">
                                 <question-title>simple paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -188,10 +188,10 @@
                             <question answer-required="false" question-id="eog">
                                 <question-title>text need to be hrere</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help ohvf</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -225,10 +225,10 @@
                             <question answer-required="false" question-id="hjkhjvv">
                                 <question-title>Prime Title</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help for junior</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -250,10 +250,10 @@
                             <question answer-required="false" question-id="hjkhwewewjvv">
                                 <question-title>Primess Title</question-title>
                                 <question-type>TIME</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Helpsss for junior</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -280,10 +280,10 @@
                             <question answer-required="false" question-id="vknvnvn">
                                 <question-title>tittle for text q</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -308,10 +308,10 @@
                             <question answer-required="false" question-id="nxnajjjuquq">
                                 <question-title>QT 12999</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -340,10 +340,10 @@
                             <question answer-required="false" question-id="dfhbkdfkd">
                                 <question-title>Q tttete</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text></help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -368,10 +368,10 @@
                             <question answer-required="false" question-id="dwpoejkrwpok">
                                 <question-title>QT9043-9832</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -396,10 +396,10 @@
                             <question answer-required="false" question-id="wfwfwf">
                                 <question-title>Date Question</question-title>
                                 <question-type>DATE</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -428,10 +428,10 @@
                             <question answer-required="false" question-id="fgvngfhv">
                                 <question-title>Second SUPER paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help text jhkjh</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
