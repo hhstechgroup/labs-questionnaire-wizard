@@ -43,6 +43,7 @@ public class XmlController implements Serializable {
         xmlPathList.add("/XMLforWizard.xml");
         xmlPathList.add("/XMLforWizard2.xml");
        xmlPathList.add("/ExemplaryWelcome.xml");
+       xmlPathList.add("/dependentQuestions.xml");
        // xmlPathList.add("/exportFile.xml");
         this.parser = new XmlCustomParser();
     }

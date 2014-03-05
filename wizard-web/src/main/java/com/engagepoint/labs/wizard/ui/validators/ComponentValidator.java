@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.ui.validators;
 import com.engagepoint.labs.wizard.questions.FileUploadQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.*;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -44,6 +45,7 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
+                testingDependet(question);
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !questionAnswerValidator.validateTextAreaQuestionComponent(value)) {
@@ -151,5 +153,11 @@ public class ComponentValidator implements Validator {
         Value fileValue = new FileValue();
         fileValue.setValue((InputStream) o);
         question.setAnswer(fileValue);
+    }
+
+    private void testingDependet(WizardQuestion question){
+//         question.getAnswer().getValue().toString().equals("aaaa");
+        Calendar component = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-hjkhwewewjvv");
+        component.setDisabled(false);
     }
 }

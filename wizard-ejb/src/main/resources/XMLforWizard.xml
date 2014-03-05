@@ -13,10 +13,10 @@
                             <question answer-required="false" question-id="xxssx">
                                 <question-title>Error Q</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>First Help Text for Question</help-text>
-                                <dependent-questions>
-                                    <dependent-question required-answer="lalalal" question-id="3"/>
-                                </dependent-questions>
                                 <options>
                                     <option>Option Number 1</option>
                                     <option>Option Number 2</option>
@@ -38,10 +38,10 @@
                             <question answer-required="true" question-id="ckxcbxk">
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>Option 1</option>
                                     <option>Option 2</option>
@@ -73,10 +73,10 @@
                             <question answer-required="true" question-id="kdkdk">
                                 <question-title>QT paragraph</question-title>
                                 <question-type>FILEUPLOAD</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help text</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -101,10 +101,10 @@
                             <question answer-required="false" question-id="iuquququ">
                                 <question-title>QT text 52452452</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>Help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -133,10 +133,10 @@
                             <question answer-required="true" question-id="oqoqoklalalksks">
                                 <question-title>SUPER title for QUESTION</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>TODO</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -161,10 +161,10 @@
                             <question answer-required="false" question-id="xvxvxvxss">
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule></rule>
+                                </rules>
                                 <help-text>HELLP</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
