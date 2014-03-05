@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 public class NavigationData implements Serializable {
 
     private static final long serialVersionUID = -3879860102027220266L;
-    private boolean needRefresh;
     private boolean onSelectXMLPage;
     @Inject
     private WizardForm wizardForm;
@@ -124,7 +123,6 @@ public class NavigationData implements Serializable {
         mainContentForm.getChildren().add(getDialog());
         wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
                 wizardDocument.getFormList());
-        needRefresh = false;
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
                 .getTopicList().get(0).getId();
@@ -217,31 +215,6 @@ public class NavigationData implements Serializable {
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
 
-    /**
-     * Get flag, that determines need of refreshing current page in
-     * NavigationPhaseListener. Made because of new content must be shown on UI
-     * properly and old UI content must be deleted, for example, after choosing
-     * new page or topic
-     *
-     * @return flag
-     * @author vyacheslav.mysak
-     */
-    public boolean isNeedRefresh() {
-        return needRefresh;
-    }
-
-    /**
-     * Set flag, that determines need of refreshing current page in
-     * NavigationPhaseListener. Made because of new content must be shown on UI
-     * properly and old UI content must be deleted, for example, after choosing
-     * new page or topic
-     *
-     * @param needRefresh flag
-     * @author vyacheslav.mysak
-     */
-    public void setNeedRefresh(boolean needRefresh) {
-        this.needRefresh = needRefresh;
-    }
 
     public ArrayList<String> getCurrentTopicIDs() {
         return currentTopicIDs;

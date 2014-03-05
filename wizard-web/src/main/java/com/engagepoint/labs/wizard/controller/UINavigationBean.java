@@ -7,11 +7,8 @@ import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
-import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
-import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
-import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
@@ -22,14 +19,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.FileInputStream;
@@ -117,10 +107,6 @@ public class UINavigationBean implements Serializable {
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
-        // Refresh Processed in UINavigationPhaseListener.
-        // Now we set refresh flag to false, because of we need to be redirected
-        // to bootstrapindex page and see our wizard
-        //navigationData.setNeedRefresh(false);
         return "wizard-index?faces-redirect=true";
     }
 
@@ -228,7 +214,9 @@ public class UINavigationBean implements Serializable {
         for (Panel panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
-        getNavigationData().setNeedRefresh(true);
+        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
+        RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+        RequestContext.getCurrentInstance().update("navigationButtonsForm-btnsDiv");
     }
 
     private int getPageCount() {
@@ -267,6 +255,7 @@ public class UINavigationBean implements Serializable {
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
         // create new menu for page
         initMenu();
+        RequestContext.getCurrentInstance().update("brd-breadcrumb");
     }
 
     /**
