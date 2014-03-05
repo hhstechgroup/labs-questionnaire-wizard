@@ -85,8 +85,8 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
-              //  panel.getChildren().add(getLitleLabel(question));
-              //  panel.getChildren().add(getHtmlText());
+                  panel.getChildren().add(getLitleLabel(question));
+                  panel.getChildren().add(getHtmlText());
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
 
@@ -342,14 +342,6 @@ public class UIComponentGenerator {
         lineBreak.setEscape(false);
         return lineBreak;
     }
-
-    private void showLabelForUpload(WizardQuestion question) {
-        if (question.getAnswer() != null) {
-            panel.getChildren().add(getLitleLabel(question));
-            panel.getChildren().add(getHtmlText());
-        }
-    }
-
 
     public static MethodExpression createMethodExpression(String expression, Class<?> returnType, Class<?>... parameterTypes) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
