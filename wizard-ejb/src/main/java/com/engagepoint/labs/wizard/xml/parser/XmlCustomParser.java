@@ -74,24 +74,6 @@ public class XmlCustomParser {
 
     }
 
-//    public QuestionnaireForms parseXmlFromFile(String XMLpath) throws SAXException,
-//            JAXBException {
-//        Schema schema = SchemaFactory.newInstance(
-//                XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-//                new File(getClass().getClassLoader()
-//                        .getResource("/XSDforWizard.xsd").getFile()));
-//        Unmarshaller unmarshaller = JAXBContext.newInstance(
-//                QuestionnaireForms.class).createUnmarshaller();
-//        unmarshaller.setSchema(schema);
-//        unmarshaller.setEventHandler(new ValidationEventHandler() {
-//            @Override
-//            public boolean handleEvent(ValidationEvent event) {
-//                return true;
-//            }
-//        });
-//
-//    }
-
     public File parseWizardFormToXml(WizardForm form) {
         QuestionaireFormConverter converter = new QuestionaireFormConverter();
         QuestionnaireForms formsToMarshall = converter.convert(form);

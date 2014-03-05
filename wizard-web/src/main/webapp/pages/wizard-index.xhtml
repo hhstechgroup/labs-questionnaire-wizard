@@ -20,7 +20,8 @@
         <ui:include
                 src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml"/>
 
-        <h:form>
+        <h:form id="navigationButtonsForm">
+            <h:panelGroup id="btnsDiv" layout="block">
             <p:commandButton value="NEXT" id="buttonid"
                              rendered="#{!navigationData.finishButtonRendered}"
                              action="#{uiNavigationBean.nextButtonClick}"
@@ -29,6 +30,7 @@
                              rendered="#{navigationData.finishButtonRendered}"
                              action="#{uiNavigationBean.finishButtonClick()}"
                              style="text-align:center;position:relative;float:right;"/>
+            </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>
