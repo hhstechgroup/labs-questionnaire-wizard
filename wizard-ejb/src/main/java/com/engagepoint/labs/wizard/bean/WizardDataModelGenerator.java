@@ -229,6 +229,7 @@ public class WizardDataModelGenerator {
         wizardQuestion.setQuestionType(xmlQuestion.getQuestionType());
         wizardQuestion.setHelpText(xmlQuestion.getHelpText());
         wizardQuestion.setAnswerRequired(xmlQuestion.isAnswerRequired());
+        wizardQuestion.setRules(getRulesList(xmlQuestion));
         return wizardQuestion;
     }
 
@@ -254,5 +255,13 @@ public class WizardDataModelGenerator {
             }
         }
         return correctAnswersList;
+    }
+
+    private List<String> getRulesList(Question xmlQuestion) {
+        if (xmlQuestion.getRules() != null && !
+                xmlQuestion.getRules().getRule().isEmpty()) {
+            return xmlQuestion.getRules().getRule();
+        }
+        return null;
     }
 }
