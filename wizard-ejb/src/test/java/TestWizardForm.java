@@ -1,6 +1,10 @@
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DateQuestion;
+import com.engagepoint.labs.wizard.questions.TextQuestion;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,7 +29,6 @@ public class TestWizardForm {
         WizardPage page;
         ArrayList<WizardTopic> onePageTopicList;
         WizardTopic uniqueOnePageTopic;
-//        onePageTopicList.add(new WizardTopic());
         allTopicsList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             page = new WizardPage();
@@ -88,7 +91,7 @@ public class TestWizardForm {
     @Test
     public void testGetWizardTopicById(){
         String expectedTopicId = "page 1 topic1";
-        assertEquals(expectedTopicId,testingForm.getWizardTopicById(expectedTopicId).getId());
+        assertEquals(expectedTopicId, testingForm.getWizardTopicById(expectedTopicId).getId());
     }
 
     /**
@@ -106,5 +109,49 @@ public class TestWizardForm {
     public void testGetWizardTopicByIdB(){
         String correctId = "page 1 topic2";
         assertNotNull(testingForm.getWizardTopicById(correctId));
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void testGetAllWizardQuestions(){
+        List<WizardQuestion> expectedList = new ArrayList<>(3);
+        expectedList.add(new CheckBoxesQuestion());
+        expectedList.add(new DateQuestion());
+        expectedList.add(new TextQuestion());
+        testingForm.getAllWizardTopics().get(0).setWizardQuestionList(expectedList);
+        Object[] expectedArray =expectedList.toArray();
+        Object[] obtainedArray =  testingForm.getAllWizardQuestions().toArray();
+        assertTrue(Arrays.equals(expectedArray, obtainedArray));
+    }
+
+    /**
+    * 
+     */
+    @Test
+    public void testGetWizardQuestionById(){
+        WizardQuestion testQuestion = new TextQuestion();
+        testQuestion.setId("test1");
+        WizardQuestion testQuestion2 = new TextQuestion();
+        testQuestion2.setId("test2");
+        List<WizardQuestion> expectedList = new ArrayList<>(3);
+        expectedList.add(testQuestion);
+        expectedList.add(testQuestion2);
+        testingForm.getAllWizardTopics().get(0).setWizardQuestionList(expectedList);
+        assertEquals(testQuestion,testingForm.getWizardQuestionById("test1"));
+    }
+
+    @Test
+    public void testGetWizardQuestionByIdB(){
+        WizardQuestion testQuestion = new TextQuestion();
+        testQuestion.setId("test1");
+        WizardQuestion testQuestion2 = new TextQuestion();
+        testQuestion2.setId("test2");
+        List<WizardQuestion> expectedList = new ArrayList<>(3);
+        expectedList.add(testQuestion);
+        expectedList.add(testQuestion2);
+        testingForm.getAllWizardTopics().get(0).setWizardQuestionList(expectedList);
+        assertNull(testingForm.getWizardQuestionById("test3"));
     }
 }
