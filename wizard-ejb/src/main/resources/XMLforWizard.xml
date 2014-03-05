@@ -72,7 +72,7 @@
                         <questions>
                             <question answer-required="true" question-id="kdkdk">
                                 <question-title>QT paragraph</question-title>
-                                <question-type>PARAGRAPHTEXT</question-type>
+                                <question-type>FILEUPLOAD</question-type>
                                 <help-text>Help text</help-text>
                                 <dependent-questions>
                                     <dependent-question/>

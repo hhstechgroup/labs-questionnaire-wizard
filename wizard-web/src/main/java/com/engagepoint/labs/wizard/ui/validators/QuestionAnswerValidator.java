@@ -1,12 +1,12 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
-import java.util.List;
-
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.DateValue;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+
+import java.util.List;
 
 /**
  * Created by artem.pylypenko on 2/27/14.
