@@ -1,9 +1,11 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
+import com.engagepoint.labs.wizard.questions.FileUploadQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.outputlabel.OutputLabel;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -111,10 +113,12 @@ public class ComponentValidator implements Validator {
                 if (question.isRequired() && !questionAnswerValidator.validateFileUpload(value)) {
                     question.setValid(!VALID);
                     throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error on fileupload",
+                            FacesMessage.SEVERITY_ERROR, "Error, need to choose file",
                             questionAnswerValidator.getErrorMessage()));
                 }
                 question.setValid(VALID);
+//                OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
+//                outputLabel.setValue("Your file  uploaded");
                 break;
             default:
                 break;
