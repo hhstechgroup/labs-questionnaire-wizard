@@ -56,6 +56,7 @@ public class UIComponentGenerator {
         Value answer = question.getAnswer();
         Value defaultAnswer = question.getDefaultAnswer();
 
+
         switch (question.getQuestionType()) {
             case TEXT:
                 component = getInputText(question, answer, defaultAnswer);
@@ -84,8 +85,11 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
+                  panel.getChildren().add(getLitleLabel(question));
+                  panel.getChildren().add(getHtmlText());
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
+
                 break;
             case GRID:
                 // to do
@@ -321,6 +325,22 @@ public class UIComponentGenerator {
         commandButton.setAjax(false);
         commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
         return commandButton;
+    }
+
+    private OutputLabel getLitleLabel(WizardQuestion question) {
+        OutputLabel label = new OutputLabel();
+        label.setId("little_" + question.getId());
+        if (question.getAnswer() != null) {
+            label.setValue("Your file  uploaded");
+        }
+        return label;
+    }
+
+    private HtmlOutputText getHtmlText() {
+        HtmlOutputText lineBreak = new HtmlOutputText();
+        lineBreak.setValue("<br/>");
+        lineBreak.setEscape(false);
+        return lineBreak;
     }
 
     public static MethodExpression createMethodExpression(String expression, Class<?> returnType, Class<?>... parameterTypes) {

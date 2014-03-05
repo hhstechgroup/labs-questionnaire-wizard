@@ -14,6 +14,15 @@ import com.engagepoint.labs.wizard.values.ValueType;
 public class FileUploadQuestion extends WizardQuestion {
     private FileValue answer;
     private FileValue defaultAnswer;
+    private String uploadText;
+
+    public String getUploadText() {
+        return uploadText;
+    }
+
+    public void setUploadText(String uploadText) {
+        this.uploadText = uploadText;
+    }
 
     @Override
     public Value getAnswer() {

@@ -18,6 +18,15 @@ import java.io.*;
 public class FileUploadController implements Serializable, ActionListener {
     private Part file;
     private String path;
+    private String name="AAA";
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Inject
     NavigationData navigationData;
@@ -64,6 +73,7 @@ public class FileUploadController implements Serializable, ActionListener {
     }
 
     public void getAnswerInputStream(String id) {
+        System.out.println("in Input Strema");
         WizardQuestion question = navigationData.getWizardForm().getWizardQuestionById(id);
         FileValue value = new FileValue();
         try {
@@ -72,6 +82,7 @@ public class FileUploadController implements Serializable, ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("in Input Strema2");
     }
 
     @Override
