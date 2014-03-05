@@ -30,6 +30,10 @@
                              rendered="#{navigationData.finishButtonRendered}"
                              action="#{uiNavigationBean.finishButtonClick()}"
                              style="text-align:center;position:relative;float:right;"/>
+                <p:commandButton value="PREV" id="buttonidprev"
+                                 rendered="#{!(navigationData.firstPage and navigationData.firstTopic)}"
+                                 action="#{uiNavigationBean.previousButtonClick()}"
+                                 style="text-align:center;position:relative;float:left;"/>
             </h:panelGroup>
         </h:form>
     </ui:define>

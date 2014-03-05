@@ -72,7 +72,7 @@
                         <questions>
                             <question answer-required="true" question-id="kdkdk">
                                 <question-title>QT paragraph</question-title>
-                                <question-type>FILEUPLOAD</question-type>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>Help text</help-text>
                                 <dependent-questions>
                                     <dependent-question/>
@@ -89,9 +89,9 @@
                                         <row></row>
                                     </rows>
                                 </grid>
-                                <default-answers>
-                                    <default-answer>Default Answer for Paragraph Text !</default-answer>
-                                </default-answers>
+                                <!--<default-answers>-->
+                                    <!--<default-answer>Default Answer for Paragraph Text !</default-answer>-->
+                                <!--</default-answers>-->
                             </question>
                         </questions>
                     </group>
@@ -158,7 +158,7 @@
                     <group group-id="pqplakdhfg">
                         <group-name>Super Puper Topic 2</group-name>
                         <questions>
-                            <question answer-required="false" question-id="xvxvxvxss">
+                            <question answer-required="true" question-id="xvxvxvxss">
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <help-text>HELLP</help-text>

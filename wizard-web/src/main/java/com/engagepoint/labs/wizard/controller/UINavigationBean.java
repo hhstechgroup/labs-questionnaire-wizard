@@ -316,18 +316,42 @@ public class UINavigationBean implements Serializable {
     }
 
     public String finishButtonClick() {
+        commitAnswers(getQuestionListFromCurrentTopic());
+        if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+            RequestContext.getCurrentInstance().execute("dialog.show()");
+            return "";
+        }
         return "wizard-confirmation?faces-redirect=true";
     }
 
-    public void exportButtonClick(){
+    public void exportButtonClick() {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
         Date date = new Date();
         try {
             FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
-            String fileName = String.format("%s_answers_%s.xml",navigationData.getWizardForm().getFormName(),dateFormat.format(date));
-            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream,"text/xml",fileName));
+            String fileName = String.format("%s_answers_%s.xml", navigationData.getWizardForm().getFormName(), dateFormat.format(date));
+            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream, "text/xml", fileName));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void previousButtonClick() {
+        Integer newCurrentTopicNumber = navigationData.getWizardForm()
+                .getWizardTopicById(navigationData.getCurrentTopicID())
+                .getTopicNumber();
+        if (newCurrentTopicNumber != navigationData.getTopicLimit()) {
+            if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
+                RequestContext.getCurrentInstance().execute("dialog.show()");
+                return;
+            }
+        }
+        if (navigationData.setCurrentTopicIDtoPrev()) {
+            changeCurrentTopic(navigationData.getCurrentTopicID());
+        } else if (navigationData.setCurrentPageIDtoPrev()) {
+            changeCurrentPage(navigationData.getCurrentPageID());
+            navigationData.setCurrentTopicID(navigationData.getCurrentTopicIDs().get(navigationData.getCurrentTopicIDs().size() - 1));
+            changeCurrentTopic(navigationData.getCurrentTopicID());
         }
     }
 

@@ -67,6 +67,9 @@ public class NavigationData implements Serializable {
     private int pageLimit;
     private int topicLimit;
     private boolean finishButtonRendered;
+    private boolean isFirstPage = true;
+    private boolean isFirstTopic = true;
+    private boolean previousButtonRendered;
 
     private HtmlForm sliderForm;
 
@@ -175,6 +178,36 @@ public class NavigationData implements Serializable {
                     if (newCurrentTopicNumber > topicLimit) {
                         topicLimit = newCurrentTopicNumber;
                     }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentPageIDtoPrev() {
+        List<WizardPage> pageList = wizardForm.getWizardPageList();
+        // start searching current page
+        for (int index = 0; index < pageList.size(); index++) {
+            if (currentPageID.equals(pageList.get(index).getId())) {
+                if (index == 0) {
+                    return false;// if finded page is first
+                } else {
+                    currentPageID = pageList.get(index - 1).getId();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentTopicIDtoPrev() {
+        for (int index = 0; index < currentTopicIDs.size(); index++) {
+            if (currentTopicID.equals(currentTopicIDs.get(index))) {
+                if (index == 0) {
+                    return false; // first topic case
+                } else {
+                    currentTopicID = currentTopicIDs.get(index - 1);
                     return true;
                 }
             }
@@ -397,7 +430,9 @@ public class NavigationData implements Serializable {
     }
 
     public boolean isFinishButtonRendered() {
-        if (isOnLastPage() && isOnLastTopic()) {
+        boolean nowLastPage = isOnLastPage();
+        boolean nowLastTopic = isOnLastTopic();
+        if (nowLastPage && nowLastTopic) {
             setFinishButtonRendered(true);
         } else {
             setFinishButtonRendered(false);
@@ -415,6 +450,11 @@ public class NavigationData implements Serializable {
         for (int pageIndex = 0; pageIndex < pagesOnTemplate.size(); pageIndex++) {
             simpleWizardPage = (WizardPage) pagesOnTemplate.get(pageIndex);
             if (simpleWizardPage.getId().equals(currentPageID)) {
+                if (pageIndex == 0) {
+                    setFirstPage(true);
+                } else {
+                    setFirstPage(false);
+                }
                 if (pageIndex == pagesOnTemplate.size() - 1)
                     return true;
             }
@@ -425,6 +465,11 @@ public class NavigationData implements Serializable {
     private boolean isOnLastTopic() {
         for (int topicIntId = 0; topicIntId < currentTopicIDs.size(); topicIntId++) {
             if (currentTopicID.equals(currentTopicIDs.get(topicIntId))) {
+                if (topicIntId == 0) {
+                    setFirstTopic(true);
+                } else {
+                    setFirstTopic(false);
+                }
                 if (topicIntId == currentTopicIDs.size() - 1)
                     return true;
             }
@@ -443,9 +488,17 @@ public class NavigationData implements Serializable {
         this.sliderForm = sliderForm;
     }
 
-    public File getExportFile(){
+    public File getExportFile() {
         File exFile = xmlController.getExportFileFromWizardForm(this.wizardForm);
         return exFile;
+    }
+
+    public boolean isFirstPage() {
+        return isFirstPage;
+    }
+
+    public void setFirstPage(boolean isFirstPage) {
+        this.isFirstPage = isFirstPage;
     }
 
     private Dialog getDialog() {
@@ -463,5 +516,21 @@ public class NavigationData implements Serializable {
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
         return dialog;
+    }
+
+    public boolean isPreviousButtonRendered() {
+        return previousButtonRendered;
+    }
+
+    public void setPreviousButtonRendered(boolean previousButtonRendered) {
+        this.previousButtonRendered = previousButtonRendered;
+    }
+
+    public boolean isFirstTopic() {
+        return isFirstTopic;
+    }
+
+    public void setFirstTopic(boolean isFirstTopic) {
+        this.isFirstTopic = isFirstTopic;
     }
 }
