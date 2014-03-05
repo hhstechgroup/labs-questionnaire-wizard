@@ -3,10 +3,14 @@ package com.engagepoint.labs.wizard.ui.validators;
 import java.util.List;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.upload.FileUploadController;
 import com.engagepoint.labs.wizard.values.DateValue;
 import com.engagepoint.labs.wizard.values.ListTextValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.Value;
+
+import javax.inject.Inject;
+import javax.servlet.http.Part;
 
 /**
  * Created by artem.pylypenko on 2/27/14.
@@ -150,8 +154,12 @@ public class QuestionAnswerValidator {
     }
 
     public boolean validateFileUpload(Object value) {
-        if (null == value) {
-            return false;
+        if (value != null) {
+            long size = ((Part) value).getSize();
+            if (size == 0) return false;
+        }
+        if (value == null) {
+            if (question.getAnswer() == null) return false;
         }
         return true;
     }
