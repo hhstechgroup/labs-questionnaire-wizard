@@ -15,20 +15,32 @@ import javax.xml.bind.*;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.net.URL;
 
 /**
  * @author artem
  */
 
 public class XmlCustomParser {
-    private static final String EXPORT_FILE_NAME = "C:\\Users\\igor.guzenko\\IdeaProjects\\labs-questionnaire-wizard\\wizard-ejb\\src\\main\\resources\\exportFile.xml";
+    private static final String EXPORT_FILE_NAME = "/exportFile.xml";
+
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
+        String schemaFileName = null;
+        Class clazs = getClass();
+        ClassLoader classLoader = clazs.getClassLoader();
+        URL url = classLoader.getResource("/XSDforWizard.xsd");
+        if (url != null) {
+            schemaFileName = url.getFile();
+        } else {
+            url = classLoader.getResource("XSDforWizard.xsd");
+            schemaFileName = url.getFile();
+        }
+
         Schema schema = SchemaFactory.newInstance(
                 XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-                new File(getClass().getClassLoader()
-                        .getResource("/XSDforWizard.xsd").getFile()));
+                new File(schemaFileName));
         // Creating Unmarshaller and select Class
         // that we wont to get after XML file parsing
         Unmarshaller unmarshaller = JAXBContext.newInstance(
@@ -74,7 +86,7 @@ public class XmlCustomParser {
 
     }
 
-    public File parseWizardFormToXml(WizardForm form) {
+        public File parseWizardFormToXml(WizardForm form) {
         QuestionaireFormConverter converter = new QuestionaireFormConverter();
         QuestionnaireForms formsToMarshall = converter.convert(form);
         File exportFile = new File(EXPORT_FILE_NAME);
@@ -83,7 +95,7 @@ public class XmlCustomParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
-           return exportFile;
+            return exportFile;
         }
         return exportFile;
     }

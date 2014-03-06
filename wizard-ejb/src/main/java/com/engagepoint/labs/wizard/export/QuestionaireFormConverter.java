@@ -84,33 +84,26 @@ public class QuestionaireFormConverter {
         switch (wizardQuestion.getQuestionType()) {
             case TEXT:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case PARAGRAPHTEXT:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case CHOOSEFROMLIST:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
                 question.setOptions(getQuestionOptions((DropDownQuestion) wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case CHECKBOX:
                 defaultAnswers.getDefaultAnswer().addAll(getListValueAnswer(wizardQuestion));
                 question.setOptions(getQuestionOptions((CheckBoxesQuestion) wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case RANGE:
-
                 break;
             case MULTIPLECHOICE:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
                 question.setOptions(getQuestionOptions((MultipleChoiseQuestion) wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case DATE:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
-                question.setDefaultAnswers(defaultAnswers);
                 break;
             case TIME:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
