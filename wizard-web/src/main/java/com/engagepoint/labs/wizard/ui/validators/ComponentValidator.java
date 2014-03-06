@@ -49,7 +49,7 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
-                testDependet(question);
+                question.executeAllRules();
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
@@ -225,16 +225,5 @@ public class ComponentValidator implements Validator {
         DateValue dateValue = new DateValue();
         dateValue.setValue(date);
         question.setAnswer(dateValue);
-    }
-
-    public void testDependet(WizardQuestion question){
-        JexlEngine jexlEngine = new JexlEngine();
-        String rule = "question.rule.renderedRule('qp123', '123456')";
-        Expression expression = jexlEngine.createExpression(rule);
-        JexlContext context = new MapContext();
-        context.set("question", question);
-        question.setRule(new Rule());
-        boolean rendered = (boolean) expression.evaluate(context);
-        FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-qawes123").setRendered(rendered);
     }
 }
