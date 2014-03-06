@@ -1,8 +1,14 @@
 package com.engagepoint.labs.wizard.questions;
 
 import com.engagepoint.labs.wizard.values.Value;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import super_binding.QType;
 
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -18,9 +24,6 @@ public abstract class WizardQuestion {
     protected Boolean valid;
     protected boolean ignored;
     protected List<String> rules;
-//    @Any
-//    @Default
-//    @Inject
     public Rule rule;
     public boolean rendered;
 
@@ -97,6 +100,14 @@ public abstract class WizardQuestion {
     }
 
     public void executeAllRules() {
-        rule.renderedRule("", "");
+        if (rules != null) {
+            for (String s : rules) {
+                JexlEngine jexlEngine = new JexlEngine();
+                Expression expression = jexlEngine.createExpression(s);
+                JexlContext context = new MapContext();
+                context.set("question", this);
+                expression.evaluate(context);
+            }
+        }
     }
 }

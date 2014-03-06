@@ -53,4 +53,13 @@ public class WizardTopic {
         this.groupTitle = groupTitle;
     }
 
+    public WizardQuestion findQuestionById(String questionId) {
+        for (WizardQuestion question : wizardQuestionList) {
+            if (question.getId().equals(questionId)) {
+                return question;
+            }
+        }
+        return null;
+    }
+
 }

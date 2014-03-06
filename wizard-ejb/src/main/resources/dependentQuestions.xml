@@ -39,7 +39,7 @@
                                    <question-title>1.1.2</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule></rule>
+                                       <rule>question.rule.renderedRule('qp123', '222')</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>

@@ -258,8 +258,8 @@ public class WizardDataModelGenerator {
     }
 
     private List<String> getRulesList(Question xmlQuestion) {
-        if (xmlQuestion.getRules() != null && !
-                xmlQuestion.getRules().getRule().isEmpty()) {
+        if (xmlQuestion.getRules() != null &&
+                !xmlQuestion.getRules().getRule().isEmpty()) {
             return xmlQuestion.getRules().getRule();
         }
         return null;

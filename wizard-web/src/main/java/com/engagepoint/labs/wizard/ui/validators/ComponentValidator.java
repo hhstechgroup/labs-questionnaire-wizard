@@ -50,6 +50,7 @@ public class ComponentValidator implements Validator {
                 question.setValid(true);
                 saveTextValue(value.toString());
                 question.executeAllRules();
+                question.rule.updateAllQuestionsOnTopic();
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {

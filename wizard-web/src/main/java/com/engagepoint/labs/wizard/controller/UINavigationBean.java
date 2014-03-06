@@ -24,6 +24,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -285,6 +286,8 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
+        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
+        executeAllRules();
     }
 
     public NavigationData getNavigationData() {
@@ -448,6 +451,20 @@ public class UINavigationBean implements Serializable {
                     item.setStyleClass("");
                 }
             }
+        }
+    }
+
+    private void executeAllRules() {
+        String currentTopicID = navigationData.getCurrentTopicID();
+        WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
+        for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
+            question.executeAllRules();
+        }
+    }
+
+    private void setRulesInQuestionsOnCurrentTopic(WizardTopic topic) {
+        for (WizardQuestion question : topic.getWizardQuestionList()) {
+            question.setRule(new Rule(question, topic));
         }
     }
 }
