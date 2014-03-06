@@ -19,21 +19,20 @@
     <ui:define name="mainContent">
         <ui:include
                 src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml"/>
-
         <h:form id="navigationButtonsForm">
-            <h:panelGroup id="btnsDiv" layout="block" style="height: 2.5em;width: 90%;position: absolute;bottom: 5%;">
-            <p:commandButton value="NEXT" id="buttonid"
-                             rendered="#{!navigationData.finishButtonRendered}"
-                             action="#{uiNavigationBean.nextButtonClick}"
-                             style="text-align:center;position:relative;float:right;"/>
-            <p:commandButton value="FINISH" id="finishbuttonid"
-                             rendered="#{navigationData.finishButtonRendered}"
-                             action="#{uiNavigationBean.finishButtonClick()}"
-                             style="text-align:center;position:relative;float:right;"/>
+            <h:panelGroup id="btnsDiv" layout="block" style="height: 10%;width: 90%;position: absolute;bottom: 0%;background: #ffffff;">
+                <p:commandButton value="NEXT" id="buttonid"
+                                 rendered="#{!navigationData.finishButtonRendered}"
+                                 action="#{uiNavigationBean.nextButtonClick}"
+                                 style="text-align:center;position:relative;float:right;margin-top: 1%;"/>
+                <p:commandButton value="FINISH" id="finishbuttonid"
+                                 rendered="#{navigationData.finishButtonRendered}"
+                                 action="#{uiNavigationBean.finishButtonClick()}"
+                                 style="text-align:center;position:relative;float:right;margin-top: 1%;"/>
                 <p:commandButton value="PREV" id="buttonidprev"
                                  rendered="#{!(navigationData.firstPage and navigationData.firstTopic)}"
                                  action="#{uiNavigationBean.previousButtonClick()}"
-                                 style="text-align:center;position:relative;float:left;"/>
+                                 style="text-align:center;position:relative;float:left;margin-top: 1%;"/>
             </h:panelGroup>
         </h:form>
     </ui:define>
