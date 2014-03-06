@@ -15,7 +15,6 @@ import java.util.List;
 public class QuestionAnswerValidator {
 
     private WizardQuestion question;
-    private String errorMessage;
 
     public QuestionAnswerValidator(WizardQuestion question) {
         this.question = question;
@@ -43,98 +42,6 @@ public class QuestionAnswerValidator {
                 break;
         }
         return true;
-    }
-
-
-    public boolean validateDropDownQuestionComponent(Object value) {
-        if (value == null || value.toString().isEmpty()) {
-            errorMessage = "Answer must be selected for this question!";
-            return false;
-        }
-        return true;
-    }
-
-
-    public boolean validateCheckBoxQuestionComponent(Object value) {
-        if (value == null || ((Object[]) value).length == 0) {
-            errorMessage = "Empty field is not allowed here";
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateMultipleChoiseQuestionComponent(Object value) {
-        if (value == null || value.toString().isEmpty()) {
-            errorMessage = "Answer must be selected for this question!";
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateTextAreaQuestionComponent(Object value) {
-        if (value == null) {
-            errorMessage = "Empty field is not allowed here!";
-            return false;
-        } else {
-            String currentValue = value.toString();
-            currentValue = currentValue.replaceAll("\\s", "");
-            if (currentValue.isEmpty()) {
-                errorMessage = "Empty field is not allowed here!";
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean validateTextQuestionComponent(Object value) {
-        if (value == null) {
-            errorMessage = "Empty field is not allowed here!";
-            return false;
-        } else {
-            String currentValue = value.toString();
-            currentValue = currentValue.replaceAll("\\s", "");
-            if (currentValue.isEmpty()) {
-                errorMessage = "Empty field is not allowed here!";
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean validateDateQuestionComponent(Object value) {
-        if (value == null) {
-            errorMessage = "Empty field is not allowed here!";
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateTimeQuestionComponent(Object value) {
-        if (value == null) {
-            errorMessage = "Empty field is not allowed here!";
-            return false;
-        }
-        return true;
-    }
-
-
-    public boolean validateFileUploadComponent(Object value) {
-        if (value != null) {
-            long size = ((Part) value).getSize();
-            if (size == 0) return false;
-        }
-        if (value == null) {
-            if (question.getAnswer() == null) return false;
-        }
-        return true;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
     }
 
     private boolean validateTextValue(Value value) {

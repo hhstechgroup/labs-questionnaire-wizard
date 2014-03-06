@@ -243,8 +243,6 @@ public class UIComponentGenerator {
         timeCalendar.addValidator(new ComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
-        timeCalendar.setDisabled(true);
-
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             timeCalendar.setValue(defaultAnswer.getValue());
@@ -253,12 +251,6 @@ public class UIComponentGenerator {
         }
         return timeCalendar;
     }
-
-//    private FileUpload getFileUpload(WizardQuestion question) {
-//        FileUpload fileUpload = new FileUpload();
-//        fileUpload.addValidator(new ComponentValidator(question));
-//        return fileUpload;
-//    }
 
     private UISelectItems getSelectItems(List<String> optionsList) {
         SelectItem item;

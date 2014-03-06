@@ -12,7 +12,7 @@
                            <questions>
                                <question answer-required="false" question-id="qp123">
                                    <question-title>1.1.1</question-title>
-                                   <question-type>CHECKBOX</question-type>
+                                   <question-type>TEXT</question-type>
                                    <rules>
                                        <rule></rule>
                                    </rules>
@@ -37,7 +37,7 @@
                                </question>
                                <question answer-required="false" question-id="qawes123">
                                    <question-title>1.1.2</question-title>
-                                   <question-type>CHOOSEFROMLIST</question-type>
+                                   <question-type>TEXT</question-type>
                                    <rules>
                                        <rule></rule>
                                    </rules>

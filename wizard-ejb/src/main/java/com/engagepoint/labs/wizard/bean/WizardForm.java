@@ -6,6 +6,7 @@ package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 
+import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
