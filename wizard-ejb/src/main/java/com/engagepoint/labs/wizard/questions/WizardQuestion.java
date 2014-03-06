@@ -8,6 +8,11 @@ import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 import super_binding.QType;
 
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 /**
@@ -23,6 +28,9 @@ public abstract class WizardQuestion {
     protected Boolean valid;
     protected boolean ignored;
     protected List<String> rules;
+    @Any
+    @Default
+    @Inject
     public Rule rule;
     public boolean rendered;
 
@@ -99,6 +107,6 @@ public abstract class WizardQuestion {
     }
 
     public void executeAllRules() {
-
+        rule.renderedRule("", "");
     }
 }
