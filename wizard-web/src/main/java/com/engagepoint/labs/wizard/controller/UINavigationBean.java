@@ -262,6 +262,8 @@ public class UINavigationBean implements Serializable {
         // create new menu for page
         initMenu();
         RequestContext.getCurrentInstance().update("brd-breadcrumb");
+        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
+        executeAllRules();
     }
 
     /**
@@ -464,7 +466,7 @@ public class UINavigationBean implements Serializable {
 
     private void setRulesInQuestionsOnCurrentTopic(WizardTopic topic) {
         for (WizardQuestion question : topic.getWizardQuestionList()) {
-            question.setRule(new Rule(question, topic));
+            question.setRule(new Rule(navigationData.getWizardForm(), topic, question));
         }
     }
 }
