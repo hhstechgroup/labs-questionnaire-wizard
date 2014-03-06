@@ -1,7 +1,12 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
+import com.engagepoint.labs.wizard.questions.Rule;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.*;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
@@ -24,11 +29,9 @@ import java.util.List;
 public class ComponentValidator implements Validator {
     private static final boolean VALID = true;
     private final WizardQuestion question;
-    private QuestionAnswerValidator questionAnswerValidator;
 
     public ComponentValidator(final WizardQuestion question) {
         this.question = question;
-        this.questionAnswerValidator = new QuestionAnswerValidator(question);
     }
 
     @Override
@@ -36,54 +39,54 @@ public class ComponentValidator implements Validator {
                          Object value) throws ValidatorException {
         switch (question.getQuestionType()) {
             case TEXT:
-                if (question.isRequired() && !questionAnswerValidator.validateTextQuestionComponent(value)) {
+                if (question.isRequired() && !validateTextQuestionComponent(value)) {
                     ((InputText) component).resetValue();
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Empty field is not allowed here!"));
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
-                testingDependet(question);
+                testDependet(question);
                 break;
             case PARAGRAPHTEXT:
-                if (question.isRequired() && !questionAnswerValidator.validateTextAreaQuestionComponent(value)) {
+                if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
                     ((InputTextarea) component).resetValue();
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Empty field is not allowed here!"));
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
                 break;
             case MULTIPLECHOICE:
-                if (question.isRequired() && !questionAnswerValidator.validateMultipleChoiseQuestionComponent(value)) {
+                if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Answer must be selected for this question!"));
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
                 break;
             case CHECKBOX:
-                if (question.isRequired() && !questionAnswerValidator.validateCheckBoxQuestionComponent(value)) {
+                if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Empty field is not allowed here"));
                 }
                 question.setValid(true);
                 saveListTextValue((Object[]) value);
                 break;
             case CHOOSEFROMLIST:
-                if (question.isRequired() && !questionAnswerValidator.validateDropDownQuestionComponent(value)) {
+                if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Answer must be selected for this question!"));
                 }
                 question.setValid(true);
                 if (component.getChildren().get(0).getId().equals("defaultItem")) {
@@ -92,31 +95,31 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case DATE:
-                if (question.isRequired() && !questionAnswerValidator.validateDateQuestionComponent(value)) {
+                if (question.isRequired() && !validateDateQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Empty field is not allowed here!"));
                 }
                 question.setValid(true);
                 saveDateTimeValue((Date) value);
                 break;
             case TIME:
-                if (question.isRequired() && !questionAnswerValidator.validateTimeQuestionComponent(value)) {
+                if (question.isRequired() && !validateTimeQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Empty field is not allowed here!"));
                 }
                 question.setValid(true);
                 saveDateTimeValue((Date) value);
                 break;
             case FILEUPLOAD:
-                if (question.isRequired() && !questionAnswerValidator.validateFileUploadComponent(value)) {
+                if (question.isRequired() && !validateFileUploadComponent(value)) {
                     question.setValid(!VALID);
                     throw new ValidatorException(new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Error, need to choose file",
-                            questionAnswerValidator.getErrorMessage()));
+                            "Error, need to choose file"));
                 }
                 question.setValid(VALID);
                 OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
@@ -125,6 +128,80 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
+    }
+
+    public boolean validateDropDownQuestionComponent(Object value) {
+        if (value == null || value.toString().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean validateCheckBoxQuestionComponent(Object value) {
+        if (value == null || ((Object[]) value).length == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateMultipleChoiseQuestionComponent(Object value) {
+        if (value == null || value.toString().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateTextAreaQuestionComponent(Object value) {
+        if (value == null) {
+            return false;
+        } else {
+            String currentValue = value.toString();
+            currentValue = currentValue.replaceAll("\\s", "");
+            if (currentValue.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validateTextQuestionComponent(Object value) {
+        if (value == null) {
+            return false;
+        } else {
+            String currentValue = value.toString();
+            currentValue = currentValue.replaceAll("\\s", "");
+            if (currentValue.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validateDateQuestionComponent(Object value) {
+        if (value == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateTimeQuestionComponent(Object value) {
+        if (value == null) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean validateFileUploadComponent(Object value) {
+        if (value != null) {
+            long size = ((Part) value).getSize();
+            if (size == 0) return false;
+        }
+        if (value == null) {
+            if (question.getAnswer() == null) return false;
+        }
+        return true;
     }
 
     private void saveTextValue(String value) {
@@ -149,26 +226,14 @@ public class ComponentValidator implements Validator {
         question.setAnswer(dateValue);
     }
 
-    private void saveFileUpload(Object o) {
-        Value fileValue = new FileValue();
-        fileValue.setValue((InputStream) o);
-        question.setAnswer(fileValue);
-    }
-
-    private void testingDependet(WizardQuestion question) {
-//         question.getAnswer().getValue().toString().equals("aaaa");
-        Calendar component = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-hjkhwewewjvv");
-        component.setDisabled(false);
-    }
-
-    public boolean validateFileUpload(Object value) {
-        if (value != null) {
-            long size = ((Part) value).getSize();
-            if (size == 0) return false;
-        }
-        if (value == null) {
-            if (question.getAnswer() == null) return false;
-        }
-        return true;
+    public void testDependet(WizardQuestion question){
+        JexlEngine jexlEngine = new JexlEngine();
+        String rule = "question.rule.renderedRule('qp123', '123456')";
+        Expression expression = jexlEngine.createExpression(rule);
+        JexlContext context = new MapContext();
+        context.set("question", question);
+        question.setRule(new Rule());
+        boolean rendered = (boolean) expression.evaluate(context);
+        FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-qawes123").setRendered(rendered);
     }
 }

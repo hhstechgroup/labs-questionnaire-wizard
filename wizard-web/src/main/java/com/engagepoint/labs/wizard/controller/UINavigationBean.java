@@ -4,11 +4,16 @@ import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.Rule;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
@@ -443,13 +448,6 @@ public class UINavigationBean implements Serializable {
                     item.setStyleClass("");
                 }
             }
-        }
-    }
-
-    private void updateDependentsQuestions() {
-        WizardForm wizardForm = navigationData.getWizardForm();
-        for (WizardQuestion question : wizardForm.getAllWizardQuestions()) {
-
         }
     }
 }
