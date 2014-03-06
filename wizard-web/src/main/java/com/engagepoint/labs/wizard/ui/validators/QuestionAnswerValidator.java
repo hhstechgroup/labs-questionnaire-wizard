@@ -1,13 +1,13 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
-import java.util.List;
-
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.upload.FileUploadController;
 import com.engagepoint.labs.wizard.values.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.Part;
+
+import java.util.List;
 
 /**
  * Created by artem.pylypenko on 2/27/14.

@@ -66,12 +66,3 @@ Scenario: return to default page
 
 When clicks on element with id/name/className 'logo'
 Then check that current URL is 'http://localhost:8080/wizard-web/'
-
-
-
-
-
-
-
-
-
