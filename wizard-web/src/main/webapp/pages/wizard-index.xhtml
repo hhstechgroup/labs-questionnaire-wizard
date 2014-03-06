@@ -21,7 +21,7 @@
                 src="../WEB-INF/bootstrap-templates/bootstrap-maincontent.xhtml"/>
 
         <h:form id="navigationButtonsForm">
-            <h:panelGroup id="btnsDiv" layout="block">
+            <h:panelGroup id="btnsDiv" layout="block" style="height: 2.5em;width: 90%;position: absolute;bottom: 5%;">
             <p:commandButton value="NEXT" id="buttonid"
                              rendered="#{!navigationData.finishButtonRendered}"
                              action="#{uiNavigationBean.nextButtonClick}"
