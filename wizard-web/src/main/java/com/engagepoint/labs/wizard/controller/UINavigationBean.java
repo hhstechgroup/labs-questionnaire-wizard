@@ -113,6 +113,7 @@ public class UINavigationBean implements Serializable {
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
+        setRulesInAllQuestions();
         return "wizard-index?faces-redirect=true";
     }
 
@@ -262,7 +263,7 @@ public class UINavigationBean implements Serializable {
         // create new menu for page
         initMenu();
         RequestContext.getCurrentInstance().update("brd-breadcrumb");
-        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
+//        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
         executeAllRules();
     }
 
@@ -288,7 +289,7 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
-        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
+//        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
         executeAllRules();
     }
 
@@ -464,9 +465,9 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    private void setRulesInQuestionsOnCurrentTopic(WizardTopic topic) {
-        for (WizardQuestion question : topic.getWizardQuestionList()) {
-            question.setRule(new Rule(navigationData.getWizardForm(), topic, question));
+    private void setRulesInAllQuestions() {
+        for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
+            question.setRule(new Rule(navigationData.getWizardForm()));
         }
     }
 }

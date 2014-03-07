@@ -12,14 +12,11 @@ import java.io.Serializable;
 public class Rule implements Serializable {
 
     private WizardForm form;
-    private WizardTopic parentTopic;
     private WizardQuestion question;
 
 
-    public Rule(WizardForm form, WizardTopic parentTopic, WizardQuestion question) {
+    public Rule(WizardForm form) {
         this.form = form;
-        this.parentTopic = parentTopic;
-        this.question = question;
     }
 
     public void renderedRule(String parentID, String expectedAnswer) {
@@ -35,8 +32,17 @@ public class Rule implements Serializable {
     }
 
     public void updateAllQuestionsOnTopic() {
-        for (WizardQuestion wizardQuestion : parentTopic.getWizardQuestionList()) {
+        WizardTopic topic = form.findWizardTopicVyQuestionId(question.getId());
+        for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
             wizardQuestion.executeAllRules();
         }
+    }
+
+    public WizardQuestion getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(WizardQuestion question) {
+        this.question = question;
     }
 }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author artem.pylypenko
  */
 @Named
@@ -102,10 +101,10 @@ public class WizardForm implements Serializable {
         List<WizardQuestion> allWizardQuestions = new ArrayList<>();
         for (WizardTopic wizardTopic : allWizardTopics) {
             List<WizardQuestion> wizardQuestionList = wizardTopic.getWizardQuestionList();
-            if(null!=wizardQuestionList)
-            for (WizardQuestion wizardQuestion : wizardQuestionList) {
-                allWizardQuestions.add(wizardQuestion);
-            }
+            if (null != wizardQuestionList)
+                for (WizardQuestion wizardQuestion : wizardQuestionList) {
+                    allWizardQuestions.add(wizardQuestion);
+                }
         }
         return allWizardQuestions;
     }
@@ -122,6 +121,17 @@ public class WizardForm implements Serializable {
         for (WizardQuestion wizardQuestion : allWizardQuestions) {
             if (QuestionId.equals(wizardQuestion.getId())) {
                 return wizardQuestion;
+            }
+        }
+        return null;
+    }
+
+    public WizardTopic findWizardTopicVyQuestionId(String questionId) {
+        for (WizardTopic wizardTopic : getAllWizardTopics()) {
+            for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
+                if (question.getId().equals(questionId)) {
+                    return wizardTopic;
+                }
             }
         }
         return null;

@@ -102,6 +102,7 @@ public abstract class WizardQuestion {
     public void executeAllRules() {
         if (rules != null) {
             for (String s : rules) {
+                rule.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(s);
                 JexlContext context = new MapContext();
