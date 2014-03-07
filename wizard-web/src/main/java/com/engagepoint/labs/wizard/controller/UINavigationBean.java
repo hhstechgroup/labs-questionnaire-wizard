@@ -26,10 +26,12 @@ import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -108,13 +110,17 @@ public class UINavigationBean implements Serializable {
      *
      * @return wizard index page name
      */
-    public String start() {
+    public void start(ActionEvent event) {
         clearDataFromSession();
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
         setRulesInAllQuestions();
-        return "wizard-index?faces-redirect=true";
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("wizard-index.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clearDataFromSession() {
@@ -224,6 +230,7 @@ public class UINavigationBean implements Serializable {
         RequestContext.getCurrentInstance().update("maincontentid-j_id1");
         RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
         RequestContext.getCurrentInstance().update("navigationButtonsForm-btnsDiv");
+
     }
 
     private int getPageCount() {
@@ -263,7 +270,6 @@ public class UINavigationBean implements Serializable {
         // create new menu for page
         initMenu();
         RequestContext.getCurrentInstance().update("brd-breadcrumb");
-//        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
         executeAllRules();
     }
 
@@ -289,7 +295,6 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
-//        setRulesInQuestionsOnCurrentTopic(navigationData.getWizardForm().getWizardTopicById(navigationData.getCurrentTopicID()));
         executeAllRules();
     }
 
@@ -457,7 +462,7 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    private void executeAllRules() {
+    public void executeAllRules() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
         for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {

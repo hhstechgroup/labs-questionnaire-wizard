@@ -54,7 +54,7 @@
                 <f:ajax execute="@form" render="@form"/>
             </h:commandButton>
 
-            <h:commandButton value="START" action="#{uiNavigationBean.start}"
+            <h:commandButton value="START" actionListener="#{uiNavigationBean.start}"
                              id="butt"
                              class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                              style="position: relative; left: 500px; bottom: 10px;"/>

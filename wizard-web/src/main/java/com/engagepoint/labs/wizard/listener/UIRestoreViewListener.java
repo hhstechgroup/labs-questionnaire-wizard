@@ -4,6 +4,7 @@ import com.sun.faces.RIConstants;
 import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.util.ComponentStruct;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
