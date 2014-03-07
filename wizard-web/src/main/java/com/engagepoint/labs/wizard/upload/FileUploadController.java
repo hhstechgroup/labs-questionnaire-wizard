@@ -12,24 +12,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.*;
+import java.util.Collection;
 
 @Named("fileUploadController")
 @SessionScoped
 public class FileUploadController implements Serializable, ActionListener {
     private Part file;
     private String path;
-    private String name="AAA";
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Inject
-    NavigationData navigationData;
 
     public String getPath() {
         return path;
@@ -72,25 +61,14 @@ public class FileUploadController implements Serializable, ActionListener {
         }
     }
 
-    public void getAnswerInputStream(String id) {
-        System.out.println("in Input Strema");
-        WizardQuestion question = navigationData.getWizardForm().getWizardQuestionById(id);
-        FileValue value = new FileValue();
-        try {
-            value.setValue(file.getInputStream());
-            question.setAnswer(value);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("in Input Strema2");
-    }
-
     @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
         try {
-            upload();
-        } catch (IOException e) {
+            //   upload();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -85,8 +85,8 @@ public class UIComponentGenerator {
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
-                  panel.getChildren().add(getLitleLabel(question));
-                  panel.getChildren().add(getHtmlText());
+                panel.getChildren().add(getLitleLabel(question));
+                panel.getChildren().add(getHtmlText());
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
 
@@ -277,7 +277,7 @@ public class UIComponentGenerator {
 
     private OutputLabel getLabel(WizardQuestion question) {
         OutputLabel label = new OutputLabel();
-        label.setId("labelIdFor-"+question.getId());
+        label.setId("labelIdFor-" + question.getId());
         label.setValue(question.getTitle());
         if (question.isRequired()) {
             HtmlOutputText outputText = new HtmlOutputText();
@@ -317,7 +317,7 @@ public class UIComponentGenerator {
         CommandButton commandButton = new CommandButton();
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
-        commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
+     //   commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
         return commandButton;
     }
 
