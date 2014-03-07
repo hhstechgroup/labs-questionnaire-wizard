@@ -18,7 +18,7 @@ public class FileValue extends Value {
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof InputStream) {
+        if (value instanceof File) {
             super.setValue(value);
         } else {
             throw new ClassCastException("You must provide File for this method!");
