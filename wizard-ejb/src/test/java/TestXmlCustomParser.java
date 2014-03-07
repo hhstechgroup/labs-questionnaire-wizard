@@ -116,7 +116,7 @@ public class TestXmlCustomParser {
 
     @Test
     public void testParseWizardFormToXML() throws JAXBException, SAXException {
-        QuestionnaireForms parsedForms = testingParser.parseXML("C:\\Users\\igor.guzenko\\IdeaProjects\\labs-questionnaire-wizard\\wizard-ejb\\src\\main\\resources\\testparser2");
+        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser2");
         WizardDataModelGenerator wdmGenerator = new WizardDataModelGenerator();
         ArrayList<QuestionnaireForms> questionnaireFormses = new ArrayList<>();
         questionnaireFormses.add(parsedForms);
