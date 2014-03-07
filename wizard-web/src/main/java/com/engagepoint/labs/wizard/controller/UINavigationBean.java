@@ -13,25 +13,20 @@ import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
+import super_binding.QType;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Named("uiNavigationBean")
@@ -337,15 +332,15 @@ public class UINavigationBean implements Serializable {
     }
 
     public void exportButtonClick() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
-        Date date = new Date();
-        try {
-            FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
-            String fileName = String.format("%s_answers_%s.xml", navigationData.getWizardForm().getFormName(), dateFormat.format(date));
-            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream, "text/xml", fileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+           String zipFileName = "/Wizard_answer.zip";
+           File xmlAnswersFile = navigationData.getExportFile();
+           List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
+           for(WizardQuestion papaQuestion: allWizardQuestions){
+               if(papaQuestion.getQuestionType().equals(QType.FILEUPLOAD));
+
+           }
+       //    fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream, "text/xml", fileName));
+
     }
 
     public void previousButtonClick() {

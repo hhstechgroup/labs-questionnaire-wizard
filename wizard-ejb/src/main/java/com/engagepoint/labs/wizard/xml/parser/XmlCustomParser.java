@@ -16,13 +16,15 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author artem
  */
 
 public class XmlCustomParser {
-    private static final String EXPORT_FILE_NAME = "/exportFile.xml";
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
@@ -89,7 +91,7 @@ public class XmlCustomParser {
     public File parseWizardFormToXml(WizardForm form) {
         QuestionaireFormConverter converter = new QuestionaireFormConverter();
         QuestionnaireForms formsToMarshall = converter.convert(form);
-        File exportFile = new File(EXPORT_FILE_NAME);
+        File exportFile = new File(getExportFileName(form));
         try {
             Marshaller marshaller = JAXBContext.newInstance(QuestionnaireForms.class).createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -98,6 +100,13 @@ public class XmlCustomParser {
             return exportFile;
         }
         return exportFile;
+    }
+
+    private String getExportFileName(WizardForm form){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
+        Date date = new Date();
+        String fileName = String.format("/%s_answers_%s.xml", form.getFormName(), dateFormat.format(date));
+        return fileName;
     }
 
 
