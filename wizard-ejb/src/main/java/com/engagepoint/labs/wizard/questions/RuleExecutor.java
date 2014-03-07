@@ -9,13 +9,13 @@ import java.io.Serializable;
 /**
  * Created by artem.pylypenko on 3/5/14.
  */
-public class Rule implements Serializable {
+public class RuleExecutor implements Serializable {
 
     private WizardForm form;
     private WizardQuestion question;
 
 
-    public Rule(WizardForm form) {
+    public RuleExecutor(WizardForm form) {
         this.form = form;
     }
 

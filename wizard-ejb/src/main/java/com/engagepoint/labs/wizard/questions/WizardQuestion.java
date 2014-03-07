@@ -24,7 +24,7 @@ public abstract class WizardQuestion {
     protected Boolean valid;
     protected boolean ignored;
     protected List<String> rules;
-    public Rule rule;
+    public RuleExecutor RuleExecutor;
     public boolean rendered;
 
     public List<String> getRules() {
@@ -35,12 +35,12 @@ public abstract class WizardQuestion {
         this.rules = rules;
     }
 
-    public Rule getRule() {
-        return rule;
+    public RuleExecutor getRule() {
+        return RuleExecutor;
     }
 
-    public void setRule(Rule rule) {
-        this.rule = rule;
+    public void setRule(RuleExecutor rule) {
+        this.RuleExecutor = rule;
     }
 
     public Boolean getValid() {
@@ -102,11 +102,11 @@ public abstract class WizardQuestion {
     public void executeAllRules() {
         if (rules != null) {
             for (String s : rules) {
-                rule.setQuestion(this);
+                RuleExecutor.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(s);
                 JexlContext context = new MapContext();
-                context.set("question", this);
+                context.set("this", this);
                 expression.evaluate(context);
             }
         }

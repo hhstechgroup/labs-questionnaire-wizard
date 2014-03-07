@@ -39,7 +39,7 @@
                                    <question-title>1.1.2</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule>question.rule.renderedRule('qp123', '222')</rule>
+                                       <rule>this.rule.renderedRule('qp123', '222')</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>
@@ -69,7 +69,7 @@
                                    <question-title>1.2.1</question-title>
                                    <question-type>MULTIPLECHOICE</question-type>
                                    <rules>
-                                       <rule>question.rule.renderedRule('qp123', '222')</rule>
+                                       <rule>this.rule.renderedRule('qp123', '222')</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>
@@ -104,7 +104,7 @@
                                    <question-title>2.1.1 "Magic"</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule>question.rule.renderedRule('qp123', '222')</rule>
+                                       <rule>this.rule.renderedRule('qp123', '222')</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>

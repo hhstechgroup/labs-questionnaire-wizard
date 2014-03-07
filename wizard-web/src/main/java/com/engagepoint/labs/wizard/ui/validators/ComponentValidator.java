@@ -1,12 +1,10 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
-import com.engagepoint.labs.wizard.questions.Rule;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.values.*;
-import org.apache.commons.jexl2.Expression;
-import org.apache.commons.jexl2.JexlContext;
-import org.apache.commons.jexl2.JexlEngine;
-import org.apache.commons.jexl2.MapContext;
+import com.engagepoint.labs.wizard.values.DateValue;
+import com.engagepoint.labs.wizard.values.ListTextValue;
+import com.engagepoint.labs.wizard.values.TextValue;
+import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -49,7 +47,7 @@ public class ComponentValidator implements Validator {
                 question.setValid(true);
                 saveTextValue(value.toString());
                 question.executeAllRules();
-                question.rule.updateAllQuestionsOnTopic();
+                question.RuleExecutor.updateAllQuestionsOnTopic();
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
