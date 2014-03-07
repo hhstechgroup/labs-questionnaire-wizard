@@ -2,10 +2,7 @@ package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.questions.Rule;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.*;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
@@ -20,7 +17,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -124,6 +123,7 @@ public class ComponentValidator implements Validator {
                             "Error, need to choose file"));
                 }
                 question.setValid(VALID);
+                saveFileUpload((Part) value);
                 OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
                 outputLabel.setValue("Your file  uploaded");
                 break;
@@ -226,5 +226,47 @@ public class ComponentValidator implements Validator {
         DateValue dateValue = new DateValue();
         dateValue.setValue(date);
         question.setAnswer(dateValue);
+    }
+
+    private void saveFileUpload(Part file) {
+        File fileCopied = null;
+        try {
+            fileCopied = copyFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileValue fileValue = new FileValue();
+        fileValue.setValue(fileCopied);
+        question.setAnswer(fileValue);
+    }
+
+    public File copyFile(Part file) throws IOException {
+        String uploadName = file.getSubmittedFileName();
+        String path = new String("D:\\" + uploadName);
+        File uploadFile = null;
+        InputStream inStream = null;
+        OutputStream outStream = null;
+        try {
+            inStream = file.getInputStream();
+            outStream = new FileOutputStream(new File(path));
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+            }
+            System.err.println("File is copied successful!");
+            uploadFile = new File(path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inStream != null) {
+                inStream.close();
+            }
+            if (outStream != null) {
+                outStream.close();
+            }
+        }
+        return uploadFile;
     }
 }
