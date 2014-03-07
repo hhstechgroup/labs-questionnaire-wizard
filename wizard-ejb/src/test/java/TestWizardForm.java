@@ -34,10 +34,10 @@ public class TestWizardForm {
             page = new WizardPage();
             page.setId("page " + Integer.toString(i));
             onePageTopicList = new ArrayList<>();
-            for (int j =0;j<3;j++){
-            uniqueOnePageTopic = new WizardTopic();
-            uniqueOnePageTopic.setId(page.getId()+" topic"+j);
-            onePageTopicList.add(uniqueOnePageTopic);
+            for (int j = 0; j < 3; j++) {
+                uniqueOnePageTopic = new WizardTopic();
+                uniqueOnePageTopic.setId(page.getId() + " topic" + j);
+                onePageTopicList.add(uniqueOnePageTopic);
             }
             page.setTopicList(onePageTopicList);
             testingList.add(i, page);
@@ -77,10 +77,10 @@ public class TestWizardForm {
      * test for empty topicList in form
      */
     @Test
-    public void testGetAllWizardTopicsA(){
+    public void testGetAllWizardTopicsA() {
         List pageList = testingForm.getWizardPageList();
-        for(Object page:pageList){
-            ((WizardPage)page).setTopicList(new ArrayList<WizardTopic>());
+        for (Object page : pageList) {
+            ((WizardPage) page).setTopicList(new ArrayList<WizardTopic>());
         }
         assertTrue(testingForm.getAllWizardTopics().isEmpty());
     }
@@ -89,7 +89,7 @@ public class TestWizardForm {
      * test for topicsIds
      */
     @Test
-    public void testGetWizardTopicById(){
+    public void testGetWizardTopicById() {
         String expectedTopicId = "page 1 topic1";
         assertEquals(expectedTopicId, testingForm.getWizardTopicById(expectedTopicId).getId());
     }
@@ -98,7 +98,7 @@ public class TestWizardForm {
      * test for doesn't exists id
      */
     @Test
-    public void testGetWizardTopicByIdA(){
+    public void testGetWizardTopicByIdA() {
         assertNull(testingForm.getWizardTopicById("notExistingId"));
     }
 
@@ -106,7 +106,7 @@ public class TestWizardForm {
      * test for finding for correct id
      */
     @Test
-    public void testGetWizardTopicByIdB(){
+    public void testGetWizardTopicByIdB() {
         String correctId = "page 1 topic2";
         assertNotNull(testingForm.getWizardTopicById(correctId));
     }
@@ -115,22 +115,22 @@ public class TestWizardForm {
      *
      */
     @Test
-    public void testGetAllWizardQuestions(){
+    public void testGetAllWizardQuestions() {
         List<WizardQuestion> expectedList = new ArrayList<>(3);
         expectedList.add(new CheckBoxesQuestion());
         expectedList.add(new DateQuestion());
         expectedList.add(new TextQuestion());
         testingForm.getAllWizardTopics().get(0).setWizardQuestionList(expectedList);
-        Object[] expectedArray =expectedList.toArray();
-        Object[] obtainedArray =  testingForm.getAllWizardQuestions().toArray();
+        Object[] expectedArray = expectedList.toArray();
+        Object[] obtainedArray = testingForm.getAllWizardQuestions().toArray();
         assertTrue(Arrays.equals(expectedArray, obtainedArray));
     }
 
     /**
-    * 
+     *
      */
     @Test
-    public void testGetWizardQuestionById(){
+    public void testGetWizardQuestionById() {
         WizardQuestion testQuestion = new TextQuestion();
         testQuestion.setId("test1");
         WizardQuestion testQuestion2 = new TextQuestion();
@@ -139,11 +139,11 @@ public class TestWizardForm {
         expectedList.add(testQuestion);
         expectedList.add(testQuestion2);
         testingForm.getAllWizardTopics().get(0).setWizardQuestionList(expectedList);
-        assertEquals(testQuestion,testingForm.getWizardQuestionById("test1"));
+        assertEquals(testQuestion, testingForm.getWizardQuestionById("test1"));
     }
 
     @Test
-    public void testGetWizardQuestionByIdB(){
+    public void testGetWizardQuestionByIdB() {
         WizardQuestion testQuestion = new TextQuestion();
         testQuestion.setId("test1");
         WizardQuestion testQuestion2 = new TextQuestion();

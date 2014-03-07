@@ -22,12 +22,13 @@ public class TestXmlCustomParser {
     private XmlCustomParser testingParser;
 
     @Before
-    public void initParser(){
+    public void initParser() {
         testingParser = new XmlCustomParser();
     }
 
     /**
      * test that forms is parsing normal
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -40,18 +41,20 @@ public class TestXmlCustomParser {
 
     /**
      * test correctness for form id
+     *
      * @throws JAXBException
      * @throws SAXException
      */
     @Test
-     public void testParseXMLA() throws JAXBException, SAXException {
+    public void testParseXMLA() throws JAXBException, SAXException {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("testController",parsedForm.getFormId());
+        assertEquals("testController", parsedForm.getFormId());
     }
 
     /**
      * test correctness for form name
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -59,11 +62,12 @@ public class TestXmlCustomParser {
     public void testParseXMLB() throws JAXBException, SAXException {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("TestController",parsedForm.getFormName());
+        assertEquals("TestController", parsedForm.getFormName());
     }
 
     /**
      * test correctness for page id in form
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -71,11 +75,12 @@ public class TestXmlCustomParser {
     public void testParseXMLC() throws JAXBException, SAXException {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("formPage1",parsedForm.getPages().getPage().get(0).getPageId());
+        assertEquals("formPage1", parsedForm.getPages().getPage().get(0).getPageId());
     }
 
     /**
      * test correctness for group id on page in form
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -83,10 +88,12 @@ public class TestXmlCustomParser {
     public void testParseXMLD() throws JAXBException, SAXException {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("page1Group1",parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupId());
+        assertEquals("page1Group1", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupId());
     }
+
     /**
      * test correctness for group name on page in form
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -94,11 +101,12 @@ public class TestXmlCustomParser {
     public void testParseXMLE() throws JAXBException, SAXException {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("Topic 1 of First Page",parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupName());
+        assertEquals("Topic 1 of First Page", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupName());
     }
 
     /**
      * all test for question in template
+     *
      * @throws JAXBException
      * @throws SAXException
      */
@@ -107,11 +115,11 @@ public class TestXmlCustomParser {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         Question testingQuestion = parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getQuestions().getQuestion().get(0);
-        assertEquals("pageOneGroupOne",testingQuestion.getQuestionId());
+        assertEquals("pageOneGroupOne", testingQuestion.getQuestionId());
         assertFalse(testingQuestion.isAnswerRequired());
-        assertEquals( "Question one",testingQuestion.getQuestionTitle());
-        assertEquals("Type yes if it's topic one of first page?",testingQuestion.getHelpText());
-        assertEquals("Default answer",testingQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+        assertEquals("Question one", testingQuestion.getQuestionTitle());
+        assertEquals("Type yes if it's topic one of first page?", testingQuestion.getHelpText());
+        assertEquals("Default answer", testingQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
     }
 
     @Test
@@ -123,6 +131,6 @@ public class TestXmlCustomParser {
         WizardForm testingForm = wdmGenerator.getWizardDocument(questionnaireFormses).getFormList().get(0);
         File actualFile = testingParser.parseWizardFormToXml(testingForm);
         assertNotNull(actualFile);
-        assertFalse(actualFile.getTotalSpace()==0);
+        assertFalse(actualFile.getTotalSpace() == 0);
     }
 }

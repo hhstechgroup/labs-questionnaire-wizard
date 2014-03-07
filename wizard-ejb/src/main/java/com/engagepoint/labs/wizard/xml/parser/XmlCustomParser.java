@@ -86,7 +86,7 @@ public class XmlCustomParser {
 
     }
 
-        public File parseWizardFormToXml(WizardForm form) {
+    public File parseWizardFormToXml(WizardForm form) {
         QuestionaireFormConverter converter = new QuestionaireFormConverter();
         QuestionnaireForms formsToMarshall = converter.convert(form);
         File exportFile = new File(EXPORT_FILE_NAME);

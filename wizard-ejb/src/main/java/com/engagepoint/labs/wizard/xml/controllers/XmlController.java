@@ -42,10 +42,10 @@ public class XmlController implements Serializable {
         xmlPathList = new ArrayList<String>();
         xmlPathList.add("/XMLforWizard.xml");
         xmlPathList.add("/XMLforWizard2.xml");
-       xmlPathList.add("/ExemplaryWelcome.xml");
-       xmlPathList.add("/dependentQuestions.xml");
-       xmlPathList.add("/prevTestTemplate.xml");
-       // xmlPathList.add("/exportFile.xml");
+        xmlPathList.add("/ExemplaryWelcome.xml");
+        xmlPathList.add("/dependentQuestions.xml");
+        xmlPathList.add("/prevTestTemplate.xml");
+        // xmlPathList.add("/exportFile.xml");
         this.parser = new XmlCustomParser();
     }
 
@@ -59,7 +59,7 @@ public class XmlController implements Serializable {
         return wizardDocument;
     }
 
-    public File getExportFileFromWizardForm(WizardForm wizardForm){
+    public File getExportFileFromWizardForm(WizardForm wizardForm) {
         exportFile = parser.parseWizardFormToXml(wizardForm);
         return exportFile;
     }
