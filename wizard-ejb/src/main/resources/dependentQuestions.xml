@@ -39,7 +39,7 @@
                                    <question-title>1.1.2</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule>this.rule.renderedRule('qp123', '222')</rule>
+                                       <rule>this.rule.renderedRule('qp123', ['222'])</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>
@@ -58,6 +58,33 @@
                                    </grid>
                                    <default-answers>
                                        <default-answer></default-answer>
+                                   </default-answers>
+                               </question>
+                               <question answer-required="false" question-id="ywywywuququ">
+                                   <question-title>CQ</question-title>
+                                   <question-type>CHECKBOX</question-type>
+                                   <rules>
+                                       <rule></rule>
+                                   </rules>
+                                   <help-text></help-text>
+                                   <options>
+                                       <option>C1</option>
+                                       <option>C2</option>
+                                       <option>C3</option>
+                                       <option>C4</option>
+                                   </options>
+                                   <range/>
+                                   <grid>
+                                       <columns>
+                                           <column></column>
+                                       </columns>
+                                       <rows>
+                                           <row></row>
+                                       </rows>
+                                   </grid>
+                                   <default-answers>
+                                       <default-answer>C2</default-answer>
+                                       <default-answer>C4</default-answer>
                                    </default-answers>
                                </question>
                            </questions>

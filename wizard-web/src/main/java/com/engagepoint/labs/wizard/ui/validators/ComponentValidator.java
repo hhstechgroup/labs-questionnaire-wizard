@@ -42,7 +42,6 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
-                question.executeAllRules();
                 question.RuleExecutor.updateAllQuestionsOnTopic();
                 break;
             case PARAGRAPHTEXT:
@@ -55,6 +54,7 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveTextValue(value.toString());
+                question.RuleExecutor.updateAllQuestionsOnTopic();
                 break;
             case MULTIPLECHOICE:
                 if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
@@ -75,6 +75,7 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveListTextValue((Object[]) value);
+                question.RuleExecutor.updateAllQuestionsOnTopic();
                 break;
             case CHOOSEFROMLIST:
                 if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
