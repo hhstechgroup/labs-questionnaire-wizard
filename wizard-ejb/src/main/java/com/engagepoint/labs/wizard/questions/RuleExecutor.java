@@ -41,7 +41,6 @@ public class RuleExecutor implements Serializable {
                 case DATE:
                     SimpleDateFormat format;
                     if (parentQuestion.getQuestionType().equals(QType.DATE)) {
-
                         format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
                     } else {
                         format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
