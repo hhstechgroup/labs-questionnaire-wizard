@@ -52,6 +52,7 @@ public class ComponentValidator implements Validator {
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             "Empty field is not allowed here!"));
                 }
+                
                 question.setValid(true);
                 saveTextValue(value.toString());
                 break;
