@@ -4,11 +4,14 @@ import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.panel.Panel;
-import org.primefaces.context.RequestContext;
+import super_binding.QType;
 
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +39,19 @@ public class RuleExecutor implements Serializable {
                     show = parentQuestionAnswer.getValue().equals(expectedAnswer[0]);
                     break;
                 case DATE:
+                    SimpleDateFormat format;
+                    if (parentQuestion.getQuestionType().equals(QType.DATE)) {
+
+                        format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
+                    } else {
+                        format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
+                    }
+                    try {
+                        Date date = format.parse(expectedAnswer[0]);
+                        show = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case FILE:
                     break;
@@ -48,8 +64,6 @@ public class RuleExecutor implements Serializable {
                     break;
             }
         }
-        System.out.println("+++++++++++++ Question ID = " + question.getId() + "; parent is ignored = "
-                + parentQuestion.isIgnored() + " +++++++++++++++++++");
         if (show) {
             panel.setVisible(true);
             question.setIgnored(false);
@@ -59,7 +73,7 @@ public class RuleExecutor implements Serializable {
         }
     }
 
-    public void updateAllQuestionsOnTopic(WizardQuestion question) {
+    public void executeAllRulesOnCurrentTopic(WizardQuestion question) {
         WizardTopic topic = form.findWizardTopicByQuestionId(question.getId());
         for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
             wizardQuestion.executeAllRules();
@@ -73,4 +87,5 @@ public class RuleExecutor implements Serializable {
     public void setQuestion(WizardQuestion question) {
         this.question = question;
     }
+
 }

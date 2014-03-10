@@ -243,7 +243,7 @@ public class UIComponentGenerator {
         timeCalendar.setStyle("padding:1px");
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
-        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
+//        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
         timeCalendar.addValidator(new ComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 

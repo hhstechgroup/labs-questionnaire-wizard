@@ -14,7 +14,6 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -123,6 +122,7 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
+        question.ruleExecutor.executeAllRulesOnCurrentTopic(question);
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {

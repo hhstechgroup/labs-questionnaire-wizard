@@ -20,7 +20,6 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -106,17 +105,13 @@ public class UINavigationBean implements Serializable {
      *
      * @return wizard index page name
      */
-    public void start(ActionEvent event) {
+    public String start() {
         clearDataFromSession();
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
         setRulesInAllQuestions();
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("wizard-index.xhtml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return "wizard-index?faces-redirect=true";
     }
 
     public void clearDataFromSession() {
@@ -411,7 +406,7 @@ public class UINavigationBean implements Serializable {
 
     private boolean checkAllRequiredQuestions(List<WizardQuestion> wizardQuestionList) {
         for (WizardQuestion question : wizardQuestionList) {
-            if (question.isRequired()
+            if (!question.isIgnored() && question.isRequired()
                     && (null == question.getValid() || !question.getValid())) {
                 return false;
             }
@@ -456,7 +451,7 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    public void executeAllRules() {
+    public void executeAllRulesOnCurrentTopic() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
         for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
