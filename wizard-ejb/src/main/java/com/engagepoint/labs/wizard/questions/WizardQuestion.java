@@ -22,10 +22,17 @@ public abstract class WizardQuestion {
     protected String helpText;
     protected Boolean answerRequired;
     protected Boolean valid;
-    protected boolean ignored;
     protected List<String> rules;
     public RuleExecutor RuleExecutor;
-    public boolean rendered;
+    public boolean ignored;
+
+    public boolean isIgnored() {
+        return ignored;
+    }
+
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
+    }
 
     public List<String> getRules() {
         return rules;

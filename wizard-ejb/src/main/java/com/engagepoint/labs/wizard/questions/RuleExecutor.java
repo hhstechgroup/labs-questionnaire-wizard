@@ -3,10 +3,10 @@ package com.engagepoint.labs.wizard.questions;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.values.Value;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.context.RequestContext;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -25,30 +25,42 @@ public class RuleExecutor implements Serializable {
     }
 
     public void renderedRule(String parentID, String[] expectedAnswer) {
-        boolean rendered = false;
-        Value answer = form.getWizardQuestionById(parentID).getAnswer();
-        if (answer != null && answer.getValue() != null) {
-            switch (answer.getType()) {
+        boolean show = false;
+        WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
+        Value parentQuestionAnswer = parentQuestion.getAnswer();
+        String panelVarAndId = "maincontentid-panel_" + question.getId();
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(panelVarAndId);
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
+            switch (parentQuestionAnswer.getType()) {
                 case STRING:
-                    rendered = answer.getValue().equals(expectedAnswer[0]);
+                    show = parentQuestionAnswer.getValue().equals(expectedAnswer[0]);
                     break;
                 case DATE:
                     break;
                 case FILE:
                     break;
                 case LIST:
-                    List<String> valueList = (List<String>) answer.getValue();
-                    rendered = valueList.containsAll(Arrays.asList(expectedAnswer));
+                    List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
+                    show = valueList.containsAll(Arrays.asList(expectedAnswer))
+                            && expectedAnswer.length == valueList.size();
                     break;
                 case GRID:
                     break;
             }
         }
-        FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-panel_" + question.getId()).setRendered(rendered);
+        System.out.println("+++++++++++++ Question ID = " + question.getId() + "; parent is ignored = "
+                + parentQuestion.isIgnored() + " +++++++++++++++++++");
+        if (show) {
+            panel.setVisible(true);
+            question.setIgnored(false);
+        } else {
+            panel.setVisible(false);
+            question.setIgnored(true);
+        }
     }
 
-    public void updateAllQuestionsOnTopic() {
-        WizardTopic topic = form.findWizardTopicVyQuestionId(question.getId());
+    public void updateAllQuestionsOnTopic(WizardQuestion question) {
+        WizardTopic topic = form.findWizardTopicByQuestionId(question.getId());
         for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
             wizardQuestion.executeAllRules();
         }

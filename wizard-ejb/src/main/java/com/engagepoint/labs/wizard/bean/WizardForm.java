@@ -126,7 +126,7 @@ public class WizardForm implements Serializable {
         return null;
     }
 
-    public WizardTopic findWizardTopicVyQuestionId(String questionId) {
+    public WizardTopic findWizardTopicByQuestionId(String questionId) {
         for (WizardTopic wizardTopic : getAllWizardTopics()) {
             for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
                 if (question.getId().equals(questionId)) {

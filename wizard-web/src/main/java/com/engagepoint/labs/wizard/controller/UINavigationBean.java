@@ -266,7 +266,6 @@ public class UINavigationBean implements Serializable {
         // create new menu for page
         initMenu();
         RequestContext.getCurrentInstance().update("brd-breadcrumb");
-        executeAllRules();
     }
 
     /**
@@ -291,7 +290,6 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
-        executeAllRules();
     }
 
     public NavigationData getNavigationData() {

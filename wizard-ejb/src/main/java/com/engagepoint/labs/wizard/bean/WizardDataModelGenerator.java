@@ -32,6 +32,7 @@ public class WizardDataModelGenerator {
     private List<WizardQuestion> wizardQuestionList;
     private int topicNumber;
     private List<String> defaultAnswers;
+    private List<String> rules;
 
     public WizardDataModelGenerator() {
     }
@@ -229,7 +230,10 @@ public class WizardDataModelGenerator {
         wizardQuestion.setQuestionType(xmlQuestion.getQuestionType());
         wizardQuestion.setHelpText(xmlQuestion.getHelpText());
         wizardQuestion.setAnswerRequired(xmlQuestion.isAnswerRequired());
-        wizardQuestion.setRules(getRulesList(xmlQuestion));
+        if (checkRules(xmlQuestion)) {
+            wizardQuestion.setRules(rules);
+            wizardQuestion.setIgnored(true);
+        }
         return wizardQuestion;
     }
 
@@ -257,11 +261,27 @@ public class WizardDataModelGenerator {
         return correctAnswersList;
     }
 
-    private List<String> getRulesList(Question xmlQuestion) {
-        if (xmlQuestion.getRules() != null &&
-                !xmlQuestion.getRules().getRule().isEmpty()) {
-            return xmlQuestion.getRules().getRule();
+    private boolean checkRules(Question xmlQuestion) {
+        if (xmlQuestion.getRules() != null
+                && !xmlQuestion.getRules().getRule()
+                .isEmpty()) {
+            List<String> rules = getAllCorrectRules(xmlQuestion.getRules());
+            if (rules.isEmpty()) {
+                return false;
+            }
+            this.rules = rules;
+            return true;
         }
-        return null;
+        return false;
+    }
+
+    private List<String> getAllCorrectRules(Rules rules) {
+        List<String> correctRulesList = new ArrayList<>();
+        for (String s : rules.getRule()) {
+            if (!s.isEmpty()) {
+                correctRulesList.add(s);
+            }
+        }
+        return correctRulesList;
     }
 }

@@ -14,7 +14,7 @@
                                    <question-title>1.1.1</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule></rule>
+                                       <rule>this.rule.renderedRule('ywywywuququ', ['C1', 'C2'])</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>
