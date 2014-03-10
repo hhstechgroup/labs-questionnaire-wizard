@@ -23,8 +23,16 @@ public abstract class WizardQuestion {
     protected Boolean answerRequired;
     protected Boolean valid;
     protected List<String> rules;
-    public RuleExecutor RuleExecutor;
     public boolean ignored;
+    public RuleExecutor ruleExecutor;
+
+    public RuleExecutor getRuleExecutor() {
+        return ruleExecutor;
+    }
+
+    public void setRuleExecutor(RuleExecutor ruleExecutor) {
+        this.ruleExecutor = ruleExecutor;
+    }
 
     public boolean isIgnored() {
         return ignored;
@@ -40,14 +48,6 @@ public abstract class WizardQuestion {
 
     public void setRules(List<String> rules) {
         this.rules = rules;
-    }
-
-    public RuleExecutor getRule() {
-        return RuleExecutor;
-    }
-
-    public void setRule(RuleExecutor rule) {
-        this.RuleExecutor = rule;
     }
 
     public Boolean getValid() {
@@ -109,7 +109,7 @@ public abstract class WizardQuestion {
     public void executeAllRules() {
         if (rules != null) {
             for (String s : rules) {
-                RuleExecutor.setQuestion(this);
+                ruleExecutor.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(s);
                 JexlContext context = new MapContext();

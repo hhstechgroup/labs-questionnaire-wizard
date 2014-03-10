@@ -466,7 +466,7 @@ public class UINavigationBean implements Serializable {
 
     private void setRulesInAllQuestions() {
         for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
-            question.setRule(new RuleExecutor(navigationData.getWizardForm()));
+            question.setRuleExecutor(new RuleExecutor(navigationData.getWizardForm()));
         }
     }
 }
