@@ -2,7 +2,10 @@
 	font-size: 16px;
 	font-weight: bold;
 	border-bottom: 5px solid #0075AC;
-
+	color: #f4f4f4 !important;
+	background-color: #0075ac !important;
+	border-left: 10px solid #0075ac !important;
+	border-right: 10px solid #0075ac !important;
 }
 
 .wizard-topic-default {
@@ -14,10 +17,8 @@
 }
 
 .wizard-topic-selected {
-
 	border-bottom: medium none;
 	border-left: 5px solid #0075ac;
-
 	padding-left: 25px;
 }
 
@@ -25,46 +26,62 @@
 	font-size: 16px;
 	font-weight: bold;
 	border-bottom: 5px solid #0075AC;
+	color: #f4f4f4 !important;
+	background-color: #0075ac !important;
+	border-left: 10px solid #0075ac;
+	border-right: 10px solid #0075ac;
 }
 
 :focus,a:focus,input:focus,button:focus,.ui-state-focus {
 	box-shadow: 0 0 0 0px rgba(255, 165, 0, 0.7) !important;
 }
 
-.ui-breadcrumb ul li a:hover,.ui-breadcrumb ul li a:focus {
+.ui-breadcrumb ul li:hover,.ui-breadcrumb ul li:focus {
+	font-size: 16px;
+	font-weight: bold;
+	color: #f4f4f4 !important;
+	background-color: #0075ac !important;
 	text-decoration: none !important;
-	font-size: 15px !important;
-	/*font-size: 14px;*/
-	/*text-decoration: underline !important;*/
+}
+
+.ui-breadcrumb ul li a:hover,.ui-breadcrumb ul li a:focus {
+	font-size: 16px;
+	text-decoration: none !important;
+	border-bottom: 5px solid #0075AC;
+}
+
+.ui-breadcrumb ul li {
+	margin-right: 0px !important;
+	border-left: 7px solid #87cefa;
+	border-right: 7px solid #87cefa;
 }
 
 .page-menu ul {
-    list-style: none outside none;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 0 !important;
-    position: relative;
-    z-index: 2;
+	list-style: none outside none;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0 !important;
+	position: relative;
+	z-index: 2;
 }
+
 .page-utility-bar {
-    color: #E9E9E9;
-    line-height: 40px !important;
+	color: #E9E9E9;
+	line-height: 40px !important;
 }
+
 .wizard-menu-item-disabled {
-    opacity: 0.5;
+	opacity: 0.5;
 }
-.ui-breadcrumb ul li a:hover{
-    text-decoration: none !important;
-    font-size: 14px;
-    text-decoration: underline !important;
+
+#j_idt18 {
+	padding: 30px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
-#j_idt18{
-    padding: 30px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-#maincontentid-j_id1{
-    position: relative;
-    padding-bottom: 70px;
+
+#maincontentid-j_id1 {
+	position: relative;
+	padding-bottom: 70px;
 }

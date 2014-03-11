@@ -1,165 +1,162 @@
-.ui-breadcrumb-chevron
-{
+.ui-breadcrumb-chevron {
 	background-image: none !important;
+	background-color: #0075ac !important;
 	display: none !important;
 }
 
 .ui-widget {
-    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    font-size: 1.1em;
+	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+	font-size: 1.1em;
 }
 
 .ui-widget .ui-widget {
-    font-size: 1em;
+	font-size: 1em;
 }
 
 .ui-widget input,.ui-widget select {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1em;
 }
 
 .ui-widget-content {
-    /*border: 0px solid #dddddd;*/
-    /*background: #ffffff;*/
-    /*color: #333333;*/
+	/*border: 0px solid #dddddd;*/
+	/*background: #ffffff;*/
+	/*color: #333333;*/
+	
 }
 
-input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
-    background-color: white !important;
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]
+	{
+	background-color: white !important;
 }
-
-
-
-
-
 
 .ui-state-disabled {
-    cursor: default !important;
+	cursor: default !important;
 }
 
 .ui-slider {
-    position: relative;
-    text-align: left;
-    background-color: #87cefa;
+	position: relative;
+	text-align: left;
+	background-color: #87cefa;
 }
 
 .ui-slider-horizontal {
-    height: 0.8em;
+	height: 0.8em;
 }
 
 .ui-slider-horizontal .ui-slider-handle {
-    margin-left: -0.6em;
-    top: -0.3em;
+	margin-left: -0.6em;
+	top: -0.3em;
 }
 
 .ui-datepicker {
-    display: none;
-    padding: 0.2em 0.2em 0;
-    width: 17em;
+	display: none;
+	padding: 0.2em 0.2em 0;
+	width: 17em;
 }
 
 .ui-datepicker .ui-datepicker-header {
-    padding: 0.2em 0;
-    position: relative;
+	padding: 0.2em 0;
+	position: relative;
 }
 
 .ui-datepicker .ui-datepicker-prev {
-    left: 2px;
+	left: 2px;
 }
 
 .ui-datepicker .ui-datepicker-next {
-    right: 2px;
+	right: 2px;
 }
 
 .ui-datepicker .ui-datepicker-prev {
-    left: 2px;
+	left: 2px;
 }
 
 .ui-datepicker .ui-datepicker-next {
-    right: 2px;
+	right: 2px;
 }
 
 .ui-datepicker .ui-datepicker-prev span,.ui-datepicker .ui-datepicker-next span
-{
-    display: block;
-    left: 50%;
-    margin-left: -8px;
-    margin-top: -8px;
-    position: absolute;
-    top: 50%;
+	{
+	display: block;
+	left: 50%;
+	margin-left: -8px;
+	margin-top: -8px;
+	position: absolute;
+	top: 50%;
 }
 
 .ui-datepicker .ui-datepicker-title {
-    line-height: 1.8em;
-    margin: 0 2.3em;
-    text-align: center;
+	line-height: 1.8em;
+	margin: 0 2.3em;
+	text-align: center;
 }
 
 .ui-datepicker table {
-    border-collapse: collapse;
-    font-size: 0.9em;
-    margin: 0 0 0.4em;
-    width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9em;
+	margin: 0 0 0.4em;
+	width: 100%;
 }
 
 .ui-datepicker th {
-    border: 0 none;
-    font-weight: bold;
-    padding: 0.7em 0.3em;
-    text-align: center;
+	border: 0 none;
+	font-weight: bold;
+	padding: 0.7em 0.3em;
+	text-align: center;
 }
 
 .ui-datepicker td {
-    border: 0 none;
-    padding: 1px;
+	border: 0 none;
+	padding: 1px;
 }
 
 .ui-datepicker td a {
-    display: block;
-    padding: 0.2em;
-    text-align: right;
-    text-decoration: none;
+	display: block;
+	padding: 0.2em;
+	text-align: right;
+	text-decoration: none;
 }
 
 .ui-timepicker-div .ui-widget-header {
-    margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 
 .ui-timepicker-div dl {
-    text-align: left;
+	text-align: left;
 }
 
 .ui-timepicker-div dl dt {
-    height: 25px;
-    margin-bottom: -25px;
+	height: 25px;
+	margin-bottom: -25px;
 }
 
 .ui-timepicker-div dl dd {
-    margin: 0 10px 10px 65px;
+	margin: 0 10px 10px 65px;
 }
 
 .ui-panel {
-    padding: 0.2em;
+	padding: 0.2em;
 }
 
 .ui-panel .ui-panel-content {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border: 0 none;
-    /*padding: 0.5em 1em;*/
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	/*padding: 0.5em 1em;*/
 }
 
 .ui-dialog-title {
-    color: #FF0000 !important;
-    font-family: "MuseoSans700",sans-serif;
-    font-size: 24px;
-    line-height: 24px;
+	color: #FF0000 !important;
+	font-family: "MuseoSans700", sans-serif;
+	font-size: 24px;
+	line-height: 24px;
 }
 
 .ui-dialog-titlebar {
-    border-bottom: 1px solid #FF0000 !important;
-    padding: 35px 30px;
+	border-bottom: 1px solid #FF0000 !important;
+	padding: 35px 30px;
 }
 
-.ui-dialog{
-    margin-bottom: 2%;
+.ui-dialog {
+	margin-bottom: 2%;
 }
