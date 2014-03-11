@@ -53,6 +53,7 @@ public class RuleExecutor implements Serializable {
                     }
                     break;
                 case FILE:
+                    show = ((parentQuestionAnswer.getValue()) != 0) && (expectedAnswer[0].equals("true"));
                     break;
                 case LIST:
                     List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
