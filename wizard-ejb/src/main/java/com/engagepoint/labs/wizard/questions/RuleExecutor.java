@@ -6,6 +6,7 @@ import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.panel.Panel;
 import super_binding.QType;
 
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -69,6 +70,11 @@ public class RuleExecutor implements Serializable {
         } else {
             panel.setVisible(false);
             question.setIgnored(true);
+            question.resetAnswer();
+            if (question.isRequired()) {
+                question.setValid(false);
+            }
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
         }
     }
 

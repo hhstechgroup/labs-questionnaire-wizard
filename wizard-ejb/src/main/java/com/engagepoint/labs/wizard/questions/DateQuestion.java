@@ -22,7 +22,6 @@ public class DateQuestion extends WizardQuestion {
         if (answer.getType().equals(ValueType.DATE)) {
             this.answer = (DateValue) answer;
         }
-
     }
 
     @Override
@@ -36,5 +35,10 @@ public class DateQuestion extends WizardQuestion {
             this.defaultAnswer = (DateValue) defaultAnswer;
         }
 
+    }
+
+    @Override
+    public void resetAnswer() {
+        answer = null;
     }
 }

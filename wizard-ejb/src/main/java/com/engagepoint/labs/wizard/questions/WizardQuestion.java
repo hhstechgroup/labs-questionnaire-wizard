@@ -66,6 +66,8 @@ public abstract class WizardQuestion {
 
     public abstract void setDefaultAnswer(Value defaultAnswer);
 
+    public abstract void resetAnswer();
+
     public String getHelpText() {
         return helpText;
     }
