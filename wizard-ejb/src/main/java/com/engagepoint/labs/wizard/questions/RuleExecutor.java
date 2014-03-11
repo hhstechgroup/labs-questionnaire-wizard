@@ -6,6 +6,7 @@ import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.panel.Panel;
 import super_binding.QType;
 
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -36,28 +37,16 @@ public class RuleExecutor implements Serializable {
         if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
-                    show = parentQuestionAnswer.getValue().equals(expectedAnswer[0]);
+                    show = compareString(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case DATE:
-                    SimpleDateFormat format;
-                    if (parentQuestion.getQuestionType().equals(QType.DATE)) {
-                        format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
-                    } else {
-                        format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
-                    }
-                    try {
-                        Date date = format.parse(expectedAnswer[0]);
-                        show = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    show = compareDateOrTime(parentQuestion.getQuestionType(), parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case FILE:
+                    show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case LIST:
-                    List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
-                    show = valueList.containsAll(Arrays.asList(expectedAnswer))
-                            && expectedAnswer.length == valueList.size();
+                    show = compareList(parentQuestionAnswer, expectedAnswer);
                     break;
                 case GRID:
                     break;
@@ -69,6 +58,11 @@ public class RuleExecutor implements Serializable {
         } else {
             panel.setVisible(false);
             question.setIgnored(true);
+            question.resetAnswer();
+            if (question.isRequired()) {
+                question.setValid(false);
+            }
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
         }
     }
 
@@ -85,6 +79,37 @@ public class RuleExecutor implements Serializable {
 
     public void setQuestion(WizardQuestion question) {
         this.question = question;
+    }
+
+    private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
+        return parentQuestionAnswer.getValue().equals(stringToCompareWith);
+    }
+
+    private boolean compareDateOrTime(QType parentQuestionType, Value parentQuestionAnswer, String dateToCompareWith) {
+        SimpleDateFormat format;
+        boolean compareResult = false;
+        if (parentQuestionType.equals(QType.DATE)) {
+            format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
+        } else {
+            format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
+        }
+        try {
+            Date date = format.parse(dateToCompareWith);
+            compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return compareResult;
+    }
+
+    private boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
+        return ((parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
+    }
+
+    private boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
+        List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
+        return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
+                && stringArrayToCompareWith.length == valueList.size();
     }
 
 }

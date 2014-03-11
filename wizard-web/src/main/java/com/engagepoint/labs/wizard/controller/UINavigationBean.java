@@ -192,6 +192,7 @@ public class UINavigationBean implements Serializable {
             MethodExpression elExpression;
             // set titles for our menu items
             item.setValue(topicTitle);
+            item.setId(topicID);
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID + "\")}", void.class,

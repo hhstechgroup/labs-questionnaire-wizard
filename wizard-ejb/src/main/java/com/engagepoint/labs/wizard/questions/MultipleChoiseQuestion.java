@@ -32,7 +32,6 @@ public class MultipleChoiseQuestion extends WizardQuestion {
         if (answer.getType().equals(ValueType.STRING)) {
             this.answer = (TextValue) answer;
         }
-
     }
 
     @Override
@@ -45,6 +44,10 @@ public class MultipleChoiseQuestion extends WizardQuestion {
         if (defaultAnswer.getType().equals(ValueType.STRING)) {
             this.defaultAnswer = (TextValue) defaultAnswer;
         }
+    }
 
+    @Override
+    public void resetAnswer() {
+        answer = null;
     }
 }
