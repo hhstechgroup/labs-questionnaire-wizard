@@ -3,12 +3,16 @@ package com.engagepoint.labs.wizard.questions;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.values.Value;
+import org.primefaces.component.panel.Panel;
+import super_binding.QType;
 
-import javax.faces.application.FacesMessage;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,40 +22,63 @@ public class RuleExecutor implements Serializable {
 
     private WizardForm form;
     private WizardQuestion question;
+    private boolean isAlreadyShowing;
 
 
     public RuleExecutor(WizardForm form) {
         this.form = form;
     }
 
-    public void renderedRule(String parentID, String[] expectedAnswer) {
-        boolean rendered = false;
-        Value answer = form.getWizardQuestionById(parentID).getAnswer();
-        if (answer != null && answer.getValue() != null) {
-            switch (answer.getType()) {
+    public boolean renderedRule(String parentID, String[] expectedAnswer) {
+        boolean changeLimit = false;
+        boolean show = false;
+        WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
+        Value parentQuestionAnswer = parentQuestion.getAnswer();
+        String panelVarAndId = "maincontentid-panel_" + question.getId();
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(panelVarAndId);
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
+            switch (parentQuestionAnswer.getType()) {
                 case STRING:
-                    rendered = answer.getValue().equals(expectedAnswer[0]);
+                    show = compareString(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case DATE:
+                    show = compareDateOrTime(parentQuestion.getQuestionType(), parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case FILE:
+                    show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case LIST:
-                    List<String> valueList = (List<String>) answer.getValue();
-                    rendered = valueList.containsAll(Arrays.asList(expectedAnswer));
+                    show = compareList(parentQuestionAnswer, expectedAnswer);
                     break;
                 case GRID:
                     break;
             }
         }
-        FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-panel_" + question.getId()).setRendered(rendered);
+        if (show) {
+            showQuestionPanel(panel);
+            isAlreadyShowing = true;
+        } else {
+            hideQuestionPanel(panel);
+            if (isAlreadyShowing) {
+                changeLimit = true;
+                resetComponentValue();
+                isAlreadyShowing = false;
+            }
+        }
+//        changeLimit = true;
+        return changeLimit;
     }
 
-    public void updateAllQuestionsOnTopic() {
-        WizardTopic topic = form.findWizardTopicVyQuestionId(question.getId());
+    public boolean executeAllRulesOnCurrentTopic(WizardQuestion question) {
+        boolean changeLimit = false;
+        WizardTopic topic = form.findWizardTopicByQuestionId(question.getId());
         for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
-            wizardQuestion.executeAllRules();
+            boolean needToChange = wizardQuestion.executeAllRules();
+            if (needToChange) {
+                changeLimit = true;
+            }
         }
+        return changeLimit;
     }
 
     public WizardQuestion getQuestion() {
@@ -60,5 +87,59 @@ public class RuleExecutor implements Serializable {
 
     public void setQuestion(WizardQuestion question) {
         this.question = question;
+    }
+
+    private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
+        return parentQuestionAnswer.getValue().equals(stringToCompareWith);
+    }
+
+    private boolean compareDateOrTime(QType parentQuestionType, Value parentQuestionAnswer, String dateToCompareWith) {
+        SimpleDateFormat format;
+        boolean compareResult = false;
+        if (parentQuestionType.equals(QType.DATE)) {
+            format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
+        } else {
+            format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
+        }
+        try {
+            Date date = format.parse(dateToCompareWith);
+            compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return compareResult;
+    }
+
+    private boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
+        return ((parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
+    }
+
+    private boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
+        List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
+        return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
+                && stringArrayToCompareWith.length == valueList.size();
+    }
+
+    private void showQuestionPanel(Panel panel) {
+        panel.setVisible(true);
+        question.setIgnored(false);
+    }
+
+    private void hideQuestionPanel(Panel panel) {
+        panel.setVisible(false);
+        question.setIgnored(true);
+        question.resetAnswer();
+        if (question.isRequired()) {
+            question.setValid(false);
+        }
+    }
+
+    private void resetComponentValue() {
+        if (question.getDefaultAnswer() != null) {
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId()))
+                    .setValue(question.getDefaultAnswer().getValue());
+        } else {
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
+        }
     }
 }

@@ -1,9 +1,8 @@
 <h:form enctype="multipart/form-data" style=" height: 658px;"
-        xmlns:uib="http://engagepoint.com/uib" id="maincontentid"
-        xmlns:p="http://primefaces.org/ui"
+        id="maincontentid"
         xmlns:h="http://java.sun.com/jsf/html"
         template="bootstrap-template.xhtml"
-        xmlns:ui="http://java.sun.com/jsf/facelets" markupType="html5"
+        markupType="html5"
         binding="#{uiNavigationBean.navigationData.mainContentForm}" xmlns:f="http://java.sun.com/jsf/core">
-    <f:event type="preRenderView" listener="#{uiNavigationBean.executeAllRules}"/>
+    <f:event type="preRenderView" listener="#{uiNavigationBean.executeAllRulesOnCurrentTopic}"/>
 </h:form>

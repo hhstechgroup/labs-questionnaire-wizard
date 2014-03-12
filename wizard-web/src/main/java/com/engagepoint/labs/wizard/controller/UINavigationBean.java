@@ -101,17 +101,13 @@ public class UINavigationBean implements Serializable {
      *
      * @return wizard index page name
      */
-    public void start(ActionEvent event) {
+    public String start() {
         clearDataFromSession();
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
         setRulesInAllQuestions();
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("wizard-index.xhtml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return "wizard-index?faces-redirect=true";
     }
 
     public void clearDataFromSession() {
@@ -261,7 +257,6 @@ public class UINavigationBean implements Serializable {
         // create new menu for page
         initMenu();
         RequestContext.getCurrentInstance().update("brd-breadcrumb");
-        executeAllRules();
     }
 
     /**
@@ -286,7 +281,6 @@ public class UINavigationBean implements Serializable {
         navigationData.setCurrentTopicIDAndTitle(newCurrentTopicID);
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
-        executeAllRules();
     }
 
     public NavigationData getNavigationData() {
@@ -408,7 +402,7 @@ public class UINavigationBean implements Serializable {
 
     private boolean checkAllRequiredQuestions(List<WizardQuestion> wizardQuestionList) {
         for (WizardQuestion question : wizardQuestionList) {
-            if (question.isRequired()
+            if (!question.isIgnored() && question.isRequired()
                     && (null == question.getValid() || !question.getValid())) {
                 return false;
             }
@@ -453,17 +447,25 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    public void executeAllRules() {
+    public void executeAllRulesOnCurrentTopic() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
-        for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
-            question.executeAllRules();
+        for (int i = 0; i < 2; i++) {
+            for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
+                boolean needToChangeLimits = question.executeAllRules();
+                System.out.println("+++++++++ From navbean, id= " + question.getId() + "++++++++");
+                if (needToChangeLimits) {
+                    navigationData.setTopicLimit(wizardTopicById.getTopicNumber());
+                    navigationData.setPageLimit(navigationData.getWizardForm().getWizardPageById(
+                            navigationData.getCurrentPageID()).getPageNumber());
+                }
+            }
         }
     }
 
     private void setRulesInAllQuestions() {
         for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
-            question.setRule(new RuleExecutor(navigationData.getWizardForm()));
+            question.setRuleExecutor(new RuleExecutor(navigationData.getWizardForm()));
         }
     }
 }

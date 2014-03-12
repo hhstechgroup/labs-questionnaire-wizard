@@ -49,6 +49,10 @@ public class UIComponentGenerator {
 
     private Panel analyzeQuestion(WizardQuestion question) {
         panel = new Panel();
+        panel.setWidgetVar("panel_" + question.getId());
+        panel.setClosable(true);
+        panel.setToggleable(true);
+        panel.setCloseSpeed(300);
         panel.setId("panel_" + question.getId());
         panel.getChildren().add(getLabel(question));
         panel.getChildren().add(getValidationMessage(question));
@@ -239,7 +243,7 @@ public class UIComponentGenerator {
         timeCalendar.setStyle("padding:1px");
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
-        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
+//        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
         timeCalendar.addValidator(new ComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
@@ -317,7 +321,7 @@ public class UIComponentGenerator {
         CommandButton commandButton = new CommandButton();
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
-     //   commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
+        //   commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
         return commandButton;
     }
 

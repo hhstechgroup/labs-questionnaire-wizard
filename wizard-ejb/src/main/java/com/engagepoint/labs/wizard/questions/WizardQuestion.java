@@ -22,10 +22,25 @@ public abstract class WizardQuestion {
     protected String helpText;
     protected Boolean answerRequired;
     protected Boolean valid;
-    protected boolean ignored;
     protected List<String> rules;
-    public RuleExecutor RuleExecutor;
-    public boolean rendered;
+    public boolean ignored;
+    public RuleExecutor ruleExecutor;
+
+    public RuleExecutor getRuleExecutor() {
+        return ruleExecutor;
+    }
+
+    public void setRuleExecutor(RuleExecutor ruleExecutor) {
+        this.ruleExecutor = ruleExecutor;
+    }
+
+    public boolean isIgnored() {
+        return ignored;
+    }
+
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
+    }
 
     public List<String> getRules() {
         return rules;
@@ -33,14 +48,6 @@ public abstract class WizardQuestion {
 
     public void setRules(List<String> rules) {
         this.rules = rules;
-    }
-
-    public RuleExecutor getRule() {
-        return RuleExecutor;
-    }
-
-    public void setRule(RuleExecutor rule) {
-        this.RuleExecutor = rule;
     }
 
     public Boolean getValid() {
@@ -58,6 +65,8 @@ public abstract class WizardQuestion {
     public abstract Value getDefaultAnswer();
 
     public abstract void setDefaultAnswer(Value defaultAnswer);
+
+    public abstract void resetAnswer();
 
     public String getHelpText() {
         return helpText;
@@ -99,16 +108,21 @@ public abstract class WizardQuestion {
         this.questionType = questionType;
     }
 
-    public void executeAllRules() {
+    public boolean executeAllRules() {
+        boolean changeLimit = false;
         if (rules != null) {
             for (String s : rules) {
-                RuleExecutor.setQuestion(this);
+                ruleExecutor.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(s);
                 JexlContext context = new MapContext();
                 context.set("this", this);
-                expression.evaluate(context);
+                boolean needToChange = (boolean) expression.evaluate(context);
+                if (needToChange) {
+                    changeLimit = true;
+                }
             }
         }
+        return changeLimit;
     }
 }

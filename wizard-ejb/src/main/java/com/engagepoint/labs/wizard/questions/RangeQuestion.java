@@ -51,4 +51,9 @@ public class RangeQuestion extends WizardQuestion {
             this.defaultAnswer = (RangeValue) defaultAnswer;
         }
     }
+
+    @Override
+    public void resetAnswer() {
+        answer = null;
+    }
 }

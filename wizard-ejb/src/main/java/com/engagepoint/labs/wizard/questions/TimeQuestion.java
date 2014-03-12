@@ -10,7 +10,7 @@ import com.engagepoint.labs.wizard.values.ValueType;
 public class TimeQuestion extends WizardQuestion {
     private DateValue answer;
     private DateValue defaultAnswer;
-    public static final String TIME_FORMAT = "hh:mm";
+    public static final String TIME_FORMAT = "HH:mm";
 
     @Override
     public Value getAnswer() {
@@ -19,8 +19,8 @@ public class TimeQuestion extends WizardQuestion {
 
     @Override
     public void setAnswer(Value answer) {
-        if(answer.getType().equals(ValueType.DATE)){
-            this.answer = (DateValue)answer;
+        if (answer.getType().equals(ValueType.DATE)) {
+            this.answer = (DateValue) answer;
         }
     }
 
@@ -31,8 +31,14 @@ public class TimeQuestion extends WizardQuestion {
 
     @Override
     public void setDefaultAnswer(Value defaultAnswer) {
-        if(defaultAnswer.getType().equals(ValueType.DATE)){
-                this.defaultAnswer =(DateValue) defaultAnswer;
+        if (defaultAnswer.getType().equals(ValueType.DATE)) {
+            this.defaultAnswer = (DateValue) defaultAnswer;
         }
     }
+
+    @Override
+    public void resetAnswer() {
+        answer = null;
+    }
+
 }

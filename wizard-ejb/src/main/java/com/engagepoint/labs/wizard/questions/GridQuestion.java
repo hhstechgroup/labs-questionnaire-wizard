@@ -56,4 +56,10 @@ public class GridQuestion extends WizardQuestion {
         }
 
     }
+
+    @Override
+    public void resetAnswer() {
+        answer = null;
+    }
+
 }

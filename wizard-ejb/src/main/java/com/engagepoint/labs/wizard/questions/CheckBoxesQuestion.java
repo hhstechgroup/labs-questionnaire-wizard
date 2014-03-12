@@ -33,7 +33,6 @@ public class CheckBoxesQuestion extends WizardQuestion {
         if (answer.getType().equals(ValueType.LIST)) {
             this.answer = (ListTextValue) answer;
         }
-
     }
 
     @Override
@@ -47,5 +46,10 @@ public class CheckBoxesQuestion extends WizardQuestion {
             this.defaultAnswer = (ListTextValue) defaultAnswer;
         }
 
+    }
+
+    @Override
+    public void resetAnswer() {
+        answer = null;
     }
 }
