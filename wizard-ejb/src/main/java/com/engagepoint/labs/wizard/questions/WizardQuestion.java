@@ -109,7 +109,7 @@ public abstract class WizardQuestion {
     }
 
     public boolean executeAllRules() {
-        boolean changeLimit = false;
+        boolean change = false;
         if (rules != null) {
             for (String s : rules) {
                 ruleExecutor.setQuestion(this);
@@ -117,12 +117,12 @@ public abstract class WizardQuestion {
                 Expression expression = jexlEngine.createExpression(s);
                 JexlContext context = new MapContext();
                 context.set("this", this);
-                boolean needToChange = (boolean) expression.evaluate(context);
-                if (needToChange) {
-                    changeLimit = true;
+                boolean result = (boolean) expression.evaluate(context);
+                if (result) {
+                    change = true;
                 }
             }
         }
-        return changeLimit;
+        return change;
     }
 }

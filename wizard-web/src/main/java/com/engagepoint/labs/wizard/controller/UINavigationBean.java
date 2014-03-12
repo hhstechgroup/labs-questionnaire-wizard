@@ -454,15 +454,11 @@ public class UINavigationBean implements Serializable {
     public void executeAllRulesOnCurrentTopic() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
-        for (int i = 0; i < 2; i++) {
-            for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
-                boolean needToChangeLimits = question.executeAllRules();
-                System.out.println("+++++++++ From navbean, id= " + question.getId() + "++++++++");
-                if (needToChangeLimits) {
-                    navigationData.setTopicLimit(wizardTopicById.getTopicNumber());
-                    navigationData.setPageLimit(navigationData.getWizardForm().getWizardPageById(
-                            navigationData.getCurrentPageID()).getPageNumber());
-                }
+        for (int i = 0; i < wizardTopicById.getWizardQuestionList().size(); i++) {
+            WizardQuestion question = wizardTopicById.getWizardQuestionList().get(i);
+            boolean isChanged = question.executeAllRules();
+            if (isChanged) {
+                i = -1;
             }
         }
     }
