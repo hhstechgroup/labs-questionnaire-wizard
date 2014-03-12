@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.dialog.Dialog;
@@ -64,8 +65,6 @@ public class NavigationData implements Serializable {
     private List<Panel> panelList;
     private List<Button> buttonsList;
     private PanelGrid panelGrid;
-    private int pageLimit;
-    private int topicLimit;
     private boolean finishButtonRendered;
     private boolean isFirstPage = true;
     private boolean isFirstTopic = true;
@@ -124,7 +123,7 @@ public class NavigationData implements Serializable {
         panelGrid.setColumns(1);
         mainContentForm.getChildren().add(panelGrid);
         mainContentForm.getChildren().add(getDialog());
-        wizardDocument.getWizardFormByID(selectedFormTemplate, wizardForm,
+        wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
                 wizardDocument.getFormList());
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
@@ -133,8 +132,8 @@ public class NavigationData implements Serializable {
         currentTopicTitles = new ArrayList<String>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
-        pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
-        topicLimit = wizardForm.getWizardTopicById(currentTopicID)
+        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
                 .getTopicNumber();
     }
 
@@ -148,8 +147,8 @@ public class NavigationData implements Serializable {
                     Integer newCurrentTopicNumber = wizardForm
                             .getWizardTopicById(currentTopicID)
                             .getTopicNumber();
-                    if (newCurrentTopicNumber > topicLimit) {
-                        topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
+                        WizardLimits.topicLimit = newCurrentTopicNumber;
                     }
                     return true;
                 }
@@ -170,13 +169,13 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();
                     Integer newCurrentPageNumber = wizardForm
                             .getWizardPageById(currentPageID).getPageNumber();
-                    if (newCurrentPageNumber > pageLimit) {
-                        pageLimit = newCurrentPageNumber;
+                    if (newCurrentPageNumber > WizardLimits.pageLimit) {
+                        WizardLimits.pageLimit = newCurrentPageNumber;
                     }
                     Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
                             .getTopicList().get(0)).getTopicNumber();
-                    if (newCurrentTopicNumber > topicLimit) {
-                        topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
+                        WizardLimits.topicLimit = newCurrentTopicNumber;
                     }
                     return true;
                 }
@@ -412,23 +411,6 @@ public class NavigationData implements Serializable {
         this.menuModel = menuModel;
     }
 
-    public int getTopicLimit() {
-        return topicLimit;
-    }
-
-    public void setTopicLimit(int topicLimit) {
-        this.topicLimit = topicLimit;
-    }
-
-    public int getPageLimit() {
-
-        return pageLimit;
-    }
-
-    public void setPageLimit(int pageLimit) {
-        this.pageLimit = pageLimit;
-    }
-
     public boolean isFinishButtonRendered() {
         boolean nowLastPage = isOnLastPage();
         boolean nowLastTopic = isOnLastTopic();
@@ -510,6 +492,23 @@ public class NavigationData implements Serializable {
         dialog.setHeader("Validation Error");
         dialog.setId("dialog");
         dialog.setWidgetVar("dialog");
+        dialog.setModal(true);
+        dialog.setResizable(false);
+        dialog.getChildren().add(message);
+        dialog.setHideEffect("clip");
+        dialog.setDynamic(true);
+        return dialog;
+    }
+
+    private Dialog getDialogForDependentQuestion() {
+        OutputLabel message = new OutputLabel();
+        message.setValue("Parent Question was redacted !");
+        OutputLabel header = new OutputLabel();
+        header.setValue("Parent Question was redacted");
+        Dialog dialog = new Dialog();
+        dialog.setHeader("Parent Question was redacted");
+        dialog.setId("dialog");
+        dialog.setWidgetVar("dialogDependentQuestion");
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.getChildren().add(message);

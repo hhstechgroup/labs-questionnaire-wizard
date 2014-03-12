@@ -8,6 +8,7 @@ import com.engagepoint.labs.wizard.questions.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
@@ -15,6 +16,7 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
+import super_binding.Rule;
 import super_binding.QType;
 
 import javax.annotation.PostConstruct;
@@ -23,12 +25,16 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,8 +216,14 @@ public class UINavigationBean implements Serializable {
     public void createQuestions() {
         UIComponentGenerator generator = new UIComponentGenerator();
         WizardForm wizardForm = navigationData.getWizardForm();
+        WizardPage wizardPage = wizardForm.getWizardPageById(navigationData.getCurrentPageID());
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
-        List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
+        Map<WizardQuestion, Boolean> questionsMap = new LinkedHashMap<>();
+        for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
+            questionsMap.put(question, isQuestionAParent(question));
+        }
+        List<Panel> panelList = generator.getPanelList(questionsMap,
+                wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
         for (Panel panel : navigationData.getPanelList()) {
@@ -240,9 +252,9 @@ public class UINavigationBean implements Serializable {
         WizardForm wizardForm = navigationData.getWizardForm();
         Integer newCurrentPageNumber = wizardForm.getWizardPageById(newCurrentPageID).getPageNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentPageNumber > navigationData.getPageLimit()) {
+        if (newCurrentPageNumber > WizardLimits.pageLimit) {
             return;
-        } else if (currentTopicNumber < navigationData.getTopicLimit()
+        } else if (currentTopicNumber < WizardLimits.topicLimit
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
@@ -271,9 +283,9 @@ public class UINavigationBean implements Serializable {
         WizardForm wizardForm = navigationData.getWizardForm();
         Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(newCurrentTopicID).getTopicNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
+        if (newCurrentTopicNumber > WizardLimits.topicLimit) {
             return;
-        } else if (currentTopicNumber < navigationData.getTopicLimit()
+        } else if (currentTopicNumber < WizardLimits.topicLimit
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
@@ -350,7 +362,7 @@ public class UINavigationBean implements Serializable {
         Integer newCurrentTopicNumber = navigationData.getWizardForm()
                 .getWizardTopicById(navigationData.getCurrentTopicID())
                 .getTopicNumber();
-        if (newCurrentTopicNumber != navigationData.getTopicLimit()) {
+        if (newCurrentTopicNumber != WizardLimits.topicLimit) {
             if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
                 RequestContext.getCurrentInstance().execute("dialog.show()");
                 return;
@@ -388,7 +400,7 @@ public class UINavigationBean implements Serializable {
                 }
                 pageMenuItem.setStyleClass(styleClass);
             } else {
-                if (pageIndex > (navigationData.getPageLimit() - 1)) {
+                if (pageIndex > (WizardLimits.pageLimit - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
@@ -446,8 +458,7 @@ public class UINavigationBean implements Serializable {
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-
-                if (topic.getTopicNumber() > navigationData.getTopicLimit()) {
+                if (topic.getTopicNumber() > WizardLimits.topicLimit) {
                     item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
                     item.setStyleClass("");
@@ -472,5 +483,36 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
             question.setRuleExecutor(new RuleExecutor(navigationData.getWizardForm()));
         }
+    }
+
+    private boolean isQuestionAParent(WizardQuestion currentQuestion) {
+        boolean isParent = false;
+        for (WizardPage wizardPage : navigationData.getWizardForm().getWizardPageList()) {
+            if (wizardPage.getPageNumber() > WizardLimits.pageLimit || isParent) {
+                return false;
+            }
+            for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
+                if (wizardTopic.getTopicNumber() > WizardLimits.topicLimit || isParent) {
+                    return false;
+                }
+                for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
+                    if (wizardQuestion.getRules() != null) {
+                        isParent = compareParentsIdAndCurrentQuestionId(wizardQuestion.getRules(), currentQuestion.getId());
+                        System.out.println("*********** IS PARENT = " + isParent + "; QID = " + wizardQuestion.getId() + " *************");
+                    }
+                }
+            }
+        }
+        return isParent;
+    }
+
+    private boolean compareParentsIdAndCurrentQuestionId(List<Rule> ruleList, String questionId) {
+        boolean match = false;
+        for (Rule rule : ruleList) {
+            if (rule.getParentId().equals(questionId)) {
+                match = true;
+            }
+        }
+        return match;
     }
 }
