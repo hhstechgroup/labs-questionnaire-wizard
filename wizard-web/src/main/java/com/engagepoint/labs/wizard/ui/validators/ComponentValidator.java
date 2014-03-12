@@ -122,7 +122,6 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
-//        question.ruleExecutor.executeAllRulesOnCurrentTopic(question);
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {

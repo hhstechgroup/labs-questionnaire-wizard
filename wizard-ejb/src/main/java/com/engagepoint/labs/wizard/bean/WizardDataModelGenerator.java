@@ -32,7 +32,7 @@ public class WizardDataModelGenerator {
     private List<WizardQuestion> wizardQuestionList;
     private int topicNumber;
     private List<String> defaultAnswers;
-    private List<String> rules;
+    private List<Rule> ruleList;
 
     public WizardDataModelGenerator() {
     }
@@ -109,8 +109,6 @@ public class WizardDataModelGenerator {
 
     private WizardQuestion createWizardQuestionFromXmlQuestion(
             Question xmlQuestion) {
-        // DependentQuestions dependentQuestions =
-        // xmlQuestion.getDependentQuestions(); // not supported yet
         WizardQuestion wizardQuestion = null;
         if (xmlQuestion.getQuestionType() == null) {
             return null;
@@ -231,7 +229,7 @@ public class WizardDataModelGenerator {
         wizardQuestion.setHelpText(xmlQuestion.getHelpText());
         wizardQuestion.setAnswerRequired(xmlQuestion.isAnswerRequired());
         if (checkRules(xmlQuestion)) {
-            wizardQuestion.setRules(rules);
+            wizardQuestion.setRules(ruleList);
             wizardQuestion.setIgnored(true);
         }
         return wizardQuestion;
@@ -262,26 +260,31 @@ public class WizardDataModelGenerator {
     }
 
     private boolean checkRules(Question xmlQuestion) {
-        if (xmlQuestion.getRules() != null
-                && !xmlQuestion.getRules().getRule()
-                .isEmpty()) {
-            List<String> rules = getAllCorrectRules(xmlQuestion.getRules());
-            if (rules.isEmpty()) {
+        Rules rules = xmlQuestion.getRules();
+        List<Rule> rule = null;
+        if (rules != null) {
+            rule = rules.getRule();
+        }
+        if (rule != null && !rule.isEmpty()) {
+            xmlQuestion.getRules().getRule();
+            List<Rule> correctRuleList = getCorrectRuleList(xmlQuestion.getRules());
+            if (correctRuleList.isEmpty()) {
                 return false;
             }
-            this.rules = rules;
+            this.ruleList = correctRuleList;
             return true;
         }
         return false;
     }
 
-    private List<String> getAllCorrectRules(Rules rules) {
-        List<String> correctRulesList = new ArrayList<>();
-        for (String s : rules.getRule()) {
-            if (!s.isEmpty()) {
-                correctRulesList.add(s);
+    private List<Rule> getCorrectRuleList(Rules rules) {
+        List<Rule> correctRuleList = new ArrayList<>();
+        for (Rule rule : rules.getRule()) {
+            if (rule.getMethod() != null && !rule.getMethod().isEmpty()
+                    && rule.getParentId() != null && !rule.getParentId().isEmpty()) {
+                correctRuleList.add(rule);
             }
         }
-        return correctRulesList;
+        return correctRuleList;
     }
 }

@@ -47,9 +47,19 @@ and open the template in the editor.
                                                                                                         <xs:complexType>
                                                                                                             <xs:sequence>
                                                                                                                 <xs:element
-                                                                                                                        type="xs:string"
                                                                                                                         name="rule"
-                                                                                                                        maxOccurs="unbounded"/>
+                                                                                                                        maxOccurs="unbounded">
+                                                                                                                    <xs:complexType>
+                                                                                                                        <xs:sequence>
+                                                                                                                            <xs:element
+                                                                                                                                    type="xs:string"
+                                                                                                                                    name="parentId"/>
+                                                                                                                            <xs:element
+                                                                                                                                    type="xs:string"
+                                                                                                                                    name="method"/>
+                                                                                                                        </xs:sequence>
+                                                                                                                    </xs:complexType>
+                                                                                                                </xs:element>
                                                                                                             </xs:sequence>
                                                                                                         </xs:complexType>
                                                                                                     </xs:element>
