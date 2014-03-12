@@ -9,10 +9,12 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
+import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
 import super_binding.QType;
 
 import javax.annotation.PostConstruct;
@@ -21,12 +23,13 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("uiNavigationBean")
@@ -326,15 +329,22 @@ public class UINavigationBean implements Serializable {
     }
 
     public void exportButtonClick() {
-           String zipFileName = "/Wizard_answer.zip";
-           File xmlAnswersFile = navigationData.getExportFile();
-           List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
-           for(WizardQuestion papaQuestion: allWizardQuestions){
-               if(papaQuestion.getQuestionType().equals(QType.FILEUPLOAD));
-
-           }
-       //    fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream, "text/xml", fileName));
-
+        ArrayList<File> filesForArchive = new ArrayList<>(7);
+        filesForArchive.add(navigationData.getExportFile());
+        List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
+        for (WizardQuestion singleQuestion : allWizardQuestions) {
+            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD))
+                filesForArchive.add((File) singleQuestion.getAnswer().getValue());
+        }
+        ArchiverZip.addFilesToZip(filesForArchive);
+        try {
+            FileInputStream zipFileStream = new FileInputStream(ArchiverZip.ZIP_FILE_NAME);
+            fileDownloadController.setFile(new DefaultStreamedContent(zipFileStream, "application/zip", "answer.zip"));
+        } catch (FileNotFoundException e) {
+            System.out.print("ZIP FileNotFound EXCEPTION in exportButtonClick()=========== " + e.getStackTrace());
+        }
+        for (File file : filesForArchive)
+            file.delete();
     }
 
     public void previousButtonClick() {
