@@ -192,7 +192,6 @@ public class UINavigationBean implements Serializable {
             MethodExpression elExpression;
             // set titles for our menu items
             item.setValue(topicTitle);
-            item.setId(topicID);
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID + "\")}", void.class,
@@ -455,8 +454,16 @@ public class UINavigationBean implements Serializable {
     public void executeAllRulesOnCurrentTopic() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
-        for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
-            question.executeAllRules();
+        for (int i = 0; i < 2; i++) {
+            for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
+                boolean needToChangeLimits = question.executeAllRules();
+                System.out.println("+++++++++ From navbean, id= " + question.getId() + "++++++++");
+                if (needToChangeLimits) {
+                    navigationData.setTopicLimit(wizardTopicById.getTopicNumber());
+                    navigationData.setPageLimit(navigationData.getWizardForm().getWizardPageById(
+                            navigationData.getCurrentPageID()).getPageNumber());
+                }
+            }
         }
     }
 

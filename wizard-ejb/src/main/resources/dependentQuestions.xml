@@ -14,7 +14,7 @@
                                    <question-title>1.1.1</question-title>
                                    <question-type>TEXT</question-type>
                                    <rules>
-                                       <rule>this.ruleExecutor.renderedRule('qawes123', ['true'])</rule>
+                                       <rule>this.ruleExecutor.renderedRule('qawes123', ['22'])</rule>
                                    </rules>
                                    <help-text></help-text>
                                    <options>
@@ -37,7 +37,7 @@
                                </question>
                                <question answer-required="false" question-id="qawes123">
                                    <question-title>1.1.2</question-title>
-                                   <question-type>FILEUPLOAD</question-type>
+                                   <question-type>TEXT</question-type>
                                    <rules>
                                        <rule>this.ruleExecutor.renderedRule('ywywywuququ', ['C1', 'C2'])</rule>
                                    </rules>

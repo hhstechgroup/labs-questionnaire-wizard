@@ -22,13 +22,15 @@ public class RuleExecutor implements Serializable {
 
     private WizardForm form;
     private WizardQuestion question;
+    private boolean isAlreadyShowing;
 
 
     public RuleExecutor(WizardForm form) {
         this.form = form;
     }
 
-    public void renderedRule(String parentID, String[] expectedAnswer) {
+    public boolean renderedRule(String parentID, String[] expectedAnswer) {
+        boolean changeLimit = false;
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
@@ -53,24 +55,30 @@ public class RuleExecutor implements Serializable {
             }
         }
         if (show) {
-            panel.setVisible(true);
-            question.setIgnored(false);
+            showQuestionPanel(panel);
+            isAlreadyShowing = true;
         } else {
-            panel.setVisible(false);
-            question.setIgnored(true);
-            question.resetAnswer();
-            if (question.isRequired()) {
-                question.setValid(false);
+            hideQuestionPanel(panel);
+            if (isAlreadyShowing) {
+                changeLimit = true;
+                resetComponentValue();
+                isAlreadyShowing = false;
             }
-            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
         }
+//        changeLimit = true;
+        return changeLimit;
     }
 
-    public void executeAllRulesOnCurrentTopic(WizardQuestion question) {
+    public boolean executeAllRulesOnCurrentTopic(WizardQuestion question) {
+        boolean changeLimit = false;
         WizardTopic topic = form.findWizardTopicByQuestionId(question.getId());
         for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
-            wizardQuestion.executeAllRules();
+            boolean needToChange = wizardQuestion.executeAllRules();
+            if (needToChange) {
+                changeLimit = true;
+            }
         }
+        return changeLimit;
     }
 
     public WizardQuestion getQuestion() {
@@ -112,4 +120,26 @@ public class RuleExecutor implements Serializable {
                 && stringArrayToCompareWith.length == valueList.size();
     }
 
+    private void showQuestionPanel(Panel panel) {
+        panel.setVisible(true);
+        question.setIgnored(false);
+    }
+
+    private void hideQuestionPanel(Panel panel) {
+        panel.setVisible(false);
+        question.setIgnored(true);
+        question.resetAnswer();
+        if (question.isRequired()) {
+            question.setValid(false);
+        }
+    }
+
+    private void resetComponentValue() {
+        if (question.getDefaultAnswer() != null) {
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId()))
+                    .setValue(question.getDefaultAnswer().getValue());
+        } else {
+            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
+        }
+    }
 }
