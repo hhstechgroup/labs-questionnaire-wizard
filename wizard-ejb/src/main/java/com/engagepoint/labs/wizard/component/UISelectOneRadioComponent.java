@@ -1,18 +1,22 @@
 package com.engagepoint.labs.wizard.component;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIData;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 @FacesComponent("com.engagepoint.labs.wizard.component")
-public class UISelectOneRadioComponent extends UIComponentBase {
+public class UISelectOneRadioComponent extends UIInput {
 
     public static final String COMPONENT_TYPE = "com.engagepoint.labs.wizard.component";
 
-    private String value = null;
+    private String action = null;
     private String name = null;
     private String overrideName = null;
     private String styleClass = null;
@@ -26,8 +30,9 @@ public class UISelectOneRadioComponent extends UIComponentBase {
     private String onFocus = null;
     private String onBlur = null;
 
+    @Override
     public Object saveState(FacesContext context) {
-	Object[] values = new Object[13];
+	Object[] values = new Object[14];
 	values[0] = super.saveState(context);
 	values[1] = styleClass;
 	values[2] = style;
@@ -41,10 +46,11 @@ public class UISelectOneRadioComponent extends UIComponentBase {
 	values[10] = onBlur;
 	values[11] = name;
 	values[12] = overrideName;
-
+	values[13] = action;
 	return (values);
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
 	Object[] values = (Object[]) state;
 	super.restoreState(context, values[0]);
@@ -60,23 +66,152 @@ public class UISelectOneRadioComponent extends UIComponentBase {
 	onBlur = (String) values[10];
 	name = (String) values[11];
 	overrideName = (String) values[12];
+	action = (String) values[13];
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+	if ((context == null)) {
+	    throw new NullPointerException();
+	}
+
+	Map map = context.getExternalContext().getRequestParameterMap();
+	String name = getRName(context);
+	if (map.containsKey(name)) {
+	    String value = (String) map.get(name);
+	    if (value != null) {
+		setSubmittedValue(value);
+	    }
+
+	}
     }
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-	ResponseWriter writer = context.getResponseWriter();
-	writer.startElement("marquee", this);
-	writer.write(getValue());
-	writer.endElement("marquee");
+	if ((context == null)) {
+	    throw new NullPointerException();
+	}
     }
+
+    /**
+     * <p>
+     * No children encoding is required.
+     * </p>
+     *
+     * @param context
+     *            <code>FacesContext</code>for the current request
+     * @param component
+     *            <code>UIComponent</code> to be decoded
+     */
+    @Override
+    public void encodeChildren(FacesContext context) throws IOException {
+	if ((context == null)) {
+	    throw new NullPointerException();
+	}
+    }
+
+    /**
+     * <p>
+     * Encode this component.
+     * </p>
+     *
+     * @param context
+     *            <code>FacesContext</code>for the current request
+     * @param component
+     *            <code>UIComponent</code> to be decoded
+     */
 
     @Override
-    public void encodeEnd(FacesContext arg0) throws IOException {
-	super.encodeEnd(arg0);
+    public void encodeEnd(FacesContext context) throws IOException {
+	if ((context == null)) {
+	    throw new NullPointerException();
+	}
+
+	if (isRendered()) {
+	    ResponseWriter writer = context.getResponseWriter();
+
+	    writer.write("<input type=\"radio\"");
+	    writer.write(" id=\"" + getClientId(context) + "\"");
+	    writer.write(" name=\"" + getRName(context) + "\"");
+	    if (getAction() != null && getAction().trim().length() > 0) {
+		writer.write(" action=\"" + getAction().trim() + "\"");
+	    }
+	    if (getStyleClass() != null && getStyleClass().trim().length() > 0) {
+		writer.write(" class=\"" + getStyleClass().trim() + "\"");
+	    }
+	    if (getStyle() != null && getStyle().trim().length() > 0) {
+		writer.write(" style=\"" + getStyle().trim() + "\"");
+	    }
+	    if (getDisabled() != null && getDisabled().trim().length() > 0
+		    && getDisabled().trim().equals("true")) {
+		writer.write(" disabled=\"disabled\"");
+	    }
+	    if (getItemValue() != null) {
+		writer.write(" value=\"" + getItemValue().trim() + "\"");
+	    }
+	    if (getOnClick() != null && getOnClick().trim().length() > 0) {
+		writer.write(" onclick=\"" + getOnClick().trim() + "\"");
+	    }
+	    if (getOnMouseOver() != null
+		    && getOnMouseOver().trim().length() > 0) {
+		writer.write(" onmouseover=\"" + getOnMouseOver().trim() + "\"");
+	    }
+	    if (getOnMouseOut() != null && getOnMouseOut().trim().length() > 0) {
+		writer.write(" onmouseout=\"" + getOnMouseOut().trim() + "\"");
+	    }
+	    if (getOnFocus() != null && getOnFocus().trim().length() > 0) {
+		writer.write(" onfocus=\"" + getOnFocus().trim() + "\"");
+	    }
+	    if (getOnBlur() != null && getOnBlur().trim().length() > 0) {
+		writer.write(" onblur=\"" + getOnBlur().trim() + "\"");
+	    }
+	    if (getValue() != null && getValue().equals(getItemValue())) {
+		writer.write(" checked=\"checked\"");
+	    }
+	    writer.write(">");
+	    if (getItemLabel() != null) {
+		writer.write(getItemLabel());
+	    }
+	    writer.write("</input>");
+	}
     }
 
-    public void setValue(String value) {
-	this.value = value;
+    private String getRName(FacesContext context) {
+
+	UIComponent parentUIComponent = getParentDataTableFromHierarchy(this);
+	if (parentUIComponent == null) {
+	    return getClientId(context);
+	} else {
+	    if (getOverrideName() != null && getOverrideName().equals("true")) {
+		return getName();
+	    } else {
+
+		String id = getClientId(context);
+		int lastIndexOfColon = id.lastIndexOf(":");
+		String partName = "";
+		if (lastIndexOfColon != -1) {
+		    partName = id.substring(0, lastIndexOfColon + 1);
+		    if (getName() == null) {
+			partName = partName + "generatedRad";
+		    } else
+			partName = partName + getName();
+		}
+
+		return partName;
+	    }
+	}
+    }
+
+    private UIComponent getParentDataTableFromHierarchy(UIComponent uiComponent) {
+	if (uiComponent == null) {
+	    return null;
+	}
+	if (uiComponent instanceof UIData) {
+	    return uiComponent;
+	} else {
+	    // try to find recursively in the Component tree hierarchy
+	    return getParentDataTableFromHierarchy(uiComponent.getParent());
+	}
     }
 
     public String getName() {
@@ -175,8 +310,12 @@ public class UISelectOneRadioComponent extends UIComponentBase {
 	this.onBlur = onBlur;
     }
 
-    public String getValue() {
-	return value;
+    public String getAction() {
+	return action;
+    }
+
+    public void setAction(String action) {
+	this.action = action;
     }
 
     @Override

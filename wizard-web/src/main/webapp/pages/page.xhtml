@@ -4,8 +4,138 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:wizard="http://labs.engagepoint.com/wizard/">
 
+	<STYLE type="text/css">
+.tableHeaderStyle {
+	border-top: 2px solid #B50016;
+	border-right: 1px solid #8E8C8C;
+	border-bottom: 1px solid #8E8C8C;
+	border-left: 1px solid #8E8C8C;
+	background: #FFFFE6;
+}
+
+.tableOddRowStyle {
+	border: 1px solid #8E8C8C;
+	background: #FFFFFF;
+}
+
+.tableEvenRowStyle {
+	border: 1px solid #8E8C8C;
+	background: #DFDFDF;
+}
+
+.columnNameStyle {
+	border: 1px solid #8E8C8C;
+	background: #FFFFFF;
+}
+
+.columnExcellentStyle {
+	border: 1px solid #8E8C8C;
+	background: #C1FDC9;
+}
+
+.columnGoodStyle {
+	border: 1px solid #8E8C8C;
+	background: #E2FEE6;
+}
+
+.columnAverageStyle {
+	border: 1px solid #8E8C8C;
+	background: #FDF1C8;
+}
+
+.columnPoorStyle {
+	border: 1px solid #8E8C8C;
+	background: #FEE7C7;
+}
+</STYLE>
 	<f:view>
-		<h:head></h:head>
-		<wizard:selectOneRadio value="HIMANSHU" />
+		<h:form id="testRadioForm">
+			<h:dataTable id="mySampleTable2"
+				value="#{myBackingBean.sampleTable2}" headerClass="tableHeaderStyle"
+				rowClasses="tableOddRowStyle,tableEvenRowStyle" var="item"
+				width="100%" border="1" first="0">
+				<f:facet name="header">
+					<h:panelGrid id="gridHeader2" columns="1" width="100%">
+						<h:outputText id="outputText2"
+							value="Radios grouped in column(With our custom tag)"></h:outputText>
+					</h:panelGrid>
+				</f:facet>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Select It" />
+					</f:facet>
+					<wizard:selectOneRadio id="myRadioId1" name="myRadioCol"
+						overrideName="true" value="#{myBackingBean.radSelectIndex2}"
+						itemValue="#{item.index}" onclick="#{myBackingBean.selectRadio(item.index)}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Emp Name" />
+					</f:facet>
+					<h:outputText value="#{item.empName}" />
+				</h:column>
+			</h:dataTable>
+			<h:dataTable id="mySampleTable3"
+				value="#{myBackingBean.sampleTable3}" headerClass="tableHeaderStyle"
+				columnClasses="columnNameStyle,columnExcellentStyle,columnGoodStyle,columnAverageStyle,columnPoorStyle"
+				var="item" width="100%" border="1" first="0">
+				<f:facet name="header">
+					<h:panelGrid id="gridHeader3" columns="1" width="100%">
+						<h:outputText id="outputText3"
+							value="Radios grouped in row(With our custom tag)"></h:outputText>
+					</h:panelGrid>
+				</f:facet>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Emp Name" />
+					</f:facet>
+					<h:outputText id="empName" value="#{item.empName}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Excellent" />
+					</f:facet>
+					<wizard:selectOneRadio id="myRadioId2" name="myRadioRow"
+						value="#{item.radAns}" itemValue="E" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Good" />
+					</f:facet>
+					<wizard:selectOneRadio id="myRadioId3" name="myRadioRow"
+						value="#{item.radAns}" itemValue="G" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Average" />
+					</f:facet>
+					<wizard:selectOneRadio id="myRadioId4" name="myRadioRow"
+						value="#{item.radAns}" itemValue="A" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Poor" />
+					</f:facet>
+					<wizard:selectOneRadio id="myRadioId5" name="myRadioRow"
+						value="#{item.radAns}" itemValue="P" />
+				</h:column>
+			</h:dataTable>
+			<h:panelGrid id="buttonGrid" columns="1" width="100%">
+				<h:commandButton id="btnTest" action="#{myBackingBean.executeTest}"
+					value="Test It" />
+			</h:panelGrid>
+			<hr />
+			<h:panelGrid id="resultGridHeader" columns="1" width="100%">
+				<h:outputText value="RESULT"></h:outputText>
+			</h:panelGrid>
+			<hr />
+			<h:panelGrid id="resultGrid1" columns="1" width="100%">
+				<h:outputText value="#{myBackingBean.resultOfFirstTable}"></h:outputText>
+			</h:panelGrid>
+			<hr />
+			<h:panelGrid id="resultGrid2" columns="1" width="100%">
+				<h:outputText value="#{myBackingBean.resultOfSecondTable}"></h:outputText>
+			</h:panelGrid>
+		</h:form>
 	</f:view>
 </ui:composition>
