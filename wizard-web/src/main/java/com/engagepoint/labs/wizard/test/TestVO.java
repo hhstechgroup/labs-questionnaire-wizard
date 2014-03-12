@@ -16,10 +16,15 @@ public class TestVO {
     }
 
     public String getIndex() {
+	System.out.println("IIIIIIIIIIIIII");
 	return index;
     }
 
     public void setIndex(String i) {
+	StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+	StackTraceElement e = stacktrace[2];//maybe this number needs to be corrected
+	String methodName = e.getMethodName();
+	System.out.println(methodName);
 	index = i;
     }
 

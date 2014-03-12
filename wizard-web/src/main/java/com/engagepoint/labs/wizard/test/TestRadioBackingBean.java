@@ -64,7 +64,6 @@ public class TestRadioBackingBean implements Serializable {
 
     public String selectRadio(String id)
     {
-	System.out.println("BBBBBBBB");
 	radSelectIndex2=id;
 	return null;
     }
@@ -73,7 +72,6 @@ public class TestRadioBackingBean implements Serializable {
      * @param string
      */
     public void setRadSelectIndex2(String string) {
-	System.out.println("AAAAAAAAA");
 	radSelectIndex2 = string;
     }
 

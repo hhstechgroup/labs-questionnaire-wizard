@@ -1,8 +1,15 @@
 package com.engagepoint.labs.wizard.component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -10,6 +17,7 @@ import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
 
 @FacesComponent("com.engagepoint.labs.wizard.component")
 public class UISelectOneRadioComponent extends UIInput {
@@ -263,15 +271,20 @@ public class UISelectOneRadioComponent extends UIInput {
     }
 
     public String getItemValue() {
+	System.out.println("AAAAAAAAAAAAAAAAAAAAAAA");
 	return itemValue;
     }
 
     public void setItemValue(String itemValue) {
+	System.out.println(itemValue+" "+this.toString());
 	this.itemValue = itemValue;
     }
 
     public String getOnClick() {
-	return onClick;
+	if (onClick != null) {
+	    return onClick;
+	}
+	return returnValueBindingAsString("submit()");
     }
 
     public void setOnClick(String onClick) {
@@ -311,11 +324,24 @@ public class UISelectOneRadioComponent extends UIInput {
     }
 
     public String getAction() {
-	return action;
+	if (action != null) {
+	    return action;
+	}
+	return returnValueBindingAsString("action");
     }
 
     public void setAction(String action) {
 	this.action = action;
+    }
+
+    public String returnValueBindingAsString(String attr) {
+	FacesContext facesContext = FacesContext.getCurrentInstance();
+	ELContext elContext = facesContext.getELContext();
+	ExpressionFactory exFactory = facesContext.getApplication()
+		.getExpressionFactory();
+	ValueExpression valueExpression = exFactory.createValueExpression(
+		elContext, attr, String.class);
+	return valueExpression.getExpressionString();
     }
 
     @Override
