@@ -123,6 +123,7 @@ public class NavigationData implements Serializable {
         panelGrid.setColumns(1);
         mainContentForm.getChildren().add(panelGrid);
         mainContentForm.getChildren().add(getDialog());
+        mainContentForm.getChildren().add(getDialogForDependentQuestion());
         wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
                 wizardDocument.getFormList());
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
@@ -507,7 +508,7 @@ public class NavigationData implements Serializable {
         header.setValue("Parent Question was redacted");
         Dialog dialog = new Dialog();
         dialog.setHeader("Parent Question was redacted");
-        dialog.setId("dialog");
+        dialog.setId("dialogDependentQuestion");
         dialog.setWidgetVar("dialogDependentQuestion");
         dialog.setModal(true);
         dialog.setResizable(false);
