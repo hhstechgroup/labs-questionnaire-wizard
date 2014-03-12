@@ -309,7 +309,7 @@ public class UIComponentGenerator {
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
 
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
-       // fileUpload.addValidator(new ComponentValidator(question));
+        fileUpload.addValidator(new ComponentValidator(question));
         return fileUpload;
     }
 
