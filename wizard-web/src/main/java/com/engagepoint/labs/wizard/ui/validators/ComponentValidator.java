@@ -1,10 +1,12 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.values.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
+import org.primefaces.context.RequestContext;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -23,9 +25,15 @@ import java.util.List;
 public class ComponentValidator implements Validator {
     private static final boolean VALID = true;
     private final WizardQuestion question;
+    private boolean isParent;
+    private int pageNumber;
+    private int topicNumber;
 
-    public ComponentValidator(final WizardQuestion question) {
+    public ComponentValidator(WizardQuestion question, int pageNumber, int topicNumber, boolean isParent) {
         this.question = question;
+        this.isParent = isParent;
+        this.pageNumber = pageNumber;
+        this.topicNumber = topicNumber;
     }
 
     @Override
@@ -122,7 +130,7 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
-//        question.ruleExecutor.executeAllRulesOnCurrentTopic(question);
+        moveWallIfNecessary();
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {
@@ -261,5 +269,15 @@ public class ComponentValidator implements Validator {
             }
         }
         return uploadFile;
+    }
+
+    private void moveWallIfNecessary() {
+        if (isParent) {
+            WizardLimits.pageLimit = pageNumber;
+            WizardLimits.topicLimit = topicNumber;
+            if (question.getAnswer() != null) {
+                RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
+            }
+        }
     }
 }

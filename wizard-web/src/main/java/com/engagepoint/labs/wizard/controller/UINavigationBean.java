@@ -8,12 +8,16 @@ import com.engagepoint.labs.wizard.questions.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
+import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
+import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
+import super_binding.Rule;
+import super_binding.QType;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -24,13 +28,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("uiNavigationBean")
@@ -211,8 +216,14 @@ public class UINavigationBean implements Serializable {
     public void createQuestions() {
         UIComponentGenerator generator = new UIComponentGenerator();
         WizardForm wizardForm = navigationData.getWizardForm();
+        WizardPage wizardPage = wizardForm.getWizardPageById(navigationData.getCurrentPageID());
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
-        List<Panel> panelList = generator.getPanelList(wizardTopic.getWizardQuestionList());
+        Map<WizardQuestion, Boolean> questionsMap = new LinkedHashMap<>();
+        for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
+            questionsMap.put(question, isQuestionAParent(question));
+        }
+        List<Panel> panelList = generator.getPanelList(questionsMap,
+                wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
         for (Panel panel : navigationData.getPanelList()) {
@@ -242,9 +253,9 @@ public class UINavigationBean implements Serializable {
         WizardForm wizardForm = navigationData.getWizardForm();
         Integer newCurrentPageNumber = wizardForm.getWizardPageById(newCurrentPageID).getPageNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentPageNumber > navigationData.getPageLimit()) {
+        if (newCurrentPageNumber > WizardLimits.pageLimit) {
             return;
-        } else if (currentTopicNumber < navigationData.getTopicLimit()
+        } else if (currentTopicNumber < WizardLimits.topicLimit
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
@@ -273,9 +284,9 @@ public class UINavigationBean implements Serializable {
         WizardForm wizardForm = navigationData.getWizardForm();
         Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(newCurrentTopicID).getTopicNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentTopicNumber > navigationData.getTopicLimit()) {
+        if (newCurrentTopicNumber > WizardLimits.topicLimit) {
             return;
-        } else if (currentTopicNumber < navigationData.getTopicLimit()
+        } else if (currentTopicNumber < WizardLimits.topicLimit
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
@@ -330,22 +341,29 @@ public class UINavigationBean implements Serializable {
     }
 
     public void exportButtonClick() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
-        Date date = new Date();
-        try {
-            FileInputStream fileInputStream = new FileInputStream(navigationData.getExportFile());
-            String fileName = String.format("%s_answers_%s.xml", navigationData.getWizardForm().getFormName(), dateFormat.format(date));
-            fileDownloadController.setFile(new DefaultStreamedContent(fileInputStream, "text/xml", fileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        ArrayList<File> filesForArchive = new ArrayList<>(7);
+        filesForArchive.add(navigationData.getExportFile());
+        List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
+        for (WizardQuestion singleQuestion : allWizardQuestions) {
+            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD))
+                filesForArchive.add((File) singleQuestion.getAnswer().getValue());
         }
+        ArchiverZip.addFilesToZip(filesForArchive);
+        try {
+            FileInputStream zipFileStream = new FileInputStream(ArchiverZip.ZIP_FILE_NAME);
+            fileDownloadController.setFile(new DefaultStreamedContent(zipFileStream, "application/zip", "answer.zip"));
+        } catch (FileNotFoundException e) {
+            System.out.print("ZIP FileNotFound EXCEPTION in exportButtonClick()=========== " + e.getStackTrace());
+        }
+        for (File file : filesForArchive)
+            file.delete();
     }
 
     public void previousButtonClick() {
         Integer newCurrentTopicNumber = navigationData.getWizardForm()
                 .getWizardTopicById(navigationData.getCurrentTopicID())
                 .getTopicNumber();
-        if (newCurrentTopicNumber != navigationData.getTopicLimit()) {
+        if (newCurrentTopicNumber != WizardLimits.topicLimit) {
             if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
                 RequestContext.getCurrentInstance().execute("dialog.show()");
                 return;
@@ -383,7 +401,7 @@ public class UINavigationBean implements Serializable {
                 }
                 pageMenuItem.setStyleClass(styleClass);
             } else {
-                if (pageIndex > (navigationData.getPageLimit() - 1)) {
+                if (pageIndex > (WizardLimits.pageLimit - 1)) {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
                     pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
@@ -441,8 +459,7 @@ public class UINavigationBean implements Serializable {
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-
-                if (topic.getTopicNumber() > navigationData.getTopicLimit()) {
+                if (topic.getTopicNumber() > WizardLimits.topicLimit) {
                     item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
                     item.setStyleClass("");
@@ -454,15 +471,11 @@ public class UINavigationBean implements Serializable {
     public void executeAllRulesOnCurrentTopic() {
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
-        for (int i = 0; i < 2; i++) {
-            for (WizardQuestion question : wizardTopicById.getWizardQuestionList()) {
-                boolean needToChangeLimits = question.executeAllRules();
-                System.out.println("+++++++++ From navbean, id= " + question.getId() + "++++++++");
-                if (needToChangeLimits) {
-                    navigationData.setTopicLimit(wizardTopicById.getTopicNumber());
-                    navigationData.setPageLimit(navigationData.getWizardForm().getWizardPageById(
-                            navigationData.getCurrentPageID()).getPageNumber());
-                }
+        for (int i = 0; i < wizardTopicById.getWizardQuestionList().size(); i++) {
+            WizardQuestion question = wizardTopicById.getWizardQuestionList().get(i);
+            boolean isChanged = question.executeAllRules();
+            if (isChanged) {
+                i = -1;
             }
         }
     }
@@ -471,5 +484,39 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
             question.setRuleExecutor(new RuleExecutor(navigationData.getWizardForm()));
         }
+    }
+
+    private boolean isQuestionAParent(WizardQuestion currentQuestion) {
+        boolean isParent = false;
+        loop:
+        for (WizardPage wizardPage : navigationData.getWizardForm().getWizardPageList()) {
+            if (wizardPage.getPageNumber() > WizardLimits.pageLimit || isParent) {
+                break loop;
+            }
+            for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
+                if (wizardTopic.getTopicNumber() > WizardLimits.topicLimit || isParent) {
+                    break loop;
+                }
+                for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
+                    if (wizardQuestion.getRules() != null) {
+                        isParent = compareParentsIdAndCurrentQuestionId(wizardQuestion.getRules(), currentQuestion.getId());
+                    }
+                    if (isParent) {
+                        break loop;
+                    }
+                }
+            }
+        }
+        return isParent;
+    }
+
+    private boolean compareParentsIdAndCurrentQuestionId(List<Rule> ruleList, String questionId) {
+        boolean match = false;
+        for (Rule rule : ruleList) {
+            if (rule.getParentId().equals(questionId)) {
+                match = true;
+            }
+        }
+        return match;
     }
 }

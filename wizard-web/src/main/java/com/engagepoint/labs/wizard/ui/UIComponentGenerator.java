@@ -26,23 +26,29 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by igor.guzenko on 2/11/14.
  */
 public class UIComponentGenerator {
     private static int MAXIMUM_SIZE_FILE_ANSWER = 1024 * 1024 * 100;
-
     private Panel panel;
     private final int ONE_SELECT_ITEM_HEIGHT = 20;
+    private boolean isParent;
+    private int pageNumber;
+    private int topicNumber;
 
     public UIComponentGenerator() {
     }
 
-    public List<Panel> getPanelList(List<WizardQuestion> wizardQuestionList) {
+    public List<Panel> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
+        this.pageNumber = pageNumber;
+        this.topicNumber = topicNumber;
         List<Panel> panelList = new ArrayList<>();
-        for (WizardQuestion question : wizardQuestionList) {
-            panelList.add(analyzeQuestion(question));
+        for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap.entrySet()) {
+            isParent = entry.getValue();
+            panelList.add(analyzeQuestion(entry.getKey()));
         }
         return panelList;
     }
@@ -59,8 +65,6 @@ public class UIComponentGenerator {
         UIComponent component = null;
         Value answer = question.getAnswer();
         Value defaultAnswer = question.getDefaultAnswer();
-
-
         switch (question.getQuestionType()) {
             case TEXT:
                 component = getInputText(question, answer, defaultAnswer);
@@ -85,7 +89,6 @@ public class UIComponentGenerator {
                 component = getTime(question, answer, defaultAnswer);
                 break;
             case RANGE:
-
                 component = getSlider(question, answer, defaultAnswer);
                 break;
             case FILEUPLOAD:
@@ -93,7 +96,6 @@ public class UIComponentGenerator {
                 panel.getChildren().add(getHtmlText());
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
-
                 break;
             case GRID:
                 // to do
@@ -122,7 +124,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
-        selectOneListBox.addValidator(new ComponentValidator(question));
+        selectOneListBox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -138,7 +140,7 @@ public class UIComponentGenerator {
         InputText inputText = new InputText();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputText.addValidator(new ComponentValidator(question));
+        inputText.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -154,7 +156,7 @@ public class UIComponentGenerator {
         InputTextarea inputTextarea = new InputTextarea();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputTextarea.addValidator(new ComponentValidator(question));
+        inputTextarea.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -180,7 +182,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
-        selectOneMenu.addValidator(new ComponentValidator(question));
+        selectOneMenu.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         if (defaultAnswer != null && answer == null) {
@@ -200,7 +202,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
-        checkbox.addValidator(new ComponentValidator(question));
+        checkbox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -222,7 +224,7 @@ public class UIComponentGenerator {
         dateCalendar.setShowOn("both");
         dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
         dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        dateCalendar.addValidator(new ComponentValidator(question));
+        dateCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         dateCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -244,7 +246,7 @@ public class UIComponentGenerator {
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
 //        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        timeCalendar.addValidator(new ComponentValidator(question));
+        timeCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -311,8 +313,9 @@ public class UIComponentGenerator {
         HtmlInputFile fileUpload = new HtmlInputFile();
         fileUpload.setValue("#{fileUploadController.file}");
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
+
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
-        fileUpload.addValidator(new ComponentValidator(question));
+        fileUpload.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
         return fileUpload;
     }
 

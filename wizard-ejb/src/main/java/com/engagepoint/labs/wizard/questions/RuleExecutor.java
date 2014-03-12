@@ -30,7 +30,7 @@ public class RuleExecutor implements Serializable {
     }
 
     public boolean renderedRule(String parentID, String[] expectedAnswer) {
-        boolean changeLimit = false;
+        boolean change = false;
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
@@ -55,30 +55,20 @@ public class RuleExecutor implements Serializable {
             }
         }
         if (show) {
+            if (!isAlreadyShowing) {
+                change = true;
+            }
             showQuestionPanel(panel);
             isAlreadyShowing = true;
         } else {
-            hideQuestionPanel(panel);
             if (isAlreadyShowing) {
-                changeLimit = true;
-                resetComponentValue();
-                isAlreadyShowing = false;
+                change = true;
             }
+            hideQuestionPanel(panel);
+            isAlreadyShowing = false;
+            resetComponentValue();
         }
-//        changeLimit = true;
-        return changeLimit;
-    }
-
-    public boolean executeAllRulesOnCurrentTopic(WizardQuestion question) {
-        boolean changeLimit = false;
-        WizardTopic topic = form.findWizardTopicByQuestionId(question.getId());
-        for (WizardQuestion wizardQuestion : topic.getWizardQuestionList()) {
-            boolean needToChange = wizardQuestion.executeAllRules();
-            if (needToChange) {
-                changeLimit = true;
-            }
-        }
-        return changeLimit;
+        return change;
     }
 
     public WizardQuestion getQuestion() {
