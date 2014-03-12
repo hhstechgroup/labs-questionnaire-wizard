@@ -220,7 +220,6 @@ public class UINavigationBean implements Serializable {
         RequestContext.getCurrentInstance().update("maincontentid-j_id1");
         RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
         RequestContext.getCurrentInstance().update("navigationButtonsForm-btnsDiv");
-
     }
 
     private int getPageCount() {

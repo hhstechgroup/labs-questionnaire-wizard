@@ -96,11 +96,15 @@
 
 #j_idt18 {
 	padding: 30px;
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 	overflow-x: hidden;
 }
 
 #maincontentid-j_id1 {
-	position: relative;
+    position: relative;
 	padding-bottom: 70px;
+}
+.maincontentid-scroll{
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
