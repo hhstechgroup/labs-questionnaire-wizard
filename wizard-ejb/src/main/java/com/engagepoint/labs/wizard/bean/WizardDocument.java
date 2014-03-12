@@ -23,7 +23,7 @@ public class WizardDocument {
 	this.formList = formList;
     }
 
-    public void getWizardFormByID(String formID, WizardForm cdiWizardForm, List<WizardForm> formList) {
+    public void findWizardFormByID(String formID, WizardForm cdiWizardForm, List<WizardForm> formList) {
 	if (cdiWizardForm != null) {
 	    this.formList = formList;
 	    for (int i = 0; i < formList.size(); i++) {
