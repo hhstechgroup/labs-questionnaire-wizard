@@ -144,9 +144,14 @@ public class UIComponentGenerator {
 	grid.setId(gridID);
 	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
-	HtmlInputHidden hiddenInput = new HtmlInputHidden();
+	InputText hiddenInput = new InputText();
 	String hiddenInputID = "_gridValidator_" + gridID;
 	hiddenInput.setId(hiddenInputID);
+	hiddenInput.setType("hidden");
+
+	hiddenInput.addValidator(new ComponentValidator(question, pageNumber,
+		topicNumber, isParent));
+	hiddenInput.addClientBehavior("valueChange", getAjaxBehavior(question));
 
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
