@@ -13,26 +13,30 @@ public class DataGridHandler implements Serializable {
 
     private static final long serialVersionUID = -1066387551691144085L;
 
-    private ArrayList<String> dataList;
+    private ArrayList<DataGridStoreObject> grids;
 
     @PostConstruct
     public void init() {
-	dataList = new ArrayList<String>();
-
-	dataList.add("sadad");
-	dataList.add("sadwdwdad");
-	dataList.add("saddad");
-	dataList.add("sadsdad");
-	dataList.add("ssdadad");
-	dataList.add("sadsddad");
-	dataList.add("sadssdad");
+	grids=new ArrayList<DataGridStoreObject>();
     }
 
-    public ArrayList<String> getDataList() {
-	return dataList;
+    public ArrayList<DataGridStoreObject> getGrids() {
+	return grids;
     }
 
-    public void setDataList(ArrayList<String> dataList) {
-	this.dataList = dataList;
+    public void setGrids(ArrayList<DataGridStoreObject> grids) {
+	this.grids = grids;
+    }
+
+    public ArrayList<String> getGridByID(String id)
+    {
+	for(DataGridStoreObject dataGridObject:grids)
+	{
+	    if(dataGridObject.getDataGridID().equals(id))
+	    {
+		return dataGridObject.getDataGridItems();
+	    }
+	}
+	return null;
     }
 }

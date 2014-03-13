@@ -1,5 +1,7 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.labs.wizard.handler.DataGridHandler;
+import com.engagepoint.labs.wizard.handler.DataGridStoreObject;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
@@ -16,7 +18,9 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
+import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.slider.Slider;
 
 import javax.el.ELContext;
@@ -28,6 +32,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,24 +49,25 @@ public class UIComponentGenerator {
     private int pageNumber;
     private int topicNumber;
 
+
     public UIComponentGenerator() {
     }
 
     public List<Panel> getPanelList(
 	    Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber,
-	    int topicNumber) {
+	    int topicNumber, DataGridHandler gridHandler) {
 	this.pageNumber = pageNumber;
 	this.topicNumber = topicNumber;
 	List<Panel> panelList = new ArrayList<>();
 	for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap
 		.entrySet()) {
 	    isParent = entry.getValue();
-	    panelList.add(analyzeQuestion(entry.getKey()));
+	    panelList.add(analyzeQuestion(entry.getKey(), gridHandler));
 	}
 	return panelList;
     }
 
-    private Panel analyzeQuestion(WizardQuestion question) {
+    private Panel analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler) {
 	panel = new Panel();
 	panel.setWidgetVar("panel_" + question.getId());
 	panel.setClosable(true);
@@ -107,7 +113,7 @@ public class UIComponentGenerator {
 	    break;
 	case GRID:
 	    // to do
-	    component = getGrid(question, answer, defaultAnswer);
+	    component = getGrid(question, answer, defaultAnswer, gridHandler);
 	    break;
 	}
 	component.setId(question.getId());
@@ -116,30 +122,66 @@ public class UIComponentGenerator {
     }
 
     private DataGrid getGrid(WizardQuestion question, Value answer,
-	    Value defaultAnswer) {
+	    Value defaultAnswer, DataGridHandler gridHandler) {
 	DataGrid grid = new DataGrid();
-	int col = 3;
-	int row = 5;
-	grid.setColumns(col);
-	grid.setRows(row);
-	ArrayList<CommandButton> arrButt = new ArrayList<CommandButton>();
-	for (int i = 0; i < col; i++) {
-	    for (int j = 0; j < row; j++) {
-		CommandButton btn = new CommandButton();
-		btn.setValue(i + " " + j);
-		arrButt.add(btn);
+	GridQuestion gridQuestion = (GridQuestion) question;
+	ArrayList<String> columns = (ArrayList<String>) gridQuestion
+		.getColumns();
+	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
+	grid.setColumns(columns.size());
+	grid.setRows(rows.size());
+
+	ArrayList<String> radioStrings=new ArrayList<String>();
+	for (int i = 0; i < columns.size(); i++) {
+	    for (int j = 0; j < rows.size(); j++) {
+		radioStrings.add(i+" "+j);
 	    }
 	}
+
+	gridHandler.getGrids().add(new DataGridStoreObject(gridQuestion.getId(), radioStrings));
+
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	ELContext elContext = facesContext.getELContext();
 	ExpressionFactory expressionFactory = facesContext.getApplication()
 		.getExpressionFactory();
 	grid.setValueExpression("value", expressionFactory
-		.createValueExpression(elContext,
-			"#{dataGridHandler.dataList}", Object.class));
-	grid.setVar("car");
-	Panel pnl=new Panel();
-	pnl.setHeader("car");
+		.createValueExpression(
+			elContext,
+			"#{dataGridHandler.getGridByID(\""
+				+ gridQuestion.getId() + "\")}", Object.class));
+	grid.setVar("item");
+	Panel pnl = new Panel();
+	SelectOneRadio selectOneRadio=new SelectOneRadio();
+	selectOneRadio.setId("mgbutt");
+
+	RadioButton btn1=new RadioButton();
+	RadioButton btn2=new RadioButton();
+
+	SelectItem itm1=new SelectItem();
+	SelectItem itm2=new SelectItem();
+
+	itm1.setLabel("Val1");
+	itm2.setLabel("Val2");
+
+	itm1.setValue(1);
+	itm2.setValue(2);
+
+
+	btn1.setFor("mgbutt");
+	btn2.setFor("mgbutt");
+
+	btn1.setId("ww");
+	btn2.setId("ddd");
+
+	btn1.setItemIndex(0);
+	btn2.setItemIndex(1);
+
+	selectOneRadio.setSelectItems(new ArrayList<SelectItem>());
+	selectOneRadio.getSelectItems().add(itm1);
+	selectOneRadio.getSelectItems().add(itm2);
+	pnl.getChildren().add(selectOneRadio);
+	pnl.getChildren().add(btn1);
+	pnl.getChildren().add(btn2);
 	grid.getChildren().add(pnl);
 	return grid;
     }

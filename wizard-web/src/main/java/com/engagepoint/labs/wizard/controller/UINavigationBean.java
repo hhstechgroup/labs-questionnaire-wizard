@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.controller;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
+import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.model.NavigationData;
 import com.engagepoint.labs.wizard.questions.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
@@ -12,10 +13,12 @@ import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
+
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
+
 import super_binding.Rule;
 import super_binding.QType;
 
@@ -28,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,8 +39,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named("uiNavigationBean")
 @SessionScoped
@@ -54,6 +56,8 @@ public class UINavigationBean implements Serializable {
     private NavigationData navigationData;
     @Inject
     private FileDownloadController fileDownloadController;
+    @Inject
+    DataGridHandler gridHandler;
     /**
      * contains all of the per-request state information related to the
      * processing of a single JavaServer Faces request, and the rendering of the
@@ -232,7 +236,7 @@ public class UINavigationBean implements Serializable {
 	    questionsMap.put(question, isQuestionAParent(question));
 	}
 	List<Panel> panelList = generator.getPanelList(questionsMap,
-		wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
+		wizardPage.getPageNumber(), wizardTopic.getTopicNumber(), gridHandler);
 	navigationData.setPanelList(panelList);
 	navigationData.getPanelGrid().getChildren().clear();
 	for (Panel panel : navigationData.getPanelList()) {
