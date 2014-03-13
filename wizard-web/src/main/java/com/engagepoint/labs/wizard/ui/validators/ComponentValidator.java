@@ -6,6 +6,7 @@ import com.engagepoint.labs.wizard.values.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
+import org.primefaces.context.RequestContext;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -274,6 +275,9 @@ public class ComponentValidator implements Validator {
         if (isParent) {
             WizardLimits.pageLimit = pageNumber;
             WizardLimits.topicLimit = topicNumber;
+            if (question.getAnswer() != null) {
+                RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
+            }
         }
     }
 }

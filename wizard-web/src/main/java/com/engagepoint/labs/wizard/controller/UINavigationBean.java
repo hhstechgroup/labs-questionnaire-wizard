@@ -487,18 +487,21 @@ public class UINavigationBean implements Serializable {
 
     private boolean isQuestionAParent(WizardQuestion currentQuestion) {
         boolean isParent = false;
+        loop:
         for (WizardPage wizardPage : navigationData.getWizardForm().getWizardPageList()) {
             if (wizardPage.getPageNumber() > WizardLimits.pageLimit || isParent) {
-                return false;
+                break loop;
             }
             for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
                 if (wizardTopic.getTopicNumber() > WizardLimits.topicLimit || isParent) {
-                    return false;
+                    break loop;
                 }
                 for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
                     if (wizardQuestion.getRules() != null) {
                         isParent = compareParentsIdAndCurrentQuestionId(wizardQuestion.getRules(), currentQuestion.getId());
-                        System.out.println("*********** IS PARENT = " + isParent + "; QID = " + wizardQuestion.getId() + " *************");
+                    }
+                    if (isParent) {
+                        break loop;
                     }
                 }
             }
