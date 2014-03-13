@@ -151,8 +151,16 @@ public class UIComponentGenerator {
 				+ gridQuestion.getId() + "\")}", Object.class));
 	grid.setVar("item");
 	Panel pnl = new Panel();
+
+	pnl.setValueExpression("header", expressionFactory
+		.createValueExpression(
+			elContext,
+			"#{item}", Object.class));
+
 	SelectOneRadio selectOneRadio=new SelectOneRadio();
 	selectOneRadio.setId("mgbutt");
+//	selectOneRadio.setLayout("custom");
+	selectOneRadio.setValue("1");
 
 	RadioButton btn1=new RadioButton();
 	RadioButton btn2=new RadioButton();
@@ -163,8 +171,8 @@ public class UIComponentGenerator {
 	itm1.setLabel("Val1");
 	itm2.setLabel("Val2");
 
-	itm1.setValue(1);
-	itm2.setValue(2);
+	itm1.setValue("1");
+	itm2.setValue("2");
 
 
 	btn1.setFor("mgbutt");
@@ -175,6 +183,7 @@ public class UIComponentGenerator {
 
 	btn1.setItemIndex(0);
 	btn2.setItemIndex(1);
+
 
 	selectOneRadio.setSelectItems(new ArrayList<SelectItem>());
 	selectOneRadio.getSelectItems().add(itm1);
