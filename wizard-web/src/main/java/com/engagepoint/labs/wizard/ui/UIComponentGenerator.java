@@ -20,7 +20,9 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.radiobutton.RadioButton;
+import org.primefaces.component.row.Row;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
@@ -125,40 +127,66 @@ public class UIComponentGenerator {
 	return panel;
     }
 
-    private DataGrid getGrid(WizardQuestion question, Value answer,
+    private PanelGrid getGrid(WizardQuestion question, Value answer,
 	    Value defaultAnswer, DataGridHandler gridHandler) {
-	DataGrid grid = new DataGrid();
+	PanelGrid grid = new PanelGrid();
 	GridQuestion gridQuestion = (GridQuestion) question;
 	ArrayList<String> columns = (ArrayList<String>) gridQuestion
 		.getColumns();
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
-	grid.setColumns(columns.size());
-	grid.setRows(rows.size() * columns.size());
+	int rowsNumber = rows.size() + 1;
+	int colsNumber = columns.size() + 1;
+	grid.setColumns(colsNumber);
 
-	ArrayList<String> radioStrings = new ArrayList<String>();
-	for (int i = 0; i < columns.size(); i++) {
-	    for (int j = 0; j < rows.size(); j++) {
-		radioStrings.add(i + " " + j);
+	// grid.getChildren().add(new Row());
+	// for (int j = 0; j < columns.size(); j++) {
+	// Row colName = new Row();
+	// HtmlOutputText txt = new HtmlOutputText();
+	// txt.setValue(columns.get(j));
+	// colName.getChildren().add(txt);
+	// grid.getChildren().add(colName);
+	// }
+	//
+	// grid.getFacets().put("header", rowHead);
+	//
+	// for (int i = 0; i < rows.size() * columns.size(); i++) {
+	// Row row = new Row();
+	// Column col = new Column();
+	// SelectBooleanCheckbox chk = new SelectBooleanCheckbox();
+	// col.getChildren().add(chk);
+	// row.getChildren().add(col);
+	// grid.getChildren().add(row);
+	// }
+	for (int row = 0; row < rowsNumber; row++) {
+	    for (int col = 0; col < colsNumber; col++) {
+		Row cell = new Row();
+		if (row == 0 && col == 0) {
+		    grid.getChildren().add(cell);
+		    continue;
+		}
+		if (row == 0) {
+		    HtmlOutputText colName = new HtmlOutputText();
+		    colName.setValue(columns.get(col - 1));
+		    cell.getChildren().add(colName);
+		    grid.getChildren().add(cell);
+		    continue;
+		}
+		if (row != 0 && col == 0) {
+		    HtmlOutputText rowName = new HtmlOutputText();
+		    rowName.setValue(rows.get(row - 1));
+		    cell.getChildren().add(rowName);
+		    grid.getChildren().add(cell);
+		    continue;
+		}
+		if (row != 0 && col != 0) {
+		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
+		    cell.getChildren().add(checkbox);
+		    grid.getChildren().add(cell);
+		    continue;
+		}
 	    }
 	}
 
-	gridHandler.getGrids().add(
-		new DataGridStoreObject(gridQuestion.getId(), radioStrings));
-
-	FacesContext facesContext = FacesContext.getCurrentInstance();
-	ELContext elContext = facesContext.getELContext();
-	ExpressionFactory expressionFactory = facesContext.getApplication()
-		.getExpressionFactory();
-	grid.setValueExpression("value", expressionFactory
-		.createValueExpression(
-			elContext,
-			"#{dataGridHandler.getGridByID(\""
-				+ gridQuestion.getId() + "\")}", Object.class));
-	grid.setVar("item");
-
-
-	SelectBooleanCheckbox chk=new SelectBooleanCheckbox();
-	grid.getChildren().add(chk);
 	return grid;
     }
 
