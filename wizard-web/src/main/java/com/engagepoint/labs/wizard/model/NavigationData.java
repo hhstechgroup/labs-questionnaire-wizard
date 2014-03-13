@@ -498,6 +498,7 @@ public class NavigationData implements Serializable {
         dialog.getChildren().add(message);
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
+        dialog.setDraggable(false);
         return dialog;
     }
 
@@ -506,6 +507,7 @@ public class NavigationData implements Serializable {
         message.setValue("Parent Question was redacted !");
         OutputLabel header = new OutputLabel();
         header.setValue("Parent Question was redacted");
+        header.setStyle("color:#0075AC !important");
         Dialog dialog = new Dialog();
         dialog.setHeader("Parent Question was redacted");
         dialog.setId("dialogDependentQuestion");

@@ -25,6 +25,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -128,11 +129,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
-        if (isParent) {
-            selectOneListBox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            selectOneListBox.addValidator(new ComponentValidator(question));
-        }
+        selectOneListBox.addValidator(getComponentValidator(question));
         selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -148,13 +145,8 @@ public class UIComponentGenerator {
         InputText inputText = new InputText();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        if (isParent) {
-            inputText.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            inputText.addValidator(new ComponentValidator(question));
-        }
+        inputText.addValidator(getComponentValidator(question));
         inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
-
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
@@ -168,11 +160,7 @@ public class UIComponentGenerator {
         InputTextarea inputTextarea = new InputTextarea();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        if (isParent) {
-            inputTextarea.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            inputTextarea.addValidator(new ComponentValidator(question));
-        }
+        inputTextarea.addValidator(getComponentValidator(question));
         inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -198,11 +186,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
-        if (isParent) {
-            selectOneMenu.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            selectOneMenu.addValidator(new ComponentValidator(question));
-        }
+        selectOneMenu.addValidator(getComponentValidator(question));
         selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         if (defaultAnswer != null && answer == null) {
@@ -222,11 +206,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
-        if (isParent) {
-            checkbox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            checkbox.addValidator(new ComponentValidator(question));
-        }
+        checkbox.addValidator(getComponentValidator(question));
         checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -248,11 +228,7 @@ public class UIComponentGenerator {
         dateCalendar.setShowOn("both");
         dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
         dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        if (isParent) {
-            dateCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            dateCalendar.addValidator(new ComponentValidator(question));
-        }
+        dateCalendar.addValidator(getComponentValidator(question));
         dateCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -274,11 +250,7 @@ public class UIComponentGenerator {
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
 //        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        if (isParent) {
-            timeCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            timeCalendar.addValidator(new ComponentValidator(question));
-        }
+        timeCalendar.addValidator(getComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -323,6 +295,12 @@ public class UIComponentGenerator {
             outputText.setStyle("color:red");
             label.getChildren().add(outputText);
         }
+        if (isParent) {
+            HtmlOutputText outputText = new HtmlOutputText();
+            outputText.setValue(" *");
+            outputText.setStyle("color:#00CC00");
+            label.getChildren().add(outputText);
+        }
         label.getChildren().add(getButtonTooltip(question));
         return label;
     }
@@ -347,11 +325,7 @@ public class UIComponentGenerator {
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
 
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
-        if (isParent) {
-            fileUpload.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean));
-        } else {
-            fileUpload.addValidator(new ComponentValidator(question));
-        }
+        fileUpload.addValidator(getComponentValidator(question));
         return fileUpload;
     }
 
@@ -383,5 +357,13 @@ public class UIComponentGenerator {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getApplication().getExpressionFactory().createMethodExpression(
                 facesContext.getELContext(), expression, returnType, parameterTypes);
+    }
+
+    private Validator getComponentValidator(WizardQuestion question) {
+        if (isParent) {
+            return new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean);
+        } else {
+            return new ComponentValidator(question);
+        }
     }
 }
