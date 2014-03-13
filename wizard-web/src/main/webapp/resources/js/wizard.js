@@ -1,3 +1,3 @@
-function wizardDataGridHandler() {
-	alert("Hello World!");
+function wizardDataGridHandler(cellID) {
+	alert(cellID);
 }
