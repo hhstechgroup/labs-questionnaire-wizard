@@ -129,7 +129,7 @@ public class UIComponentGenerator {
 		.getColumns();
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
 	grid.setColumns(columns.size());
-	grid.setRows(rows.size());
+	grid.setRows(rows.size()*columns.size());
 
 	ArrayList<String> radioStrings=new ArrayList<String>();
 	for (int i = 0; i < columns.size(); i++) {
