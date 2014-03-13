@@ -10,6 +10,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlInputFile;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -143,11 +144,15 @@ public class UIComponentGenerator {
 	grid.setId(gridID);
 	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
+	HtmlInputHidden hiddenInput=new HtmlInputHidden();
+	hiddenInput.setId(gridID+"_validator");
+
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
 		if (row == 0 && col == 0) {
+		    cell.getChildren().add(hiddenInput);
 		    grid.getChildren().add(cell);
 		    continue;
 		}
@@ -176,12 +181,9 @@ public class UIComponentGenerator {
 		    ExpressionFactory expressionFactory = facesContext
 			    .getApplication().getExpressionFactory();
 		    checkbox.setOnchange(expressionFactory
-			    .createValueExpression(
-				    elContext,
-				    "#{dataGridHandler.getGridByID(\"" + gridID
-					    + "\").get(" + checkBoxCellNumber
-					    + ")}", Object.class)
-			    .getExpressionString());
+			    .createValueExpression(elContext,
+				    "alert(" + checkBoxCellNumber + ")",
+				    Object.class).getExpressionString());
 
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);
