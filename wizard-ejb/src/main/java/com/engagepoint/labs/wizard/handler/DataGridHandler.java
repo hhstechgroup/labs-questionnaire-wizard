@@ -17,9 +17,13 @@ public class DataGridHandler implements Serializable {
 
     private ArrayList<DataGridStoreObject> grids;
 
+    public DataGridHandler() {
+	grids = new ArrayList<DataGridStoreObject>();
+    }
+
     @PostConstruct
     public void init() {
-	grids=new ArrayList<DataGridStoreObject>();
+	grids = new ArrayList<DataGridStoreObject>();
     }
 
     public ArrayList<DataGridStoreObject> getGrids() {
@@ -30,15 +34,14 @@ public class DataGridHandler implements Serializable {
 	this.grids = grids;
     }
 
-    public ArrayList<SelectBooleanCheckbox> getGridByID(String id)
-    {
-	for(DataGridStoreObject dataGridObject:grids)
-	{
-	    if(dataGridObject.getDataGridID().equals(id))
-	    {
-		return dataGridObject.getDataGridItems();
+    public ArrayList<SelectBooleanCheckbox> getGridByID(String id) {
+	ArrayList<SelectBooleanCheckbox> dataGrid = null;
+	for (DataGridStoreObject dataGridObject : grids) {
+	    if (dataGridObject.getDataGridID().equals(id)) {
+		dataGrid = dataGridObject.getDataGridItems();
+		break;
 	    }
 	}
-	return null;
+	return dataGrid;
     }
 }

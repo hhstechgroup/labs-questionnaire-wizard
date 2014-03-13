@@ -22,6 +22,9 @@ public class DataGridStoreObject {
     }
 
     public ArrayList<SelectBooleanCheckbox> getDataGridItems() {
+	if (dataGridItems == null) {
+	    dataGridItems = new ArrayList<SelectBooleanCheckbox>();
+	}
 	return dataGridItems;
     }
 

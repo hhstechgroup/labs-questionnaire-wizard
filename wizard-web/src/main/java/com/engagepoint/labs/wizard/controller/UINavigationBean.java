@@ -1,5 +1,31 @@
 package com.engagepoint.labs.wizard.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+
+import super_binding.QType;
+import super_binding.Rule;
+
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
@@ -13,32 +39,6 @@ import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
-
-import super_binding.Rule;
-import super_binding.QType;
-
-import javax.annotation.PostConstruct;
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @Named("uiNavigationBean")
 @SessionScoped
@@ -57,7 +57,7 @@ public class UINavigationBean implements Serializable {
     @Inject
     private FileDownloadController fileDownloadController;
     @Inject
-    DataGridHandler gridHandler;
+    private DataGridHandler gridHandler;
     /**
      * contains all of the per-request state information related to the
      * processing of a single JavaServer Faces request, and the rendering of the
