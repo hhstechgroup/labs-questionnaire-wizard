@@ -16,27 +16,27 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-import super_binding.Rule;
 import super_binding.QType;
+import super_binding.Rule;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named("uiNavigationBean")
 @SessionScoped
@@ -229,6 +229,10 @@ public class UINavigationBean implements Serializable {
         for (Panel panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
+        HtmlForm form = navigationData.getMainContentForm();
+        UIComponent scrollableDiv = form.findComponent("scrollableDiv");
+        scrollableDiv.getAttributes().put("styleClass", navigationData.getMainContentFormStyle());
+        RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
         RequestContext.getCurrentInstance().update("maincontentid-j_id1");
         RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
         RequestContext.getCurrentInstance().update("navigationButtonsForm-btnsDiv");

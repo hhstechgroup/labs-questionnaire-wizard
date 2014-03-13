@@ -18,6 +18,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by igor.guzenko on 2/26/14.
@@ -28,6 +29,7 @@ public class ComponentValidator implements Validator {
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
+    private Set<WizardQuestion> questionSet;
 
     public ComponentValidator(WizardQuestion question, int pageNumber, int topicNumber, boolean isParent) {
         this.question = question;

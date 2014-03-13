@@ -16,8 +16,8 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
@@ -70,9 +70,9 @@ public class NavigationData implements Serializable {
     private boolean isFirstPage = true;
     private boolean isFirstTopic = true;
     private boolean previousButtonRendered;
-
     private HtmlForm sliderForm;
     private String mainContentFormStyle;
+    private HtmlPanelGroup scrollablePanelGroup;
 
     /**
      * Method parses our XML's. Created because out first page must know the
@@ -123,7 +123,12 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
-        mainContentForm.getChildren().add(panelGrid);
+        scrollablePanelGroup = new HtmlPanelGroup();
+        scrollablePanelGroup.setLayout("block");
+        scrollablePanelGroup.setId("scrollableDiv");
+        scrollablePanelGroup.getChildren().add(panelGrid);
+        //mainContentForm.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(scrollablePanelGroup);
         mainContentForm.getChildren().add(getDialog());
         mainContentForm.getChildren().add(getDialogForDependentQuestion());
         wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
@@ -131,8 +136,8 @@ public class NavigationData implements Serializable {
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
                 .getTopicList().get(0).getId();
-        currentTopicIDs = new ArrayList<String>();
-        currentTopicTitles = new ArrayList<String>();
+        currentTopicIDs = new ArrayList<>();
+        currentTopicTitles = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
         WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
@@ -316,13 +321,6 @@ public class NavigationData implements Serializable {
     }
 
     public HtmlForm getMainContentForm() {
-
-            UIComponent component = mainContentForm.findComponent("maincontentid");
-            if(component!=null){
-                component.getAttributes().put("styleClass",this.getMainContentFormStyle());
-            }
-
-
         return mainContentForm;
     }
 
@@ -544,11 +542,16 @@ public class NavigationData implements Serializable {
     }
 
     public String getMainContentFormStyle() {
-        if(wizardForm.getWizardTopicById(currentTopicID).getWizardQuestionList().size()>5){
-            setMainContentFormStyle("maincontentid-scroll");}
-        else {
+        if (panelList != null) {
+            if (panelList.size() > 4) {
+                setMainContentFormStyle("maincontentid-scroll");
+            } else {
+                setMainContentFormStyle("maincontentid-non-scroll");
+            }
+        } else {
             setMainContentFormStyle("maincontentid-non-scroll");
         }
+
         return mainContentFormStyle;
     }
 
