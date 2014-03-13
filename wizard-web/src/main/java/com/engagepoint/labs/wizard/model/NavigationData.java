@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
@@ -63,7 +64,7 @@ public class NavigationData implements Serializable {
     private MenuModel menuModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
-    private List<Panel> panelList;
+    private List<UIComponent> panelList;
     private List<Button> buttonsList;
     private PanelGrid panelGrid;
     private boolean finishButtonRendered;
@@ -384,11 +385,11 @@ public class NavigationData implements Serializable {
         this.currentTopicTitle = currentTopicTitle;
     }
 
-    public List<Panel> getPanelList() {
+    public List<UIComponent> getPanelList() {
         return panelList;
     }
 
-    public void setPanelList(List<Panel> panelList) {
+    public void setPanelList(List<UIComponent> panelList) {
         this.panelList = panelList;
     }
 
@@ -505,6 +506,7 @@ public class NavigationData implements Serializable {
         dialog.getChildren().add(message);
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
+        dialog.setDraggable(false);
         return dialog;
     }
 
@@ -513,6 +515,7 @@ public class NavigationData implements Serializable {
         message.setValue("Parent Question was redacted !");
         OutputLabel header = new OutputLabel();
         header.setValue("Parent Question was redacted");
+        header.setStyle("color:#0075AC !important");
         Dialog dialog = new Dialog();
         dialog.setHeader("Parent Question was redacted");
         dialog.setId("dialogDependentQuestion");

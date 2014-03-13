@@ -16,8 +16,9 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-import super_binding.QType;
 import super_binding.Rule;
+import super_binding.QType;
+
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -26,6 +27,7 @@ import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -222,11 +224,11 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
             questionsMap.put(question, isQuestionAParent(question));
         }
-        List<Panel> panelList = generator.getPanelList(questionsMap,
+        List<UIComponent> panelList = generator.getPanelList(questionsMap,
                 wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
-        for (Panel panel : navigationData.getPanelList()) {
+        for (UIComponent panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
         HtmlForm form = navigationData.getMainContentForm();
@@ -386,7 +388,7 @@ public class UINavigationBean implements Serializable {
      *
      * @param styleClass style class from CSS file
      */
-    private void changeStyleOfCurrentPageButton(String styleClass) {
+    public void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
         WizardPage wizardPage;
         MenuItem pageMenuItem;
@@ -450,7 +452,7 @@ public class UINavigationBean implements Serializable {
         return wizardTopic.getWizardQuestionList();
     }
 
-    private void changeStyleOfCurrentTopicButton(String styleClass) {
+    public void changeStyleOfCurrentTopicButton(String styleClass) {
         List<WizardTopic> topicList = navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;

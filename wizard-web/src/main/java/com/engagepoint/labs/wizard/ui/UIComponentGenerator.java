@@ -1,10 +1,12 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
 import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
@@ -17,9 +19,11 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
+import super_binding.QType;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlInputFile;
 import javax.faces.component.html.HtmlOutputText;
@@ -27,6 +31,7 @@ import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,19 +41,23 @@ import java.util.Map;
  */
 public class UIComponentGenerator {
     private static int MAXIMUM_SIZE_FILE_ANSWER = 1024 * 1024 * 100;
-    private Panel panel;
+    private UIPanel panel;
     private final int ONE_SELECT_ITEM_HEIGHT = 20;
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
+    private UINavigationBean navigationBean;
 
     public UIComponentGenerator() {
     }
 
-    public List<Panel> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
+   // public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
+    public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap,
+                                    int pageNumber, int topicNumber, UINavigationBean navigationBean) {
+        this.navigationBean = navigationBean;
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
-        List<Panel> panelList = new ArrayList<>();
+        List<UIComponent> panelList = new ArrayList<>();
         for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap.entrySet()) {
             isParent = entry.getValue();
             panelList.add(analyzeQuestion(entry.getKey()));
@@ -56,12 +65,8 @@ public class UIComponentGenerator {
         return panelList;
     }
 
-    private Panel analyzeQuestion(WizardQuestion question) {
+    private UIComponent analyzeQuestion(WizardQuestion question) {
         panel = new Panel();
-        panel.setWidgetVar("panel_" + question.getId());
-        panel.setClosable(true);
-        panel.setToggleable(true);
-        panel.setCloseSpeed(300);
         panel.setId("panel_" + question.getId());
         panel.getChildren().add(getLabel(question));
         panel.getChildren().add(getValidationMessage(question));
@@ -92,11 +97,10 @@ public class UIComponentGenerator {
                 component = getTime(question, answer, defaultAnswer);
                 break;
             case RANGE:
-                component = getSlider(question, answer, defaultAnswer);
-                break;
+                return getHtmlPanelGroup(question, answer, defaultAnswer);
             case FILEUPLOAD:
                 panel.getChildren().add(getLitleLabel(question));
-                panel.getChildren().add(getHtmlText());
+                panel.getChildren().add(getHTMLbr());
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
                 break;
@@ -110,12 +114,113 @@ public class UIComponentGenerator {
         return panel;
     }
 
-    private Slider getSlider(WizardQuestion question, Value answer, Value defaultAnswer) {
+    private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
+        HtmlPanelGroup panelGroup = new HtmlPanelGroup();
+        panelGroup.setStyle("padding: 20px; background-color: #EDEDED; border: 1px solid #DDD; border-radius: 3px;");
+        panelGroup.setStyleClass("ui-panel-column");
+        panelGroup.setLayout("block");
+        panelGroup.getChildren().add(getLabel(question));
+        panelGroup.getChildren().add(getHTMLbr());
+        panelGroup.getChildren().add(getOutputTextForSlider(question));
+        panelGroup.getChildren().add(getSliderOutputLabelBegin(question));
+        panelGroup.getChildren().add(getInputHiddenEnd(question));
+        panelGroup.getChildren().add(getSliderOutputLabelEnd(question));
+        panelGroup.getChildren().add(getInputHiddenBegin(question));
+        panelGroup.getChildren().add(getSlider(question));
+        panelGroup.getChildren().add(getHTMLbr());
+        panelGroup.getChildren().add(getCommandButtonForSlider());
+        return panelGroup;
+    }
+
+    private HtmlOutputText getOutputTextForSlider(WizardQuestion question) {
+        int begin = 0;
+        int end = 0;
+        if (question.getAnswer() != null) {
+            Range rangeValue = (Range) question.getAnswer().getValue();
+            begin = rangeValue.getStart();
+            end = rangeValue.getEnd();
+        } else {
+            begin = ((RangeQuestion) question).getStartRange();
+            end = ((RangeQuestion) question).getEndRange();
+        }
+        HtmlOutputText outputText = new HtmlOutputText();
+        outputText.setId("displayRange" + question.getId());
+        String rangeText = "Between " + begin + " and " + end;
+        outputText.setValue(rangeText);
+        return outputText;
+    }
+
+    private HtmlInputHidden getInputHiddenEnd(WizardQuestion question) {
+        int end = 0;
+        if (question.getAnswer() != null) {
+            Range rangeValue = (Range) question.getAnswer().getValue();
+            end = rangeValue.getEnd();
+        } else {
+            end = ((RangeQuestion) question).getEndRange();
+            System.err.println("end = " + end);
+        }
+        HtmlInputHidden inputHidden = new HtmlInputHidden();
+        inputHidden.setId("txt7" + question.getId());
+        inputHidden.setValue(end);
+        inputHidden.addValidator(new ComponentValidator(question));
+        return inputHidden;
+    }
+
+    private HtmlInputHidden getInputHiddenBegin(WizardQuestion question) {
+        int begin = 0;
+        if (question.getAnswer() != null) {
+            Range rangeValue = (Range) question.getAnswer().getValue();
+            begin = rangeValue.getStart();
+        } else {
+            begin = ((RangeQuestion) question).getStartRange();
+            System.err.println("begin = " + begin);
+        }
+        HtmlInputHidden inputHidden = new HtmlInputHidden();
+        inputHidden.setId("txt6" + question.getId());
+        inputHidden.setValue(begin);
+        inputHidden.addValidator(new ComponentValidator(question));
+        return inputHidden;
+    }
+
+    private OutputLabel getSliderOutputLabelBegin(WizardQuestion question) {
+        OutputLabel label = new OutputLabel();
+        label.setValue("slider_input");
+        label.setFor("txt7" + question.getId());
+        label.setStyleClass("for-slider-horizontal");
+        label.setStyle("display: none");
+        return label;
+    }
+
+    private OutputLabel getSliderOutputLabelEnd(WizardQuestion question) {
+        OutputLabel label = new OutputLabel();
+        label.setValue("slider_input");
+        label.setFor("txt6" + question.getId());
+        label.setStyleClass("for-slider-horizontal");
+        label.setStyle("display: none");
+        return label;
+    }
+
+    private Slider getSlider(WizardQuestion question) {
         Slider slider = new Slider();
-        slider.setMinValue(1);
-        slider.setMaxValue(13);
+        slider.setFor("sliderinputtext");
+        slider.setAnimate(false);
+        slider.addClientBehavior("valueChange", getAjaxBehavior(question));
+        slider.setStyle("width: 400px;");
+        slider.setDisplay("displayRange" + question.getId());
+        slider.setStyleClass("ui-slider-with-range");
+        slider.setDisplayTemplate("Between {min} and {max}");
+        slider.setRange(true);
+        String textFor = "txt6" + question.getId() + " , " + "txt7" + question.getId();
+        slider.setFor(textFor);
         return slider;
     }
+
+    private CommandButton getCommandButtonForSlider() {
+        CommandButton commandButton = new CommandButton();
+        commandButton.setValue("Submit");
+        return commandButton;
+    }
+
 
     private HtmlSelectOneListbox getSelectOneListBox(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlSelectOneListbox selectOneListBox = new HtmlSelectOneListbox();
@@ -127,7 +232,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
-        selectOneListBox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        selectOneListBox.addValidator(getComponentValidator(question));
         selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -143,9 +248,8 @@ public class UIComponentGenerator {
         InputText inputText = new InputText();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputText.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        inputText.addValidator(getComponentValidator(question));
         inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
-
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
@@ -159,7 +263,7 @@ public class UIComponentGenerator {
         InputTextarea inputTextarea = new InputTextarea();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputTextarea.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        inputTextarea.addValidator(getComponentValidator(question));
         inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -173,7 +277,6 @@ public class UIComponentGenerator {
 
     private HtmlSelectOneMenu getSelectOneMenu(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlSelectOneMenu selectOneMenu = new HtmlSelectOneMenu();
-
         List<String> optionsList = ((DropDownQuestion) question)
                 .getOptionsList();
         UISelectItems defaultItem = new UISelectItems();
@@ -185,7 +288,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
-        selectOneMenu.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        selectOneMenu.addValidator(getComponentValidator(question));
         selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         if (defaultAnswer != null && answer == null) {
@@ -205,7 +308,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
-        checkbox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        checkbox.addValidator(getComponentValidator(question));
         checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -227,7 +330,7 @@ public class UIComponentGenerator {
         dateCalendar.setShowOn("both");
         dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
         dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        dateCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        dateCalendar.addValidator(getComponentValidator(question));
         dateCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -249,7 +352,7 @@ public class UIComponentGenerator {
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
 //        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        timeCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        timeCalendar.addValidator(getComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -294,6 +397,12 @@ public class UIComponentGenerator {
             outputText.setStyle("color:red");
             label.getChildren().add(outputText);
         }
+        if (isParent) {
+            HtmlOutputText outputText = new HtmlOutputText();
+            outputText.setValue(" *");
+            outputText.setStyle("color:#00CC00");
+            label.getChildren().add(outputText);
+        }
         label.getChildren().add(getButtonTooltip(question));
         return label;
     }
@@ -307,7 +416,12 @@ public class UIComponentGenerator {
     private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
-        ajaxBehavior.setUpdate("maincontentid-j_id1");
+        if (question.getQuestionType() == QType.RANGE) {
+            ajaxBehavior.setUpdate("maincontentid-j_id1");
+        } else {
+            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
+        }
+
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
     }
@@ -318,7 +432,7 @@ public class UIComponentGenerator {
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
 
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
-        fileUpload.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        fileUpload.addValidator(getComponentValidator(question));
         return fileUpload;
     }
 
@@ -339,7 +453,7 @@ public class UIComponentGenerator {
         return label;
     }
 
-    private HtmlOutputText getHtmlText() {
+    private HtmlOutputText getHTMLbr() {
         HtmlOutputText lineBreak = new HtmlOutputText();
         lineBreak.setValue("<br/>");
         lineBreak.setEscape(false);
@@ -350,5 +464,13 @@ public class UIComponentGenerator {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getApplication().getExpressionFactory().createMethodExpression(
                 facesContext.getELContext(), expression, returnType, parameterTypes);
+    }
+
+    private Validator getComponentValidator(WizardQuestion question) {
+        if (isParent) {
+            return new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean);
+        } else {
+            return new ComponentValidator(question);
+        }
     }
 }
