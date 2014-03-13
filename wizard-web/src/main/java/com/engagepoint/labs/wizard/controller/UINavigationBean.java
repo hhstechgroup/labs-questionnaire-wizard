@@ -223,7 +223,7 @@ public class UINavigationBean implements Serializable {
             questionsMap.put(question, isQuestionAParent(question));
         }
         List<Panel> panelList = generator.getPanelList(questionsMap,
-                wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
+                wizardPage.getPageNumber(), wizardTopic.getTopicNumber(), this);
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
         for (Panel panel : navigationData.getPanelList()) {
@@ -383,7 +383,7 @@ public class UINavigationBean implements Serializable {
      *
      * @param styleClass style class from CSS file
      */
-    private void changeStyleOfCurrentPageButton(String styleClass) {
+    public void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
         WizardPage wizardPage;
         MenuItem pageMenuItem;
@@ -447,7 +447,7 @@ public class UINavigationBean implements Serializable {
         return wizardTopic.getWizardQuestionList();
     }
 
-    private void changeStyleOfCurrentTopicButton(String styleClass) {
+    public void changeStyleOfCurrentTopicButton(String styleClass) {
         List<WizardTopic> topicList = navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;
