@@ -7,6 +7,8 @@ package com.engagepoint.labs.wizard.xml.parser;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.export.QuestionaireFormConverter;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
@@ -25,6 +27,8 @@ import java.util.Date;
  */
 
 public class XmlCustomParser {
+
+    private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class);
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
@@ -97,12 +101,12 @@ public class XmlCustomParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
-            return exportFile;
+            LOGGER.log(Priority.WARN, e.getMessage());
         }
         return exportFile;
     }
 
-    private String getExportFileName(WizardForm form){
+    private String getExportFileName(WizardForm form) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
         Date date = new Date();
         String fileName = String.format("/%s_answers_%s.xml", form.getFormName(), dateFormat.format(date));

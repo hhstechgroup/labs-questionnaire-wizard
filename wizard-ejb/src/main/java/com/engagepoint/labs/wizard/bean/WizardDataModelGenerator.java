@@ -12,6 +12,8 @@ import com.engagepoint.labs.wizard.values.RangeValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.objects.Range;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import super_binding.*;
 
 import java.util.Date;
@@ -33,6 +35,7 @@ public class WizardDataModelGenerator {
     private int topicNumber;
     private List<String> defaultAnswers;
     private List<Rule> ruleList;
+    private static final Logger LOGGER = Logger.getLogger(WizardDataModelGenerator.class);
 
     public WizardDataModelGenerator() {
     }
@@ -146,7 +149,7 @@ public class WizardDataModelGenerator {
                     try {
                         date = formatter.parse(defaultAnswers.get(0));
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        LOGGER.log(Priority.WARN, e.getMessage());
                     }
                     dateDefault.setValue(date);
                     wizardQuestion.setDefaultAnswer(dateDefault);
@@ -162,7 +165,7 @@ public class WizardDataModelGenerator {
                     try {
                         time = formatter.parse(defaultAnswers.get(0));
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        LOGGER.log(Priority.WARN, e.getMessage());
                     }
                     timeDefault.setValue(time);
                     wizardQuestion.setDefaultAnswer(timeDefault);
