@@ -134,12 +134,15 @@ public class UIComponentGenerator {
 	ArrayList<String> columns = (ArrayList<String>) gridQuestion
 		.getColumns();
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
+	String gridID=gridQuestion.getId();
 	int rowsNumber = rows.size() + 1;
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
+	grid.setId(gridID);
+	
+	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
 	int checkBoxCellNumber=0;
-	
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
@@ -166,6 +169,8 @@ public class UIComponentGenerator {
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);
 		    
+		    
+		    gridHandler.getGridByID(gridID).add(checkbox);
 		    checkBoxCellNumber++;
 		    continue;
 		}

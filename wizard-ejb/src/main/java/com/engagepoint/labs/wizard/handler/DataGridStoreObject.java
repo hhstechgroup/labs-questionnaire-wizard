@@ -2,14 +2,15 @@ package com.engagepoint.labs.wizard.handler;
 
 import java.util.ArrayList;
 
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
+
 public class DataGridStoreObject {
 
     private String dataGridID;
-    private ArrayList<String> dataGridItems;
+    private ArrayList<SelectBooleanCheckbox> dataGridItems;
 
-    public DataGridStoreObject(String id, ArrayList<String> items) {
+    public DataGridStoreObject(String id) {
 	dataGridID = id;
-	dataGridItems = items;
     }
 
     public String getDataGridID() {
@@ -20,11 +21,11 @@ public class DataGridStoreObject {
 	this.dataGridID = dataGridID;
     }
 
-    public ArrayList<String> getDataGridItems() {
+    public ArrayList<SelectBooleanCheckbox> getDataGridItems() {
 	return dataGridItems;
     }
 
-    public void setDataGridItems(ArrayList<String> dataGridItems) {
+    public void setDataGridItems(ArrayList<SelectBooleanCheckbox> dataGridItems) {
 	this.dataGridItems = dataGridItems;
     }
 }

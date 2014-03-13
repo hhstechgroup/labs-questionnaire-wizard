@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
+
 @Named("dataGridHandler")
 @SessionScoped
 public class DataGridHandler implements Serializable {
@@ -28,7 +30,7 @@ public class DataGridHandler implements Serializable {
 	this.grids = grids;
     }
 
-    public ArrayList<String> getGridByID(String id)
+    public ArrayList<SelectBooleanCheckbox> getGridByID(String id)
     {
 	for(DataGridStoreObject dataGridObject:grids)
 	{
