@@ -134,32 +134,32 @@ and open the template in the editor.
                                                                                                 </xs:sequence>
                                                                                                 <xs:attribute
                                                                                                         type="xs:boolean"
-                                                                                                        name="answer-required"/>
+                                                                                                        name="answer-required" use="required"/>
                                                                                                 <xs:attribute
                                                                                                         type="xs:string"
-                                                                                                        name="question-id"/>
+                                                                                                        name="question-id" use="required"/>
                                                                                             </xs:complexType>
                                                                                         </xs:element>
                                                                                     </xs:sequence>
                                                                                 </xs:complexType>
                                                                             </xs:element>
                                                                         </xs:sequence>
-                                                                        <xs:attribute type="xs:string" name="group-id"/>
+                                                                        <xs:attribute type="xs:string" name="group-id" use="required"/>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
-                                                <xs:attribute type="xs:string" name="page-id"/>
-                                                <xs:attribute type="xs:int" name="page-number"/>
+                                                <xs:attribute type="xs:string" name="page-id" use="required"/>
+                                                <xs:attribute type="xs:int" name="page-number" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute type="xs:string" name="form-id"/>
+                        <xs:attribute type="xs:string" name="form-id" use="required"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
