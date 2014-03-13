@@ -6,6 +6,7 @@
         <form-name>TestController</form-name>
         <pages>
             <page page-number="1" page-id="formPage1">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="page1Group1">
                         <group-name>Topic 1 of First Page</group-name>
@@ -13,10 +14,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -33,9 +37,9 @@
                                     <default-answer>Default answer</default-answer>
                                 </default-answers>
                             </question>
-                       </questions>
+                        </questions>
                     </group>
-            </groups-of-questions>
+                </groups-of-questions>
             </page>
         </pages>
     </questionnaire-form>

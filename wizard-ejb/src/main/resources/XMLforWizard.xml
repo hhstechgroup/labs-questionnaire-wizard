@@ -6,6 +6,7 @@
         <form-name>Simple Form Template 1</form-name>
         <pages>
             <page page-number="1" page-id="dcvxd">
+                <page-name>Page First</page-name>
                 <groups-of-questions>
                     <group group-id="bcugyrfn">
                         <group-name>Test group 1</group-name>
@@ -14,7 +15,10 @@
                                 <question-title>Error Q</question-title>
                                 <question-type>RANGE</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>First Help Text for Question</help-text>
                                 <options>
@@ -39,7 +43,10 @@
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -67,7 +74,10 @@
                                 <question-title>Error QQ</question-title>
                                 <question-type>RANGE</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>First Help1111 Text for Question</help-text>
                                 <options>
@@ -98,7 +108,10 @@
                                 <question-title>QT paragraph</question-title>
                                 <question-type>FILEUPLOAD</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help text</help-text>
                                 <options>
@@ -126,7 +139,10 @@
                                 <question-title>QT text 52452452</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help</help-text>
                                 <options>
@@ -150,6 +166,7 @@
                 </groups-of-questions>
             </page>
             <page page-number="2" page-id="allalalsqioioi">
+                <page-name>Page Second</page-name>
                 <groups-of-questions>
                     <group group-id="pqpqpqowowowo">
                         <group-name>Super Puper Topic 1</group-name>
@@ -158,7 +175,10 @@
                                 <question-title>SUPER title for QUESTION</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>TODO</help-text>
                                 <options>
@@ -186,7 +206,10 @@
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>HELLP</help-text>
                                 <options>

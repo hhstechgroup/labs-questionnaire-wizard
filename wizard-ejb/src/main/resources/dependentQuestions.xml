@@ -6,6 +6,7 @@
         <form-name>Dependent Quesion Template</form-name>
         <pages>
             <page page-id="xcmxkmckxmc" page-number="1">
+                <page-name>Page Uno</page-name>
                 <groups-of-questions>
                     <group group-id="lsowoqwewrr">
                         <group-name>Group 1</group-name>
@@ -192,6 +193,7 @@
                 </groups-of-questions>
             </page>
             <page page-id="wuiq93" page-number="2">
+                <page-name>Page Due</page-name>
                 <groups-of-questions>
                     <group group-id="yuio0237">
                         <group-name>Casual Group</group-name>

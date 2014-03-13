@@ -101,7 +101,7 @@ public class XmlCustomParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
-            LOGGER.log(Priority.WARN, e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
         return exportFile;
     }

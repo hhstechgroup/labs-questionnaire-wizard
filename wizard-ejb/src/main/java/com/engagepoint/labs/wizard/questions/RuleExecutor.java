@@ -98,7 +98,7 @@ public class RuleExecutor implements Serializable {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.log(Priority.WARN, e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
         return compareResult;
     }

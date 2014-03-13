@@ -5,6 +5,7 @@
         <form-name>Simple Form Template 2</form-name>
         <pages>
             <page page-id="dfmch" page-number="1">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="cnh">
                         <group-name>Topic bla-bla From page 1</group-name>
@@ -13,7 +14,10 @@
                                 <question-title>Super Text</question-title>
                                 <question-type>DATE</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help text jhdfkosd</help-text>
                                 <options>
@@ -41,7 +45,10 @@
                                 <question-title>Super Paragraph</question-title>
                                 <question-type>TIME</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>TODO later\</help-text>
                                 <options>
@@ -65,6 +72,7 @@
                 </groups-of-questions>
             </page>
             <page page-id="dffemch" page-number="2">
+                <page-name>Page 2</page-name>
                 <groups-of-questions>
                     <group group-id="cfefnh">
                         <group-name>Topic First from page 2</group-name>
@@ -73,7 +81,10 @@
                                 <question-title>Second SUPER paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help text jhkjh</help-text>
                                 <options>
@@ -101,7 +112,10 @@
                                 <question-title>Title MegaSuper</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help</help-text>
                                 <options>
@@ -125,6 +139,7 @@
                 </groups-of-questions>
             </page>
             <page page-id="vdnmqs" page-number="3">
+                <page-name>Page 3</page-name>
                 <groups-of-questions>
                     <group group-id="dfdlnf">
                         <group-name>Topic 1 from Page 3</group-name>
@@ -133,7 +148,10 @@
                                 <question-title>PARAGRAPH *************</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help here</help-text>
                                 <options>
@@ -161,7 +179,10 @@
                                 <question-title>simple paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -189,7 +210,10 @@
                                 <question-title>text need to be hrere</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help ohvf</help-text>
                                 <options>
@@ -218,6 +242,7 @@
         <form-name>Simple Form Template 3</form-name>
         <pages>
             <page page-id="fhfhfc" page-number="1">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="hjhjhdn">
                         <group-name>Prime Topic ***</group-name>
@@ -226,7 +251,10 @@
                                 <question-title>Prime Title</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help for junior</help-text>
                                 <options>
@@ -251,7 +279,10 @@
                                 <question-title>Primess Title</question-title>
                                 <question-type>TIME</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Helpsss for junior</help-text>
                                 <options>
@@ -281,7 +312,10 @@
                                 <question-title>tittle for text q</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -309,7 +343,10 @@
                                 <question-title>QT 12999</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -333,6 +370,7 @@
                 </groups-of-questions>
             </page>
             <page page-id="ndvolfnd" page-number="2">
+                <page-name>Page 2</page-name>
                 <groups-of-questions>
                     <group group-id="nbvlnln">
                         <group-name>Mega Topic 1</group-name>
@@ -341,7 +379,10 @@
                                 <question-title>Q tttete</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text></help-text>
                                 <options>
@@ -369,7 +410,10 @@
                                 <question-title>QT9043-9832</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -397,7 +441,10 @@
                                 <question-title>Date Question</question-title>
                                 <question-type>DATE</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -421,6 +468,7 @@
                 </groups-of-questions>
             </page>
             <page page-id="dscvsdv" page-number="3">
+                <page-name>Page 3</page-name>
                 <groups-of-questions>
                     <group group-id="fncvghn">
                         <group-name>Topic First from page 2</group-name>
@@ -429,7 +477,10 @@
                                 <question-title>Second SUPER paragraph</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help text jhkjh</help-text>
                                 <options>

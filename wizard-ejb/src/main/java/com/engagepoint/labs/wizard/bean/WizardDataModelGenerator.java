@@ -73,6 +73,7 @@ public class WizardDataModelGenerator {
             wizardPage = new WizardPage();
             wizardPage.setId(page.getPageId());
             wizardPage.setPageNumber(page.getPageNumber());
+            wizardPage.setPageName(page.getPageName());
             wizardPage.setTopicList(getWizardQuestionGroups(page
                     .getGroupsOfQuestions()));
             wizardPageList.add(wizardPage);
@@ -149,7 +150,7 @@ public class WizardDataModelGenerator {
                     try {
                         date = formatter.parse(defaultAnswers.get(0));
                     } catch (ParseException e) {
-                        LOGGER.log(Priority.WARN, e.getMessage());
+                        LOGGER.warn(e.getMessage());
                     }
                     dateDefault.setValue(date);
                     wizardQuestion.setDefaultAnswer(dateDefault);
@@ -165,7 +166,7 @@ public class WizardDataModelGenerator {
                     try {
                         time = formatter.parse(defaultAnswers.get(0));
                     } catch (ParseException e) {
-                        LOGGER.log(Priority.WARN, e.getMessage());
+                        LOGGER.warn(e.getMessage());
                     }
                     timeDefault.setValue(time);
                     wizardQuestion.setDefaultAnswer(timeDefault);
