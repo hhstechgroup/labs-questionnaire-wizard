@@ -1,5 +1,6 @@
 function wizardDataGridHandler(cellID, gridValidatorID) {
-	wizardGetDataGridHandlerFullID(gridValidatorID);
+	var fullID = wizardGetDataGridHandlerFullID(gridValidatorID);
+	document.getElementById(fullID).value = cellID;
 }
 
 function wizardTraceAllIds() {
@@ -22,13 +23,14 @@ function wizardGetAllIds() {
 }
 
 function wizardGetDataGridHandlerFullID(gridValidatorID) {
+	var result = '';
 	var ids = wizardGetAllIds();
-	var leftBound=0;
-	var rightBound=0;
+	var leftBound = 0;
+	var rightBound = 0;
 	if (ids.indexOf(gridValidatorID) != -1) {
 		for (var i = ids.indexOf(gridValidatorID, 0); i >= 0; i--) {
 			if (ids.charAt(i) == '*') {
-				leftBound = i+1;
+				leftBound = i + 1;
 				break;
 			}
 		}
@@ -38,6 +40,7 @@ function wizardGetDataGridHandlerFullID(gridValidatorID) {
 				break;
 			}
 		}
-		alert(ids.substring(leftBound, rightBound));
+		result = ids.substring(leftBound, rightBound);
 	}
+	return result;
 }
