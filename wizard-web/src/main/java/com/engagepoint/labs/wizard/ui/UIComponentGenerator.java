@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
@@ -118,7 +120,8 @@ public class UIComponentGenerator {
 	    break;
 	case GRID:
 	    // to do
-	    component = getGrid(question, answer, defaultAnswer, gridHandler);
+	    component = getGrid(question, answer, defaultAnswer, gridHandler,
+		    panel);
 	    break;
 	}
 	component.setId(question.getId());
@@ -127,21 +130,20 @@ public class UIComponentGenerator {
     }
 
     private PanelGrid getGrid(WizardQuestion question, Value answer,
-	    Value defaultAnswer, DataGridHandler gridHandler) {
+	    Value defaultAnswer, DataGridHandler gridHandler, Panel panel) {
 	PanelGrid grid = new PanelGrid();
 	GridQuestion gridQuestion = (GridQuestion) question;
 	ArrayList<String> columns = (ArrayList<String>) gridQuestion
 		.getColumns();
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
-	String gridID=gridQuestion.getId();
+	String gridID = gridQuestion.getId();
 	int rowsNumber = rows.size() + 1;
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
 	grid.setId(gridID);
-	
 	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
-	int checkBoxCellNumber=0;
+	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
@@ -165,13 +167,25 @@ public class UIComponentGenerator {
 		}
 		if (row != 0 && col != 0) {
 		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
-		    String checkboxID="chbx_"+checkBoxCellNumber;
+		    String checkboxID = "chbx_" + checkBoxCellNumber;
+		    checkbox.setId(checkboxID);
+
+		    FacesContext facesContext = FacesContext
+			    .getCurrentInstance();
+		    ELContext elContext = facesContext.getELContext();
+		    ExpressionFactory expressionFactory = facesContext
+			    .getApplication().getExpressionFactory();
+		    checkbox.setOnchange(expressionFactory
+			    .createValueExpression(
+				    elContext,
+				    "#{dataGridHandler.getGridByID(\"" + gridID
+					    + "\").get(" + checkBoxCellNumber
+					    + ")}", Object.class)
+			    .getExpressionString());
+
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);
-		    cell.setId(checkboxID);
-		    
-		    
-		    gridHandler.getGridByID(gridID).add(checkbox);
+		    gridHandler.getGridByID(gridID).add(false);
 		    checkBoxCellNumber++;
 		    continue;
 		}
