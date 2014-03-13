@@ -384,7 +384,7 @@ public class UINavigationBean implements Serializable {
      *
      * @param styleClass style class from CSS file
      */
-    private void changeStyleOfCurrentPageButton(String styleClass) {
+    public void changeStyleOfCurrentPageButton(String styleClass) {
         List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
         WizardPage wizardPage;
         MenuItem pageMenuItem;
@@ -448,7 +448,7 @@ public class UINavigationBean implements Serializable {
         return wizardTopic.getWizardQuestionList();
     }
 
-    private void changeStyleOfCurrentTopicButton(String styleClass) {
+    public void changeStyleOfCurrentTopicButton(String styleClass) {
         List<WizardTopic> topicList = navigationData.getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;

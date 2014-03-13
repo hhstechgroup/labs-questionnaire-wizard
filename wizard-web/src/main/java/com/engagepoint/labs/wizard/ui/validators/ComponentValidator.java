@@ -1,6 +1,9 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
+import com.engagepoint.labs.wizard.controller.UINavigationBean;
+import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.values.*;
 import com.engagepoint.labs.wizard.values.objects.Range;
@@ -31,16 +34,19 @@ public class ComponentValidator implements Validator {
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
+    private UINavigationBean navigationBean;
 
     public ComponentValidator(final WizardQuestion question) {
         this.question = question;
     }
 
-    public ComponentValidator(WizardQuestion question, int pageNumber, int topicNumber, boolean isParent) {
+
+    public ComponentValidator(WizardQuestion question, int pageNumber, int topicNumber, boolean isParent, UINavigationBean navBean) {
         this.question = question;
         this.isParent = isParent;
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
+        this.navigationBean = navBean;
     }
 
     @Override
@@ -70,7 +76,6 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case MULTIPLECHOICE:
-                System.out.println("MULTIPLECHOICE");
                 if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -81,7 +86,6 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case CHECKBOX:
-                System.out.println("CHECKBOX");
                 if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -92,7 +96,6 @@ public class ComponentValidator implements Validator {
                 saveListTextValue((Object[]) value);
                 break;
             case CHOOSEFROMLIST:
-                System.out.println("CHOOSEFROMLIST");
                 if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -106,7 +109,6 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case DATE:
-                System.out.println("DATE");
                 if (question.isRequired() && !validateDateQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -152,7 +154,7 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
-        moveWallIfNecessary();
+        moveLimitIfNecessary();
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {
@@ -316,13 +318,26 @@ public class ComponentValidator implements Validator {
         return uploadFile;
     }
 
-    private void moveWallIfNecessary() {
-        if (isParent) {
-            WizardLimits.pageLimit = pageNumber;
-            WizardLimits.topicLimit = topicNumber;
-            if (question.getAnswer() != null) {
-                RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
-            }
+    private void moveLimitIfNecessary() {
+        boolean movePageLimit = false;
+        boolean moveTopicLimit = false;
+        if (isParent && WizardLimits.pageLimit > pageNumber && WizardLimits.topicLimit > topicNumber) {
+            movePageLimit = true;
+            moveTopicLimit = true;
+            RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
+        } else if (isParent && WizardLimits.topicLimit > topicNumber) {
+            moveTopicLimit = true;
+            RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
+        }
+        WizardLimits.pageLimit = pageNumber;
+        WizardLimits.topicLimit = topicNumber;
+        if (movePageLimit) {
+            navigationBean.changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
+            RequestContext.getCurrentInstance().update("brd-breadcrumb");
+        }
+        if (moveTopicLimit) {
+            navigationBean.changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
+            RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
         }
     }
 }

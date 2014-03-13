@@ -1,5 +1,6 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
@@ -27,6 +28,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +43,15 @@ public class UIComponentGenerator {
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
+    private UINavigationBean navigationBean;
 
     public UIComponentGenerator() {
     }
 
-    public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
+   // public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
+    public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap,
+                                    int pageNumber, int topicNumber, UINavigationBean navigationBean) {
+        this.navigationBean = navigationBean;
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
         List<UIComponent> panelList = new ArrayList<>();
@@ -223,7 +229,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
-        selectOneListBox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        selectOneListBox.addValidator(getComponentValidator(question));
         selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -239,9 +245,8 @@ public class UIComponentGenerator {
         InputText inputText = new InputText();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputText.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        inputText.addValidator(getComponentValidator(question));
         inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
-
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
@@ -255,7 +260,7 @@ public class UIComponentGenerator {
         InputTextarea inputTextarea = new InputTextarea();
 
         // Creating Listener for Validation and AJAX ClientBehavior
-        inputTextarea.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        inputTextarea.addValidator(getComponentValidator(question));
         inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -280,7 +285,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
-        selectOneMenu.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        selectOneMenu.addValidator(getComponentValidator(question));
         selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         if (defaultAnswer != null && answer == null) {
@@ -300,7 +305,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
-        checkbox.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        checkbox.addValidator(getComponentValidator(question));
         checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
 
         // Showing Answer or Default Answer
@@ -322,7 +327,7 @@ public class UIComponentGenerator {
         dateCalendar.setShowOn("both");
         dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
         dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        dateCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        dateCalendar.addValidator(getComponentValidator(question));
         dateCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -344,7 +349,7 @@ public class UIComponentGenerator {
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
 //        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
-        timeCalendar.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        timeCalendar.addValidator(getComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
         // Showing Answer or Default Answer
@@ -389,6 +394,12 @@ public class UIComponentGenerator {
             outputText.setStyle("color:red");
             label.getChildren().add(outputText);
         }
+        if (isParent) {
+            HtmlOutputText outputText = new HtmlOutputText();
+            outputText.setValue(" *");
+            outputText.setStyle("color:#00CC00");
+            label.getChildren().add(outputText);
+        }
         label.getChildren().add(getButtonTooltip(question));
         return label;
     }
@@ -418,7 +429,7 @@ public class UIComponentGenerator {
         fileUpload.setSize(MAXIMUM_SIZE_FILE_ANSWER);
 
         fileUpload.setStyle("position: absolute; left: auto; right: 100px; display: inline-block;");
-        fileUpload.addValidator(new ComponentValidator(question, pageNumber, topicNumber, isParent));
+        fileUpload.addValidator(getComponentValidator(question));
         return fileUpload;
     }
 
@@ -450,5 +461,13 @@ public class UIComponentGenerator {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getApplication().getExpressionFactory().createMethodExpression(
                 facesContext.getELContext(), expression, returnType, parameterTypes);
+    }
+
+    private Validator getComponentValidator(WizardQuestion question) {
+        if (isParent) {
+            return new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean);
+        } else {
+            return new ComponentValidator(question);
+        }
     }
 }
