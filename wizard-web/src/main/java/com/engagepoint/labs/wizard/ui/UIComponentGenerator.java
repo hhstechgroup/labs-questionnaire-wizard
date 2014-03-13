@@ -1,5 +1,6 @@
 package com.engagepoint.labs.wizard.ui;
 
+import com.engagepoint.component.primefaces.DataTable;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.handler.DataGridStoreObject;
 import com.engagepoint.labs.wizard.questions.*;
@@ -11,6 +12,7 @@ import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.inputtext.InputText;
@@ -19,6 +21,7 @@ import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.radiobutton.RadioButton;
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.slider.Slider;
@@ -28,6 +31,7 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
@@ -49,7 +53,6 @@ public class UIComponentGenerator {
     private int pageNumber;
     private int topicNumber;
 
-
     public UIComponentGenerator() {
     }
 
@@ -67,7 +70,8 @@ public class UIComponentGenerator {
 	return panelList;
     }
 
-    private Panel analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler) {
+    private Panel analyzeQuestion(WizardQuestion question,
+	    DataGridHandler gridHandler) {
 	panel = new Panel();
 	panel.setWidgetVar("panel_" + question.getId());
 	panel.setClosable(true);
@@ -129,16 +133,17 @@ public class UIComponentGenerator {
 		.getColumns();
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
 	grid.setColumns(columns.size());
-	grid.setRows(rows.size()*columns.size());
+	grid.setRows(rows.size() * columns.size());
 
-	ArrayList<String> radioStrings=new ArrayList<String>();
+	ArrayList<String> radioStrings = new ArrayList<String>();
 	for (int i = 0; i < columns.size(); i++) {
 	    for (int j = 0; j < rows.size(); j++) {
-		radioStrings.add(i+" "+j);
+		radioStrings.add(i + " " + j);
 	    }
 	}
 
-	gridHandler.getGrids().add(new DataGridStoreObject(gridQuestion.getId(), radioStrings));
+	gridHandler.getGrids().add(
+		new DataGridStoreObject(gridQuestion.getId(), radioStrings));
 
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	ELContext elContext = facesContext.getELContext();
@@ -150,48 +155,10 @@ public class UIComponentGenerator {
 			"#{dataGridHandler.getGridByID(\""
 				+ gridQuestion.getId() + "\")}", Object.class));
 	grid.setVar("item");
-	Panel pnl = new Panel();
-
-	pnl.setValueExpression("header", expressionFactory
-		.createValueExpression(
-			elContext,
-			"#{item}", Object.class));
-
-	SelectOneRadio selectOneRadio=new SelectOneRadio();
-	selectOneRadio.setId("mgbutt");
-//	selectOneRadio.setLayout("custom");
-	selectOneRadio.setValue("1");
-
-	RadioButton btn1=new RadioButton();
-	RadioButton btn2=new RadioButton();
-
-	SelectItem itm1=new SelectItem();
-	SelectItem itm2=new SelectItem();
-
-	itm1.setLabel("Val1");
-	itm2.setLabel("Val2");
-
-	itm1.setValue("1");
-	itm2.setValue("2");
 
 
-	btn1.setFor("mgbutt");
-	btn2.setFor("mgbutt");
-
-	btn1.setId("ww");
-	btn2.setId("ddd");
-
-	btn1.setItemIndex(0);
-	btn2.setItemIndex(1);
-
-
-	selectOneRadio.setSelectItems(new ArrayList<SelectItem>());
-	selectOneRadio.getSelectItems().add(itm1);
-	selectOneRadio.getSelectItems().add(itm2);
-	pnl.getChildren().add(selectOneRadio);
-	pnl.getChildren().add(btn1);
-	pnl.getChildren().add(btn2);
-	grid.getChildren().add(pnl);
+	SelectBooleanCheckbox chk=new SelectBooleanCheckbox();
+	grid.getChildren().add(chk);
 	return grid;
     }
 
