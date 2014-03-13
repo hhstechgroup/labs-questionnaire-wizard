@@ -145,7 +145,8 @@ public class UIComponentGenerator {
 	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
 	HtmlInputHidden hiddenInput = new HtmlInputHidden();
-	hiddenInput.setId(gridID + "_validator");
+	String hiddenInputID = "_gridValidator_" + gridID;
+	hiddenInput.setId(hiddenInputID);
 
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
@@ -181,7 +182,7 @@ public class UIComponentGenerator {
 		    ExpressionFactory expressionFactory = facesContext
 			    .getApplication().getExpressionFactory();
 		    String ajaxQuery = "wizardDataGridHandler("
-			    + checkBoxCellNumber + ")";
+			    + checkBoxCellNumber + ",'" + hiddenInputID + "')";
 		    checkbox.setOnchange(expressionFactory
 			    .createValueExpression(elContext, ajaxQuery,
 				    Object.class).getExpressionString());

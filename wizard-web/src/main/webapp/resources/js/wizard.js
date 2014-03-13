@@ -1,3 +1,3 @@
-function wizardDataGridHandler(cellID) {
-	alert(cellID);
+function wizardDataGridHandler(cellID, gridValidatorID) {
+	alert(cellID+gridValidatorID);
 }
