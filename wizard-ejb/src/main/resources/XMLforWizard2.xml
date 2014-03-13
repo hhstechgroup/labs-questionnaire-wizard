@@ -237,11 +237,16 @@
 									<columns>
 										<column>Column 1</column>
 										<column>Column 2</column>
+										<column>Column 3</column>
+										<column>Column 4</column>
+										<column>Column 5</column>
+
 									</columns>
 									<rows>
 										<row>Row 1</row>
 										<row>Row 2</row>
 										<row>Row 3</row>
+										<row>Row 4</row>
 									</rows>
 								</grid>
 								<default-answers>

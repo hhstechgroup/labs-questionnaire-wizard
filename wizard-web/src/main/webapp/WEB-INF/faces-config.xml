@@ -7,9 +7,4 @@
 	<lifecycle>
 		<phase-listener>com.engagepoint.labs.wizard.listener.UIRestoreViewListener</phase-listener>
 	</lifecycle>
-	<component>
-		<component-type>com.engagepoint.labs.wizard.component</component-type>
-		<component-class>com.engagepoint.labs.wizard.component.UISelectOneRadioComponent</component-class>
-	</component>
-
 </faces-config>

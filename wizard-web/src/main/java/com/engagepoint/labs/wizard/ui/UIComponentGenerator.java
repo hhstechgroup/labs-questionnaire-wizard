@@ -138,25 +138,8 @@ public class UIComponentGenerator {
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
 
-	// grid.getChildren().add(new Row());
-	// for (int j = 0; j < columns.size(); j++) {
-	// Row colName = new Row();
-	// HtmlOutputText txt = new HtmlOutputText();
-	// txt.setValue(columns.get(j));
-	// colName.getChildren().add(txt);
-	// grid.getChildren().add(colName);
-	// }
-	//
-	// grid.getFacets().put("header", rowHead);
-	//
-	// for (int i = 0; i < rows.size() * columns.size(); i++) {
-	// Row row = new Row();
-	// Column col = new Column();
-	// SelectBooleanCheckbox chk = new SelectBooleanCheckbox();
-	// col.getChildren().add(chk);
-	// row.getChildren().add(col);
-	// grid.getChildren().add(row);
-	// }
+	int checkBoxCellNumber=0;
+	
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
@@ -182,6 +165,8 @@ public class UIComponentGenerator {
 		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);
+		    
+		    checkBoxCellNumber++;
 		    continue;
 		}
 	    }
