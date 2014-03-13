@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -71,6 +72,7 @@ public class NavigationData implements Serializable {
     private boolean previousButtonRendered;
 
     private HtmlForm sliderForm;
+    private String mainContentFormStyle;
 
     /**
      * Method parses our XML's. Created because out first page must know the
@@ -313,6 +315,13 @@ public class NavigationData implements Serializable {
     }
 
     public HtmlForm getMainContentForm() {
+
+            UIComponent component = mainContentForm.findComponent("maincontentid");
+            if(component!=null){
+                component.getAttributes().put("styleClass",this.getMainContentFormStyle());
+            }
+
+
         return mainContentForm;
     }
 
@@ -531,5 +540,18 @@ public class NavigationData implements Serializable {
 
     public void setFirstTopic(boolean isFirstTopic) {
         this.isFirstTopic = isFirstTopic;
+    }
+
+    public String getMainContentFormStyle() {
+        if(wizardForm.getWizardTopicById(currentTopicID).getWizardQuestionList().size()>5){
+            setMainContentFormStyle("maincontentid-scroll");}
+        else {
+            setMainContentFormStyle("maincontentid-non-scroll");
+        }
+        return mainContentFormStyle;
+    }
+
+    private void setMainContentFormStyle(String mainContentFormStyle) {
+        this.mainContentFormStyle = mainContentFormStyle;
     }
 }

@@ -108,3 +108,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
+.maincontentid-non-scroll{
+    overflow-y: hidden;
+}
