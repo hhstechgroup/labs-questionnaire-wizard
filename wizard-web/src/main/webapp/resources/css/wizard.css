@@ -107,7 +107,7 @@
 .maincontentid-scroll{
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 616px;
+    height: 87%;
 }
 .maincontentid-non-scroll{
     overflow-y: hidden;

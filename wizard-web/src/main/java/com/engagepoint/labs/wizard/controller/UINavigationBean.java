@@ -13,12 +13,10 @@ import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.panel.Panel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-import super_binding.Rule;
 import super_binding.QType;
-
+import super_binding.Rule;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -27,7 +25,6 @@ import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -225,7 +222,7 @@ public class UINavigationBean implements Serializable {
             questionsMap.put(question, isQuestionAParent(question));
         }
         List<UIComponent> panelList = generator.getPanelList(questionsMap,
-                wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
+                wizardPage.getPageNumber(), wizardTopic.getTopicNumber(),this);
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
         for (UIComponent panel : navigationData.getPanelList()) {

@@ -1,7 +1,6 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
 import com.engagepoint.labs.wizard.controller.UINavigationBean;
-import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.WizardLimits;
@@ -22,7 +21,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by igor.guzenko on 2/26/14.
@@ -36,7 +34,6 @@ public class ComponentValidator implements Validator {
     private int pageNumber;
     private int topicNumber;
     private UINavigationBean navigationBean;
-    private Set<WizardQuestion> questionSet;
 
     public ComponentValidator(final WizardQuestion question) {
         this.question = question;
