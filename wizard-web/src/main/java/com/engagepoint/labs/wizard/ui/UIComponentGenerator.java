@@ -413,12 +413,12 @@ public class UIComponentGenerator {
     private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
-        if (question.getQuestionType() == QType.RANGE) {
-            ajaxBehavior.setUpdate("maincontentid-j_id1");
-        } else {
-            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
-        }
-
+//        if (question.getQuestionType() == QType.RANGE) {
+//            ajaxBehavior.setUpdate("maincontentid-j_id1");
+//        } else {
+//            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
+//        }
+        ajaxBehavior.setUpdate("maincontentid-j_id1");
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
     }
