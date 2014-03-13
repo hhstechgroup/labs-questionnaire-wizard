@@ -24,6 +24,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -222,11 +223,11 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
             questionsMap.put(question, isQuestionAParent(question));
         }
-        List<Panel> panelList = generator.getPanelList(questionsMap,
+        List<UIComponent> panelList = generator.getPanelList(questionsMap,
                 wizardPage.getPageNumber(), wizardTopic.getTopicNumber());
         navigationData.setPanelList(panelList);
         navigationData.getPanelGrid().getChildren().clear();
-        for (Panel panel : navigationData.getPanelList()) {
+        for (UIComponent panel : navigationData.getPanelList()) {
             navigationData.getPanelGrid().getChildren().add(panel);
         }
         RequestContext.getCurrentInstance().update("maincontentid-j_id1");

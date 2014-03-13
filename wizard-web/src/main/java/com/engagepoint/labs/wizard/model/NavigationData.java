@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -62,7 +63,7 @@ public class NavigationData implements Serializable {
     private MenuModel menuModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
-    private List<Panel> panelList;
+    private List<UIComponent> panelList;
     private List<Button> buttonsList;
     private PanelGrid panelGrid;
     private boolean finishButtonRendered;
@@ -377,11 +378,11 @@ public class NavigationData implements Serializable {
         this.currentTopicTitle = currentTopicTitle;
     }
 
-    public List<Panel> getPanelList() {
+    public List<UIComponent> getPanelList() {
         return panelList;
     }
 
-    public void setPanelList(List<Panel> panelList) {
+    public void setPanelList(List<UIComponent> panelList) {
         this.panelList = panelList;
     }
 

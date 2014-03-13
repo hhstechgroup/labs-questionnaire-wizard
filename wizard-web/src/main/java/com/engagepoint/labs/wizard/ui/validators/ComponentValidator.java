@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.ui.validators;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.values.*;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -24,10 +25,16 @@ import java.util.List;
  */
 public class ComponentValidator implements Validator {
     private static final boolean VALID = true;
+    private static int cursor = 0;
+    static int[] a = new int[2];
     private final WizardQuestion question;
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
+
+    public ComponentValidator(final WizardQuestion question) {
+        this.question = question;
+    }
 
     public ComponentValidator(WizardQuestion question, int pageNumber, int topicNumber, boolean isParent) {
         this.question = question;
@@ -63,6 +70,7 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case MULTIPLECHOICE:
+                System.out.println("MULTIPLECHOICE");
                 if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -73,6 +81,7 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case CHECKBOX:
+                System.out.println("CHECKBOX");
                 if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -83,6 +92,7 @@ public class ComponentValidator implements Validator {
                 saveListTextValue((Object[]) value);
                 break;
             case CHOOSEFROMLIST:
+                System.out.println("CHOOSEFROMLIST");
                 if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -96,6 +106,7 @@ public class ComponentValidator implements Validator {
                 saveTextValue(value.toString());
                 break;
             case DATE:
+                System.out.println("DATE");
                 if (question.isRequired() && !validateDateQuestionComponent(value)) {
                     question.setValid(false);
                     throw new ValidatorException(new FacesMessage(
@@ -114,6 +125,17 @@ public class ComponentValidator implements Validator {
                 }
                 question.setValid(true);
                 saveDateTimeValue((Date) value);
+                break;
+            case RANGE:
+                if (question.isRequired() && !validateRangeQuestionComponent(value)) {
+                    ((InputText) component).resetValue();
+                    question.setValid(false);
+                    throw new ValidatorException(new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "Validation Error",
+                            "Empty field is not allowed here!"));
+                }
+                question.setValid(true);
+                saveRangeValue(value);
                 break;
             case FILEUPLOAD:
                 if (question.isRequired() && !validateFileUploadComponent(value)) {
@@ -181,6 +203,14 @@ public class ComponentValidator implements Validator {
         return true;
     }
 
+    public boolean validateRangeQuestionComponent(Object value) {
+        if (value == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public boolean validateDateQuestionComponent(Object value) {
         if (value == null) {
             return false;
@@ -221,6 +251,21 @@ public class ComponentValidator implements Validator {
         }
         listTextValue.setValue(answersList);
         question.setAnswer(listTextValue);
+    }
+
+    private void saveRangeValue(Object value) {
+        if (cursor < 2) {
+            a[cursor++] = Integer.parseInt((String) value);
+        }
+        if (cursor == 2) {
+            RangeValue valueRange = new RangeValue();
+            Range range = new Range();
+            range.setStart(a[0]);
+            range.setEnd(a[1]);
+            valueRange.setValue(range);
+            question.setAnswer(valueRange);
+            cursor = 0;
+        }
     }
 
     private void saveDateTimeValue(Date date) {
