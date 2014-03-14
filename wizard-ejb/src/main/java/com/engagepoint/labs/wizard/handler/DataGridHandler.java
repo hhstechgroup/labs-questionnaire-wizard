@@ -7,11 +7,17 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
+
 @Named("dataGridHandler")
 @SessionScoped
 public class DataGridHandler implements Serializable {
 
     private static final long serialVersionUID = -1066387551691144085L;
+
+    private Boolean currentCellValue;
+    private String currentGridID;
+    private int currentCellIndex;
 
     private ArrayList<DataGridStoreObject> grids;
 
@@ -32,14 +38,46 @@ public class DataGridHandler implements Serializable {
 	this.grids = grids;
     }
 
-    public ArrayList<Boolean> getGridByID(String id) {
+    public DataGridHandler setCellFromGridByID(String gridID, int cellIndex) {
 	ArrayList<Boolean> dataGrid = null;
 	for (DataGridStoreObject dataGridObject : grids) {
-	    if (dataGridObject.getDataGridID().equals(id)) {
+	    if (dataGridObject.getDataGridID().equals(gridID)) {
 		dataGrid = dataGridObject.getDataGridItems();
 		break;
 	    }
 	}
-	return dataGrid;
+	currentCellValue = dataGrid.get(cellIndex);
+	currentGridID = gridID;
+	currentCellIndex = cellIndex;
+	test(gridID, cellIndex);
+	RequestContext.getCurrentInstance().update(currentGridID);
+	return this;
+    }
+
+    public Boolean getCurrentCellValue() {
+	return currentCellValue;
+    }
+
+    public void setCurrentCellValue(Boolean currentCellValue) {
+	this.currentCellValue = currentCellValue;
+	for (DataGridStoreObject dataGridObject : grids) {
+	    if (dataGridObject.getDataGridID().equals(currentGridID)) {
+		dataGridObject.getDataGridItems().set(currentCellIndex,
+			currentCellValue);
+		break;
+	    }
+	}
+    }
+
+    private void test(String gridID, int cellIndex) {
+	System.out.println(gridID + " " + cellIndex);
+	for (DataGridStoreObject dataGridObject : grids) {
+	    if (dataGridObject.getDataGridID().equals(currentGridID)) {
+		dataGridObject.getDataGridItems().set(
+			dataGridObject.getDataGridItems().size() - 1,
+			currentCellValue);
+		break;
+	    }
+	}
     }
 }

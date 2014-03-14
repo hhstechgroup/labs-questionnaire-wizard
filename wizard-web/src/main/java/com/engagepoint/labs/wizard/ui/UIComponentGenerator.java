@@ -142,23 +142,28 @@ public class UIComponentGenerator {
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
 	grid.setId(gridID);
-	gridHandler.getGrids().add(new DataGridStoreObject(gridID));
 
-	InputText hiddenInput = new InputText();
-	String hiddenInputID = "_gridValidator_" + gridID;
-	hiddenInput.setId(hiddenInputID);
-	hiddenInput.setType("hidden");
+	DataGridStoreObject dataGridStoreObject = null;
 
-	hiddenInput.addValidator(new ComponentValidator(question, pageNumber,
-		topicNumber, isParent));
-	hiddenInput.addClientBehavior("valueChange", getAjaxBehavior(question));
+	boolean iterFlag = false;
+	for (DataGridStoreObject gridStoreObject : gridHandler.getGrids()) {
+	    if (gridStoreObject.getDataGridID().equals(gridID)) {
+		iterFlag = true;
+		dataGridStoreObject = gridStoreObject;
+		break;
+	    }
+	}
+
+	if (iterFlag == false) {
+	    dataGridStoreObject = new DataGridStoreObject(gridID);
+	    gridHandler.getGrids().add(dataGridStoreObject);
+	}
 
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
 		if (row == 0 && col == 0) {
-		    cell.getChildren().add(hiddenInput);
 		    grid.getChildren().add(cell);
 		    continue;
 		}
@@ -186,15 +191,25 @@ public class UIComponentGenerator {
 		    ELContext elContext = facesContext.getELContext();
 		    ExpressionFactory expressionFactory = facesContext
 			    .getApplication().getExpressionFactory();
-		    String ajaxQuery = "wizardDataGridHandler("
-			    + checkBoxCellNumber + ",'" + hiddenInputID + "')";
-		    checkbox.setOnchange(expressionFactory
-			    .createValueExpression(elContext, ajaxQuery,
-				    Object.class).getExpressionString());
+		    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
+			    + gridID
+			    + "\","
+			    + checkBoxCellNumber
+			    + ").currentCellValue}";
+
+		    checkbox.setValueExpression("value", expressionFactory
+			    .createValueExpression(elContext, valueGetterQuery,
+				    Boolean.class));
+		    
+		    checkbox.addClientBehavior("valueChange",
+				getAjaxBehavior(question));
+
+		    if (iterFlag == false) {
+			dataGridStoreObject.getDataGridItems().add(false);
+		    }
 
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);
-		    gridHandler.getGridByID(gridID).add(false);
 		    checkBoxCellNumber++;
 		    continue;
 		}

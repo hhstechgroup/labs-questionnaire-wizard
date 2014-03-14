@@ -23,12 +23,10 @@ public class DataGridStoreObject {
 	if (dataGridItems == null) {
 	    dataGridItems = new ArrayList<Boolean>();
 	}
-	System.out.println("aaa");
 	return dataGridItems;
     }
 
     public void setDataGridItems(ArrayList<Boolean> dataGridItems) {
-	System.out.println("bbbb");
 	this.dataGridItems = dataGridItems;
     }
 }
