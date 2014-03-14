@@ -3,6 +3,8 @@ package com.engagepoint.labs.wizard.questions;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.values.Value;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.primefaces.component.panel.Panel;
 import super_binding.QType;
 
@@ -23,6 +25,7 @@ public class RuleExecutor implements Serializable {
     private WizardForm form;
     private WizardQuestion question;
     private boolean isAlreadyShowing;
+    private static final Logger LOGGER = Logger.getLogger(RuleExecutor.class);
 
 
     public RuleExecutor(WizardForm form) {
@@ -95,7 +98,7 @@ public class RuleExecutor implements Serializable {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.warn(e.getMessage());
         }
         return compareResult;
     }

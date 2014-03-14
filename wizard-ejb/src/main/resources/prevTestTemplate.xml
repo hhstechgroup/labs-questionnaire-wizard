@@ -6,6 +6,7 @@
         <form-name>testPreviousButton</form-name>
         <pages>
             <page page-number="1" page-id="formPage1">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="page1Group1">
                         <group-name>Topic 1 of First Page</group-name>
@@ -13,10 +14,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -36,10 +40,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne1">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -59,10 +66,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne2">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -76,16 +86,19 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>no</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="pageOneGroupOne3">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -105,10 +118,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne4">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -122,16 +138,19 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>no</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="pageOneGroupOne5">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -145,16 +164,19 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>no</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="pageOneGroupOne6">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -174,10 +196,13 @@
                             <question answer-required="false" question-id="pageOneGroupOne7">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -191,16 +216,19 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>no</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="pageOneGroupOne8">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -214,16 +242,19 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>no</default-answer>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="pageOneGroupOne9">
                                 <question-title>Question one</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Type yes if it's topic one of first page?</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -248,10 +279,13 @@
                             <question answer-required="false" question-id="pageOneGroupTwo">
                                 <question-title>Question two</question-title>
                                 <question-type>MULTIPLECHOICE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Question two</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>Male</option>
                                     <option>Female</option>
@@ -277,10 +311,13 @@
                             <question answer-required="false" question-id="pageOneGroupThree">
                                 <question-title>Question three</question-title>
                                 <question-type>TEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>help</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -303,6 +340,7 @@
                 </groups-of-questions>
             </page>
             <page page-number="2" page-id="formPage2">
+                <page-name>Page 2</page-name>
                 <groups-of-questions>
                     <group group-id="page2Group1">
                         <group-name>Topic 1 of Second Page</group-name>
@@ -310,10 +348,13 @@
                             <question answer-required="false" question-id="pageTwoGroupOne">
                                 <question-title>Question four</question-title>
                                 <question-type>MULTIPLECHOICE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Male or Female</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>Male</option>
                                     <option>Female</option>
@@ -339,10 +380,13 @@
                             <question answer-required="false" question-id="pageTwoGroupTwo">
                                 <question-title>Question five</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Male or Female</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
 
@@ -363,7 +407,6 @@
                         </questions>
                     </group>
                 </groups-of-questions>
-
             </page>
         </pages>
     </questionnaire-form>

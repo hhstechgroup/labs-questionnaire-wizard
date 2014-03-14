@@ -7,13 +7,13 @@ package com.engagepoint.labs.wizard.bean;
 import java.util.List;
 
 /**
- *
  * @author artem.pylypenko
  */
 public class WizardPage {
 
     private String id;
     private Integer pageNumber;
+    private String pageName;
     private List<WizardTopic> topicList;
 
     public WizardPage() {
@@ -33,6 +33,14 @@ public class WizardPage {
 
     public void setPageNumber(Integer pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public String getPageName() {
+        return pageName;
+    }
+
+    public void setPageName(String pageName) {
+        this.pageName = pageName;
     }
 
     public List<WizardTopic> getTopicList() {

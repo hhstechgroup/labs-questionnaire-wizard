@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <questionnaire-forms
-    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
     <questionnaire-form form-id="bcdmlpq1">
         <form-name>Simple Form Template 1</form-name>
         <pages>
             <page page-number="1" page-id="dcvxd">
+                <page-name>Page First</page-name>
                 <groups-of-questions>
                     <group group-id="bcugyrfn">
                         <group-name>Test group 1</group-name>
                         <questions>
-                            <question answer-required="false" question-id="xxssx">
+                            <question answer-required="true" question-id="xxssx">
                                 <question-title>Error Q</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>RANGE</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>First Help Text for Question</help-text>
                                 <options>
@@ -22,7 +26,7 @@
                                     <option>Option Number 2</option>
                                     <option>Option Number 3</option>
                                 </options>
-                                <range/>
+                                <range range-begin="10" range-end="60" value="11"/>
                                 <grid>
                                     <columns>
                                         <column></column>
@@ -39,7 +43,10 @@
                                 <question-title>CheckBox Q</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>help</help-text>
                                 <options>
@@ -59,22 +66,52 @@
                                 </grid>
                                 <default-answers>
                                     <default-answer></default-answer>
-                                        <!--<default-answer>Option 1</default-answer>-->
-                                        <!--<default-answer>Option 2</default-answer>-->
+                                    <!--<default-answer>Option 1</default-answer>-->
+                                    <!--<default-answer>Option 2</default-answer>-->
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="rrrrrr">
+                                <question-title>Error QQ</question-title>
+                                <question-type>RANGE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
+                                <help-text>First Help1111 Text for Question</help-text>
+                                <options>
+                                    <option>Option Number 1</option>
+                                    <option>Option Number 2</option>
+                                    <option>Option Number 3</option>
+                                </options>
+                                <range range-begin="30" range-end="70" value="11"/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                                <default-answers>
+                                    <default-answer></default-answer>
                                 </default-answers>
                             </question>
 
-
                         </questions>
                     </group>
-                    <group group-id="hboidbfo">
+                    <group group-id="hboidbfow">
                         <group-name>Test group 2</group-name>
                         <questions>
                             <question answer-required="true" question-id="kdkdk">
                                 <question-title>QT paragraph</question-title>
                                 <question-type>FILEUPLOAD</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help text</help-text>
                                 <options>
@@ -102,7 +139,10 @@
                                 <question-title>QT text 52452452</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>Help</help-text>
                                 <options>
@@ -126,6 +166,7 @@
                 </groups-of-questions>
             </page>
             <page page-number="2" page-id="allalalsqioioi">
+                <page-name>Page Second</page-name>
                 <groups-of-questions>
                     <group group-id="pqpqpqowowowo">
                         <group-name>Super Puper Topic 1</group-name>
@@ -134,7 +175,10 @@
                                 <question-title>SUPER title for QUESTION</question-title>
                                 <question-type>TEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>TODO</help-text>
                                 <options>
@@ -162,7 +206,10 @@
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>
-                                    <rule></rule>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
                                 </rules>
                                 <help-text>HELLP</help-text>
                                 <options>

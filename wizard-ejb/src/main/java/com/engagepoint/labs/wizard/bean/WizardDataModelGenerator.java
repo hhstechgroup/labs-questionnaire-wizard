@@ -5,7 +5,37 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import super_binding.DefaultAnswers;
+import super_binding.Group;
+import super_binding.GroupsOfQuestions;
+import super_binding.Page;
+import super_binding.Pages;
+import super_binding.Question;
+import super_binding.QuestionnaireForm;
+import super_binding.QuestionnaireForms;
+import super_binding.Questions;
+import super_binding.Rule;
+import super_binding.Rules;
+
+import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
+import com.engagepoint.labs.wizard.questions.DateQuestion;
+import com.engagepoint.labs.wizard.questions.DropDownQuestion;
+import com.engagepoint.labs.wizard.questions.FileUploadQuestion;
+import com.engagepoint.labs.wizard.questions.GridQuestion;
+import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
+import com.engagepoint.labs.wizard.questions.RangeQuestion;
+import com.engagepoint.labs.wizard.questions.TextAreaQuestion;
+import com.engagepoint.labs.wizard.questions.TextQuestion;
+import com.engagepoint.labs.wizard.questions.TimeQuestion;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.DateValue;
 import com.engagepoint.labs.wizard.values.GridValue;
 import com.engagepoint.labs.wizard.values.ListTextValue;
@@ -13,14 +43,6 @@ import com.engagepoint.labs.wizard.values.RangeValue;
 import com.engagepoint.labs.wizard.values.TextValue;
 import com.engagepoint.labs.wizard.values.objects.Grid;
 import com.engagepoint.labs.wizard.values.objects.Range;
-
-import super_binding.*;
-
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author artem.pylypenko
@@ -35,6 +57,8 @@ public class WizardDataModelGenerator {
     private int topicNumber;
     private List<String> defaultAnswers;
     private List<Rule> ruleList;
+    private static final Logger LOGGER = Logger
+	    .getLogger(WizardDataModelGenerator.class);
 
     public WizardDataModelGenerator() {
     }
@@ -72,6 +96,7 @@ public class WizardDataModelGenerator {
 	    wizardPage = new WizardPage();
 	    wizardPage.setId(page.getPageId());
 	    wizardPage.setPageNumber(page.getPageNumber());
+	    wizardPage.setPageName(page.getPageName());
 	    wizardPage.setTopicList(getWizardQuestionGroups(page
 		    .getGroupsOfQuestions()));
 	    wizardPageList.add(wizardPage);
@@ -148,7 +173,7 @@ public class WizardDataModelGenerator {
 		try {
 		    date = formatter.parse(defaultAnswers.get(0));
 		} catch (ParseException e) {
-		    e.printStackTrace();
+		    LOGGER.warn(e.getMessage());
 		}
 		dateDefault.setValue(date);
 		wizardQuestion.setDefaultAnswer(dateDefault);
@@ -164,7 +189,7 @@ public class WizardDataModelGenerator {
 		try {
 		    time = formatter.parse(defaultAnswers.get(0));
 		} catch (ParseException e) {
-		    e.printStackTrace();
+		    LOGGER.warn(e.getMessage());
 		}
 		timeDefault.setValue(time);
 		wizardQuestion.setDefaultAnswer(timeDefault);
@@ -178,12 +203,13 @@ public class WizardDataModelGenerator {
 	    List<String> rows = xmlQuestion.getGrid().getRows().getRow();
 	    List<String> columns = xmlQuestion.getGrid().getColumns()
 		    .getColumn();
-	    
+
 	    gridQuestion.setColumns(columns);
 	    gridQuestion.setRows(rows);
 	    if (checkDefaultAnswer(xmlQuestion)) {
 		GridValue gridDefaults = new GridValue();
-		gridDefaults.setValue(new Grid(rows, columns, defaultAnswers, gridQuestion.getId()));
+		gridDefaults.setValue(new Grid(rows, columns, defaultAnswers,
+			gridQuestion.getId()));
 		gridQuestion.setDefaultAnswer(gridDefaults);
 		gridQuestion.setAnswer(gridDefaults);
 	    }

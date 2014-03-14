@@ -23,8 +23,27 @@ public class WizardForm implements Serializable {
     private String id;
     private String formName;
     private List<WizardPage> wizardPageList;
+    private int pageLimit;
+    private int topicLimit;
 
     public WizardForm() {
+    }
+
+    public int getTopicLimit() {
+        return topicLimit;
+    }
+
+    public void setTopicLimit(int topicLimit) {
+        this.topicLimit = topicLimit;
+    }
+
+    public int getPageLimit() {
+
+        return pageLimit;
+    }
+
+    public void setPageLimit(int pageLimit) {
+        this.pageLimit = pageLimit;
     }
 
     public String getId() {

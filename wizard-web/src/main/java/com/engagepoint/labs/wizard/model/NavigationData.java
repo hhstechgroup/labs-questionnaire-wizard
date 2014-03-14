@@ -3,12 +3,10 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
@@ -16,7 +14,10 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
@@ -62,15 +63,16 @@ public class NavigationData implements Serializable {
     private MenuModel menuModel;
     // Binding on form in maincontent.xhtml
     private HtmlForm mainContentForm;
-    private List<Panel> panelList;
+    private List<UIComponent> panelList;
     private List<Button> buttonsList;
     private PanelGrid panelGrid;
     private boolean finishButtonRendered;
     private boolean isFirstPage = true;
     private boolean isFirstTopic = true;
     private boolean previousButtonRendered;
-
     private HtmlForm sliderForm;
+    private String mainContentFormStyle;
+    private HtmlPanelGroup scrollablePanelGroup;
 
     /**
      * Method parses our XML's. Created because out first page must know the
@@ -121,7 +123,12 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
-        mainContentForm.getChildren().add(panelGrid);
+        scrollablePanelGroup = new HtmlPanelGroup();
+        scrollablePanelGroup.setLayout("block");
+        scrollablePanelGroup.setId("scrollableDiv");
+        scrollablePanelGroup.getChildren().add(panelGrid);
+        //mainContentForm.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(scrollablePanelGroup);
         mainContentForm.getChildren().add(getDialog());
         mainContentForm.getChildren().add(getDialogForDependentQuestion());
         wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
@@ -129,13 +136,16 @@ public class NavigationData implements Serializable {
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
                 .getTopicList().get(0).getId();
-        currentTopicIDs = new ArrayList<String>();
-        currentTopicTitles = new ArrayList<String>();
+        currentTopicIDs = new ArrayList<>();
+        currentTopicTitles = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
-        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
-        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
-                .getTopicNumber();
+//        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+        wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
+//        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
+//                .getTopicNumber();
+        wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
+                .getTopicNumber());
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -148,8 +158,8 @@ public class NavigationData implements Serializable {
                     Integer newCurrentTopicNumber = wizardForm
                             .getWizardTopicById(currentTopicID)
                             .getTopicNumber();
-                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
-                        WizardLimits.topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
                     }
                     return true;
                 }
@@ -170,13 +180,13 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();
                     Integer newCurrentPageNumber = wizardForm
                             .getWizardPageById(currentPageID).getPageNumber();
-                    if (newCurrentPageNumber > WizardLimits.pageLimit) {
-                        WizardLimits.pageLimit = newCurrentPageNumber;
+                    if (newCurrentPageNumber > wizardForm.getPageLimit()) {
+                        wizardForm.setPageLimit(newCurrentPageNumber);
                     }
                     Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
                             .getTopicList().get(0)).getTopicNumber();
-                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
-                        WizardLimits.topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
                     }
                     return true;
                 }
@@ -377,11 +387,11 @@ public class NavigationData implements Serializable {
         this.currentTopicTitle = currentTopicTitle;
     }
 
-    public List<Panel> getPanelList() {
+    public List<UIComponent> getPanelList() {
         return panelList;
     }
 
-    public void setPanelList(List<Panel> panelList) {
+    public void setPanelList(List<UIComponent> panelList) {
         this.panelList = panelList;
     }
 
@@ -498,21 +508,30 @@ public class NavigationData implements Serializable {
         dialog.getChildren().add(message);
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
+        dialog.setDraggable(false);
         return dialog;
     }
 
     private Dialog getDialogForDependentQuestion() {
-        OutputLabel message = new OutputLabel();
-        message.setValue("Parent Question was redacted !");
-        OutputLabel header = new OutputLabel();
-        header.setValue("Parent Question was redacted");
+        HtmlOutputText firstPartOfMessage = new HtmlOutputText();
+        firstPartOfMessage.setValue("Please keep in mind that other questions depend on answer for this one. <br/>" +
+                "When you change answer for such question (that are marked with green star ");
+        firstPartOfMessage.setEscape(false);
+        HtmlOutputText star = new HtmlOutputText();
+        star.setValue(" *");
+        star.setStyle("color:#00CC00");
+        HtmlOutputText secondPartOfMessage = new HtmlOutputText();
+        secondPartOfMessage.setValue(" ).<br/>You will continue wizard from this point.");
+        secondPartOfMessage.setEscape(false);
         Dialog dialog = new Dialog();
-        dialog.setHeader("Parent Question was redacted");
+        dialog.setHeader("Other questions depend on this one!");
         dialog.setId("dialogDependentQuestion");
         dialog.setWidgetVar("dialogDependentQuestion");
         dialog.setModal(true);
         dialog.setResizable(false);
-        dialog.getChildren().add(message);
+        dialog.getChildren().add(firstPartOfMessage);
+        dialog.getChildren().add(star);
+        dialog.getChildren().add(secondPartOfMessage);
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
         return dialog;
@@ -532,5 +551,23 @@ public class NavigationData implements Serializable {
 
     public void setFirstTopic(boolean isFirstTopic) {
         this.isFirstTopic = isFirstTopic;
+    }
+
+    public String getMainContentFormStyle() {
+        if (panelList != null) {
+            if (panelList.size() > 4) {
+                setMainContentFormStyle("maincontentid-scroll");
+            } else {
+                setMainContentFormStyle("maincontentid-non-scroll");
+            }
+        } else {
+            setMainContentFormStyle("maincontentid-non-scroll");
+        }
+
+        return mainContentFormStyle;
+    }
+
+    private void setMainContentFormStyle(String mainContentFormStyle) {
+        this.mainContentFormStyle = mainContentFormStyle;
     }
 }

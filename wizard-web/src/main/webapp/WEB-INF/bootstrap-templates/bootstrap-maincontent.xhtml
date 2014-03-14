@@ -3,6 +3,7 @@
         xmlns:h="http://java.sun.com/jsf/html"
         template="bootstrap-template.xhtml"
         markupType="html5"
-        binding="#{uiNavigationBean.navigationData.mainContentForm}" xmlns:f="http://java.sun.com/jsf/core">
+        binding="#{uiNavigationBean.navigationData.mainContentForm}" xmlns:f="http://java.sun.com/jsf/core"
+        >
     <f:event type="preRenderView" listener="#{uiNavigationBean.executeAllRulesOnCurrentTopic}"/>
 </h:form>

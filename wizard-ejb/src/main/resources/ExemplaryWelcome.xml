@@ -6,6 +6,7 @@
         <form-name>ExemplaryWelcome</form-name>
         <pages>
             <page page-number="1" page-id="sdfsadf">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="asdgghgsh">
                         <group-name>Topic 1</group-name>
@@ -13,10 +14,13 @@
                             <question answer-required="false" question-id="er34werwe">
                                 <question-title>Your name:</question-title>
                                 <question-type>FILEUPLOAD</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>First name</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -36,10 +40,13 @@
                             <question answer-required="false" question-id="oio8en9">
                                 <question-title>Choose from list</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text></help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>One</option>
                                     <option>Two</option>
@@ -61,10 +68,13 @@
                             <question answer-required="false" question-id="mmkk54fdg">
                                 <question-title>Date</question-title>
                                 <question-type>DATE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Date</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -89,10 +99,13 @@
                             <question answer-required="false" question-id="eryeyhg65">
                                 <question-title>Gender:</question-title>
                                 <question-type>MULTIPLECHOICE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Male or Female</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>Male</option>
                                     <option>Female</option>
@@ -113,10 +126,13 @@
                             <question answer-required="false" question-id="retre657">
                                 <question-title>Empty checkbox</question-title>
                                 <question-type>CHECKBOX</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text></help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option>One</option>
                                     <option>Two</option>
@@ -138,10 +154,13 @@
                             <question answer-required="false" question-id="fdg4w56335">
                                 <question-title>Write your</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text></help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
@@ -163,6 +182,7 @@
                 </groups-of-questions>
             </page>
             <page page-number="2" page-id="dsfkpokk943">
+                <page-name>Page 2</page-name>
                 <groups-of-questions>
                     <group group-id="oskfs430lkm">
                         <group-name>Topic 1</group-name>
@@ -170,10 +190,13 @@
                             <question answer-required="false" question-id="okopok670754iwe">
                                 <question-title>Time</question-title>
                                 <question-type>TIME</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
                                 <help-text>Time</help-text>
-                                <dependent-questions>
-                                    <dependent-question/>
-                                </dependent-questions>
                                 <options>
                                     <option></option>
                                 </options>
