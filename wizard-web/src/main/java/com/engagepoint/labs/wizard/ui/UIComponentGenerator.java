@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlInputFile;
@@ -119,8 +120,7 @@ public class UIComponentGenerator {
 	    break;
 	case GRID:
 	    // to do
-	    component = getGrid(question, answer, defaultAnswer, gridHandler,
-		    panel);
+	    component = getGrid(question, answer, defaultAnswer, gridHandler);
 	    break;
 	}
 	component.setId(question.getId());
@@ -129,36 +129,55 @@ public class UIComponentGenerator {
     }
 
     private PanelGrid getGrid(WizardQuestion question, Value answer,
-	    Value defaultAnswer, DataGridHandler gridHandler, Panel panel) {
-	PanelGrid grid = new PanelGrid();
+	    Value defaultAnswer, DataGridHandler gridHandler) {
+
 	GridQuestion gridQuestion = (GridQuestion) question;
+	PanelGrid grid = new PanelGrid();
+
+	// Get column names from our model
 	ArrayList<String> columns = (ArrayList<String>) gridQuestion
 		.getColumns();
+	// Get rows names from our model
 	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
+
+	// Get our question ID. Grid will have this id.
 	String gridID = gridQuestion.getId();
+	// Set rows and column number. +1 because our table must have one upper
+	// row with column names and one left row with row names Other rows and
+	// columns are used for cells with radiobuttons.
 	int rowsNumber = rows.size() + 1;
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
 	grid.setId(gridID);
-	
+
 	gridHandler.getQuestions().put(gridID, gridQuestion);
-	
+
+	// Cells in datagrid starts numbering from 0. This counter provides cell
+	// numbering.
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
 		Row cell = new Row();
 		if (row == 0 && col == 0) {
+		    // Upper left cell does not contain anything, so will be
+		    // empty
 		    grid.getChildren().add(cell);
 		    continue;
 		}
 		if (row == 0) {
+		    // Upper row with has index 0. It contains column headers.
+		    // Add it.
 		    HtmlOutputText colName = new HtmlOutputText();
+		    // col-1 because of column headers starts from cell with
+		    // index 1, but first column name entry in arraylist is 0
 		    colName.setValue(columns.get(col - 1));
 		    cell.getChildren().add(colName);
 		    grid.getChildren().add(cell);
 		    continue;
 		}
 		if (row != 0 && col == 0) {
+		    // When we are on column with index 0, we must insert to it
+		    // cells with row names.
 		    HtmlOutputText rowName = new HtmlOutputText();
 		    rowName.setValue(rows.get(row - 1));
 		    cell.getChildren().add(rowName);
@@ -166,25 +185,23 @@ public class UIComponentGenerator {
 		    continue;
 		}
 		if (row != 0 && col != 0) {
+		    // Finally add cells with radios to datatable. First cell
+		    // with radio will be upper-left and will have
+		    // *checkBoxCellNumber* set to 0.
 		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
-		    String checkboxID = gridID+"_chbx_" + checkBoxCellNumber;
+		    String checkboxID = gridID + "_chbx_" + checkBoxCellNumber;
 		    checkbox.setId(checkboxID);
 
-		    FacesContext facesContext = FacesContext
-			    .getCurrentInstance();
-		    ELContext elContext = facesContext.getELContext();
-		    ExpressionFactory expressionFactory = facesContext
-			    .getApplication().getExpressionFactory();
 		    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
 			    + gridID
 			    + "\",\""
 			    + checkboxID
 			    + "\").currentCellValue}";
 
-		    checkbox.setValueExpression("value", expressionFactory
-			    .createValueExpression(elContext, valueGetterQuery,
+		    checkbox.setValueExpression(
+			    "value",
+			    createValueExpression(valueGetterQuery,
 				    Boolean.class));
-
 		    checkbox.addClientBehavior("valueChange",
 			    getAjaxBehavior(question));
 
@@ -468,5 +485,15 @@ public class UIComponentGenerator {
 		.getExpressionFactory()
 		.createMethodExpression(facesContext.getELContext(),
 			expression, returnType, parameterTypes);
+    }
+
+    public static ValueExpression createValueExpression(String expression,
+	    Class<?> returnType) {
+	FacesContext facesContext = FacesContext.getCurrentInstance();
+	return facesContext
+		.getApplication()
+		.getExpressionFactory()
+		.createValueExpression(facesContext.getELContext(), expression,
+			returnType);
     }
 }
