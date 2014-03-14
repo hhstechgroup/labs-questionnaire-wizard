@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.handler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class DataGridHandler implements Serializable {
     private String currentGridID;
     private String currentCellId;
 
+    private ArrayList<String> checkBoxIDsToUnset;
+
     private Map<String, GridQuestion> questions;
 
     public DataGridHandler() {
@@ -33,6 +36,7 @@ public class DataGridHandler implements Serializable {
     @PostConstruct
     public void init() {
 	questions = new HashMap<String, GridQuestion>();
+	checkBoxIDsToUnset = new ArrayList<String>();
     }
 
     public Map<String, GridQuestion> getQuestions() {
@@ -60,8 +64,7 @@ public class DataGridHandler implements Serializable {
 	Grid grid = searchForGrid(currentGridID);
 	grid.getValues().put(currentCellId, currentCellValue);
 
-	System.out.println(currentCellValue + " " + currentCellId + " "
-		+ currentGridID);
+	processRowRule();
 	RequestContext.getCurrentInstance().update(currentGridID);
     }
 
@@ -77,5 +80,30 @@ public class DataGridHandler implements Serializable {
 	    }
 	}
 	return grid;
+    }
+
+    private void processRowRule() {
+	int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
+	int colsCount = questions.get(currentGridID).getColumns().size();
+	int currentCellNumberRow = currentCellNumber / colsCount;
+
+	checkBoxIDsToUnset.clear();
+	for (int i = 0; i < colsCount; i++) {
+	    String idToUnset = Grid.createCheckBoxID(currentGridID,
+		    currentCellNumberRow * colsCount + i);
+	    {
+		if (!idToUnset.equals(currentCellId)) {
+		    checkBoxIDsToUnset.add(idToUnset);
+		}
+	    }
+	}
+	unsetValues();
+    }
+
+    private void unsetValues() {
+	Grid grid = searchForGrid(currentGridID);
+	for (String cellID : checkBoxIDsToUnset) {
+	    grid.getValues().put(cellID, false);
+	}
     }
 }

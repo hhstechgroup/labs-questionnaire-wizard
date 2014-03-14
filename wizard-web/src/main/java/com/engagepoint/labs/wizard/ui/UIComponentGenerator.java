@@ -44,6 +44,7 @@ import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
 import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
 import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
 import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.objects.Grid;
 
 /**
  * Created by igor.guzenko on 2/11/14.
@@ -188,7 +189,8 @@ public class UIComponentGenerator {
 		    // with radio will be upper-left and will have
 		    // *checkBoxCellNumber* set to 0.
 		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
-		    String checkboxID = gridID + "_chbx_" + checkBoxCellNumber;
+		    String checkboxID = Grid.createCheckBoxID(gridID,
+			    checkBoxCellNumber);
 		    checkbox.setId(checkboxID);
 
 		    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
@@ -211,7 +213,6 @@ public class UIComponentGenerator {
 		}
 	    }
 	}
-
 	return grid;
     }
 

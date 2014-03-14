@@ -8,6 +8,7 @@ import java.util.Map;
  * Created by igor.guzenko on 2/17/14.
  */
 public class Grid {
+    public static String CELL_PREFIX = "gridcell_";
     private List<String> row;
     private List<String> column;
     private Map<String, Boolean> values;
@@ -23,16 +24,30 @@ public class Grid {
     }
 
     private void parseStrings(List<String> values) {
-	int cellCount = 0;
+	int checkBoxNumber = 0;
 	for (String stringRow : values) {
 	    String[] cellIDs = stringRow.split(",");
 	    for (int i = 0; i < cellIDs.length; i++) {
-		this.values.put(
-			gridID + "_chbx_" + Integer.toString(cellCount, 10),
+		this.values.put(createCheckBoxID(gridID, checkBoxNumber),
 			Boolean.parseBoolean(cellIDs[i]));
-		cellCount++;
+		checkBoxNumber++;
 	    }
 	}
+    }
+
+    public static String createCheckBoxID(String gridID, int cellNumber) {
+	String id = CELL_PREFIX + gridID + "_"
+		+ Integer.toString(cellNumber, 10);
+	return id;
+    }
+
+    public static int getCheckBoxNumberFromID(String id) {
+	int checkBoxIDNumberStartPosition = id.lastIndexOf("_") + 1;
+	String checkBoxNumberString = id
+		.substring(checkBoxIDNumberStartPosition);
+
+	int currentCellNumber = Integer.parseInt(checkBoxNumberString);
+	return currentCellNumber;
     }
 
     public List<String> getRow() {
