@@ -179,12 +179,9 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();
                     Integer newCurrentPageNumber = wizardForm
                             .getWizardPageById(currentPageID).getPageNumber();
-                    System.out.println("$$$$$$$$ newCurrentPageNumber = " + newCurrentPageNumber);
-                    System.out.println("@@@@@@@@@@@ pageLimit = " + wizardForm.getPageLimit());
                     if (newCurrentPageNumber > wizardForm.getPageLimit()) {
                         wizardForm.setPageLimit(newCurrentPageNumber);
                     }
-                    System.out.println("@@@@@@@@@@@ pageLimit 2.0 = " + wizardForm.getPageLimit());
                     Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
                             .getTopicList().get(0)).getTopicNumber();
                     if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
@@ -205,9 +202,7 @@ public class NavigationData implements Serializable {
                 if (index == 0) {
                     return false;// if finded page is first
                 } else {
-                    System.out.println("^^^^^^^^^^^^^^^^^^^ before current page id =" + currentPageID);
                     currentPageID = pageList.get(index - 1).getId();
-                    System.out.println("++++++++++++++ after current page id =" + currentPageID);
                     return true;
                 }
             }

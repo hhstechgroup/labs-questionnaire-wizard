@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
                 template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
     <ui:define name="breadcrumb">
         <ui:include
@@ -25,7 +25,8 @@
                 <p:commandButton value="NEXT" id="buttonid"
                                  rendered="#{!navigationData.finishButtonRendered}"
                                  action="#{uiNavigationBean.nextButtonClick}"
-                                 style="text-align:center;position:relative;float:right;margin-top: 1%;"/>
+                                 style="text-align:center;position:relative;float:right;margin-top: 1%;">
+                </p:commandButton>
                 <p:commandButton value="FINISH" id="finishbuttonid"
                                  rendered="#{navigationData.finishButtonRendered}"
                                  action="#{uiNavigationBean.finishButtonClick()}"

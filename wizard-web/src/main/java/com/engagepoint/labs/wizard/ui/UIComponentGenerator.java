@@ -48,7 +48,6 @@ public class UIComponentGenerator {
     public UIComponentGenerator() {
     }
 
-   // public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber, int topicNumber) {
     public List<UIComponent> getPanelList(Map<WizardQuestion, Boolean> wizardQuestionMap,
                                     int pageNumber, int topicNumber, UINavigationBean navigationBean) {
         this.navigationBean = navigationBean;

@@ -93,8 +93,8 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>C2</default-answer>
-                                    <default-answer>C4</default-answer>
+                                    <!--<default-answer>C2</default-answer>-->
+                                    <!--<default-answer>C4</default-answer>-->
                                 </default-answers>
                             </question>
                         </questions>

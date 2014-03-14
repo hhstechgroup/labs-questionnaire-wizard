@@ -43,7 +43,8 @@ public class UINavigationBean implements Serializable {
     //
     private static final long serialVersionUID = 7470581070941487130L;
     private String xmlPath;
-    private int currentXmlPath = 0;
+    private boolean needToStopUserOnCurrentTopic = false;
+    private QType currentQuestionType;
     /**
      * This is model class to hold data about XML files and Navigation data
      * objects
@@ -256,17 +257,15 @@ public class UINavigationBean implements Serializable {
         Integer newCurrentPageNumber = wizardForm.getWizardPageById(newCurrentPageID).getPageNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
         if (newCurrentPageNumber > navigationData.getWizardForm().getPageLimit()) {
-            System.out.println("++++++++++++++ LIMIT = " + navigationData.getWizardForm().getPageLimit());
-            System.out.println("if (newCurrentPageNumber > WizardLimits.pageLimit) ");
             return;
         } else if (currentTopicNumber < navigationData.getWizardForm().getTopicLimit()
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
-            System.out.println("if (currentTopicNumber < WizardLimits.topicLimit\n" +
-                    "                && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())");
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
+        } else if (needToStopUserOnCurrentTopic) {
+            needToStopUserOnCurrentTopic = false;
+            return;
         } else {
-            System.out.println("else");
             validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
         }
         clearCurrentTopicsData();
@@ -297,6 +296,9 @@ public class UINavigationBean implements Serializable {
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
+        } else if (needToStopUserOnCurrentTopic) {
+            needToStopUserOnCurrentTopic = false;
+            return;
         } else {
             validateAllRequiredQuestions(getQuestionListFromCurrentTopic());
         }
@@ -321,6 +323,9 @@ public class UINavigationBean implements Serializable {
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return;
+        } else if (needToStopUserOnCurrentTopic) {
+            needToStopUserOnCurrentTopic = false;
+            return;
         }
         // in if condition we try to change current topic id
         if (navigationData.setCurrentTopicIDtoNext()) {
@@ -335,11 +340,14 @@ public class UINavigationBean implements Serializable {
             // if current topic was last on last page we will be here
             // todo submit, validation, and confirmation calls actions here
         }
-
     }
 
     public String finishButtonClick() {
         commitAnswers(getQuestionListFromCurrentTopic());
+        if (needToStopUserOnCurrentTopic) {
+            needToStopUserOnCurrentTopic = false;
+            return "";
+        }
         if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute("dialog.show()");
             return "";
@@ -367,7 +375,6 @@ public class UINavigationBean implements Serializable {
     }
 
     public void previousButtonClick() {
-        System.out.println("%%%%%%%%%%%%% BEGIN %%%%%%%%%%%%%");
         Integer newCurrentTopicNumber = navigationData.getWizardForm()
                 .getWizardTopicById(navigationData.getCurrentTopicID())
                 .getTopicNumber();
@@ -376,17 +383,16 @@ public class UINavigationBean implements Serializable {
                 RequestContext.getCurrentInstance().execute("dialog.show()");
                 return;
             }
+        } else if (needToStopUserOnCurrentTopic) {
+            needToStopUserOnCurrentTopic = false;
+            return;
         }
         if (navigationData.setCurrentTopicIDtoPrev()) {
             changeCurrentTopic(navigationData.getCurrentTopicID());
         } else if (navigationData.setCurrentPageIDtoPrev()) {
-            System.out.println("******** before change INSIDE  page = " + navigationData.getCurrentPageID() + "*********");
-            System.out.println("******** before change INSIDE  topic = " + navigationData.getCurrentTopicID() + "*********");
             changeCurrentPage(navigationData.getCurrentPageID());
             navigationData.setCurrentTopicID(navigationData.getCurrentTopicIDs().get(navigationData.getCurrentTopicIDs().size() - 1));
             changeCurrentTopic(navigationData.getCurrentTopicID());
-            System.out.println("******** after change INSIDE  page = " + navigationData.getCurrentPageID() + "*********");
-            System.out.println("******** after change INSIDE  topic = " + navigationData.getCurrentTopicID() + "*********");
         }
     }
 
@@ -481,6 +487,7 @@ public class UINavigationBean implements Serializable {
     }
 
     public void executeAllRulesOnCurrentTopic() {
+        boolean isEverChanged = false;
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
         for (int i = 0; i < wizardTopicById.getWizardQuestionList().size(); i++) {
@@ -488,6 +495,12 @@ public class UINavigationBean implements Serializable {
             boolean isChanged = question.executeAllRules();
             if (isChanged) {
                 i = -1;
+                isEverChanged = true;
+                if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
+                    needToStopUserOnCurrentTopic = true;
+                }
+            } else if (!isEverChanged && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
+                needToStopUserOnCurrentTopic = false;
             }
         }
     }
@@ -530,5 +543,13 @@ public class UINavigationBean implements Serializable {
             }
         }
         return match;
+    }
+
+    public QType getCurrentQuestionType() {
+        return currentQuestionType;
+    }
+
+    public void setCurrentQuestionType(QType currentQuestionType) {
+        this.currentQuestionType = currentQuestionType;
     }
 }

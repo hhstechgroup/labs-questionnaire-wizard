@@ -155,6 +155,7 @@ public class ComponentValidator implements Validator {
             default:
                 break;
         }
+        navigationBean.setCurrentQuestionType(question.getQuestionType());
         moveLimitIfNecessary();
     }
 
