@@ -2,12 +2,18 @@ package com.engagepoint.labs.wizard.handler;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
+
+import com.engagepoint.labs.wizard.questions.GridQuestion;
+import com.engagepoint.labs.wizard.values.objects.Grid;
 
 @Named("dataGridHandler")
 @SessionScoped
@@ -17,40 +23,42 @@ public class DataGridHandler implements Serializable {
 
     private Boolean currentCellValue;
     private String currentGridID;
-    private int currentCellIndex;
+    private String currentCellId;
 
-    private ArrayList<DataGridStoreObject> grids;
+    private Map<String,GridQuestion> questions;
 
     public DataGridHandler() {
-	grids = new ArrayList<DataGridStoreObject>();
+	questions = new HashMap<String,GridQuestion>();
     }
 
     @PostConstruct
     public void init() {
-	grids = new ArrayList<DataGridStoreObject>();
+	questions = new HashMap<String,GridQuestion>();
     }
 
-    public ArrayList<DataGridStoreObject> getGrids() {
-	return grids;
+    public Map<String,GridQuestion> getQuestions() {
+	return questions;
     }
 
-    public void setGrids(ArrayList<DataGridStoreObject> grids) {
-	this.grids = grids;
+    public void setQuestions(Map<String,GridQuestion> questions) {
+	this.questions = questions;
     }
 
-    public DataGridHandler setCellFromGridByID(String gridID, int cellIndex) {
-	ArrayList<Boolean> dataGrid = null;
-	for (DataGridStoreObject dataGridObject : grids) {
-	    if (dataGridObject.getDataGridID().equals(gridID)) {
-		dataGrid = dataGridObject.getDataGridItems();
+    public DataGridHandler setCellFromGridByID(String gridID, String cellID) {
+	Map<String, Boolean> dataGridValues = null;
+	Iterator<String> i=questions.keySet().iterator();
+	while(i.hasNext()) {
+	    String questionID=i.next();
+	    GridQuestion dataGridQuestion=questions.get(questionID);
+	    if (dataGridQuestion.getId().equals(gridID)) {
+		Grid grid = (Grid) dataGridQuestion.getAnswer().getValue();
+		dataGridValues = grid.getValues();
 		break;
 	    }
 	}
-	currentCellValue = dataGrid.get(cellIndex);
+	currentCellValue = dataGridValues.get(cellID);
 	currentGridID = gridID;
-	currentCellIndex = cellIndex;
-	test(gridID, cellIndex);
-	RequestContext.getCurrentInstance().update(currentGridID);
+	currentCellId = cellID;
 	return this;
     }
 
@@ -60,24 +68,16 @@ public class DataGridHandler implements Serializable {
 
     public void setCurrentCellValue(Boolean currentCellValue) {
 	this.currentCellValue = currentCellValue;
-	for (DataGridStoreObject dataGridObject : grids) {
-	    if (dataGridObject.getDataGridID().equals(currentGridID)) {
-		dataGridObject.getDataGridItems().set(currentCellIndex,
-			currentCellValue);
+	Iterator<String> i=questions.keySet().iterator();
+	while(i.hasNext()) {
+	    String questionID=i.next();
+	    GridQuestion dataGridQuestion=questions.get(questionID);
+	    if (dataGridQuestion.getId().equals(currentGridID)) {
+		Grid grid = (Grid) dataGridQuestion.getAnswer().getValue();
+		grid.getValues().put(currentCellId, currentCellValue);
 		break;
 	    }
 	}
-    }
-
-    private void test(String gridID, int cellIndex) {
-	System.out.println(gridID + " " + cellIndex);
-	for (DataGridStoreObject dataGridObject : grids) {
-	    if (dataGridObject.getDataGridID().equals(currentGridID)) {
-		dataGridObject.getDataGridItems().set(
-			dataGridObject.getDataGridItems().size() - 1,
-			currentCellValue);
-		break;
-	    }
-	}
+	RequestContext.getCurrentInstance().update(currentGridID);
     }
 }

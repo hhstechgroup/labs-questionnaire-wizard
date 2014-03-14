@@ -239,18 +239,18 @@
 										<column>Column 2</column>
 										<column>Column 3</column>
 										<column>Column 4</column>
-										<column>Column 5</column>
 
 									</columns>
 									<rows>
 										<row>Row 1</row>
 										<row>Row 2</row>
 										<row>Row 3</row>
-										<row>Row 4</row>
 									</rows>
 								</grid>
 								<default-answers>
-									<default-answer></default-answer>
+									<default-answer>true,false,false,false</default-answer>
+									<default-answer>false,true,false,true</default-answer>
+									<default-answer>false,false,true,false</default-answer>
 								</default-answers>
 							</question>
 							<question answer-required="false" question-id="hjkhjvv">

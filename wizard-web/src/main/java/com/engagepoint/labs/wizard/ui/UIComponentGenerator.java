@@ -10,7 +10,6 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlInputFile;
-import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -33,7 +32,6 @@ import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
-import com.engagepoint.labs.wizard.handler.DataGridStoreObject;
 import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
 import com.engagepoint.labs.wizard.questions.DropDownQuestion;
@@ -142,23 +140,9 @@ public class UIComponentGenerator {
 	int colsNumber = columns.size() + 1;
 	grid.setColumns(colsNumber);
 	grid.setId(gridID);
-
-	DataGridStoreObject dataGridStoreObject = null;
-
-	boolean iterFlag = false;
-	for (DataGridStoreObject gridStoreObject : gridHandler.getGrids()) {
-	    if (gridStoreObject.getDataGridID().equals(gridID)) {
-		iterFlag = true;
-		dataGridStoreObject = gridStoreObject;
-		break;
-	    }
-	}
-
-	if (iterFlag == false) {
-	    dataGridStoreObject = new DataGridStoreObject(gridID);
-	    gridHandler.getGrids().add(dataGridStoreObject);
-	}
-
+	
+	gridHandler.getQuestions().put(gridID, gridQuestion);
+	
 	int checkBoxCellNumber = 0;
 	for (int row = 0; row < rowsNumber; row++) {
 	    for (int col = 0; col < colsNumber; col++) {
@@ -193,20 +177,16 @@ public class UIComponentGenerator {
 			    .getApplication().getExpressionFactory();
 		    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
 			    + gridID
-			    + "\","
-			    + checkBoxCellNumber
-			    + ").currentCellValue}";
+			    + "\",\""
+			    + checkboxID
+			    + "\").currentCellValue}";
 
 		    checkbox.setValueExpression("value", expressionFactory
 			    .createValueExpression(elContext, valueGetterQuery,
 				    Boolean.class));
-		    
-		    checkbox.addClientBehavior("valueChange",
-				getAjaxBehavior(question));
 
-		    if (iterFlag == false) {
-			dataGridStoreObject.getDataGridItems().add(false);
-		    }
+		    checkbox.addClientBehavior("valueChange",
+			    getAjaxBehavior(question));
 
 		    cell.getChildren().add(checkbox);
 		    grid.getChildren().add(cell);

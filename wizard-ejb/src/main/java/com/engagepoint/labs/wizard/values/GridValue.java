@@ -1,5 +1,7 @@
 package com.engagepoint.labs.wizard.values;
 
+import java.util.HashMap;
+
 import com.engagepoint.labs.wizard.values.objects.Grid;
 
 /**
