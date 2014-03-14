@@ -3,12 +3,10 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
-import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
@@ -141,9 +139,12 @@ public class NavigationData implements Serializable {
         currentTopicTitles = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
-        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
-        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
-                .getTopicNumber();
+//        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
+        wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
+//        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
+//                .getTopicNumber();
+        wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
+                .getTopicNumber());
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -156,8 +157,8 @@ public class NavigationData implements Serializable {
                     Integer newCurrentTopicNumber = wizardForm
                             .getWizardTopicById(currentTopicID)
                             .getTopicNumber();
-                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
-                        WizardLimits.topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
                     }
                     return true;
                 }
@@ -178,13 +179,16 @@ public class NavigationData implements Serializable {
                     currentPageID = pageList.get(index + 1).getId();
                     Integer newCurrentPageNumber = wizardForm
                             .getWizardPageById(currentPageID).getPageNumber();
-                    if (newCurrentPageNumber > WizardLimits.pageLimit) {
-                        WizardLimits.pageLimit = newCurrentPageNumber;
+                    System.out.println("$$$$$$$$ newCurrentPageNumber = " + newCurrentPageNumber);
+                    System.out.println("@@@@@@@@@@@ pageLimit = " + wizardForm.getPageLimit());
+                    if (newCurrentPageNumber > wizardForm.getPageLimit()) {
+                        wizardForm.setPageLimit(newCurrentPageNumber);
                     }
+                    System.out.println("@@@@@@@@@@@ pageLimit 2.0 = " + wizardForm.getPageLimit());
                     Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
                             .getTopicList().get(0)).getTopicNumber();
-                    if (newCurrentTopicNumber > WizardLimits.topicLimit) {
-                        WizardLimits.topicLimit = newCurrentTopicNumber;
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
                     }
                     return true;
                 }
@@ -201,7 +205,9 @@ public class NavigationData implements Serializable {
                 if (index == 0) {
                     return false;// if finded page is first
                 } else {
+                    System.out.println("^^^^^^^^^^^^^^^^^^^ before current page id =" + currentPageID);
                     currentPageID = pageList.get(index - 1).getId();
+                    System.out.println("++++++++++++++ after current page id =" + currentPageID);
                     return true;
                 }
             }

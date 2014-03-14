@@ -1,9 +1,9 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
+import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
-import com.engagepoint.labs.wizard.ui.WizardLimits;
 import com.engagepoint.labs.wizard.values.*;
 import com.engagepoint.labs.wizard.values.objects.Range;
 import org.primefaces.component.inputtext.InputText;
@@ -34,6 +34,7 @@ public class ComponentValidator implements Validator {
     private int pageNumber;
     private int topicNumber;
     private UINavigationBean navigationBean;
+    private WizardForm wizardForm;
 
     public ComponentValidator(final WizardQuestion question) {
         this.question = question;
@@ -46,6 +47,7 @@ public class ComponentValidator implements Validator {
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
         this.navigationBean = navBean;
+        this.wizardForm = navigationBean.getNavigationData().getWizardForm();
     }
 
     @Override
@@ -320,16 +322,16 @@ public class ComponentValidator implements Validator {
     private void moveLimitIfNecessary() {
         boolean movePageLimit = false;
         boolean moveTopicLimit = false;
-        if (isParent && WizardLimits.pageLimit > pageNumber && WizardLimits.topicLimit > topicNumber) {
+        if (isParent && wizardForm.getPageLimit() > pageNumber && wizardForm.getTopicLimit() > topicNumber) {
             movePageLimit = true;
             moveTopicLimit = true;
             RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
-        } else if (isParent && WizardLimits.topicLimit > topicNumber) {
+        } else if (isParent && wizardForm.getTopicLimit() > topicNumber) {
             moveTopicLimit = true;
             RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
         }
-        WizardLimits.pageLimit = pageNumber;
-        WizardLimits.topicLimit = topicNumber;
+        wizardForm.setPageLimit(pageNumber);
+        wizardForm.setTopicLimit(topicNumber);
         if (movePageLimit) {
             navigationBean.changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
             RequestContext.getCurrentInstance().update("brd-breadcrumb");

@@ -307,7 +307,6 @@ public class UIComponentGenerator {
         checkbox.setLayout("pageDirection");
         checkbox.addValidator(getComponentValidator(question));
         checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
-
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             checkbox.setValue(defaultAnswer.getValue());
