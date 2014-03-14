@@ -12,20 +12,24 @@ public class Grid {
     private List<String> row;
     private List<String> column;
     private Map<String, Boolean> values;
+    String gridID;
 
-    public Grid(List<String> row, List<String> column, List<String> values) {
+    public Grid(List<String> row, List<String> column, List<String> values,
+	    String gridID) {
 	this.row = row;
 	this.column = column;
 	this.values = new LinkedHashMap<String, Boolean>();
+	this.gridID = gridID;
 	parseStrings(values);
     }
 
     private void parseStrings(List<String> values) {
-	int cellCount=0;
+	int cellCount = 0;
 	for (String stringRow : values) {
 	    String[] cellIDs = stringRow.split(",");
 	    for (int i = 0; i < cellIDs.length; i++) {
-		this.values.put("chbx_" + Integer.toString(cellCount, 10),
+		this.values.put(
+			gridID + "_chbx_" + Integer.toString(cellCount, 10),
 			Boolean.parseBoolean(cellIDs[i]));
 		cellCount++;
 	    }
@@ -49,16 +53,6 @@ public class Grid {
     }
 
     public Map<String, Boolean> getValues() {
-	if (values == null) {
-	    int cellCount = 0;
-	    values = new HashMap<String, Boolean>();
-	    for (int i = 0; i < row.size(); i++) {
-		for (int j = 0; j < column.size(); j++) {
-		    values.put("chk" + cellCount, false);
-		    cellCount++;
-		}
-	    }
-	}
 	return values;
     }
 

@@ -78,6 +78,7 @@ public class DataGridHandler implements Serializable {
 		break;
 	    }
 	}
+	System.out.println(currentCellValue+" "+currentCellId+" "+currentGridID);
 	RequestContext.getCurrentInstance().update(currentGridID);
     }
 }

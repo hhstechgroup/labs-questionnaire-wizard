@@ -183,7 +183,7 @@ public class WizardDataModelGenerator {
 	    gridQuestion.setRows(rows);
 	    if (checkDefaultAnswer(xmlQuestion)) {
 		GridValue gridDefaults = new GridValue();
-		gridDefaults.setValue(new Grid(rows, columns, defaultAnswers));
+		gridDefaults.setValue(new Grid(rows, columns, defaultAnswers, gridQuestion.getId()));
 		gridQuestion.setDefaultAnswer(gridDefaults);
 		gridQuestion.setAnswer(gridDefaults);
 	    }

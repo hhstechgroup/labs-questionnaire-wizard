@@ -167,7 +167,7 @@ public class UIComponentGenerator {
 		}
 		if (row != 0 && col != 0) {
 		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
-		    String checkboxID = "chbx_" + checkBoxCellNumber;
+		    String checkboxID = gridID+"_chbx_" + checkBoxCellNumber;
 		    checkbox.setId(checkboxID);
 
 		    FacesContext facesContext = FacesContext
