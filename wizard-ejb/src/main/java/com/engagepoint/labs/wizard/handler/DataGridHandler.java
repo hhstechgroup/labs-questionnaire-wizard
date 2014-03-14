@@ -64,7 +64,10 @@ public class DataGridHandler implements Serializable {
 	Grid grid = searchForGrid(currentGridID);
 	grid.getValues().put(currentCellId, currentCellValue);
 
-	processRowRule();
+	if (currentCellValue == true) {
+	    // processRowRule();
+	    processColumnRule();
+	}
 	RequestContext.getCurrentInstance().update(currentGridID);
     }
 
@@ -82,15 +85,59 @@ public class DataGridHandler implements Serializable {
 	return grid;
     }
 
+    private int[] getCellPosition(int cellNumber, int rowsNumber,
+	    int columnNumber) {
+	int[] position = new int[2];
+	int iter = 0;
+	boolean positionFound = false;
+	for (int i = 0; i < rowsNumber; i++) {
+	    for (int j = 0; j < columnNumber; j++) {
+		if (iter == cellNumber) {
+		    position[0] = i;
+		    position[1] = j;
+		    positionFound = true;
+		    break;
+		}
+		iter++;
+	    }
+	    if (positionFound) {
+		break;
+	    }
+	}
+	return position;
+    }
+
     private void processRowRule() {
 	int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
+	int rowsCount = questions.get(currentGridID).getRows().size();
 	int colsCount = questions.get(currentGridID).getColumns().size();
-	int currentCellNumberRow = currentCellNumber / colsCount;
+	int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
+		colsCount);
 
 	checkBoxIDsToUnset.clear();
 	for (int i = 0; i < colsCount; i++) {
 	    String idToUnset = Grid.createCheckBoxID(currentGridID,
-		    currentCellNumberRow * colsCount + i);
+		    cellPosition[0] * colsCount + i);
+	    {
+		if (!idToUnset.equals(currentCellId)) {
+		    checkBoxIDsToUnset.add(idToUnset);
+		}
+	    }
+	}
+	unsetValues();
+    }
+
+    private void processColumnRule() {
+	int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
+	int rowsCount = questions.get(currentGridID).getRows().size();
+	int colsCount = questions.get(currentGridID).getColumns().size();
+	int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
+		colsCount);
+
+	checkBoxIDsToUnset.clear();
+	for (int i = cellPosition[1]; i < rowsCount * colsCount; i = i
+		+ colsCount) {
+	    String idToUnset = Grid.createCheckBoxID(currentGridID, i);
 	    {
 		if (!idToUnset.equals(currentCellId)) {
 		    checkBoxIDsToUnset.add(idToUnset);
