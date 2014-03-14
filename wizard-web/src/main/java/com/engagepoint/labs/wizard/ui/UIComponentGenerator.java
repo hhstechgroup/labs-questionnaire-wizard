@@ -119,7 +119,6 @@ public class UIComponentGenerator {
 	    panel.getChildren().add(getButton(question));
 	    break;
 	case GRID:
-	    // to do
 	    component = getGrid(question, answer, defaultAnswer, gridHandler);
 	    break;
 	}

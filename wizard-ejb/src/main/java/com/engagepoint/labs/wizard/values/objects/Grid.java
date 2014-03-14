@@ -1,6 +1,5 @@
 package com.engagepoint.labs.wizard.values.objects;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ public class Grid {
     private List<String> row;
     private List<String> column;
     private Map<String, Boolean> values;
-    String gridID;
+    private String gridID;
 
     public Grid(List<String> row, List<String> column, List<String> values,
 	    String gridID) {
