@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -512,18 +513,25 @@ public class NavigationData implements Serializable {
     }
 
     private Dialog getDialogForDependentQuestion() {
-        OutputLabel message = new OutputLabel();
-        message.setValue("Parent Question was redacted !");
-        OutputLabel header = new OutputLabel();
-        header.setValue("Parent Question was redacted");
-        header.setStyle("color:#0075AC !important");
+        HtmlOutputText firstPartOfMessage = new HtmlOutputText();
+        firstPartOfMessage.setValue("Please keep in mind that other questions depend on answer for this one. <br/>" +
+                "When you change answer for such question (that are marked with green star ");
+        firstPartOfMessage.setEscape(false);
+        HtmlOutputText star = new HtmlOutputText();
+        star.setValue(" *");
+        star.setStyle("color:#00CC00");
+        HtmlOutputText secondPartOfMessage = new HtmlOutputText();
+        secondPartOfMessage.setValue(" ).<br/>You will continue wizard from this point.");
+        secondPartOfMessage.setEscape(false);
         Dialog dialog = new Dialog();
-        dialog.setHeader("Parent Question was redacted");
+        dialog.setHeader("Other questions depend on this one!");
         dialog.setId("dialogDependentQuestion");
         dialog.setWidgetVar("dialogDependentQuestion");
         dialog.setModal(true);
         dialog.setResizable(false);
-        dialog.getChildren().add(message);
+        dialog.getChildren().add(firstPartOfMessage);
+        dialog.getChildren().add(star);
+        dialog.getChildren().add(secondPartOfMessage);
         dialog.setHideEffect("clip");
         dialog.setDynamic(true);
         return dialog;
