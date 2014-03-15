@@ -1,0 +1,19 @@
+sonar.projectKey=com.engagepoint.labs:labs-questionnaire-wizard
+sonar.projectName=labs-questionnaire-wizard
+sonar.projectVersion=2.0
+
+sonar.modules=wizard-ejb, wizard-web
+
+
+wizard-ejb.sonar.projectName=wizard-ejb
+wizard-ejb.sonar.language=java
+wizard-ejb.sonar.sources=src/main/java
+wizard-ejb.sonar.binaries=target/classes
+wizard-ejb.sonar.projectBaseDir=wizard-ejb
+
+
+wizard-web.sonar.projectName=wizard-web
+wizard-web.sonar.language=java
+wizard-web.sonar.sources=src/main/java
+wizard-web.sonar.binaries=target/classes
+wizard-web.sonar.projectBaseDir=wizard-web
