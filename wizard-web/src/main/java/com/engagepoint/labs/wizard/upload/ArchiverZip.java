@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.upload;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -13,7 +14,7 @@ public class ArchiverZip {
 
     public static final String ZIP_FILE_NAME = "/Wizard_answer.zip";
 
-    public static void addFilesToZip(ArrayList<File> files) {
+    public static void addFilesToZip(List<File> files) {
         FileOutputStream zipFileOUT = null;
         ZipOutputStream zipOutStream = null;
         try {
