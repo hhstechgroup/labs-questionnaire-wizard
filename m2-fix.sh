@@ -1,0 +1,1 @@
+find . -type f -name "_*.repositories" -delete && find . -type f -name "*.sha1" -delete && find . -type f -name "*.lastUpdated" -delete
