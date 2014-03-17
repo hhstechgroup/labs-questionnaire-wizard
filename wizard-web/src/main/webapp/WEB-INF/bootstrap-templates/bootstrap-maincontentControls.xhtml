@@ -1,0 +1,36 @@
+<h:form enctype="multipart/form-data"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:uib="http://engagepoint.com/uib"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" markupType="html5"
+	id="navigationButtonsForm"
+	template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
+	<h:panelGroup id="btnsDiv" layout="block">
+		<p:commandButton value="NEXT" id="buttonid"
+			rendered="#{!navigationData.finishButtonRendered}"
+			action="#{uiNavigationBean.nextButtonClick}"
+			style="text-align:center;position:relative;float:right;margin-top: 1%;" />
+		<p:commandButton value="FINISH" id="finishbuttonid"
+			rendered="#{navigationData.finishButtonRendered}"
+			action="#{uiNavigationBean.finishButtonClick()}"
+			style="text-align:center;position:relative;float:right;margin-top: 1%;" />
+		<p:commandButton value="PREV" id="buttonidprev"
+			rendered="#{!(navigationData.firstPage and navigationData.firstTopic)}"
+			action="#{uiNavigationBean.previousButtonClick()}"
+			style="text-align:center;position:relative;float:left;margin-top: 1%;" />
+		<br />
+		<br />
+		<br />
+		<h:outputLabel value="*" style="color: red; position: relative" />
+		<h:outputLabel
+			value=" - means that question is required, you must provide answer for this question"
+			style="font-style: italic; font-size: 10px; position: relative" />
+		<br />
+		<h:outputLabel value="*" style="color: #00CC00; position: relative" />
+		<h:outputLabel
+			value=" - means that other questions depend on this one"
+			style="font-style: italic; font-size: 10px; position: relative" />
+	</h:panelGroup>
+</h:form>
