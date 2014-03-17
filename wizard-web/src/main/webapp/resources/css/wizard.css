@@ -1,11 +1,6 @@
 .wizard-page-selected {
-	font-size: 16px;
-	font-weight: bold;
-	border-bottom: 5px solid #0075AC;
-	color: #f4f4f4 !important;
-	background-color: #0075ac !important;
-	border-left: 10px solid #0075ac !important;
-	border-right: 10px solid #0075ac !important;
+	font-size: 16px !important;
+	font-weight: bold !important;
 }
 
 .wizard-topic-default {
@@ -25,11 +20,6 @@
 #brd-j_id1 {
 	font-size: 16px;
 	font-weight: bold;
-	border-bottom: 5px solid #0075AC;
-	color: #f4f4f4 !important;
-	background-color: #0075ac !important;
-	border-left: 10px solid #0075ac;
-	border-right: 10px solid #0075ac;
 }
 
 .ui-breadcrumb ul li {
@@ -43,35 +33,16 @@
 .ui-breadcrumb ul li:hover {
 	font-size: 16px;
 	font-weight: bold;
-	background-color: #0075ac !important;
-	text-decoration: none !important;
 }
 
 .ui-breadcrumb ul li a:hover {
 	font-size: 16px;
-	color: #f4f4f4 !important;
-	text-decoration: none !important;
-	border-bottom: 5px solid #0075AC;
-	border-left: 10px solid #0075ac;
-	border-right: 10px solid #0075ac;
-}
-
-.ui-breadcrumb ul li a:focus {
-	text-decoration: none !important;
+	font-weight: bold;
 }
 
 .ui-breadcrumb ul li a {
 	font-size: 16px;
-	font-weight: bold;
-	margin-right: 0px !important;
-	border-left: 10px solid #87cefa;
-	border-right: 10px solid #87cefa;
-}
-
-.ui-breadcrumb ul li span a {
-	margin-right: 0px !important;
-	border-left: 10px solid #87cefa;
-	border-right: 10px solid #87cefa;
+	font-weight: normal;
 }
 
 .page-menu ul {

@@ -428,6 +428,7 @@ public class UINavigationBean implements Serializable {
 		} else {
 		    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
 		}
+		LOGGER.info(pageMenuItem.getStyleClass());
 		pageMenuItem.setStyleClass(styleClass);
 	    } else {
 		if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {

@@ -12,12 +12,6 @@
 		#ffffff;
 }
 
-.ui-breadcrumb-chevron {
-	background-image: none !important;
-	background-color: #0075ac !important;
-	display: none !important;
-}
-
 .ui-widget {
 	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	font-size: 1.1em;
