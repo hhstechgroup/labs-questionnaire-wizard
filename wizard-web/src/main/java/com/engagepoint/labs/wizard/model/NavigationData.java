@@ -123,12 +123,13 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
-        scrollablePanelGroup = new HtmlPanelGroup();
-        scrollablePanelGroup.setLayout("block");
-        scrollablePanelGroup.setId("scrollableDiv");
-        scrollablePanelGroup.getChildren().add(panelGrid);
-        //mainContentForm.getChildren().add(panelGrid);
-        mainContentForm.getChildren().add(scrollablePanelGroup);
+//        scrollablePanelGroup = new HtmlPanelGroup();
+//        scrollablePanelGroup.setStyle("width:101%;height:90%;");
+//        scrollablePanelGroup.setLayout("block");
+//        scrollablePanelGroup.setId("scrollableDiv");
+//        scrollablePanelGroup.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(panelGrid);
+//        mainContentForm.getChildren().add(scrollablePanelGroup);
         mainContentForm.getChildren().add(getDialog());
         mainContentForm.getChildren().add(getDialogForDependentQuestion());
         wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
