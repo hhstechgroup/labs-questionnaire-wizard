@@ -412,30 +412,31 @@ public class UINavigationBean implements Serializable {
      * @param styleClass style class from CSS file
      */
     public void changeStyleOfCurrentPageButton(String styleClass) {
-        List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
-        WizardPage wizardPage;
-        MenuItem pageMenuItem;
-        MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
-        for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
-            wizardPage = pageList.get(pageIndex);
-            pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(pageIndex);
-            if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
-                if (pageIndex == 0) {
-                    if (pageMenuItem.getId() != null) {
-                        pageMenuItem.setId("j_id1");
-                    }
-                } else {
-                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
-                }
-                pageMenuItem.setStyleClass(styleClass);
-            } else {
-                if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
-                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
-                } else {
-                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
-                }
-            }
-        }
+	List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
+	WizardPage wizardPage;
+	MenuItem pageMenuItem;
+	MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+	for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
+	    wizardPage = pageList.get(pageIndex);
+	    pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(pageIndex);
+	    if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
+		if (pageIndex == 0) {
+		    if (pageMenuItem.getId() != null) {
+			pageMenuItem.setId("j_id1");
+		    }
+		} else {
+		    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+		}
+		LOGGER.info(pageMenuItem.getStyleClass());
+		pageMenuItem.setStyleClass(styleClass);
+	    } else {
+		if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
+		    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+		} else {
+		    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
+		}
+	    }
+	}
     }
 
     private void commitAnswers(List<WizardQuestion> wizardQuestionList) {
