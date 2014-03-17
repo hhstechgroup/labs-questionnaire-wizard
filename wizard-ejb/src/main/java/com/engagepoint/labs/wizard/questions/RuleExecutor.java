@@ -77,7 +77,6 @@ public class RuleExecutor implements Serializable {
             }
             hideQuestionPanel(component);
             isAlreadyShowing = false;
-            resetComponentValue();
         }
         return change;
     }
@@ -134,7 +133,7 @@ public class RuleExecutor implements Serializable {
             ((Panel) component).setVisible(true);
             question.setIgnored(false);
         } else if (component instanceof MenuItem) {
-            component.setRendered(false);
+            component.setRendered(true);
         }
     }
 
@@ -146,17 +145,18 @@ public class RuleExecutor implements Serializable {
             if (question.isRequired()) {
                 question.setValid(false);
             }
+            resetComponentValue();
         } else if (component instanceof MenuItem) {
             component.setRendered(false);
         }
     }
 
     private void resetComponentValue() {
-        if (question.getDefaultAnswer() != null) {
-            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId()))
-                    .setValue(question.getDefaultAnswer().getValue());
-        } else {
-            ((UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId())).resetValue();
+        UIOutput component = (UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
+        if (question.getDefaultAnswer() != null && component != null) {
+            component.setValue(question.getDefaultAnswer().getValue());
+        } else if (component != null) {
+            component.resetValue();
         }
     }
 }

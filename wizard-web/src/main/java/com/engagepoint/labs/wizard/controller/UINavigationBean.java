@@ -493,8 +493,47 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    public void executeAllRulesOnCurrentTopic() {
+
+    public void executeAllRules() {
         boolean isEverChanged = false;
+        WizardForm wizardForm = navigationData.getWizardForm();
+        for (int i = 0; i < wizardForm.getWizardPageList().size(); i++) {
+            WizardPage page = wizardForm.getWizardPageList().get(i);
+//            boolean isChanged = page.executeAllRules();
+            List<WizardTopic> topicList = page.getTopicList();
+            for (int j = 0; j < topicList.size(); j++) {
+                WizardTopic topic = topicList.get(j);
+                boolean isChanged = topic.executeAllRules();
+                if (isChanged) {
+                    j = -1;
+                    isEverChanged = true;
+                    if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
+                        needToStopUserOnCurrentTopic = true;
+                    }
+                } else if (!isEverChanged
+                        && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
+                    needToStopUserOnCurrentTopic = false;
+                }
+                List<WizardQuestion> wizardQuestionList = topic.getWizardQuestionList();
+                for (int y = 0; y < wizardQuestionList.size(); y++) {
+                    WizardQuestion question = wizardQuestionList.get(y);
+                    isChanged = question.executeAllRules();
+                    if (isChanged) {
+                        y = -1;
+                        isEverChanged = true;
+                        if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
+                            needToStopUserOnCurrentTopic = true;
+                        }
+                    } else if (!isEverChanged
+                            && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
+                        needToStopUserOnCurrentTopic = false;
+                    }
+                }
+
+            }
+
+        }
+
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopicById = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
         for (int i = 0; i < wizardTopicById.getWizardQuestionList().size(); i++) {
@@ -512,6 +551,7 @@ public class UINavigationBean implements Serializable {
             }
         }
     }
+
 
     private void setRulesInAllQuestionsTopicAndPages() {
         WizardForm wizardForm = navigationData.getWizardForm();

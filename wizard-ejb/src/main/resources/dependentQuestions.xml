@@ -10,6 +10,12 @@
                 <groups-of-questions>
                     <group group-id="lsowoqwewrr">
                         <group-name>Group 1</group-name>
+                        <group-rules>
+                            <group-rule>
+                                <parentId></parentId>
+                                <method></method>
+                            </group-rule>
+                        </group-rules>
                         <questions>
                             <question answer-required="false" question-id="qp123">
                                 <question-title>1.1.1</question-title>
@@ -93,14 +99,20 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <!--<default-answer>C2</default-answer>-->
-                                    <!--<default-answer>C4</default-answer>-->
+                                    <default-answer>C2</default-answer>
+                                    <default-answer>C4</default-answer>
                                 </default-answers>
                             </question>
                         </questions>
                     </group>
                     <group group-id="yy55yy44">
                         <group-name>Group 2</group-name>
+                        <group-rules>
+                            <group-rule>
+                                <parentId>ywywywuququ</parentId>
+                                <method>this.ruleExecutor.renderedRule('%s', ['C1', 'C2'])</method>
+                            </group-rule>
+                        </group-rules>
                         <questions>
                             <question answer-required="false" question-id="qwe123r421">
                                 <question-title>1.2.1</question-title>

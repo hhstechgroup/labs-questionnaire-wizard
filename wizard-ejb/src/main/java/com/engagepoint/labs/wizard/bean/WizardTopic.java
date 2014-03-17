@@ -100,6 +100,7 @@ public class WizardTopic {
     public boolean executeAllRules() {
         boolean change = false;
         if (groupRuleList != null) {
+            System.out.println("%%%%%%%%%%%%%%%%% WIZARDTOPIC %%%%%%%%%%%%");
             for (GroupRule rule : groupRuleList) {
                 ruleExecutor.setTopic(this);
                 JexlEngine jexlEngine = new JexlEngine();
