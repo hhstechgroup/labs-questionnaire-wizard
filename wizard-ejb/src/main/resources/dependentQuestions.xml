@@ -45,6 +45,34 @@
                                     <default-answer>Third Option</default-answer>
                                 </default-answers>
                             </question>
+                            <question answer-required="true" question-id="xxssx">
+                                <question-title>Error Q</question-title>
+                                <question-type>RANGE</question-type>
+                                <rules>
+                                    <rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </rule>
+                                </rules>
+                                <help-text>First Help Text for Question</help-text>
+                                <options>
+                                    <option>Option Number 1</option>
+                                    <option>Option Number 2</option>
+                                    <option>Option Number 3</option>
+                                </options>
+                                <range range-begin="10" range-end="60" value="11"/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                                <default-answers>
+                                    <default-answer></default-answer>
+                                </default-answers>
+                            </question>
                             <question answer-required="false" question-id="qawes123">
                                 <question-title>1.1.2</question-title>
                                 <question-type>TEXT</question-type>

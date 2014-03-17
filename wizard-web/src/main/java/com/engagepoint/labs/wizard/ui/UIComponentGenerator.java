@@ -125,6 +125,7 @@ public class UIComponentGenerator {
                 break;
         }
         component.setId(question.getId());
+        panel.getAttributes().put("styleClass", "nonRange");
         panel.getChildren().add(component);
         return panel;
     }
@@ -214,6 +215,7 @@ public class UIComponentGenerator {
         panelGroup.setStyle("padding: 20px; background-color: #EDEDED; border: 1px solid #DDD; border-radius: 3px;");
         panelGroup.setStyleClass("ui-panel-column");
         panelGroup.setLayout("block");
+        panelGroup.setId("panelid" + question.getId());
         panelGroup.getChildren().add(getLabel(question));
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getOutputTextForSlider(question));
@@ -223,7 +225,7 @@ public class UIComponentGenerator {
         panelGroup.getChildren().add(getInputHiddenBegin(question));
         panelGroup.getChildren().add(getSlider(question));
         panelGroup.getChildren().add(getHTMLbr());
-        panelGroup.getChildren().add(getCommandButtonForSlider());
+        panelGroup.getChildren().add(getCommandButtonForSlider(question));
         return panelGroup;
     }
 
@@ -310,12 +312,14 @@ public class UIComponentGenerator {
         return slider;
     }
 
-    private CommandButton getCommandButtonForSlider() {
+    private CommandButton getCommandButtonForSlider(WizardQuestion question) {
         CommandButton commandButton = new CommandButton();
+        commandButton.setId("but" + question.getId());
         commandButton.setValue("Submit");
+        commandButton.setProcess("maincontentid-panelid"+ question.getId());
+        commandButton.setPartialSubmit(true);
         return commandButton;
     }
-
 
     private HtmlSelectOneListbox getSelectOneListBox(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlSelectOneListbox selectOneListBox = new HtmlSelectOneListbox();
@@ -510,15 +514,24 @@ public class UIComponentGenerator {
     private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
-//        if (question.getQuestionType() == QType.RANGE) {
-//            ajaxBehavior.setUpdate("maincontentid-j_id1");
-//        } else {
-//            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
-//        }
-        ajaxBehavior.setUpdate("maincontentid-j_id1");
+        ajaxBehavior.setUpdate("@(.nonRange)");
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
     }
+
+
+//    private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
+//        AjaxBehavior ajaxBehavior = new AjaxBehavior();
+//        ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
+////        if (question.getQuestionType() == QType.RANGE) {
+////            ajaxBehavior.setUpdate("maincontentid-j_id1");
+////        } else {
+////            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
+////        }
+//        ajaxBehavior.setUpdate("maincontentid-j_id1");
+//        ajaxBehavior.setAsync(true);
+//        return ajaxBehavior;
+//    }
 
     private HtmlInputFile getFileUpload(WizardQuestion question) {
         HtmlInputFile fileUpload = new HtmlInputFile();
