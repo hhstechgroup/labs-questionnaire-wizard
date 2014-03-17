@@ -93,12 +93,10 @@ public class UINavigationBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-
         if (navigationData.isOnSelectXMLPage()) {
             navigationData.setOnSelectXMLPage(false);
             navigationData.startSelectXMLScreen();
         }
-
     }
 
     public void refresh(String path) {
@@ -109,7 +107,6 @@ public class UINavigationBean implements Serializable {
             LOGGER.warn("Thread interrupted", e);
         }
         navigationData.refreshXMLScreen(path);
-
     }
 
     /**
@@ -124,7 +121,7 @@ public class UINavigationBean implements Serializable {
         navigationData.startWizard();
         initBreadcrumb();
         initMenu();
-        setRulesInAllQuestions();
+        setRulesInAllQuestionsTopicAndPages();
         return "wizard-index?faces-redirect=true";
     }
 
@@ -158,6 +155,7 @@ public class UINavigationBean implements Serializable {
             wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
             // set titles for breadcrumb items
             item.setValue(wizardPage.getPageName());
+            item.setId(wizardPage.getId());
             // creating EL expressions for all items in breadcrumb
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentPage(\"" + wizardPage.getId() + "\")}", void.class,
@@ -205,6 +203,7 @@ public class UINavigationBean implements Serializable {
             MethodExpression elExpression;
             // set titles for our menu items
             item.setValue(topicTitle);
+            item.setId(topicID);
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID + "\")}", void.class,
@@ -514,9 +513,16 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    private void setRulesInAllQuestions() {
-        for (WizardQuestion question : navigationData.getWizardForm().getAllWizardQuestions()) {
-            question.setRuleExecutor(new RuleExecutor(navigationData.getWizardForm()));
+    private void setRulesInAllQuestionsTopicAndPages() {
+        WizardForm wizardForm = navigationData.getWizardForm();
+        for (WizardPage page : navigationData.getWizardForm().getWizardPageList()) {
+            page.setRuleExecutor(new RuleExecutor(wizardForm));
+            for (WizardTopic topic : page.getTopicList()) {
+                topic.setRuleExecutor(new RuleExecutor(wizardForm));
+                for (WizardQuestion question : topic.getWizardQuestionList()) {
+                    question.setRuleExecutor(new RuleExecutor(wizardForm));
+                }
+            }
         }
     }
 

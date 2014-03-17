@@ -6,6 +6,10 @@ package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import super_binding.GroupRule;
 import super_binding.QuestionRule;
 
@@ -93,4 +97,21 @@ public class WizardTopic {
         return null;
     }
 
+    public boolean executeAllRules() {
+        boolean change = false;
+        if (groupRuleList != null) {
+            for (GroupRule rule : groupRuleList) {
+                ruleExecutor.setTopic(this);
+                JexlEngine jexlEngine = new JexlEngine();
+                Expression expression = jexlEngine.createExpression(String.format(rule.getMethod(), rule.getParentId()));
+                JexlContext context = new MapContext();
+                context.set("this", this);
+                boolean result = (boolean) expression.evaluate(context);
+                if (result) {
+                    change = true;
+                }
+            }
+        }
+        return change;
+    }
 }
