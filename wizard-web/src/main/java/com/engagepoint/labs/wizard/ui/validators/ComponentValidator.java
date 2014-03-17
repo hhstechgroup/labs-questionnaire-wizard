@@ -36,7 +36,8 @@ public class ComponentValidator implements Validator {
     private UINavigationBean navigationBean;
     private WizardForm wizardForm;
 
-    public ComponentValidator(final WizardQuestion question) {
+    public ComponentValidator(WizardQuestion question, UINavigationBean navigationBean) {
+        this.navigationBean = navigationBean;
         this.question = question;
     }
 
@@ -159,7 +160,9 @@ public class ComponentValidator implements Validator {
                 break;
         }
         navigationBean.setCurrentQuestionType(question.getQuestionType());
-        moveLimitIfNecessary();
+        if (isParent) {
+            moveLimitIfNecessary();
+        }
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {
@@ -327,7 +330,7 @@ public class ComponentValidator implements Validator {
     private void moveLimitIfNecessary() {
         boolean movePageLimit = false;
         boolean moveTopicLimit = false;
-        if (isParent && wizardForm.getPageLimit() > pageNumber && wizardForm.getTopicLimit() > topicNumber) {
+        if (wizardForm.getPageLimit() > pageNumber && wizardForm.getTopicLimit() > topicNumber) {
             movePageLimit = true;
             moveTopicLimit = true;
             RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");

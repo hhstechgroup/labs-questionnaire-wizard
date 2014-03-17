@@ -132,16 +132,13 @@ public class UIComponentGenerator {
 
     private PanelGrid getGrid(WizardQuestion question, Value answer,
                               Value defaultAnswer, DataGridHandler gridHandler) {
-
         GridQuestion gridQuestion = (GridQuestion) question;
         PanelGrid grid = new PanelGrid();
-
         // Get column names from our model
         ArrayList<String> columns = (ArrayList<String>) gridQuestion
                 .getColumns();
         // Get rows names from our model
         ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
-
         // Get our question ID. Grid will have this id.
         String gridID = gridQuestion.getId();
         // Set rows and column number. +1 because our table must have one upper
@@ -151,9 +148,7 @@ public class UIComponentGenerator {
         int colsNumber = columns.size() + 1;
         grid.setColumns(colsNumber);
         grid.setId(gridID);
-
         gridHandler.getQuestions().put(gridID, gridQuestion);
-
         // Cells in datagrid starts numbering from 0. This counter provides cell
         // numbering.
         int checkBoxCellNumber = 0;
@@ -194,20 +189,17 @@ public class UIComponentGenerator {
                     String checkboxID = Grid.createCheckBoxID(gridID,
                             checkBoxCellNumber);
                     checkbox.setId(checkboxID);
-
                     String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
                             + gridID
                             + "\",\""
                             + checkboxID
                             + "\").currentCellValue}";
-
                     checkbox.setValueExpression(
                             "value",
                             createValueExpression(valueGetterQuery,
                                     Boolean.class));
                     checkbox.addClientBehavior("valueChange",
                             getAjaxBehavior(question));
-
                     cell.getChildren().add(checkbox);
                     grid.getChildren().add(cell);
                     checkBoxCellNumber++;
@@ -267,7 +259,7 @@ public class UIComponentGenerator {
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt7" + question.getId());
         inputHidden.setValue(end);
-        inputHidden.addValidator(new ComponentValidator(question));
+        inputHidden.addValidator(getComponentValidator(question));
         return inputHidden;
     }
 
@@ -283,7 +275,7 @@ public class UIComponentGenerator {
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt6" + question.getId());
         inputHidden.setValue(begin);
-        inputHidden.addValidator(new ComponentValidator(question));
+        inputHidden.addValidator(getComponentValidator(question));
         return inputHidden;
     }
 
@@ -585,7 +577,7 @@ public class UIComponentGenerator {
         if (isParent) {
             return new ComponentValidator(question, pageNumber, topicNumber, isParent, navigationBean);
         } else {
-            return new ComponentValidator(question);
+            return new ComponentValidator(question, navigationBean);
         }
     }
 

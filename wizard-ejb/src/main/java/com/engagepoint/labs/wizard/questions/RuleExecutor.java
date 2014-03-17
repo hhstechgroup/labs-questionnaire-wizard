@@ -5,9 +5,11 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.values.Value;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
 import super_binding.QType;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class RuleExecutor implements Serializable {
 
     private WizardForm form;
     private WizardQuestion question;
+    private WizardTopic topic;
     private boolean isAlreadyShowing;
     private static final Logger LOGGER = Logger.getLogger(RuleExecutor.class);
 
@@ -37,8 +40,13 @@ public class RuleExecutor implements Serializable {
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
-        String panelVarAndId = "maincontentid-panel_" + question.getId();
-        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(panelVarAndId);
+        String componentId = "";
+        if (question != null) {
+            componentId = "maincontentid-panel_" + question.getId();
+        } else if (topic != null) {
+            componentId = "leftmenuid-" + topic.getId();
+        }
+        UIComponent component = FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
         if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
@@ -61,13 +69,13 @@ public class RuleExecutor implements Serializable {
             if (!isAlreadyShowing) {
                 change = true;
             }
-            showQuestionPanel(panel);
+            showQuestionPanel(component);
             isAlreadyShowing = true;
         } else {
             if (isAlreadyShowing) {
                 change = true;
             }
-            hideQuestionPanel(panel);
+            hideQuestionPanel(component);
             isAlreadyShowing = false;
             resetComponentValue();
         }
@@ -80,6 +88,14 @@ public class RuleExecutor implements Serializable {
 
     public void setQuestion(WizardQuestion question) {
         this.question = question;
+    }
+
+    public WizardTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(WizardTopic topic) {
+        this.topic = topic;
     }
 
     private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
@@ -113,17 +129,25 @@ public class RuleExecutor implements Serializable {
                 && stringArrayToCompareWith.length == valueList.size();
     }
 
-    private void showQuestionPanel(Panel panel) {
-        panel.setVisible(true);
-        question.setIgnored(false);
+    private void showQuestionPanel(UIComponent component) {
+        if (component instanceof Panel) {
+            ((Panel) component).setVisible(true);
+            question.setIgnored(false);
+        } else if (component instanceof MenuItem) {
+            component.setRendered(false);
+        }
     }
 
-    private void hideQuestionPanel(Panel panel) {
-        panel.setVisible(false);
-        question.setIgnored(true);
-        question.resetAnswer();
-        if (question.isRequired()) {
-            question.setValid(false);
+    private void hideQuestionPanel(UIComponent component) {
+        if (component instanceof Panel) {
+            ((Panel) component).setVisible(false);
+            question.setIgnored(true);
+            question.resetAnswer();
+            if (question.isRequired()) {
+                question.setValid(false);
+            }
+        } else if (component instanceof MenuItem) {
+            component.setRendered(false);
         }
     }
 
