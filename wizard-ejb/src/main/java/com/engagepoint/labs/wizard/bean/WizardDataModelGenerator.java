@@ -203,13 +203,18 @@ public class WizardDataModelGenerator {
 	    List<String> rows = xmlQuestion.getGrid().getRows().getRow();
 	    List<String> columns = xmlQuestion.getGrid().getColumns()
 		    .getColumn();
+	    boolean oneInRow = xmlQuestion.isGridOneInRow();
+	    boolean oneInCol = xmlQuestion.isGridOneInCol();
 
 	    gridQuestion.setColumns(columns);
 	    gridQuestion.setRows(rows);
+
+	    gridQuestion.setOneInCol(oneInCol);
+	    gridQuestion.setOneInRow(oneInRow);
 	    if (checkDefaultAnswer(xmlQuestion)) {
 		GridValue gridDefaults = new GridValue();
-		gridDefaults.setValue(new Grid(rows, columns, defaultAnswers,
-			gridQuestion.getId()));
+		gridDefaults.setValue(new Grid(rows, columns, oneInRow,
+			oneInCol, defaultAnswers, gridQuestion.getId()));
 		gridQuestion.setDefaultAnswer(gridDefaults);
 		gridQuestion.setAnswer(gridDefaults);
 	    }

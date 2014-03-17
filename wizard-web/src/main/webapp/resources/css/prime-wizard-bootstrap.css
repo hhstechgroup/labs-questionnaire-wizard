@@ -1,21 +1,3 @@
-.ui-radiobutton:HOVER .ui-radiobutton-box:HOVER, .ui-selectoneradio:HOVER .ui-radiobutton-box:HOVER {
-    display: inline-block;
-    width: 23px;
-    height: 23px;
-    border: 1px solid #AAA;
-    cursor: pointer;
-    position: relative;
-    top: 3px;
-    margin-right: 5px;
-    background: linear-gradient(#000000, #ffffff) repeat scroll 0% 0% #ffffff;
-}
-
-.ui-breadcrumb-chevron {
-	background-image: none !important;
-	background-color: #0075ac !important;
-	display: none !important;
-}
-
 .ui-widget {
 	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	font-size: 1.1em;

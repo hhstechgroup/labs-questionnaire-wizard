@@ -250,6 +250,8 @@
 							<question answer-required="false" question-id="hjkhjsssvv">
 								<question-title>Prime Title</question-title>
 								<question-type>GRID</question-type>
+								<grid-oneInCol>true</grid-oneInCol>
+								<grid-oneInRow>false</grid-oneInRow>
 								<rules>
 									<rule>
 										<parentId></parentId>
@@ -284,6 +286,8 @@
 							<question answer-required="false" question-id="fffgfgkhwejsssvv">
 								<question-title>Prime Titlee</question-title>
 								<question-type>GRID</question-type>
+								<grid-oneInCol>false</grid-oneInCol>
+								<grid-oneInRow>true</grid-oneInRow>
 								<rules>
 									<rule>
 										<parentId></parentId>

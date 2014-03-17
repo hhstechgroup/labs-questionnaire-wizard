@@ -65,8 +65,16 @@ public class DataGridHandler implements Serializable {
 	grid.getValues().put(currentCellId, currentCellValue);
 
 	if (currentCellValue == true) {
-	    // processRowRule();
-	    processColumnRule();
+	    if (grid.isOneInRow()) {
+		processRowRule();
+	    }
+	    if (grid.isOneInCol()) {
+		processColumnRule();
+	    }
+	    if (grid.isOneInRow() && grid.isOneInCol()) {
+		processRowRule();
+		processColumnRule();
+	    }
 	}
 	RequestContext.getCurrentInstance().update(currentGridID);
     }

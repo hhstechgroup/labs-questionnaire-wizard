@@ -13,6 +13,8 @@ public class GridQuestion extends WizardQuestion {
 
     private List<String> columns;
     private List<String> rows;
+    private boolean oneInCol;
+    private boolean oneInRow;
     private GridValue answer;
     private GridValue defaultAnswer;
 
@@ -60,6 +62,22 @@ public class GridQuestion extends WizardQuestion {
     @Override
     public void resetAnswer() {
         answer = null;
+    }
+
+    public boolean isOneInCol() {
+	return oneInCol;
+    }
+
+    public void setOneInCol(boolean oneInCol) {
+	this.oneInCol = oneInCol;
+    }
+
+    public boolean isOneInRow() {
+	return oneInRow;
+    }
+
+    public void setOneInRow(boolean oneInRow) {
+	this.oneInRow = oneInRow;
     }
 
 }

@@ -11,13 +11,17 @@ public class Grid {
     public static String CELL_PREFIX = "gridcell_";
     private List<String> row;
     private List<String> column;
+    private boolean oneInCol;
+    private boolean oneInRow;
     private Map<String, Boolean> values;
     private String gridID;
 
-    public Grid(List<String> row, List<String> column, List<String> values,
-	    String gridID) {
+    public Grid(List<String> row, List<String> column, boolean oneInRow,
+	    boolean oneInCol, List<String> values, String gridID) {
 	this.row = row;
 	this.column = column;
+	this.oneInRow = oneInRow;
+	this.oneInCol = oneInCol;
 	this.values = new LinkedHashMap<String, Boolean>();
 	this.gridID = gridID;
 	parseStrings(values);
@@ -72,5 +76,21 @@ public class Grid {
 
     public void setValues(Map<String, Boolean> values) {
 	this.values = values;
+    }
+
+    public boolean isOneInCol() {
+	return oneInCol;
+    }
+
+    public void setOneInCol(boolean oneInCol) {
+	this.oneInCol = oneInCol;
+    }
+
+    public boolean isOneInRow() {
+	return oneInRow;
+    }
+
+    public void setOneInRow(boolean oneInRow) {
+	this.oneInRow = oneInRow;
     }
 }
