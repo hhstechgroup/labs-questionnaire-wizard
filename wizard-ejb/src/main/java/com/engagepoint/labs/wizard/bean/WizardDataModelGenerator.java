@@ -46,7 +46,9 @@ public class WizardDataModelGenerator {
     private List<WizardQuestion> wizardQuestionList;
     private int topicNumber;
     private List<String> defaultAnswers;
-    private List<QuestionRule> ruleList;
+    private List<QuestionRule> questionRuleList;
+    private List<GroupRule> groupRuleList;
+    private List<PageRule> pageRuleList;
     private static final Logger LOGGER = Logger
             .getLogger(WizardDataModelGenerator.class);
 
@@ -89,6 +91,10 @@ public class WizardDataModelGenerator {
             wizardPage.setPageName(page.getPageName());
             wizardPage.setTopicList(getWizardQuestionGroups(page
                     .getGroupsOfQuestions()));
+            if (checkPageRules(page)) {
+                wizardPage.setPageRuleList(pageRuleList);
+                wizardPage.setIgnored(true);
+            }
             wizardPageList.add(wizardPage);
         }
         return wizardPageList;
@@ -106,6 +112,10 @@ public class WizardDataModelGenerator {
             wizardTopic.setWizardQuestionList(getWizardQuestions(group
                     .getQuestions()));
             wizardTopic.setTopicNumber(topicNumber);
+            if (checkGroupRules(group)) {
+                wizardTopic.setGroupRuleList(groupRuleList);
+                wizardTopic.setIgnored(true);
+            }
             wizardTopicList.add(wizardTopic);
             topicNumber++;
         }
@@ -259,8 +269,8 @@ public class WizardDataModelGenerator {
         wizardQuestion.setQuestionType(xmlQuestion.getQuestionType());
         wizardQuestion.setHelpText(xmlQuestion.getHelpText());
         wizardQuestion.setAnswerRequired(xmlQuestion.isAnswerRequired());
-        if (checkRules(xmlQuestion)) {
-            wizardQuestion.setRules(ruleList);
+        if (checkQuestionRules(xmlQuestion)) {
+            wizardQuestion.setRules(questionRuleList);
             wizardQuestion.setIgnored(true);
         }
         return wizardQuestion;
@@ -292,34 +302,94 @@ public class WizardDataModelGenerator {
         return correctAnswersList;
     }
 
-    private boolean checkRules(Question xmlQuestion) {
+    private boolean checkQuestionRules(Question xmlQuestion) {
         QuestionRules rules = xmlQuestion.getQuestionRules();
-        List<QuestionRule> rule = null;
+        List<QuestionRule> questionRuleList = null;
         if (rules != null) {
-            rule = rules.getQuestionRule();
+            questionRuleList = rules.getQuestionRule();
         }
-        if (rule != null && !rule.isEmpty()) {
-            xmlQuestion.getQuestionRules().getQuestionRule();
-            List<QuestionRule> correctRuleList = getCorrectRuleList(xmlQuestion
+        if (questionRuleList != null && !questionRuleList.isEmpty()) {
+            List<QuestionRule> correctRuleList = getCorrectQuestionRuleList(xmlQuestion
                     .getQuestionRules());
             if (correctRuleList.isEmpty()) {
                 return false;
             }
-            this.ruleList = correctRuleList;
+            this.questionRuleList = correctRuleList;
             return true;
         }
         return false;
     }
 
-    private List<QuestionRule> getCorrectRuleList(QuestionRules rules) {
-        List<QuestionRule> correctRuleList = new ArrayList<>();
+    private boolean checkGroupRules(Group xmlGroup) {
+        GroupRules rules = xmlGroup.getGroupRules();
+        List<GroupRule> groupRuleList = null;
+        if (rules != null) {
+            groupRuleList = rules.getGroupRule();
+        }
+        if (groupRuleList != null && !groupRuleList.isEmpty()) {
+            List<GroupRule> correctGroupRuleList = getCorrectGroupRuleList(xmlGroup.getGroupRules());
+            if (correctGroupRuleList.isEmpty()) {
+                return false;
+            }
+            this.groupRuleList = correctGroupRuleList;
+            return true;
+        }
+        return false;
+
+    }
+
+    private boolean checkPageRules(Page xmlPage) {
+        PageRules rules = xmlPage.getPageRules();
+        List<PageRule> pageRuleList = null;
+        if (rules != null) {
+            pageRuleList = rules.getPageRule();
+        }
+        if (pageRuleList != null && !pageRuleList.isEmpty()) {
+            List<PageRule> correctPageRuleList = getCorrectPageRuleList(xmlPage.getPageRules());
+            if (correctPageRuleList.isEmpty()) {
+                return false;
+            }
+            this.pageRuleList = pageRuleList;
+            return true;
+        }
+        return false;
+
+    }
+
+    private List<QuestionRule> getCorrectQuestionRuleList(QuestionRules rules) {
+        List<QuestionRule> correctQuestionRuleList = new ArrayList<>();
         for (QuestionRule rule : rules.getQuestionRule()) {
             if (rule.getMethod() != null && !rule.getMethod().isEmpty()
                     && rule.getParentId() != null
                     && !rule.getParentId().isEmpty()) {
-                correctRuleList.add(rule);
+                correctQuestionRuleList.add(rule);
             }
         }
-        return correctRuleList;
+        return correctQuestionRuleList;
+    }
+
+
+    private List<GroupRule> getCorrectGroupRuleList(GroupRules rules) {
+        List<GroupRule> correctGroupRuleList = new ArrayList<>();
+        for (GroupRule rule : rules.getGroupRule()) {
+            if (rule.getMethod() != null && !rule.getMethod().isEmpty()
+                    && rule.getParentId() != null
+                    && !rule.getParentId().isEmpty()) {
+                correctGroupRuleList.add(rule);
+            }
+        }
+        return correctGroupRuleList;
+    }
+
+    private List<PageRule> getCorrectPageRuleList(PageRules rules) {
+        List<PageRule> correctPageRuleList = new ArrayList<>();
+        for (PageRule rule : rules.getPageRule()) {
+            if (rule.getMethod() != null && !rule.getMethod().isEmpty()
+                    && rule.getParentId() != null
+                    && !rule.getParentId().isEmpty()) {
+                correctPageRuleList.add(rule);
+            }
+        }
+        return correctPageRuleList;
     }
 }

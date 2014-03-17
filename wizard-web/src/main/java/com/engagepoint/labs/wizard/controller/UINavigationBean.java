@@ -412,31 +412,31 @@ public class UINavigationBean implements Serializable {
      * @param styleClass style class from CSS file
      */
     public void changeStyleOfCurrentPageButton(String styleClass) {
-	List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
-	WizardPage wizardPage;
-	MenuItem pageMenuItem;
-	MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
-	for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
-	    wizardPage = pageList.get(pageIndex);
-	    pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(pageIndex);
-	    if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
-		if (pageIndex == 0) {
-		    if (pageMenuItem.getId() != null) {
-			pageMenuItem.setId("j_id1");
-		    }
-		} else {
-		    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
-		}
-		LOGGER.info(pageMenuItem.getStyleClass());
-		pageMenuItem.setStyleClass(styleClass);
-	    } else {
-		if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
-		    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
-		} else {
-		    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
-		}
-	    }
-	}
+        List<WizardPage> pageList = navigationData.getWizardForm().getWizardPageList();
+        WizardPage wizardPage;
+        MenuItem pageMenuItem;
+        MenuItem firstTopicMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(0);
+        for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
+            wizardPage = pageList.get(pageIndex);
+            pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel().getContents().get(pageIndex);
+            if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
+                if (pageIndex == 0) {
+                    if (pageMenuItem.getId() != null) {
+                        pageMenuItem.setId("j_id1");
+                    }
+                } else {
+                    firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
+                }
+                LOGGER.info(pageMenuItem.getStyleClass());
+                pageMenuItem.setStyleClass(styleClass);
+            } else {
+                if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    pageMenuItem.setStyleClass(WizardComponentStyles.STYLE_PAGE_ITEM_HOVER);
+                }
+            }
+        }
     }
 
     private void commitAnswers(List<WizardQuestion> wizardQuestionList) {
@@ -522,27 +522,27 @@ public class UINavigationBean implements Serializable {
 
     private boolean isQuestionAParent(WizardQuestion currentQuestion) {
         boolean isParent = false;
-        isParent = loopIsQuestionAParent(currentQuestion);
-        return isParent;
-    }
-
-    private boolean loopIsQuestionAParent(WizardQuestion currentQuestion) {
-        boolean isParent = false;
-        for (WizardPage wizardPage : navigationData.getWizardForm().getWizardPageList()) {
-            if (wizardPage.getPageNumber() > navigationData.getWizardForm().getPageLimit() || isParent) {
-                return false;
+        loop:
+        for (WizardPage wizardPage : navigationData.getWizardForm()
+                .getWizardPageList()) {
+            if (wizardPage.getPageNumber() > navigationData.getWizardForm()
+                    .getPageLimit() || isParent) {
+                break loop;
             }
             for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
-                if (wizardTopic.getTopicNumber() > navigationData.getWizardForm().getTopicLimit() || isParent) {
-                    return false;
+                if (wizardTopic.getTopicNumber() > navigationData
+                        .getWizardForm().getTopicLimit() || isParent) {
+                    break loop;
                 }
-                for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
+                for (WizardQuestion wizardQuestion : wizardTopic
+                        .getWizardQuestionList()) {
                     if (wizardQuestion.getRules() != null) {
-                        isParent = compareParentsIdAndCurrentQuestionId(wizardQuestion.getRules(),
+                        isParent = compareParentsIdAndCurrentQuestionId(
+                                wizardQuestion.getRules(),
                                 currentQuestion.getId());
                     }
                     if (isParent) {
-                        return false;
+                        break loop;
                     }
                 }
             }

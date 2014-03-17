@@ -67,21 +67,21 @@ public class UIComponentGenerator {
     }
 
     public List<UIComponent> getPanelList(
-	    Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber,
-	    int topicNumber, UINavigationBean navigationBean, DataGridHandler gridHandler) {
-	this.navigationBean = navigationBean;
-	this.pageNumber = pageNumber;
-	this.topicNumber = topicNumber;
-	List<UIComponent> panelList = new ArrayList<>();
-	for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap
-		.entrySet()) {
-	    isParent = entry.getValue();
-	    panelList.add((Panel) analyzeQuestion(entry.getKey(), gridHandler));
-	}
-	return panelList;
+            Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber,
+            int topicNumber, UINavigationBean navigationBean, DataGridHandler gridHandler) {
+        this.navigationBean = navigationBean;
+        this.pageNumber = pageNumber;
+        this.topicNumber = topicNumber;
+        List<UIComponent> panelList = new ArrayList<>();
+        for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap
+                .entrySet()) {
+            isParent = entry.getValue();
+            panelList.add(analyzeQuestion(entry.getKey(), gridHandler));
+        }
+        return panelList;
     }
 
-	private UIComponent analyzeQuestion(WizardQuestion question,DataGridHandler gridHandler) {
+    private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler) {
         panel = new Panel();
         panel.setId("panel_" + question.getId());
         panel.getChildren().add(getLabel(question));
@@ -120,101 +120,101 @@ public class UIComponentGenerator {
                 component = getFileUpload(question);
                 panel.getChildren().add(getButton(question));
                 break;
-	case GRID:
-	    component = getGrid(question, answer, defaultAnswer, gridHandler);
-	    break;
-	}
-	component.setId(question.getId());
-	panel.getChildren().add(component);
-	return panel;
+            case GRID:
+                component = getGrid(question, answer, defaultAnswer, gridHandler);
+                break;
+        }
+        component.setId(question.getId());
+        panel.getChildren().add(component);
+        return panel;
     }
 
     private PanelGrid getGrid(WizardQuestion question, Value answer,
-	    Value defaultAnswer, DataGridHandler gridHandler) {
+                              Value defaultAnswer, DataGridHandler gridHandler) {
 
-	GridQuestion gridQuestion = (GridQuestion) question;
-	PanelGrid grid = new PanelGrid();
+        GridQuestion gridQuestion = (GridQuestion) question;
+        PanelGrid grid = new PanelGrid();
 
-	// Get column names from our model
-	ArrayList<String> columns = (ArrayList<String>) gridQuestion
-		.getColumns();
-	// Get rows names from our model
-	ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
+        // Get column names from our model
+        ArrayList<String> columns = (ArrayList<String>) gridQuestion
+                .getColumns();
+        // Get rows names from our model
+        ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
 
-	// Get our question ID. Grid will have this id.
-	String gridID = gridQuestion.getId();
-	// Set rows and column number. +1 because our table must have one upper
-	// row with column names and one left row with row names Other rows and
-	// columns are used for cells with radiobuttons.
-	int rowsNumber = rows.size() + 1;
-	int colsNumber = columns.size() + 1;
-	grid.setColumns(colsNumber);
-	grid.setId(gridID);
+        // Get our question ID. Grid will have this id.
+        String gridID = gridQuestion.getId();
+        // Set rows and column number. +1 because our table must have one upper
+        // row with column names and one left row with row names Other rows and
+        // columns are used for cells with radiobuttons.
+        int rowsNumber = rows.size() + 1;
+        int colsNumber = columns.size() + 1;
+        grid.setColumns(colsNumber);
+        grid.setId(gridID);
 
-	gridHandler.getQuestions().put(gridID, gridQuestion);
+        gridHandler.getQuestions().put(gridID, gridQuestion);
 
-	// Cells in datagrid starts numbering from 0. This counter provides cell
-	// numbering.
-	int checkBoxCellNumber = 0;
-	for (int row = 0; row < rowsNumber; row++) {
-	    for (int col = 0; col < colsNumber; col++) {
-		Row cell = new Row();
-		if (row == 0 && col == 0) {
-		    // Upper left cell does not contain anything, so will be
-		    // empty
-		    grid.getChildren().add(cell);
-		    continue;
-		}
-		if (row == 0) {
-		    // Upper row with has index 0. It contains column headers.
-		    // Add it.
-		    HtmlOutputText colName = new HtmlOutputText();
-		    // col-1 because of column headers starts from cell with
-		    // index 1, but first column name entry in arraylist is 0
-		    colName.setValue(columns.get(col - 1));
-		    cell.getChildren().add(colName);
-		    grid.getChildren().add(cell);
-		    continue;
-		}
-		if (row != 0 && col == 0) {
-		    // When we are on column with index 0, we must insert to it
-		    // cells with row names.
-		    HtmlOutputText rowName = new HtmlOutputText();
-		    rowName.setValue(rows.get(row - 1));
-		    cell.getChildren().add(rowName);
-		    grid.getChildren().add(cell);
-		    continue;
-		}
-		if (row != 0 && col != 0) {
-		    // Finally add cells with radios to datatable. First cell
-		    // with radio will be upper-left and will have
-		    // *checkBoxCellNumber* set to 0.
-		    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
-		    String checkboxID = Grid.createCheckBoxID(gridID,
-			    checkBoxCellNumber);
-		    checkbox.setId(checkboxID);
+        // Cells in datagrid starts numbering from 0. This counter provides cell
+        // numbering.
+        int checkBoxCellNumber = 0;
+        for (int row = 0; row < rowsNumber; row++) {
+            for (int col = 0; col < colsNumber; col++) {
+                Row cell = new Row();
+                if (row == 0 && col == 0) {
+                    // Upper left cell does not contain anything, so will be
+                    // empty
+                    grid.getChildren().add(cell);
+                    continue;
+                }
+                if (row == 0) {
+                    // Upper row with has index 0. It contains column headers.
+                    // Add it.
+                    HtmlOutputText colName = new HtmlOutputText();
+                    // col-1 because of column headers starts from cell with
+                    // index 1, but first column name entry in arraylist is 0
+                    colName.setValue(columns.get(col - 1));
+                    cell.getChildren().add(colName);
+                    grid.getChildren().add(cell);
+                    continue;
+                }
+                if (row != 0 && col == 0) {
+                    // When we are on column with index 0, we must insert to it
+                    // cells with row names.
+                    HtmlOutputText rowName = new HtmlOutputText();
+                    rowName.setValue(rows.get(row - 1));
+                    cell.getChildren().add(rowName);
+                    grid.getChildren().add(cell);
+                    continue;
+                }
+                if (row != 0 && col != 0) {
+                    // Finally add cells with radios to datatable. First cell
+                    // with radio will be upper-left and will have
+                    // *checkBoxCellNumber* set to 0.
+                    SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
+                    String checkboxID = Grid.createCheckBoxID(gridID,
+                            checkBoxCellNumber);
+                    checkbox.setId(checkboxID);
 
-		    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
-			    + gridID
-			    + "\",\""
-			    + checkboxID
-			    + "\").currentCellValue}";
+                    String valueGetterQuery = "#{dataGridHandler.setCellFromGridByID(\""
+                            + gridID
+                            + "\",\""
+                            + checkboxID
+                            + "\").currentCellValue}";
 
-		    checkbox.setValueExpression(
-			    "value",
-			    createValueExpression(valueGetterQuery,
-				    Boolean.class));
-		    checkbox.addClientBehavior("valueChange",
-			    getAjaxBehavior(question));
+                    checkbox.setValueExpression(
+                            "value",
+                            createValueExpression(valueGetterQuery,
+                                    Boolean.class));
+                    checkbox.addClientBehavior("valueChange",
+                            getAjaxBehavior(question));
 
-		    cell.getChildren().add(checkbox);
-		    grid.getChildren().add(cell);
-		    checkBoxCellNumber++;
-		    continue;
-		}
-	    }
-	}
-	return grid;
+                    cell.getChildren().add(checkbox);
+                    grid.getChildren().add(cell);
+                    checkBoxCellNumber++;
+                    continue;
+                }
+            }
+        }
+        return grid;
     }
 
     private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
@@ -577,12 +577,12 @@ public class UIComponentGenerator {
     }
 
     public static ValueExpression createValueExpression(String expression,
-	    Class<?> returnType) {
-	FacesContext facesContext = FacesContext.getCurrentInstance();
-	return facesContext
-		.getApplication()
-		.getExpressionFactory()
-		.createValueExpression(facesContext.getELContext(), expression,
-			returnType);
+                                                        Class<?> returnType) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return facesContext
+                .getApplication()
+                .getExpressionFactory()
+                .createValueExpression(facesContext.getELContext(), expression,
+                        returnType);
     }
 }

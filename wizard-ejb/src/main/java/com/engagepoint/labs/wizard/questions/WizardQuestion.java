@@ -23,18 +23,9 @@ public abstract class WizardQuestion {
     protected String helpText;
     protected Boolean answerRequired;
     protected Boolean valid;
-    protected List<QuestionRule> ruleList;
+    protected List<QuestionRule> questionRuleList;
     public boolean ignored;
     public RuleExecutor ruleExecutor;
-    public boolean isParent;
-
-    public boolean isParent() {
-        return isParent;
-    }
-
-    public void setParent(boolean isParent) {
-        this.isParent = isParent;
-    }
 
     public RuleExecutor getRuleExecutor() {
         return ruleExecutor;
@@ -53,11 +44,11 @@ public abstract class WizardQuestion {
     }
 
     public List<QuestionRule> getRules() {
-        return ruleList;
+        return questionRuleList;
     }
 
     public void setRules(List<QuestionRule> ruleList) {
-        this.ruleList = ruleList;
+        this.questionRuleList = ruleList;
     }
 
     public Boolean getValid() {
@@ -120,8 +111,8 @@ public abstract class WizardQuestion {
 
     public boolean executeAllRules() {
         boolean change = false;
-        if (ruleList != null) {
-            for (QuestionRule rule : ruleList) {
+        if (questionRuleList != null) {
+            for (QuestionRule rule : questionRuleList) {
                 ruleExecutor.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(String.format(rule.getMethod(), rule.getParentId()));
