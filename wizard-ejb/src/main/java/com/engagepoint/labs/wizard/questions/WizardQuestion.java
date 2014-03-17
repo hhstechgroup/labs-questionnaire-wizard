@@ -6,7 +6,7 @@ import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 import super_binding.QType;
-import super_binding.Rule;
+import super_binding.QuestionRule;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public abstract class WizardQuestion {
     protected String helpText;
     protected Boolean answerRequired;
     protected Boolean valid;
-    protected List<Rule> ruleList;
+    protected List<QuestionRule> ruleList;
     public boolean ignored;
     public RuleExecutor ruleExecutor;
     public boolean isParent;
@@ -52,11 +52,11 @@ public abstract class WizardQuestion {
         this.ignored = ignored;
     }
 
-    public List<Rule> getRules() {
+    public List<QuestionRule> getRules() {
         return ruleList;
     }
 
-    public void setRules(List<Rule> ruleList) {
+    public void setRules(List<QuestionRule> ruleList) {
         this.ruleList = ruleList;
     }
 
@@ -121,7 +121,7 @@ public abstract class WizardQuestion {
     public boolean executeAllRules() {
         boolean change = false;
         if (ruleList != null) {
-            for (Rule rule : ruleList) {
+            for (QuestionRule rule : ruleList) {
                 ruleExecutor.setQuestion(this);
                 JexlEngine jexlEngine = new JexlEngine();
                 Expression expression = jexlEngine.createExpression(String.format(rule.getMethod(), rule.getParentId()));
