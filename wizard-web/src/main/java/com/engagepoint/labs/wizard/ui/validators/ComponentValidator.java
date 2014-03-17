@@ -137,6 +137,9 @@ public class ComponentValidator implements Validator {
                             FacesMessage.SEVERITY_ERROR, "Validation Error",
                             "Empty field is not allowed here!"));
                 }
+                System.err.println("component = " + component.getId());
+                System.err.println("question = " + question.getId());
+                System.err.println("Range!!!");
                 question.setValid(true);
                 saveRangeValue(value);
                 break;
@@ -267,6 +270,7 @@ public class ComponentValidator implements Validator {
             range.setStart(a[0]);
             range.setEnd(a[1]);
             valueRange.setValue(range);
+            System.err.println("Array = " + a);
             question.setAnswer(valueRange);
             cursor = 0;
         }
