@@ -22,6 +22,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import super_binding.QType;
 import super_binding.QuestionRule;
 
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -426,7 +427,6 @@ public class UINavigationBean implements Serializable {
                 } else {
                     firstTopicMenuItem.setId(pageMenuItem.getId() + "a");
                 }
-                LOGGER.info(pageMenuItem.getStyleClass());
                 pageMenuItem.setStyleClass(styleClass);
             } else {
                 if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {

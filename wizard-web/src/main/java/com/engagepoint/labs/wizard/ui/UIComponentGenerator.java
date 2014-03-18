@@ -32,6 +32,7 @@ import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
+import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.slider.Slider;
 
 import com.engagepoint.labs.wizard.controller.UINavigationBean;

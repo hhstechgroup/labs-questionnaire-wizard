@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 import com.engagepoint.labs.wizard.questions.GridQuestion;
@@ -18,7 +19,7 @@ import com.engagepoint.labs.wizard.values.objects.Grid;
 @Named("dataGridHandler")
 @SessionScoped
 public class DataGridHandler implements Serializable {
-
+    private static final Logger LOGGER=Logger.getLogger(DataGridHandler.class.getName());
     private static final long serialVersionUID = -1066387551691144085L;
 
     private Boolean currentCellValue;
@@ -48,7 +49,8 @@ public class DataGridHandler implements Serializable {
     }
 
     public DataGridHandler setCellFromGridByID(String gridID, String cellID) {
-	Grid grid = searchForGrid(gridID);
+	GridQuestion question = searchForQuestion(gridID);
+	Grid grid = (Grid) question.getAnswer().getValue();
 	currentCellValue = grid.getValues().get(cellID);
 	currentGridID = gridID;
 	currentCellId = cellID;
@@ -61,17 +63,18 @@ public class DataGridHandler implements Serializable {
 
     public void setCurrentCellValue(Boolean currentCellValue) {
 	this.currentCellValue = currentCellValue;
-	Grid grid = searchForGrid(currentGridID);
+	GridQuestion question = searchForQuestion(currentGridID);
+	Grid grid = (Grid) question.getAnswer().getValue();
 	grid.getValues().put(currentCellId, currentCellValue);
 
 	if (currentCellValue == true) {
-	    if (grid.isOneInRow()) {
+	    if (question.isOneInRow()) {
 		processRowRule();
 	    }
-	    if (grid.isOneInCol()) {
+	    if (question.isOneInCol()) {
 		processColumnRule();
 	    }
-	    if (grid.isOneInRow() && grid.isOneInCol()) {
+	    if (question.isOneInRow() && question.isOneInCol()) {
 		processRowRule();
 		processColumnRule();
 	    }
@@ -79,18 +82,18 @@ public class DataGridHandler implements Serializable {
 	RequestContext.getCurrentInstance().update(currentGridID);
     }
 
-    private Grid searchForGrid(String gridID) {
-	Grid grid = null;
+    private GridQuestion searchForQuestion(String gridID) {
+	GridQuestion question = null;
 	Iterator<String> i = questions.keySet().iterator();
 	while (i.hasNext()) {
 	    String questionID = i.next();
 	    GridQuestion dataGridQuestion = questions.get(questionID);
 	    if (dataGridQuestion.getId().equals(gridID)) {
-		grid = (Grid) dataGridQuestion.getAnswer().getValue();
+		question = dataGridQuestion;
 		break;
 	    }
 	}
-	return grid;
+	return question;
     }
 
     private int[] getCellPosition(int cellNumber, int rowsNumber,
@@ -156,7 +159,8 @@ public class DataGridHandler implements Serializable {
     }
 
     private void unsetValues() {
-	Grid grid = searchForGrid(currentGridID);
+	GridQuestion question = searchForQuestion(currentGridID);
+	Grid grid = (Grid) question.getAnswer().getValue();
 	for (String cellID : checkBoxIDsToUnset) {
 	    grid.getValues().put(cellID, false);
 	}
