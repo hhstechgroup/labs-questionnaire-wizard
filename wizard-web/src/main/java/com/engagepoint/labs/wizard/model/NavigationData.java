@@ -51,8 +51,7 @@ public class NavigationData implements Serializable {
     // NavData
     private String selectedFormTemplate;
 
-    private ArrayList<String> currentTopicIDs;
-    private ArrayList<String> currentTopicTitles;
+    private List<String> allTopicsIdOnCurrentPage;
 
     private String currentFormName;
     private String currentPageID;
@@ -137,8 +136,7 @@ public class NavigationData implements Serializable {
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
                 .getTopicList().get(0).getId();
-        currentTopicIDs = new ArrayList<>();
-        currentTopicTitles = new ArrayList<>();
+        allTopicsIdOnCurrentPage = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
         wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
@@ -147,12 +145,12 @@ public class NavigationData implements Serializable {
     }
 
     public boolean setCurrentTopicIDtoNext() {
-        for (int index = 0; index < currentTopicIDs.size(); index++) {
-            if (currentTopicID.equals(currentTopicIDs.get(index))) {
-                if (index == currentTopicIDs.size() - 1) {
+        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
+            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
+                if (index == allTopicsIdOnCurrentPage.size() - 1) {
                     return false;
                 } else {
-                    currentTopicID = currentTopicIDs.get(index + 1);
+                    currentTopicID = allTopicsIdOnCurrentPage.get(index + 1);
                     Integer newCurrentTopicNumber = wizardForm
                             .getWizardTopicById(currentTopicID)
                             .getTopicNumber();
@@ -210,12 +208,12 @@ public class NavigationData implements Serializable {
     }
 
     public boolean setCurrentTopicIDtoPrev() {
-        for (int index = 0; index < currentTopicIDs.size(); index++) {
-            if (currentTopicID.equals(currentTopicIDs.get(index))) {
+        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
+            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
                 if (index == 0) {
                     return false; // first topic case
                 } else {
-                    currentTopicID = currentTopicIDs.get(index - 1);
+                    currentTopicID = allTopicsIdOnCurrentPage.get(index - 1);
                     return true;
                 }
             }
@@ -256,21 +254,12 @@ public class NavigationData implements Serializable {
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
     }
 
-
-    public ArrayList<String> getCurrentTopicIDs() {
-        return currentTopicIDs;
+    public List<String> getAllTopicsIdOnCurrentPage() {
+        return allTopicsIdOnCurrentPage;
     }
 
-    public void setCurrentTopicIDs(ArrayList<String> currentTopicIDs) {
-        this.currentTopicIDs = currentTopicIDs;
-    }
-
-    public ArrayList<String> getCurrentTopicTitles() {
-        return currentTopicTitles;
-    }
-
-    public void setCurrentTopicTitles(ArrayList<String> currentTopicTitles) {
-        this.currentTopicTitles = currentTopicTitles;
+    public void setAllTopicsIdOnCurrentPage(List<String> allTopicsIdOnCurrentPage) {
+        this.allTopicsIdOnCurrentPage = allTopicsIdOnCurrentPage;
     }
 
     public String getCurrentFormName() {
@@ -454,14 +443,14 @@ public class NavigationData implements Serializable {
     }
 
     private boolean isOnLastTopic() {
-        for (int topicIntId = 0; topicIntId < currentTopicIDs.size(); topicIntId++) {
-            if (currentTopicID.equals(currentTopicIDs.get(topicIntId))) {
+        for (int topicIntId = 0; topicIntId < allTopicsIdOnCurrentPage.size(); topicIntId++) {
+            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(topicIntId))) {
                 if (topicIntId == 0) {
                     setFirstTopic(true);
                 } else {
                     setFirstTopic(false);
                 }
-                if (topicIntId == currentTopicIDs.size() - 1)
+                if (topicIntId == allTopicsIdOnCurrentPage.size() - 1)
                     return true;
             }
         }

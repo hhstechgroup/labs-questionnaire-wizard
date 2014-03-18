@@ -14,7 +14,6 @@ import super_binding.QType;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -22,33 +21,34 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by artem.pylypenko on 3/5/14.
+ * Created by artem.pylypenko on 3/18/14.
  */
-public class RuleExecutor implements Serializable {
-
+public class QuestionRuleExecutor extends RuleExecutorAbstract {
     private WizardForm form;
     private WizardQuestion question;
-    private WizardTopic topic;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(RuleExecutor.class);
+    private static final Logger LOGGER = Logger.getLogger(QuestionRuleExecutor.class);
 
-
-    public RuleExecutor(WizardForm form) {
+    public QuestionRuleExecutor(WizardForm form) {
         this.form = form;
     }
 
+    public WizardQuestion getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(WizardQuestion question) {
+        this.question = question;
+    }
+
+    @Override
     public boolean renderedRule(String parentID, String[] expectedAnswer) {
         boolean change = false;
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
-        String componentId = "";
-        if (question != null) {
-            componentId = "maincontentid-panel_" + question.getId();
-        } else if (topic != null) {
-            componentId = "leftmenuid-" + topic.getId();
-        }
-        UIComponent component = FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
+        String componentId = "maincontentid-panel_" + question.getId();
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
         if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
@@ -71,32 +71,16 @@ public class RuleExecutor implements Serializable {
             if (!isAlreadyShowing) {
                 change = true;
             }
-            showQuestionPanel(component);
+            showQuestionPanel(panel);
             isAlreadyShowing = true;
         } else {
             if (isAlreadyShowing) {
                 change = true;
             }
-            hideQuestionPanel(component);
+            hideQuestionPanel(panel);
             isAlreadyShowing = false;
         }
         return change;
-    }
-
-    public WizardQuestion getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(WizardQuestion question) {
-        this.question = question;
-    }
-
-    public WizardTopic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(WizardTopic topic) {
-        this.topic = topic;
     }
 
     private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
@@ -130,27 +114,19 @@ public class RuleExecutor implements Serializable {
                 && stringArrayToCompareWith.length == valueList.size();
     }
 
-    private void showQuestionPanel(UIComponent component) {
-        if (component instanceof Panel) {
-            ((Panel) component).setVisible(true);
-            question.setIgnored(false);
-        } else if (component instanceof MenuItem) {
-            component.setRendered(true);
-        }
+    private void showQuestionPanel(Panel panel) {
+        panel.setVisible(true);
+        question.setIgnored(false);
     }
 
-    private void hideQuestionPanel(UIComponent component) {
-        if (component instanceof Panel) {
-            ((Panel) component).setVisible(false);
-            question.setIgnored(true);
-            question.resetAnswer();
-            if (question.isRequired()) {
-                question.setValid(false);
-            }
-            resetComponentValue();
-        } else if (component instanceof MenuItem) {
-            component.setRendered(false);
+    private void hideQuestionPanel(Panel panel) {
+        panel.setVisible(false);
+        question.setIgnored(true);
+        question.resetAnswer();
+        if (question.isRequired()) {
+            question.setValid(false);
         }
+        resetComponentValue();
     }
 
     private void resetComponentValue() {

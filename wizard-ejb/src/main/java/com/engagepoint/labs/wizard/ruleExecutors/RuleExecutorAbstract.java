@@ -21,6 +21,9 @@ public abstract class RuleExecutorAbstract {
     private boolean isAlreadyShowing;
     private static final Logger LOGGER = Logger.getLogger(RuleExecutorAbstract.class);
 
+    protected RuleExecutorAbstract() {
+    }
+
     protected RuleExecutorAbstract(WizardForm form) {
         this.form = form;
     }

@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
+import com.engagepoint.labs.wizard.ruleExecutors.QuestionRuleExecutor;
 import com.engagepoint.labs.wizard.values.Value;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
@@ -23,14 +23,14 @@ public abstract class WizardQuestion {
     protected Boolean answerRequired;
     protected Boolean valid;
     protected List<QuestionRule> questionRuleList;
-    public boolean ignored;
-    public RuleExecutor ruleExecutor;
+    private boolean ignored;
+    public QuestionRuleExecutor ruleExecutor;
 
-    public RuleExecutor getRuleExecutor() {
+    public QuestionRuleExecutor getRuleExecutor() {
         return ruleExecutor;
     }
 
-    public void setRuleExecutor(RuleExecutor ruleExecutor) {
+    public void setRuleExecutor(QuestionRuleExecutor ruleExecutor) {
         this.ruleExecutor = ruleExecutor;
     }
 

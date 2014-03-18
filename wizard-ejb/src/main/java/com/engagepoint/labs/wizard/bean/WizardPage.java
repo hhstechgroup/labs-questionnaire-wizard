@@ -4,7 +4,7 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
+import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutorAbstract;
 import super_binding.PageRule;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public class WizardPage {
     private String pageName;
     private List<WizardTopic> topicList;
     private List<PageRule> pageRuleList;
-    public boolean ignored;
-    public RuleExecutor ruleExecutor;
+    private boolean ignored;
+    public RuleExecutorAbstract ruleExecutor;
 
     public WizardPage() {
     }
@@ -33,11 +33,11 @@ public class WizardPage {
         this.pageRuleList = pageRuleList;
     }
 
-    public RuleExecutor getRuleExecutor() {
+    public RuleExecutorAbstract getRuleExecutor() {
         return ruleExecutor;
     }
 
-    public void setRuleExecutor(RuleExecutor ruleExecutor) {
+    public void setRuleExecutor(RuleExecutorAbstract ruleExecutor) {
         this.ruleExecutor = ruleExecutor;
     }
 
