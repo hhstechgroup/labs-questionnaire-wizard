@@ -7,6 +7,7 @@ import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
 import com.engagepoint.labs.wizard.questions.DropDownQuestion;
 import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import super_binding.*;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class QuestionaireFormConverter {
                 question.setOptions(getQuestionOptions((CheckBoxesQuestion) wizardQuestion));
                 break;
             case RANGE:
+                defaultAnswers.getDefaultAnswer().addAll(getListRangeAnswer(wizardQuestion));
                 break;
             case MULTIPLECHOICE:
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
@@ -116,6 +118,14 @@ public class QuestionaireFormConverter {
                 break;
         }
         return defaultAnswers;
+    }
+
+    private List<String> getListRangeAnswer(WizardQuestion wizardQuestion) {
+        List<String> answerList = new ArrayList<>(2);
+        com.engagepoint.labs.wizard.values.objects.Range range = (Range) wizardQuestion.getAnswer().getValue();
+        answerList.add(String.valueOf(range.getStart()));
+        answerList.add(String.valueOf(range.getEnd()));
+        return answerList;
     }
 
     private Options getQuestionOptions(DropDownQuestion wizardQuestion) {
