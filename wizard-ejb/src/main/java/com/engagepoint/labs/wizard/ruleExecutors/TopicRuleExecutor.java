@@ -115,7 +115,7 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
     }
 
     private boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
-        return ((parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
+        return ((Integer)(parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
     }
 
     private boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
