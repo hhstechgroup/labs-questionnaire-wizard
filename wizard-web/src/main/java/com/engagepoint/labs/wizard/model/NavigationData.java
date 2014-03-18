@@ -141,10 +141,7 @@ public class NavigationData implements Serializable {
         currentTopicTitles = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
-//        WizardLimits.pageLimit = wizardForm.getWizardPageById(currentPageID).getPageNumber();
         wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
-//        WizardLimits.topicLimit = wizardForm.getWizardTopicById(currentTopicID)
-//                .getTopicNumber();
         wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
                 .getTopicNumber());
     }
