@@ -220,10 +220,10 @@ public class UIComponentGenerator {
         panelGroup.getChildren().add(getLabel(question));
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getOutputTextForSlider(question));
+        panelGroup.getChildren().add(getInputHiddenBegin(question));
         panelGroup.getChildren().add(getSliderOutputLabelBegin(question));
         panelGroup.getChildren().add(getInputHiddenEnd(question));
         panelGroup.getChildren().add(getSliderOutputLabelEnd(question));
-        panelGroup.getChildren().add(getInputHiddenBegin(question));
         panelGroup.getChildren().add(getSlider(question));
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getCommandButtonForSlider(question));

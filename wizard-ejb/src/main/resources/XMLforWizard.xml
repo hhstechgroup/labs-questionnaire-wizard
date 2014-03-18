@@ -70,7 +70,7 @@
                                     <!--<default-answer>Option 2</default-answer>-->
                                 </default-answers>
                             </question>
-                            <question answer-required="false" question-id="rrrrrr">
+                            <question answer-required="true" question-id="rrrrrr">
                                 <question-title>Error QQ</question-title>
                                 <question-type>RANGE</question-type>
                                 <rules>
