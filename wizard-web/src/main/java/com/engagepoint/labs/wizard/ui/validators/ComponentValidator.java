@@ -339,7 +339,7 @@ public class ComponentValidator implements Validator {
         wizardForm.setTopicLimit(topicNumber);
         if (movePageLimit) {
             navigationBean.changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
-            RequestContext.getCurrentInstance().update("brd-breadcrumb");
+            RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
         }
         if (moveTopicLimit) {
             navigationBean.changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);

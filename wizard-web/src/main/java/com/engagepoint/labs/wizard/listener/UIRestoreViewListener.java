@@ -49,7 +49,7 @@ public class UIRestoreViewListener implements PhaseListener {
             if (ComponentStruct.ADD.equals(action.action))
                 continue;
 
-            if (action.clientId.startsWith("brd")) {
+            if (action.clientId.startsWith("dateStubb-")) {
                 iterator.remove();
             }
             if (action.clientId.startsWith("leftmenuid")) {
