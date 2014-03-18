@@ -4,13 +4,8 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.RuleExecutor;
-import org.apache.commons.jexl2.Expression;
-import org.apache.commons.jexl2.JexlContext;
-import org.apache.commons.jexl2.JexlEngine;
-import org.apache.commons.jexl2.MapContext;
+import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
 import super_binding.PageRule;
-import super_binding.QuestionRule;
 
 import java.util.List;
 

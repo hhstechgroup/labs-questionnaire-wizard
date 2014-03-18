@@ -6,7 +6,7 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.client.ClientConstantStrings;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.model.NavigationData;
-import com.engagepoint.labs.wizard.questions.RuleExecutor;
+import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;

@@ -4,14 +4,13 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
-import com.engagepoint.labs.wizard.questions.RuleExecutor;
+import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 import super_binding.GroupRule;
-import super_binding.QuestionRule;
 
 import java.util.List;
 
@@ -100,7 +99,6 @@ public class WizardTopic {
     public boolean executeAllRules() {
         boolean change = false;
         if (groupRuleList != null) {
-            System.out.println("%%%%%%%%%%%%%%%%% WIZARDTOPIC %%%%%%%%%%%%");
             for (GroupRule rule : groupRuleList) {
                 ruleExecutor.setTopic(this);
                 JexlEngine jexlEngine = new JexlEngine();

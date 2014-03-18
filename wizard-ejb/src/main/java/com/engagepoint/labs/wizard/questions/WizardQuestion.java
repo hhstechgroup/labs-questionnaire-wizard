@@ -1,5 +1,6 @@
 package com.engagepoint.labs.wizard.questions;
 
+import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutor;
 import com.engagepoint.labs.wizard.values.Value;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
@@ -8,8 +9,6 @@ import org.apache.commons.jexl2.MapContext;
 import super_binding.QType;
 import super_binding.QuestionRule;
 
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import java.util.List;
 
 /**
