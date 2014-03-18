@@ -139,7 +139,6 @@ public class UINavigationBean implements Serializable {
         navigationData.startWizard();
         menuItemList = new ArrayList<>();
         initBreadcrumb();
-        initMenu();
         setRulesInAllQuestionsTopicAndPages();
         return "wizard-index?faces-redirect=true";
     }
