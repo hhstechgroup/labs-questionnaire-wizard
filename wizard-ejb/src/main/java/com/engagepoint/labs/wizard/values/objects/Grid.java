@@ -1,7 +1,5 @@
 package com.engagepoint.labs.wizard.values.objects;
 
-import org.apache.log4j.Logger;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +8,6 @@ import java.util.Map;
  * Created by igor.guzenko on 2/17/14.
  */
 public class Grid {
-    private static final Logger LOGGER = Logger.getLogger(Grid.class.getName());
     public static String CELL_PREFIX = "gridcell_";
     private Map<String, Boolean> values;
 

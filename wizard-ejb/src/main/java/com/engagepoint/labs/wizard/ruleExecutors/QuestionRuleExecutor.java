@@ -1,24 +1,12 @@
 package com.engagepoint.labs.wizard.ruleExecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardTopic;
-import com.engagepoint.labs.wizard.questions.DateQuestion;
-import com.engagepoint.labs.wizard.questions.TimeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
-import org.apache.log4j.Logger;
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.panel.Panel;
-import super_binding.QType;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by artem.pylypenko on 3/18/14.
@@ -27,7 +15,6 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
     private WizardForm form;
     private WizardQuestion question;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(QuestionRuleExecutor.class);
 
     public QuestionRuleExecutor(WizardForm form) {
         this.form = form;
@@ -81,37 +68,6 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
             isAlreadyShowing = false;
         }
         return change;
-    }
-
-    private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
-        return parentQuestionAnswer.getValue().equals(stringToCompareWith);
-    }
-
-    private boolean compareDateOrTime(QType parentQuestionType, Value parentQuestionAnswer, String dateToCompareWith) {
-        SimpleDateFormat format;
-        boolean compareResult = false;
-        if (parentQuestionType.equals(QType.DATE)) {
-            format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
-        } else {
-            format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
-        }
-        try {
-            Date date = format.parse(dateToCompareWith);
-            compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
-        } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
-        }
-        return compareResult;
-    }
-
-    private boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
-        return ((Integer)(parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
-    }
-
-    private boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
-        List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
-        return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
-                && stringArrayToCompareWith.length == valueList.size();
     }
 
     private void showQuestionPanel(Panel panel) {

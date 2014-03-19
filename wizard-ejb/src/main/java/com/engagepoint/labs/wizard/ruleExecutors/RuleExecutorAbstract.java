@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class RuleExecutorAbstract {
     private WizardForm form;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(RuleExecutorAbstract.class);
+    private static final Logger LOGGER = Logger.getLogger(RuleExecutorAbstract.class.getName());
 
     protected RuleExecutorAbstract() {
     }
@@ -47,11 +47,11 @@ public abstract class RuleExecutorAbstract {
 
     public abstract boolean renderedRule(String parentID, String[] expectedAnswer);
 
-    private boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
+    protected boolean compareString(Value parentQuestionAnswer, String stringToCompareWith) {
         return parentQuestionAnswer.getValue().equals(stringToCompareWith);
     }
 
-    private boolean compareDateOrTime(QType parentQuestionType, Value parentQuestionAnswer, String dateToCompareWith) {
+    protected boolean compareDateOrTime(QType parentQuestionType, Value parentQuestionAnswer, String dateToCompareWith) {
         SimpleDateFormat format;
         boolean compareResult = false;
         if (parentQuestionType.equals(QType.DATE)) {
@@ -63,16 +63,16 @@ public abstract class RuleExecutorAbstract {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("ParseException", e);
         }
         return compareResult;
     }
 
-    private boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
-        return ((Integer)(parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
+    protected boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
+        return ((Integer) (parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
     }
 
-    private boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
+    protected boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {
         List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
         return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
                 && stringArrayToCompareWith.length == valueList.size();

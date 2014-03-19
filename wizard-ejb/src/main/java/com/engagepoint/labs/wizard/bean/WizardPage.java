@@ -5,7 +5,6 @@
 package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.ruleExecutors.PageRuleExecutor;
-import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutorAbstract;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;

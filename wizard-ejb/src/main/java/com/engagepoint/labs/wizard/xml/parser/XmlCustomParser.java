@@ -8,7 +8,6 @@ package com.engagepoint.labs.wizard.xml.parser;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.export.QuestionaireFormConverter;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
@@ -28,7 +27,7 @@ import java.util.Date;
 
 public class XmlCustomParser {
 
-    private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class);
+    private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class.getName());
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
@@ -58,22 +57,6 @@ public class XmlCustomParser {
         unmarshaller.setEventHandler(new ValidationEventHandler() {
             @Override
             public boolean handleEvent(ValidationEvent event) {
-//                System.out.print("\NEVENT");
-//                System.out.print("SEVERITY:  " + EVENT.GETSEVERITY());
-//                System.out.print("MESSAGE:  " + EVENT.GETMESSAGE());
-//                System.out.print("LINKED EXCEPTION:  "
-//                        + EVENT.GETLINKEDEXCEPTION());
-//                System.out.print("LOCATOR");
-//                System.out.print("    LINE NUMBER:  "
-//                        + EVENT.GETLOCATOR().GETLINENUMBER());
-//                System.out.print("    COLUMN NUMBER:  "
-//                        + EVENT.GETLOCATOR().GETCOLUMNNUMBER());
-//                System.out.print("    OFFSET:  "
-//                        + EVENT.GETLOCATOR().GETOFFSET());
-//                System.out.print("    OBJECT:  "
-//                        + EVENT.GETLOCATOR().GETOBJECT());
-//                System.out.print("    NODE:  " + EVENT.GETLOCATOR().GETNODE());
-//                System.out.print("    URL:  " + EVENT.GETLOCATOR().GETURL());
                 return true;
             }
         });
@@ -101,7 +84,7 @@ public class XmlCustomParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("JAXBException", e);
         }
         return exportFile;
     }

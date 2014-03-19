@@ -7,6 +7,12 @@
         <pages>
             <page page-id="xcmxkmckxmc" page-number="1">
                 <page-name>Page Uno</page-name>
+                <page-rules>
+                    <page-rule>
+                        <parentId></parentId>
+                        <method></method>
+                    </page-rule>
+                </page-rules>
                 <groups-of-questions>
                     <group group-id="lsowoqwewrr">
                         <group-name>Group 1</group-name>
@@ -20,6 +26,8 @@
                             <question answer-required="false" question-id="qp123">
                                 <question-title>1.1.1</question-title>
                                 <question-type>TEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>qawes123</parentId>
@@ -48,6 +56,8 @@
                             <question answer-required="false" question-id="qawes123">
                                 <question-title>1.1.2</question-title>
                                 <question-type>TEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>ywywywuququ</parentId>
@@ -76,6 +86,8 @@
                             <question answer-required="true" question-id="ywywywuququ">
                                 <question-title>CQ</question-title>
                                 <question-type>CHECKBOX</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId></parentId>
@@ -117,6 +129,8 @@
                             <question answer-required="false" question-id="qwe123r421">
                                 <question-title>1.2.1</question-title>
                                 <question-type>MULTIPLECHOICE</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>sksksk626262</parentId>
@@ -146,6 +160,8 @@
                             <question answer-required="false" question-id="sksksk626262">
                                 <question-title>1.2.2</question-title>
                                 <question-type>CHOOSEFROMLIST</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>yqjamzks721</parentId>
@@ -176,6 +192,8 @@
                             <question answer-required="false" question-id="yqjamzks721">
                                 <question-title>1.2.3</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId></parentId>
@@ -210,6 +228,34 @@
                             </group-rule>
                         </group-rules>
                         <questions>
+                            <question answer-required="false" question-id="twrqeadscx4231">
+                                <question-title>Empty Question\</question-title>
+                                <question-type>TEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
+                                <question-rules>
+                                    <question-rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </question-rule>
+                                </question-rules>
+                                <help-text></help-text>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                                <default-answers>
+                                    <default-answer></default-answer>
+                                </default-answers>
+                            </question>
                         </questions>
                     </group>
                 </groups-of-questions>
@@ -225,10 +271,18 @@
                 <groups-of-questions>
                     <group group-id="yuio0237">
                         <group-name>Casual Group</group-name>
+                        <group-rules>
+                            <group-rule>
+                                <parentId></parentId>
+                                <method></method>
+                            </group-rule>
+                        </group-rules>
                         <questions>
                             <question answer-required="false" question-id="wuwu5353">
                                 <question-title>2.1.1 "Magic"</question-title>
                                 <question-type>TEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>rqewbzla52431</parentId>
@@ -255,6 +309,8 @@
                             <question answer-required="false" question-id="rqewbzla52431">
                                 <question-title>2.1.2</question-title>
                                 <question-type>DATE</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId>uwietry176243</parentId>
@@ -281,6 +337,8 @@
                             <question answer-required="false" question-id="uwietry176243">
                                 <question-title>2.1.3</question-title>
                                 <question-type>TIME</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
                                         <parentId></parentId>
@@ -326,6 +384,34 @@
                             </group-rule>
                         </group-rules>
                         <questions>
+                            <question answer-required="false" question-id="wieurytfgdhsj273645">
+                                <question-title>Empty Question 2</question-title>
+                                <question-type>TEXT</question-type>
+                                <grid-oneInCol>false</grid-oneInCol>
+                                <grid-oneInRow>false</grid-oneInRow>
+                                <question-rules>
+                                    <question-rule>
+                                        <parentId></parentId>
+                                        <method></method>
+                                    </question-rule>
+                                </question-rules>
+                                <help-text></help-text>
+                                <options>
+                                    <option></option>
+                                </options>
+                                <range/>
+                                <grid>
+                                    <columns>
+                                        <column></column>
+                                    </columns>
+                                    <rows>
+                                        <row></row>
+                                    </rows>
+                                </grid>
+                                <default-answers>
+                                    <default-answer></default-answer>
+                                </default-answers>
+                            </question>
                         </questions>
                     </group>
                 </groups-of-questions>
