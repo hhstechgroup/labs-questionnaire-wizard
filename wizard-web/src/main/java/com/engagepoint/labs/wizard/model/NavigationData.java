@@ -506,17 +506,17 @@ public class NavigationData implements Serializable {
 
     private Dialog getDialogForDependentQuestion() {
         HtmlOutputText firstPartOfMessage = new HtmlOutputText();
-        firstPartOfMessage.setValue("Please keep in mind that other questions depend on answer for this one. <br/>" +
+        firstPartOfMessage.setValue("Please keep in mind that other question, topic or page depend on answer for this one. <br/>" +
                 "When you change answer for such question (that are marked with green star ");
         firstPartOfMessage.setEscape(false);
         HtmlOutputText star = new HtmlOutputText();
         star.setValue(" *");
         star.setStyle("color:#00CC00");
         HtmlOutputText secondPartOfMessage = new HtmlOutputText();
-        secondPartOfMessage.setValue(" ).<br/>You will continue wizard from this point.");
+        secondPartOfMessage.setValue(" ),you will continue wizard from this point.");
         secondPartOfMessage.setEscape(false);
         Dialog dialog = new Dialog();
-        dialog.setHeader("Other questions depend on this one!");
+        dialog.setHeader("Other question, topic or page depend on this one!");
         dialog.setId("dialogDependentQuestion");
         dialog.setWidgetVar("dialogDependentQuestion");
         dialog.setModal(true);

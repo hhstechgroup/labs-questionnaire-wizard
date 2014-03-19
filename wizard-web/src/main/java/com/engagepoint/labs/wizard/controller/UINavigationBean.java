@@ -21,6 +21,8 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 
+import super_binding.GroupRule;
+import super_binding.PageRule;
 import super_binding.QType;
 import super_binding.QuestionRule;
 
@@ -683,14 +685,23 @@ public class UINavigationBean implements Serializable {
                 break loop;
             }
             for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
-                if (wizardTopic.getTopicNumber() > navigationData
-                        .getWizardForm().getTopicLimit() || isParent) {
+                if (isParent) {
                     break loop;
                 }
                 for (WizardQuestion wizardQuestion : wizardTopic
                         .getWizardQuestionList()) {
+                    if (wizardPage.getPageRuleList() != null) {
+                        isParent = compareParentsIdAndCurrentQuestionIdForPages(
+                                wizardPage.getPageRuleList(),
+                                currentQuestion.getId());
+                    }
+                    if (wizardTopic.getGroupRuleList() != null) {
+                        isParent = compareParentsIdAndCurrentQuestionIdForTopics(
+                                wizardTopic.getGroupRuleList(),
+                                currentQuestion.getId());
+                    }
                     if (wizardQuestion.getRules() != null) {
-                        isParent = compareParentsIdAndCurrentQuestionId(
+                        isParent = compareParentsIdAndCurrentQuestionIdForQuestions(
                                 wizardQuestion.getRules(),
                                 currentQuestion.getId());
                     }
@@ -703,9 +714,29 @@ public class UINavigationBean implements Serializable {
         return isParent;
     }
 
-    private boolean compareParentsIdAndCurrentQuestionId(List<QuestionRule> ruleList, String questionId) {
+    private boolean compareParentsIdAndCurrentQuestionIdForQuestions(List<QuestionRule> ruleList, String questionId) {
         boolean match = false;
         for (QuestionRule rule : ruleList) {
+            if (rule.getParentId().equals(questionId)) {
+                match = true;
+            }
+        }
+        return match;
+    }
+
+    private boolean compareParentsIdAndCurrentQuestionIdForTopics(List<GroupRule> ruleList, String questionId) {
+        boolean match = false;
+        for (GroupRule rule : ruleList) {
+            if (rule.getParentId().equals(questionId)) {
+                match = true;
+            }
+        }
+        return match;
+    }
+
+    private boolean compareParentsIdAndCurrentQuestionIdForPages(List<PageRule> ruleList, String questionId) {
+        boolean match = false;
+        for (PageRule rule : ruleList) {
             if (rule.getParentId().equals(questionId)) {
                 match = true;
             }
