@@ -4,8 +4,10 @@ import static com.engagepoint.acceptancetest.base.webelements.utils.WebElementsH
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
 import net.thucydides.core.pages.Pages;
 
+import net.thucydides.core.pages.WebElementFacade;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.junit.Assert;
@@ -68,5 +70,17 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
     public void checkboxIsChecked(String id) {
         WebElement checkBox = uIBootstrapBasePage.element(findVisibleElementAndGetSelector(id));
         Assert.assertTrue(checkBox.isSelected());
+    }
+
+    @Then("element with id '$id' is visible")
+    public void elementIsVisible(String id) {
+        WebElementFacade element = uIBootstrapBasePage.element(By.id(id));
+        Assert.assertTrue(element.isCurrentlyVisible());
+    }
+
+    @Then("element with id '$id' is inVisible")
+    public void elementIsInVisible(String id) {
+        WebElementFacade element = uIBootstrapBasePage.element(By.id(id));
+        Assert.assertFalse(element.isCurrentlyVisible());
     }
 }

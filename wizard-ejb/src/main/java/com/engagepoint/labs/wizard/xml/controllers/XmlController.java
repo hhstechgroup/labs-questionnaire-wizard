@@ -35,7 +35,8 @@ public class XmlController implements Serializable {
         xmlPathList.add("/XMLforWizard.xml");
         xmlPathList.add("/XMLforWizard2.xml");
         xmlPathList.add("/ExemplaryWelcome.xml");
-        xmlPathList.add("/dependentQuestions.xml");
+        xmlPathList.add("/DependentQuestions.xml");
+        xmlPathList.add("/DependentTopics.xml");
         xmlPathList.add("/prevTestTemplate.xml");
         this.parser = new XmlCustomParser();
     }
