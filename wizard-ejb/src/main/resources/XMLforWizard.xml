@@ -202,7 +202,7 @@
                     <group group-id="pqplakdhfg">
                         <group-name>Super Puper Topic 2</group-name>
                         <questions>
-                            <question answer-required="false" question-id="xvxvxvxss">
+                            <question answer-required="true" question-id="xvxvxvxss">
                                 <question-title>QT313131313131</question-title>
                                 <question-type>PARAGRAPHTEXT</question-type>
                                 <rules>

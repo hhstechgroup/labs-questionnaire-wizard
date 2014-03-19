@@ -58,28 +58,13 @@ public class ComponentValidator implements Validator {
                          Object value) throws ValidatorException {
         switch (question.getQuestionType()) {
             case TEXT:
-                validateTextQuestionAnswer((InputText) component, value);
+                validateTextAnswer((InputText) component, value);
                 break;
             case PARAGRAPHTEXT:
-                if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
-                    ((InputTextarea) component).resetValue();
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-                question.setValid(true);
-                saveTextValue(value.toString());
+                validateParagraphTextAnswer((InputTextarea) component, value);
                 break;
             case MULTIPLECHOICE:
-                if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Answer must be selected for this question!"));
-                }
-                question.setValid(true);
-                saveTextValue(value.toString());
+                validateMultipleChoiseAnswer(value);
                 break;
             case CHECKBOX:
                 if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
@@ -156,7 +141,30 @@ public class ComponentValidator implements Validator {
         }
     }
 
-    private void validateTextQuestionAnswer(InputText component, Object value) {
+    private void validateMultipleChoiseAnswer(Object value) {
+        if (question.isRequired() && !validateMultipleChoiseQuestionComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Answer must be selected for this question!"));
+        }
+        question.setValid(true);
+        saveTextValue(value.toString());
+    }
+
+    private void validateParagraphTextAnswer(InputTextarea component, Object value) {
+        if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
+            component.resetValue();
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here!"));
+        }
+        question.setValid(true);
+        saveTextValue(value.toString());
+    }
+
+    private void validateTextAnswer(InputText component, Object value) {
         if (question.isRequired() && !validateTextQuestionComponent(value)) {
             component.resetValue();
             question.setValid(false);
