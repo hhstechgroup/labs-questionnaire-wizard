@@ -28,15 +28,7 @@ import java.util.List;
 public class XmlController implements Serializable {
 
     private final XmlCustomParser parser;
-    private WizardDocument wizardDocument;
-
-
-    public List<String> getXmlPathList() {
-        return xmlPathList;
-    }
-
     private List<String> xmlPathList;
-    private File exportFile;
 
     public XmlController() {
         xmlPathList = new ArrayList<String>();
@@ -45,8 +37,11 @@ public class XmlController implements Serializable {
         xmlPathList.add("/ExemplaryWelcome.xml");
         xmlPathList.add("/dependentQuestions.xml");
         xmlPathList.add("/prevTestTemplate.xml");
-        // xmlPathList.add("/exportFile.xml");
         this.parser = new XmlCustomParser();
+    }
+
+    public List<String> getXmlPathList() {
+        return xmlPathList;
     }
 
     public WizardDocument readAllDeafultXmlFiles() throws SAXException, JAXBException {
@@ -55,12 +50,12 @@ public class XmlController implements Serializable {
         for (String xmlPath : xmlPathList) {
             formsList.add(parser.parseXML(xmlPath));
         }
-        wizardDocument = generator.getWizardDocument(formsList);
+        WizardDocument wizardDocument = generator.getWizardDocument(formsList);
         return wizardDocument;
     }
 
     public File getExportFileFromWizardForm(WizardForm wizardForm) {
-        exportFile = parser.parseWizardFormToXml(wizardForm);
+        File exportFile = parser.parseWizardFormToXml(wizardForm);
         return exportFile;
     }
 }

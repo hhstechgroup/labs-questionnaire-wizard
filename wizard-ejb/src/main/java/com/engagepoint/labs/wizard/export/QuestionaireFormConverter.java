@@ -13,13 +13,12 @@ import java.util.*;
  * Created by igor.guzenko on 2/28/14.
  */
 public class QuestionaireFormConverter {
-    private QuestionnaireForms questionnaireForms;
 
     public QuestionnaireForms convert(WizardForm wizardForm) {
         if (wizardForm == null) {
             return null;
         }
-        questionnaireForms = new QuestionnaireForms();
+        QuestionnaireForms questionnaireForms = new QuestionnaireForms();
         QuestionnaireForm questionnaireForm = new QuestionnaireForm();
         questionnaireForm.setFormId(wizardForm.getId());
         questionnaireForm.setFormName(wizardForm.getFormName());

@@ -5,7 +5,6 @@
 package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutorAbstract;
 import com.engagepoint.labs.wizard.ruleExecutors.TopicRuleExecutor;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;

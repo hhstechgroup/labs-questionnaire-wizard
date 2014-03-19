@@ -6,7 +6,6 @@ package com.engagepoint.labs.wizard.bean;
 
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 
-import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -120,10 +119,11 @@ public class WizardForm implements Serializable {
         List<WizardQuestion> allWizardQuestions = new ArrayList<>();
         for (WizardTopic wizardTopic : allWizardTopics) {
             List<WizardQuestion> wizardQuestionList = wizardTopic.getWizardQuestionList();
-            if (null != wizardQuestionList)
+            if (null != wizardQuestionList) {
                 for (WizardQuestion wizardQuestion : wizardQuestionList) {
                     allWizardQuestions.add(wizardQuestion);
                 }
+            }
         }
         return allWizardQuestions;
     }

@@ -65,19 +65,19 @@ public class GridQuestion extends WizardQuestion {
     }
 
     public boolean isOneInCol() {
-	return oneInCol;
+        return oneInCol;
     }
 
     public void setOneInCol(boolean oneInCol) {
-	this.oneInCol = oneInCol;
+        this.oneInCol = oneInCol;
     }
 
     public boolean isOneInRow() {
-	return oneInRow;
+        return oneInRow;
     }
 
     public void setOneInRow(boolean oneInRow) {
-	this.oneInRow = oneInRow;
+        this.oneInRow = oneInRow;
     }
 
 }
