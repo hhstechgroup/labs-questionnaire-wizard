@@ -23,22 +23,23 @@
                             </group-rule>
                         </group-rules>
                         <questions>
-                            <question answer-required="false" question-id="qp123">
+                            <question answer-required="true" question-id="ywywywuququ">
                                 <question-title>1.1.1</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>CHECKBOX</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId>qawes123</parentId>
-                                        <method>this.ruleExecutor.renderedRule('%s', ['22'])</method>
+                                        <parentId></parentId>
+                                        <method></method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
                                 <options>
-                                    <option>First Option</option>
-                                    <option>Second Option</option>
-                                    <option>Third Option</option>
+                                    <option>C1</option>
+                                    <option>C2</option>
+                                    <option>C3</option>
+                                    <option>C4</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -50,7 +51,8 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>Third Option</default-answer>
+                                    <default-answer>C2</default-answer>
+                                    <default-answer>C4</default-answer>
                                 </default-answers>
                             </question>
                             <question answer-required="false" question-id="qawes123">
@@ -83,23 +85,22 @@
                                     <default-answer></default-answer>
                                 </default-answers>
                             </question>
-                            <question answer-required="true" question-id="ywywywuququ">
+                            <question answer-required="false" question-id="qp123">
                                 <question-title>1.1.3</question-title>
-                                <question-type>CHECKBOX</question-type>
+                                <question-type>TEXT</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId></parentId>
-                                        <method></method>
+                                        <parentId>qawes123</parentId>
+                                        <method>this.ruleExecutor.renderedRule('%s', ['22'])</method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
                                 <options>
-                                    <option>C1</option>
-                                    <option>C2</option>
-                                    <option>C3</option>
-                                    <option>C4</option>
+                                    <option>First Option</option>
+                                    <option>Second Option</option>
+                                    <option>Third Option</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -111,8 +112,7 @@
                                     </rows>
                                 </grid>
                                 <default-answers>
-                                    <default-answer>C2</default-answer>
-                                    <default-answer>C4</default-answer>
+                                    <default-answer>Third Option</default-answer>
                                 </default-answers>
                             </question>
                         </questions>
@@ -126,23 +126,20 @@
                             </group-rule>
                         </group-rules>
                         <questions>
-                            <question answer-required="false" question-id="qwe123r421">
+                            <question answer-required="false" question-id="yqjamzks721">
                                 <question-title>1.2.1</question-title>
-                                <question-type>MULTIPLECHOICE</question-type>
+                                <question-type>PARAGRAPHTEXT</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId>sksksk626262</parentId>
-                                        <method>this.ruleExecutor.renderedRule('%s', ['CHOOSE 1'])</method>
+                                        <parentId></parentId>
+                                        <method></method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
                                 <options>
-                                    <option>Multiple One</option>
-                                    <option>Multiple Two</option>
-                                    <option>Multiple Third</option>
-                                    <option>Multiple Four</option>
+                                    <option></option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -189,59 +186,23 @@
                                     <default-answer>CHOOSE 3</default-answer>
                                 </default-answers>
                             </question>
-                            <question answer-required="false" question-id="yqjamzks721">
+                            <question answer-required="false" question-id="qwe123r421">
                                 <question-title>1.2.3</question-title>
-                                <question-type>PARAGRAPHTEXT</question-type>
+                                <question-type>MULTIPLECHOICE</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId></parentId>
-                                        <method></method>
+                                        <parentId>sksksk626262</parentId>
+                                        <method>this.ruleExecutor.renderedRule('%s', ['CHOOSE 1'])</method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
                                 <options>
-                                    <option></option>
-                                </options>
-                                <range/>
-                                <grid>
-                                    <columns>
-                                        <column></column>
-                                    </columns>
-                                    <rows>
-                                        <row></row>
-                                    </rows>
-                                </grid>
-                                <default-answers>
-                                    <default-answer></default-answer>
-                                </default-answers>
-                            </question>
-                        </questions>
-                    </group>
-                    <group group-id="knvyw5243421212">
-                        <group-name>Topic 1.3</group-name>
-                        <group-rules>
-                            <group-rule>
-                                <parentId></parentId>
-                                <method></method>
-                            </group-rule>
-                        </group-rules>
-                        <questions>
-                            <question answer-required="false" question-id="twrqeadscx4231">
-                                <question-title>1.3.1</question-title>
-                                <question-type>TEXT</question-type>
-                                <grid-oneInCol>false</grid-oneInCol>
-                                <grid-oneInRow>false</grid-oneInRow>
-                                <question-rules>
-                                    <question-rule>
-                                        <parentId></parentId>
-                                        <method></method>
-                                    </question-rule>
-                                </question-rules>
-                                <help-text></help-text>
-                                <options>
-                                    <option></option>
+                                    <option>Multiple One</option>
+                                    <option>Multiple Two</option>
+                                    <option>Multiple Third</option>
+                                    <option>Multiple Four</option>
                                 </options>
                                 <range/>
                                 <grid>
@@ -278,15 +239,15 @@
                             </group-rule>
                         </group-rules>
                         <questions>
-                            <question answer-required="false" question-id="wuwu5353">
+                            <question answer-required="false" question-id="uwietry176243">
                                 <question-title>2.1.1</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>TIME</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId>rqewbzla52431</parentId>
-                                        <method>this.ruleExecutor.renderedRule('%s', ['30-04-1991'])</method>
+                                        <parentId></parentId>
+                                        <method></method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
@@ -334,15 +295,15 @@
                                     <default-answer></default-answer>
                                 </default-answers>
                             </question>
-                            <question answer-required="false" question-id="uwietry176243">
+                            <question answer-required="false" question-id="wuwu5353">
                                 <question-title>2.1.3</question-title>
-                                <question-type>TIME</question-type>
+                                <question-type>TEXT</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId></parentId>
-                                        <method></method>
+                                        <parentId>rqewbzla52431</parentId>
+                                        <method>this.ruleExecutor.renderedRule('%s', ['30-04-1991'])</method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>

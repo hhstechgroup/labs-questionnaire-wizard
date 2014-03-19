@@ -137,7 +137,7 @@ public class ComponentValidator implements Validator {
         }
         navigationBean.setCurrentQuestionType(question.getQuestionType());
         if (isParent) {
-            moveLimitIfNecessary();
+            navigationBean.moveLimitIfNecessary(pageNumber, topicNumber);
         }
     }
 
@@ -339,28 +339,5 @@ public class ComponentValidator implements Validator {
             }
         }
         return uploadFile;
-    }
-
-    private void moveLimitIfNecessary() {
-        boolean movePageLimit = false;
-        boolean moveTopicLimit = false;
-        if (wizardForm.getPageLimit() > pageNumber && wizardForm.getTopicLimit() > topicNumber) {
-            movePageLimit = true;
-            moveTopicLimit = true;
-            RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
-        } else if (isParent && wizardForm.getTopicLimit() > topicNumber) {
-            moveTopicLimit = true;
-            RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
-        }
-        wizardForm.setPageLimit(pageNumber);
-        wizardForm.setTopicLimit(topicNumber);
-        if (movePageLimit) {
-            navigationBean.changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
-            RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
-        }
-        if (moveTopicLimit) {
-            navigationBean.changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
-            RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
-        }
     }
 }

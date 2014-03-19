@@ -42,11 +42,11 @@ public abstract class WizardQuestion {
         this.ignored = ignored;
     }
 
-    public List<QuestionRule> getRules() {
+    public List<QuestionRule> getQuestionRuleList() {
         return questionRuleList;
     }
 
-    public void setRules(List<QuestionRule> ruleList) {
+    public void setQuestionRuleList(List<QuestionRule> ruleList) {
         this.questionRuleList = ruleList;
     }
 

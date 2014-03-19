@@ -187,7 +187,7 @@ public class UINavigationBean implements Serializable {
             MethodExpression elExpression;
             WizardPage wizardPage;
             // get page from navigationData by index
-            wizardPage = navigationData.getWizardForm().getWizardPageList().get(i);
+            wizardPage = getWizardForm().getWizardPageList().get(i);
             // set titles for breadcrumb items
             item.setValue(wizardPage.getPageName());
             item.setId(wizardPage.getId());
@@ -228,10 +228,10 @@ public class UINavigationBean implements Serializable {
         // Iterating over all pages in model
         for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
             // retrieve topicID from navigation data
-            String topicID = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+            String topicID = getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
                     .getTopicList().get(i).getId();
             // get topics title by id
-            String topicTitle = navigationData.getWizardForm().getWizardTopicById(topicID).getGroupTitle();
+            String topicTitle = getWizardForm().getWizardTopicById(topicID).getGroupTitle();
             // add title to topic titles
             // creating menu item
             MenuItem item = new MenuItem();
@@ -260,12 +260,12 @@ public class UINavigationBean implements Serializable {
      */
     public void createQuestions() {
         UIComponentGenerator generator = new UIComponentGenerator();
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         WizardPage wizardPage = wizardForm.getWizardPageById(navigationData.getCurrentPageID());
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID());
         Map<WizardQuestion, Boolean> questionsMap = new LinkedHashMap<>();
         for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
-            questionsMap.put(question, isQuestionAParent(question));
+            questionsMap.put(question, isQuestionParent(question));
         }
         List<UIComponent> panelList = generator.getPanelList(questionsMap, wizardPage.getPageNumber(),
                 wizardTopic.getTopicNumber(), this, gridHandler);
@@ -284,11 +284,11 @@ public class UINavigationBean implements Serializable {
     }
 
     private int getPageCount() {
-        return navigationData.getWizardForm().getWizardPageList().size();
+        return getWizardForm().getWizardPageList().size();
     }
 
     private int getTopicCount(String pageID) {
-        return navigationData.getWizardForm().getWizardPageById(pageID).getTopicList().size();
+        return getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
     /**
@@ -298,12 +298,12 @@ public class UINavigationBean implements Serializable {
      */
     public void changeCurrentPage(String newCurrentPageID) {
         commitAnswers(getQuestionListFromCurrentTopic());
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         Integer newCurrentPageNumber = wizardForm.getWizardPageById(newCurrentPageID).getPageNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentPageNumber > navigationData.getWizardForm().getPageLimit()) {
+        if (newCurrentPageNumber > getWizardForm().getPageLimit()) {
             return;
-        } else if (currentTopicNumber < navigationData.getWizardForm().getTopicLimit()
+        } else if (currentTopicNumber < getWizardForm().getTopicLimit()
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute(ClientConstantStrings.DIALOGSHOW);
             return;
@@ -318,7 +318,7 @@ public class UINavigationBean implements Serializable {
         // After changing current page to a new one, mark it with a new style
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         // set current topic to first on new page
-        navigationData.setCurrentTopicIDAndTitle(navigationData.getWizardForm()
+        navigationData.setCurrentTopicIDAndTitle(getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList().get(0).getId());
         // create new menu for page
         initMenu();
@@ -332,12 +332,12 @@ public class UINavigationBean implements Serializable {
      */
     public void changeCurrentTopic(String newCurrentTopicID) {
         commitAnswers(getQuestionListFromCurrentTopic());
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         Integer newCurrentTopicNumber = wizardForm.getWizardTopicById(newCurrentTopicID).getTopicNumber();
         Integer currentTopicNumber = wizardForm.getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentTopicNumber > navigationData.getWizardForm().getTopicLimit()) {
+        if (newCurrentTopicNumber > getWizardForm().getTopicLimit()) {
             return;
-        } else if (currentTopicNumber < navigationData.getWizardForm().getTopicLimit()
+        } else if (currentTopicNumber < getWizardForm().getTopicLimit()
                 && !checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
             RequestContext.getCurrentInstance().execute(ClientConstantStrings.DIALOGSHOW);
             return;
@@ -400,7 +400,7 @@ public class UINavigationBean implements Serializable {
     public void exportButtonClick() {
         filesForArchive = new ArrayList<>(7);
         filesForArchive.add(navigationData.getExportFile());
-        List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
+        List<WizardQuestion> allWizardQuestions = getWizardForm().getAllWizardQuestions();
         for (WizardQuestion singleQuestion : allWizardQuestions) {
             if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD)) {
                 filesForArchive.add((File) singleQuestion.getAnswer().getValue());
@@ -416,9 +416,9 @@ public class UINavigationBean implements Serializable {
     }
 
     public void previousButtonClick() {
-        Integer newCurrentTopicNumber = navigationData.getWizardForm()
+        Integer newCurrentTopicNumber = getWizardForm()
                 .getWizardTopicById(navigationData.getCurrentTopicID()).getTopicNumber();
-        if (newCurrentTopicNumber != navigationData.getWizardForm().getTopicLimit()) {
+        if (newCurrentTopicNumber != getWizardForm().getTopicLimit()) {
             if (!checkAllRequiredQuestions(getQuestionListFromCurrentTopic())) {
                 RequestContext.getCurrentInstance().execute(ClientConstantStrings.DIALOGSHOW);
                 return;
@@ -444,7 +444,7 @@ public class UINavigationBean implements Serializable {
      * @param styleClass style class from CSS file
      */
     public void changeStyleOfCurrentPageButton(String styleClass) {
-        List<WizardPage> pageList = navigationData.getWizardForm()
+        List<WizardPage> pageList = getWizardForm()
                 .getWizardPageList();
         WizardPage wizardPage;
         MenuItem pageMenuItem;
@@ -456,7 +456,7 @@ public class UINavigationBean implements Serializable {
                 pageMenuItem
                         .setStyle("font-size: 16px !important; font-weight: bold !important;");
             } else {
-                if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
+                if (pageIndex > (getWizardForm().getPageLimit() - 1)) {
                     pageMenuItem.setStyle("opacity: 0.2;");
                 } else {
                     pageMenuItem
@@ -495,14 +495,14 @@ public class UINavigationBean implements Serializable {
     }
 
     private List<WizardQuestion> getQuestionListFromCurrentTopic() {
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         String currentTopicID = navigationData.getCurrentTopicID();
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(currentTopicID);
         return wizardTopic.getWizardQuestionList();
     }
 
     public void changeStyleOfCurrentTopicButton(String styleClass) {
-        List<WizardTopic> topicList = navigationData.getWizardForm()
+        List<WizardTopic> topicList = getWizardForm()
                 .getWizardPageById(navigationData.getCurrentPageID()).getTopicList();
         WizardTopic topic;
         MenuItem item;
@@ -512,7 +512,7 @@ public class UINavigationBean implements Serializable {
             if (topic.getId().equals(navigationData.getCurrentTopicID())) {
                 item.setStyleClass(styleClass);
             } else {
-                if (topic.getTopicNumber() > navigationData.getWizardForm().getTopicLimit()) {
+                if (topic.getTopicNumber() > getWizardForm().getTopicLimit()) {
                     item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
                 } else {
                     item.setStyleClass("");
@@ -524,28 +524,14 @@ public class UINavigationBean implements Serializable {
 
     public void executeAllRules() {
         boolean isEverChanged = false;
-
         isEverChanged = executeAllPagesRuleOnCurrentForm(isEverChanged);
         isEverChanged = executeAllTopicsRuleOnCurrentPage(isEverChanged);
-        isEverChanged = executeAllQuestionsRuleOnCurrentTopic(isEverChanged);
+        executeAllQuestionsRuleOnCurrentTopic(isEverChanged);
     }
 
     private boolean executeAllPagesRuleOnCurrentForm(boolean isEverChanged) {
-        WizardForm wizardForm = navigationData.getWizardForm();
-        for (int i = 0; i < wizardForm.getWizardPageList().size(); i++) {
-            WizardPage page = wizardForm.getWizardPageList().get(i);
-            boolean isChanged = page.executeAllRules();
-            if (isChanged) {
-                i = -1;
-                isEverChanged = true;
-                if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
-                    needToStopUserOnCurrentTopic = true;
-                }
-
-            } else if (!isEverChanged
-                    && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
-                needToStopUserOnCurrentTopic = false;
-            }
+        for (WizardPage page : getWizardForm().getWizardPageList()) {
+            stopUserOnCurrentTopicOrNot(page.executeAllRules());
         }
         fillAllPagesIdOnForm();
         updateBreadcrumbAfterRulesAreExecuted();
@@ -554,20 +540,9 @@ public class UINavigationBean implements Serializable {
 
     private boolean executeAllTopicsRuleOnCurrentPage(boolean isEverChanged) {
         String currentPageID = navigationData.getCurrentPageID();
-        WizardPage page = navigationData.getWizardForm().getWizardPageById(currentPageID);
-        for (int i = 0; i < page.getTopicList().size(); i++) {
-            WizardTopic topic = page.getTopicList().get(i);
-            boolean isChanged = topic.executeAllRules();
-            if (isChanged) {
-                i = -1;
-                isEverChanged = true;
-                if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
-                    needToStopUserOnCurrentTopic = true;
-                }
-            } else if (!isEverChanged
-                    && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
-                needToStopUserOnCurrentTopic = false;
-            }
+        WizardPage page = getWizardForm().getWizardPageById(currentPageID);
+        for (WizardTopic topic : page.getTopicList()) {
+            stopUserOnCurrentTopicOrNot(topic.executeAllRules());
         }
         fillAllTopicsIdOnPage();
         updateLeftMenuAfterRulesAreExecuted();
@@ -576,26 +551,25 @@ public class UINavigationBean implements Serializable {
 
     private boolean executeAllQuestionsRuleOnCurrentTopic(boolean isEverChanged) {
         String currentTopicID = navigationData.getCurrentTopicID();
-        WizardTopic topic = navigationData.getWizardForm().getWizardTopicById(currentTopicID);
-        for (int i = 0; i < topic.getWizardQuestionList().size(); i++) {
-            WizardQuestion question = topic.getWizardQuestionList().get(i);
-            boolean isChanged = question.executeAllRules();
-            if (isChanged) {
-                i = -1;
-                isEverChanged = true;
-                if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
-                    needToStopUserOnCurrentTopic = true;
-                }
-            } else if (!isEverChanged
-                    && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
-                needToStopUserOnCurrentTopic = false;
-            }
+        WizardTopic topic = getWizardForm().getWizardTopicById(currentTopicID);
+        for (WizardQuestion question : topic.getWizardQuestionList()) {
+            stopUserOnCurrentTopicOrNot(question.executeAllRules());
         }
         return isEverChanged;
     }
 
+    private void stopUserOnCurrentTopicOrNot(boolean isChanged) {
+        if (isChanged) {
+            if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
+                needToStopUserOnCurrentTopic = true;
+            }
+        } else {
+            needToStopUserOnCurrentTopic = false;
+        }
+    }
+
     private void setMenuItemInPagesOnCurrentForm() {
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         for (WizardPage page : wizardForm.getWizardPageList()) {
             page.setRuleExecutor(new PageRuleExecutor(wizardForm));
             page.ruleExecutor.setMenuItem(findMenuItemForWizardPage(page.getId()));
@@ -603,7 +577,7 @@ public class UINavigationBean implements Serializable {
     }
 
     private void setMenuItemInTopicsOnCurrentPage() {
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         WizardPage wizardPage = wizardForm.getWizardPageById(navigationData.getCurrentPageID());
         for (WizardTopic topic : wizardPage.getTopicList()) {
             topic.setRuleExecutor(new TopicRuleExecutor(wizardForm));
@@ -612,7 +586,7 @@ public class UINavigationBean implements Serializable {
     }
 
     private void setRulesInAllQuestionsTopicAndPages() {
-        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardForm wizardForm = getWizardForm();
         for (WizardQuestion question : wizardForm.getAllWizardQuestions()) {
             question.setRuleExecutor(new QuestionRuleExecutor(wizardForm));
         }
@@ -620,8 +594,8 @@ public class UINavigationBean implements Serializable {
 
     private void fillAllPagesIdOnForm() {
         navigationData.getAllPagesIdOnCurrentForm().clear();
-        for (int i = 0; i < navigationData.getWizardForm().getWizardPageList().size(); i++) {
-            WizardPage page = navigationData.getWizardForm().getWizardPageList().get(i);
+        for (int i = 0; i < getWizardForm().getWizardPageList().size(); i++) {
+            WizardPage page = getWizardForm().getWizardPageList().get(i);
             if (!page.isIgnored()) {
                 navigationData.getAllPagesIdOnCurrentForm().add(page.getId());
             }
@@ -631,7 +605,7 @@ public class UINavigationBean implements Serializable {
     private void fillAllTopicsIdOnPage() {
         navigationData.getAllTopicsIdOnCurrentPage().clear();
         for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
-            WizardTopic topic = navigationData.getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
+            WizardTopic topic = getWizardForm().getWizardPageById(navigationData.getCurrentPageID())
                     .getTopicList().get(i);
             if (!topic.isIgnored()) {
                 navigationData.getAllTopicsIdOnCurrentPage().add(topic.getId());
@@ -675,46 +649,49 @@ public class UINavigationBean implements Serializable {
         return menuItem;
     }
 
-    private boolean isQuestionAParent(WizardQuestion currentQuestion) {
+    private boolean isQuestionParent(WizardQuestion currentQuestion) {
         boolean isParent = false;
-        loop:
-        for (WizardPage wizardPage : navigationData.getWizardForm()
+        for (WizardPage wizardPage : getWizardForm()
                 .getWizardPageList()) {
-            if (wizardPage.getPageNumber() > navigationData.getWizardForm()
-                    .getPageLimit() || isParent) {
-                break loop;
+            if (isParent) {
+                break;
             }
             for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
                 if (isParent) {
-                    break loop;
+                    break;
                 }
-                for (WizardQuestion wizardQuestion : wizardTopic
-                        .getWizardQuestionList()) {
-                    if (wizardPage.getPageRuleList() != null) {
-                        isParent = compareParentsIdAndCurrentQuestionIdForPages(
-                                wizardPage.getPageRuleList(),
-                                currentQuestion.getId());
-                    }
-                    if (wizardTopic.getGroupRuleList() != null) {
-                        isParent = compareParentsIdAndCurrentQuestionIdForTopics(
-                                wizardTopic.getGroupRuleList(),
-                                currentQuestion.getId());
-                    }
-                    if (wizardQuestion.getRules() != null) {
-                        isParent = compareParentsIdAndCurrentQuestionIdForQuestions(
-                                wizardQuestion.getRules(),
-                                currentQuestion.getId());
-                    }
-                    if (isParent) {
-                        break loop;
-                    }
-                }
+                isParent = isQuestionParentTopicNestedLoop(wizardTopic, wizardPage.getPageRuleList(), currentQuestion.getId());
             }
         }
         return isParent;
     }
 
-    private boolean compareParentsIdAndCurrentQuestionIdForQuestions(List<QuestionRule> ruleList, String questionId) {
+    private boolean isQuestionParentTopicNestedLoop(WizardTopic wizardTopic, List<PageRule> pageRuleList, String currentQuestionId) {
+        boolean isParent = false;
+        for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
+            if (pageRuleList != null) {
+                isParent = compareParentsIdAndCurrentQuestionIdForPageRules(
+                        pageRuleList,
+                        currentQuestionId);
+            }
+            if (wizardTopic.getGroupRuleList() != null) {
+                isParent = compareParentsIdAndCurrentQuestionIdForTopicRules(
+                        wizardTopic.getGroupRuleList(),
+                        currentQuestionId);
+            }
+            if (wizardQuestion.getQuestionRuleList() != null) {
+                isParent = compareParentsIdAndCurrentQuestionIdForQuestionRules(
+                        wizardQuestion.getQuestionRuleList(),
+                        currentQuestionId);
+            }
+            if (isParent) {
+                break;
+            }
+        }
+        return isParent;
+    }
+
+    private boolean compareParentsIdAndCurrentQuestionIdForQuestionRules(List<QuestionRule> ruleList, String questionId) {
         boolean match = false;
         for (QuestionRule rule : ruleList) {
             if (rule.getParentId().equals(questionId)) {
@@ -724,7 +701,7 @@ public class UINavigationBean implements Serializable {
         return match;
     }
 
-    private boolean compareParentsIdAndCurrentQuestionIdForTopics(List<GroupRule> ruleList, String questionId) {
+    private boolean compareParentsIdAndCurrentQuestionIdForTopicRules(List<GroupRule> ruleList, String questionId) {
         boolean match = false;
         for (GroupRule rule : ruleList) {
             if (rule.getParentId().equals(questionId)) {
@@ -734,7 +711,7 @@ public class UINavigationBean implements Serializable {
         return match;
     }
 
-    private boolean compareParentsIdAndCurrentQuestionIdForPages(List<PageRule> ruleList, String questionId) {
+    private boolean compareParentsIdAndCurrentQuestionIdForPageRules(List<PageRule> ruleList, String questionId) {
         boolean match = false;
         for (PageRule rule : ruleList) {
             if (rule.getParentId().equals(questionId)) {
@@ -742,6 +719,26 @@ public class UINavigationBean implements Serializable {
             }
         }
         return match;
+    }
+
+    public void moveLimitIfNecessary(int pageNumber, int topicNumber) {
+        boolean movePageLimit = getWizardForm().getPageLimit() > pageNumber;
+        boolean moveTopicLimit = getWizardForm().getTopicLimit() > topicNumber;
+        getWizardForm().setPageLimit(pageNumber);
+        getWizardForm().setTopicLimit(topicNumber);
+        if (moveTopicLimit) {
+            changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
+            RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+            if (movePageLimit) {
+                changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
+                RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
+            }
+            RequestContext.getCurrentInstance().execute("dialogDependentQuestion.show()");
+        }
+    }
+
+    private WizardForm getWizardForm() {
+        return navigationData.getWizardForm();
     }
 
     @PreDestroy

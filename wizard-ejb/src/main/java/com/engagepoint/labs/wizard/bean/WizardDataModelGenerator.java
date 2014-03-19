@@ -165,7 +165,7 @@ public class WizardDataModelGenerator {
         wizardQuestion.setHelpText(xmlQuestion.getHelpText());
         wizardQuestion.setAnswerRequired(xmlQuestion.isAnswerRequired());
         if (checkQuestionRules(xmlQuestion)) {
-            wizardQuestion.setRules(questionRuleList);
+            wizardQuestion.setQuestionRuleList(questionRuleList);
             wizardQuestion.setIgnored(true);
         }
         return wizardQuestion;
