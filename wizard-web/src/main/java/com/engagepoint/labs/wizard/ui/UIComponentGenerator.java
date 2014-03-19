@@ -32,7 +32,6 @@ import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
-import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.slider.Slider;
 
 import com.engagepoint.labs.wizard.controller.UINavigationBean;
@@ -450,7 +449,6 @@ public class UIComponentGenerator {
         timeCalendar.setStyle("padding:1px");
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
-//        timeCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
         timeCalendar.addValidator(getComponentValidator(question));
         timeCalendar.setConverter(new ComponentValueConverter(question));
 
@@ -519,20 +517,6 @@ public class UIComponentGenerator {
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;
     }
-
-
-//    private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
-//        AjaxBehavior ajaxBehavior = new AjaxBehavior();
-//        ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
-////        if (question.getQuestionType() == QType.RANGE) {
-////            ajaxBehavior.setUpdate("maincontentid-j_id1");
-////        } else {
-////            ajaxBehavior.setUpdate("@(maincontentid-j_id1 :not(.noupdate))");
-////        }
-//        ajaxBehavior.setUpdate("maincontentid-j_id1");
-//        ajaxBehavior.setAsync(true);
-//        return ajaxBehavior;
-//    }
 
     private HtmlInputFile getFileUpload(WizardQuestion question) {
         HtmlInputFile fileUpload = new HtmlInputFile();
