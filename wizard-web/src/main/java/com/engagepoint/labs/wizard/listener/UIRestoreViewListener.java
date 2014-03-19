@@ -30,25 +30,26 @@ public class UIRestoreViewListener implements PhaseListener {
         HttpServletRequest httpRequest = (HttpServletRequest) event.getFacesContext().getExternalContext().getRequest();
 
         Object[] rawState = (Object[]) rsm.getState(event.getFacesContext(), httpRequest.getRequestURI().replaceFirst(httpRequest.getContextPath(), "").split("\\?")[0]);
-        if (rawState == null)
+        if (rawState == null) {
             return;
+        }
 
         Map<String, Object> state = (Map<String, Object>) rawState[1];
-        if (state == null)
-            return;
+        if (state == null) {
+            return;}
 
         List<Object> savedActions = (List<Object>) state.get(RIConstants.DYNAMIC_ACTIONS);
-        if (savedActions == null)
-            return;
+        if (savedActions == null)   {
+            return;                  }
 
         for (Iterator<Object> iterator = savedActions.iterator(); iterator.hasNext(); ) {
             Object object = iterator.next();
             ComponentStruct action = new ComponentStruct();
             action.restoreState(event.getFacesContext(), object);
 
-            if (ComponentStruct.ADD.equals(action.action))
+            if (ComponentStruct.ADD.equals(action.action)) {
                 continue;
-
+            }
             if (action.clientId.startsWith("dateStubb-")) {
                 iterator.remove();
             }

@@ -158,8 +158,9 @@ public class UINavigationBean implements Serializable {
 
     public void clearDataFromSession() {
         if (null != xmlPathList) {
-            for (String xmlFile: xmlPathList)
-            refresh(xmlFile);
+            for (String xmlFile : xmlPathList) {
+                refresh(xmlFile);
+            }
         } else {
             navigationData.startSelectXMLScreen();
         }
@@ -713,14 +714,14 @@ public class UINavigationBean implements Serializable {
 
     @PreDestroy
     public void clearFiles() {
-        if(filesForArchive != null){
+        if (filesForArchive != null) {
             filesForArchive.add(new File(ArchiverZip.ZIP_FILE_NAME));
-            for (File file:filesForArchive){
+            for (File file : filesForArchive) {
                 file.delete();
             }
         }
-        for(String path:xmlPathList){
-            System.err.print("DELETED PATH"+path);
+        for (String path : xmlPathList) {
+            System.err.print("DELETED PATH" + path);
             new File(path).delete();
         }
     }
