@@ -41,7 +41,7 @@ import java.util.logging.Level;
 @SessionScoped
 public class NavigationData implements Serializable {
 
-    private static final Logger LOGGER=Logger.getLogger(NavigationData.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NavigationData.class.getName());
     private static final long serialVersionUID = -3879860102027220266L;
     private boolean onSelectXMLPage;
     @Inject
@@ -54,6 +54,7 @@ public class NavigationData implements Serializable {
     // NavData
     private String selectedFormTemplate;
 
+    private List<String> allPagesIdOnCurrentForm;
     private List<String> allTopicsIdOnCurrentPage;
 
     private String currentFormName;
@@ -90,7 +91,7 @@ public class NavigationData implements Serializable {
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {
-            LOGGER.warn("SAX Exception",ex);
+            LOGGER.warn("SAX Exception", ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
@@ -105,7 +106,7 @@ public class NavigationData implements Serializable {
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {
-            LOGGER.warn("SAX Exception",ex);
+            LOGGER.warn("SAX Exception", ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
@@ -137,6 +138,7 @@ public class NavigationData implements Serializable {
         currentPageID = wizardForm.getWizardPageList().get(0).getId();
         currentTopicID = wizardForm.getWizardPageById(currentPageID)
                 .getTopicList().get(0).getId();
+        allPagesIdOnCurrentForm = new ArrayList<>();
         allTopicsIdOnCurrentPage = new ArrayList<>();
         breadcrumbModel = new DefaultMenuModel();
         menuModel = new DefaultMenuModel();
@@ -166,15 +168,12 @@ public class NavigationData implements Serializable {
     }
 
     public boolean setCurrentPageIDtoNext() {
-        // get pageList from model
-        List<WizardPage> pageList = wizardForm.getWizardPageList();
-        // start searching current page
-        for (int index = 0; index < pageList.size(); index++) {
-            if (currentPageID.equals(pageList.get(index).getId())) {
-                if (index == pageList.size() - 1) {
+        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
+            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
+                if (index == allPagesIdOnCurrentForm.size() - 1) {
                     return false;// if finded page is last
                 } else {
-                    currentPageID = pageList.get(index + 1).getId();
+                    currentPageID = allPagesIdOnCurrentForm.get(index + 1);
                     Integer newCurrentPageNumber = wizardForm
                             .getWizardPageById(currentPageID).getPageNumber();
                     if (newCurrentPageNumber > wizardForm.getPageLimit()) {
@@ -193,14 +192,12 @@ public class NavigationData implements Serializable {
     }
 
     public boolean setCurrentPageIDtoPrev() {
-        List<WizardPage> pageList = wizardForm.getWizardPageList();
-        // start searching current page
-        for (int index = 0; index < pageList.size(); index++) {
-            if (currentPageID.equals(pageList.get(index).getId())) {
+        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
+            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
                 if (index == 0) {
                     return false;// if finded page is first
                 } else {
-                    currentPageID = pageList.get(index - 1).getId();
+                    currentPageID = allPagesIdOnCurrentForm.get(index - 1);
                     return true;
                 }
             }
@@ -253,6 +250,14 @@ public class NavigationData implements Serializable {
     public void setCurrentTopicIDAndTitle(String currentTopicID) {
         this.currentTopicID = currentTopicID;
         this.currentTopicTitle = getTopicTitleFromID(currentTopicID);
+    }
+
+    public List<String> getAllPagesIdOnCurrentForm() {
+        return allPagesIdOnCurrentForm;
+    }
+
+    public void setAllPagesIdOnCurrentForm(List<String> allPagesIdOnCurrentForm) {
+        this.allPagesIdOnCurrentForm = allPagesIdOnCurrentForm;
     }
 
     public List<String> getAllTopicsIdOnCurrentPage() {

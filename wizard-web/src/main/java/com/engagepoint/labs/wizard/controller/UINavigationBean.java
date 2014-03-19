@@ -6,6 +6,7 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.client.ClientConstantStrings;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.ruleExecutors.PageRuleExecutor;
 import com.engagepoint.labs.wizard.ruleExecutors.QuestionRuleExecutor;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ruleExecutors.TopicRuleExecutor;
@@ -79,7 +80,8 @@ public class UINavigationBean implements Serializable {
      * Used to create EL expressions
      */
     private ExpressionFactory expressionFactory;
-    private List<MenuItem> menuItemList;
+    private List<MenuItem> pageMenuItemList;
+    private List<MenuItem> topicMenuItemList;
 
     public QType getCurrentQuestionType() {
         return currentQuestionType;
@@ -89,12 +91,20 @@ public class UINavigationBean implements Serializable {
         this.currentQuestionType = currentQuestionType;
     }
 
-    public List<MenuItem> getMenuItemList() {
-        return menuItemList;
+    public List<MenuItem> getPageMenuItemList() {
+        return pageMenuItemList;
     }
 
-    public void setMenuItemList(List<MenuItem> menuItemList) {
-        this.menuItemList = menuItemList;
+    public void setPageMenuItemList(List<MenuItem> pageMenuItemList) {
+        this.pageMenuItemList = pageMenuItemList;
+    }
+
+    public List<MenuItem> getTopicMenuItemList() {
+        return topicMenuItemList;
+    }
+
+    public void setTopicMenuItemList(List<MenuItem> topicMenuItemList) {
+        this.topicMenuItemList = topicMenuItemList;
     }
 
     /**
@@ -137,7 +147,8 @@ public class UINavigationBean implements Serializable {
     public String start() {
         clearDataFromSession();
         navigationData.startWizard();
-        menuItemList = new ArrayList<>();
+        pageMenuItemList = new ArrayList<>();
+        topicMenuItemList = new ArrayList<>();
         initBreadcrumb();
         setRulesInAllQuestionsTopicAndPages();
         return "wizard-index?faces-redirect=true";
@@ -180,8 +191,11 @@ public class UINavigationBean implements Serializable {
                     new Class[]{String.class});
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
+            pageMenuItemList.add(item);
             navigationData.getBreadcrumbModel().addMenuItem(item);
         }
+        fillAllPagesIdOnForm();
+        setMenuItemInPagesOnCurrentForm();
         changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
         initMenu();
     }
@@ -197,7 +211,7 @@ public class UINavigationBean implements Serializable {
 
         navigationData.getAllTopicsIdOnCurrentPage().clear();
         navigationData.getMenuModel().getContents().clear();
-        menuItemList.clear();
+        topicMenuItemList.clear();
 
         // now we start create new topics for page
         facesContext = FacesContext.getCurrentInstance();
@@ -225,10 +239,11 @@ public class UINavigationBean implements Serializable {
                     new Class[]{String.class});
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
-            menuItemList.add(item);
+            topicMenuItemList.add(item);
             navigationData.getMenuModel().addMenuItem(item);
         }
         fillAllTopicsIdOnPage();
+        setMenuItemInTopicsOnCurrentPage();
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         // after initialization menu questions creator method called
         createQuestions();
@@ -426,26 +441,26 @@ public class UINavigationBean implements Serializable {
      * @param styleClass style class from CSS file
      */
     public void changeStyleOfCurrentPageButton(String styleClass) {
-	List<WizardPage> pageList = navigationData.getWizardForm()
-		.getWizardPageList();
-	WizardPage wizardPage;
-	MenuItem pageMenuItem;
-	for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
-	    wizardPage = pageList.get(pageIndex);
-	    pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
-		    .getContents().get(pageIndex);
-	    if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
-		pageMenuItem
-			.setStyle("font-size: 16px !important; font-weight: bold !important;");
-	    } else {
-		if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
-		    pageMenuItem.setStyle("opacity: 0.2;");
-		} else {
-		    pageMenuItem
-			    .setStyle("font-size: 16px; font-weight: normal;");
-		}
-	    }
-	}
+        List<WizardPage> pageList = navigationData.getWizardForm()
+                .getWizardPageList();
+        WizardPage wizardPage;
+        MenuItem pageMenuItem;
+        for (int pageIndex = 0; pageIndex < pageList.size(); pageIndex++) {
+            wizardPage = pageList.get(pageIndex);
+            pageMenuItem = (MenuItem) navigationData.getBreadcrumbModel()
+                    .getContents().get(pageIndex);
+            if (wizardPage.getId().equals(navigationData.getCurrentPageID())) {
+                pageMenuItem
+                        .setStyle("font-size: 16px !important; font-weight: bold !important;");
+            } else {
+                if (pageIndex > (navigationData.getWizardForm().getPageLimit() - 1)) {
+                    pageMenuItem.setStyle("opacity: 0.2;");
+                } else {
+                    pageMenuItem
+                            .setStyle("font-size: 16px; font-weight: normal;");
+                }
+            }
+        }
     }
 
     private void commitAnswers(List<WizardQuestion> wizardQuestionList) {
@@ -507,8 +522,30 @@ public class UINavigationBean implements Serializable {
     public void executeAllRules() {
         boolean isEverChanged = false;
 
+        isEverChanged = executeAllPagesRuleOnCurrentForm(isEverChanged);
         isEverChanged = executeAllTopicsRuleOnCurrentPage(isEverChanged);
         isEverChanged = executeAllQuestionsRuleOnCurrentTopic(isEverChanged);
+    }
+
+    private boolean executeAllPagesRuleOnCurrentForm(boolean isEverChanged) {
+        WizardForm wizardForm = navigationData.getWizardForm();
+        for (int i = 0; i < wizardForm.getWizardPageList().size(); i++) {
+            WizardPage page = wizardForm.getWizardPageList().get(i);
+            boolean isChanged = page.executeAllRules();
+            if (isChanged) {
+                i = -1;
+                isEverChanged = true;
+                if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
+                    needToStopUserOnCurrentTopic = true;
+                }
+            } else if (!isEverChanged
+                    && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
+                needToStopUserOnCurrentTopic = false;
+            }
+        }
+        fillAllPagesIdOnForm();
+        updateBreadcrumbAfterRulesAreExecuted();
+        return isEverChanged;
     }
 
     private boolean executeAllTopicsRuleOnCurrentPage(boolean isEverChanged) {
@@ -529,7 +566,7 @@ public class UINavigationBean implements Serializable {
             }
         }
         fillAllTopicsIdOnPage();
-        updateLeftMenuAfterRulesAreExecute();
+        updateLeftMenuAfterRulesAreExecuted();
         return isEverChanged;
     }
 
@@ -553,18 +590,36 @@ public class UINavigationBean implements Serializable {
         return isEverChanged;
     }
 
+    private void setMenuItemInPagesOnCurrentForm() {
+        WizardForm wizardForm = navigationData.getWizardForm();
+        for (WizardPage page : wizardForm.getWizardPageList()) {
+            page.setRuleExecutor(new PageRuleExecutor(wizardForm));
+            page.ruleExecutor.setMenuItem(findMenuItemForWizardPage(page.getId()));
+        }
+    }
+
+    private void setMenuItemInTopicsOnCurrentPage() {
+        WizardForm wizardForm = navigationData.getWizardForm();
+        WizardPage wizardPage = wizardForm.getWizardPageById(navigationData.getCurrentPageID());
+        for (WizardTopic topic : wizardPage.getTopicList()) {
+            topic.setRuleExecutor(new TopicRuleExecutor(wizardForm));
+            topic.ruleExecutor.setMenuItem(findMenuItemForWizardTopic(topic.getId()));
+        }
+    }
 
     private void setRulesInAllQuestionsTopicAndPages() {
         WizardForm wizardForm = navigationData.getWizardForm();
-        for (WizardPage page : navigationData.getWizardForm().getWizardPageList()) {
-//            page.setRuleExecutor(new RuleExecutor(wizardForm));
-            for (WizardTopic topic : page.getTopicList()) {
-//                topic.setRuleExecutor(new RuleExecutor(wizardForm));
-                topic.setRuleExecutor(new TopicRuleExecutor(wizardForm));
-                topic.ruleExecutor.setMenuItem(findMenuItemForWizardTopic(topic.getId()));
-                for (WizardQuestion question : topic.getWizardQuestionList()) {
-                    question.setRuleExecutor(new QuestionRuleExecutor(wizardForm));
-                }
+        for (WizardQuestion question : wizardForm.getAllWizardQuestions()) {
+            question.setRuleExecutor(new QuestionRuleExecutor(wizardForm));
+        }
+    }
+
+    private void fillAllPagesIdOnForm() {
+        navigationData.getAllPagesIdOnCurrentForm().clear();
+        for (int i = 0; i < navigationData.getWizardForm().getWizardPageList().size(); i++) {
+            WizardPage page = navigationData.getWizardForm().getWizardPageList().get(i);
+            if (!page.isIgnored()) {
+                navigationData.getAllPagesIdOnCurrentForm().add(page.getId());
             }
         }
     }
@@ -580,16 +635,34 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    private void updateLeftMenuAfterRulesAreExecute() {
-        for (MenuItem menuItem : menuItemList) {
+    private void updateBreadcrumbAfterRulesAreExecuted() {
+        for (MenuItem menuItem : pageMenuItemList) {
+            navigationData.getBreadcrumbModel().addMenuItem(menuItem);
+        }
+        RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
+    }
+
+    private void updateLeftMenuAfterRulesAreExecuted() {
+        for (MenuItem menuItem : topicMenuItemList) {
             navigationData.getMenuModel().addMenuItem(menuItem);
         }
         RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
     }
 
+    private MenuItem findMenuItemForWizardPage(String pageID) {
+        MenuItem menuItem = null;
+        for (MenuItem item : pageMenuItemList) {
+            if (pageID.equals(item.getId())) {
+                menuItem = item;
+                break;
+            }
+        }
+        return menuItem;
+    }
+
     private MenuItem findMenuItemForWizardTopic(String topicID) {
         MenuItem menuItem = null;
-        for (MenuItem item : menuItemList) {
+        for (MenuItem item : topicMenuItemList) {
             if (topicID.equals(item.getId())) {
                 menuItem = item;
                 break;

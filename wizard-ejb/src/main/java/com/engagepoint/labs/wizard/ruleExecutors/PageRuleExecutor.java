@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.ruleExecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
 import com.engagepoint.labs.wizard.questions.TimeQuestion;
@@ -8,11 +9,8 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
 import org.apache.log4j.Logger;
 import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.panel.Panel;
 import super_binding.QType;
 
-import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -20,16 +18,16 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by artem.pylypenko on 3/18/14.
+ * Created by artem.pylypenko on 3/19/14.
  */
-public class TopicRuleExecutor extends RuleExecutorAbstract {
+public class PageRuleExecutor extends RuleExecutorAbstract {
     private WizardForm form;
     private MenuItem menuItem;
-    private WizardTopic topic;
+    private WizardPage page;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(TopicRuleExecutor.class);
+    private static final Logger LOGGER = Logger.getLogger(PageRuleExecutor.class);
 
-    public TopicRuleExecutor(WizardForm form) {
+    public PageRuleExecutor(WizardForm form) {
         this.form = form;
     }
 
@@ -41,12 +39,12 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
         this.menuItem = menuItem;
     }
 
-    public WizardTopic getTopic() {
-        return topic;
+    public WizardPage getPage() {
+        return page;
     }
 
-    public void setTopic(WizardTopic topic) {
-        this.topic = topic;
+    public void setPage(WizardPage page) {
+        this.page = page;
     }
 
     @Override
@@ -77,13 +75,13 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
             if (!isAlreadyShowing) {
                 change = true;
             }
-            showTopic();
+            showPage();
             isAlreadyShowing = true;
         } else {
             if (isAlreadyShowing) {
                 change = true;
             }
-            hideTopic();
+            hidePage();
             isAlreadyShowing = false;
         }
         return change;
@@ -121,14 +119,14 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
                 && stringArrayToCompareWith.length == valueList.size();
     }
 
-    private void showTopic() {
+    private void showPage() {
         menuItem.setRendered(true);
-        topic.setIgnored(false);
+        page.setIgnored(false);
     }
 
-    private void hideTopic() {
+    private void hidePage() {
         menuItem.setRendered(false);
-        topic.setIgnored(true);
-        topic.resetTopic();
+        page.setIgnored(true);
+        page.resetPage();
     }
 }

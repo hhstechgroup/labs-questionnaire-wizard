@@ -114,4 +114,11 @@ public class WizardTopic {
         }
         return change;
     }
+
+    public void resetTopic() {
+        for (WizardQuestion question : wizardQuestionList) {
+            question.resetAnswer();
+        }
+
+    }
 }

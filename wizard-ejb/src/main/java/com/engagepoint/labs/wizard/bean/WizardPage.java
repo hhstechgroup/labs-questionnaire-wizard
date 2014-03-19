@@ -4,7 +4,12 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
+import com.engagepoint.labs.wizard.ruleExecutors.PageRuleExecutor;
 import com.engagepoint.labs.wizard.ruleExecutors.RuleExecutorAbstract;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import super_binding.PageRule;
 
 import java.util.List;
@@ -20,7 +25,7 @@ public class WizardPage {
     private List<WizardTopic> topicList;
     private List<PageRule> pageRuleList;
     private boolean ignored;
-    public RuleExecutorAbstract ruleExecutor;
+    public PageRuleExecutor ruleExecutor;
 
     public WizardPage() {
     }
@@ -33,11 +38,11 @@ public class WizardPage {
         this.pageRuleList = pageRuleList;
     }
 
-    public RuleExecutorAbstract getRuleExecutor() {
+    public PageRuleExecutor getRuleExecutor() {
         return ruleExecutor;
     }
 
-    public void setRuleExecutor(RuleExecutorAbstract ruleExecutor) {
+    public void setRuleExecutor(PageRuleExecutor ruleExecutor) {
         this.ruleExecutor = ruleExecutor;
     }
 
@@ -82,21 +87,27 @@ public class WizardPage {
         this.topicList = topicList;
     }
 
-//    public boolean executeAllRules() {
-//        boolean change = false;
-//        if (questionRuleList != null) {
-//            for (QuestionRule rule : questionRuleList) {
-//                ruleExecutor.setQuestion(this);
-//                JexlEngine jexlEngine = new JexlEngine();
-//                Expression expression = jexlEngine.createExpression(String.format(rule.getMethod(), rule.getParentId()));
-//                JexlContext context = new MapContext();
-//                context.set("this", this);
-//                boolean result = (boolean) expression.evaluate(context);
-//                if (result) {
-//                    change = true;
-//                }
-//            }
-//        }
-//        return change;
-//    }
+    public boolean executeAllRules() {
+        boolean change = false;
+        if (pageRuleList != null) {
+            for (PageRule rule : pageRuleList) {
+                ruleExecutor.setPage(this);
+                JexlEngine jexlEngine = new JexlEngine();
+                Expression expression = jexlEngine.createExpression(String.format(rule.getMethod(), rule.getParentId()));
+                JexlContext context = new MapContext();
+                context.set("this", this);
+                boolean result = (boolean) expression.evaluate(context);
+                if (result) {
+                    change = true;
+                }
+            }
+        }
+        return change;
+    }
+
+    public void resetPage() {
+        for (WizardTopic topic : topicList) {
+            topic.resetTopic();
+        }
+    }
 }

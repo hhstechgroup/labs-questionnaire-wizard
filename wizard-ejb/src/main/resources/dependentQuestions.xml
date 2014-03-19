@@ -216,6 +216,12 @@
             </page>
             <page page-id="wuiq93" page-number="2">
                 <page-name>Page Due</page-name>
+                <page-rules>
+                    <page-rule>
+                        <parentId>ywywywuququ</parentId>
+                        <method>this.ruleExecutor.renderedRule('%s', ['C1', 'C2'])</method>
+                    </page-rule>
+                </page-rules>
                 <groups-of-questions>
                     <group group-id="yuio0237">
                         <group-name>Casual Group</group-name>
@@ -298,6 +304,28 @@
                                     <default-answer></default-answer>
                                 </default-answers>
                             </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+            <page page-id="ncmxyewutr62534132" page-number="3">
+                <page-name>PAGE #</page-name>
+                <page-rules>
+                    <page-rule>
+                        <parentId></parentId>
+                        <method></method>
+                    </page-rule>
+                </page-rules>
+                <groups-of-questions>
+                    <group group-id="zxqw65992783">
+                        <group-name>Grop KKK</group-name>
+                        <group-rules>
+                            <group-rule>
+                                <parentId></parentId>
+                                <method></method>
+                            </group-rule>
+                        </group-rules>
+                        <questions>
                         </questions>
                     </group>
                 </groups-of-questions>
