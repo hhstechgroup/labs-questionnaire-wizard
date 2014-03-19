@@ -58,15 +58,7 @@ public class ComponentValidator implements Validator {
                          Object value) throws ValidatorException {
         switch (question.getQuestionType()) {
             case TEXT:
-                if (question.isRequired() && !validateTextQuestionComponent(value)) {
-                    ((InputText) component).resetValue();
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-                question.setValid(true);
-                saveTextValue(value.toString());
+                validateTextQuestionAnswer((InputText) component, value);
                 break;
             case PARAGRAPHTEXT:
                 if (question.isRequired() && !validateTextAreaQuestionComponent(value)) {
@@ -162,6 +154,18 @@ public class ComponentValidator implements Validator {
         if (isParent) {
             moveLimitIfNecessary();
         }
+    }
+
+    private void validateTextQuestionAnswer(InputText component, Object value) {
+        if (question.isRequired() && !validateTextQuestionComponent(value)) {
+            component.resetValue();
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here!"));
+        }
+        question.setValid(true);
+        saveTextValue(value.toString());
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {

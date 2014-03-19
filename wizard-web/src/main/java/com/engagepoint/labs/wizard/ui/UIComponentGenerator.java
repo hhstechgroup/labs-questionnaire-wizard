@@ -115,19 +115,25 @@ public class UIComponentGenerator {
             case RANGE:
                 return getHtmlPanelGroup(question);
             case FILEUPLOAD:
-                panel.getChildren().add(getLitleLabel(question));
-                panel.getChildren().add(getHTMLbr());
-                component = getFileUpload(question);
-                panel.getChildren().add(getButton(question));
+                component = getUploadComponent(question);
                 break;
             case GRID:
-                component = getGrid(question,  gridHandler);
+                component = getGrid(question, gridHandler);
                 break;
         }
         component.setId(question.getId());
         panel.getAttributes().put("styleClass", "nonRange");
         panel.getChildren().add(component);
         return panel;
+    }
+
+    private UIComponent getUploadComponent(WizardQuestion question) {
+        UIComponent component;
+        panel.getChildren().add(getLitleLabel(question));
+        panel.getChildren().add(getHTMLbr());
+        component = getFileUpload(question);
+        panel.getChildren().add(getButton(question));
+        return component;
     }
 
     private PanelGrid getGrid(WizardQuestion question, DataGridHandler gridHandler) {
@@ -313,7 +319,7 @@ public class UIComponentGenerator {
         CommandButton commandButton = new CommandButton();
         commandButton.setId("but" + question.getId());
         commandButton.setValue("Submit");
-        commandButton.setProcess("maincontentid-panelid"+ question.getId());
+        commandButton.setProcess("maincontentid-panelid" + question.getId());
         commandButton.setPartialSubmit(true);
         return commandButton;
     }
