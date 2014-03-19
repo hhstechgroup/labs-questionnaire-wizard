@@ -19,12 +19,16 @@ import com.engagepoint.labs.wizard.values.objects.Grid;
 @Named("dataGridHandler")
 @SessionScoped
 public class DataGridHandler implements Serializable {
-    private static final Logger LOGGER=Logger.getLogger(DataGridHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataGridHandler.class
+	    .getName());
     private static final long serialVersionUID = -1066387551691144085L;
 
     private Boolean currentCellValue;
     private String currentGridID;
     private String currentCellId;
+
+    private String lastGridID;
+    private GridQuestion lastGridQuestion;
 
     private ArrayList<String> checkBoxIDsToUnset;
 
@@ -38,6 +42,7 @@ public class DataGridHandler implements Serializable {
     public void init() {
 	questions = new HashMap<String, GridQuestion>();
 	checkBoxIDsToUnset = new ArrayList<String>();
+	lastGridID = "";
     }
 
     public Map<String, GridQuestion> getQuestions() {
@@ -49,7 +54,14 @@ public class DataGridHandler implements Serializable {
     }
 
     public DataGridHandler setCellFromGridByID(String gridID, String cellID) {
-	GridQuestion question = searchForQuestion(gridID);
+	GridQuestion question = null;
+	if (lastGridID.equals(gridID)) {
+	    question = lastGridQuestion;
+	} else {
+	    question = searchForQuestion(gridID);
+	    lastGridID = gridID;
+	    lastGridQuestion = question;
+	}
 	Grid grid = (Grid) question.getAnswer().getValue();
 	currentCellValue = grid.getValues().get(cellID);
 	currentGridID = gridID;
@@ -164,5 +176,21 @@ public class DataGridHandler implements Serializable {
 	for (String cellID : checkBoxIDsToUnset) {
 	    grid.getValues().put(cellID, false);
 	}
+    }
+
+    public String getLastGridID() {
+	return lastGridID;
+    }
+
+    public void setLastGridID(String lastGridID) {
+	this.lastGridID = lastGridID;
+    }
+
+    public GridQuestion getLastGridQuestion() {
+	return lastGridQuestion;
+    }
+
+    public void setLastGridQuestion(GridQuestion lastGridQuestion) {
+	this.lastGridQuestion = lastGridQuestion;
     }
 }
