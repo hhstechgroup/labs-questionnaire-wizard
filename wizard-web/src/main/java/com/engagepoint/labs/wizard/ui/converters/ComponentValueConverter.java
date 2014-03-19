@@ -34,7 +34,7 @@ public class ComponentValueConverter implements Converter {
         if (questionType.equals(QType.DATE)) {
             date = convertDate(component, value);
         } else if (questionType.equals(QType.TIME)) {
-            date = convertTime(component, value);
+            date = convertTime(value);
         }
         return date;
     }
@@ -61,7 +61,7 @@ public class ComponentValueConverter implements Converter {
             date = format.parse(value);
             return date;
         } catch (ParseException e) {
-            LOGGER.warn("Can't parse date",e);
+            LOGGER.warn("Can't parse date", e);
             question.setValid(false);
             ((Calendar) component).setConversionFailed(true);
             throw new ConverterException(new FacesMessage(
@@ -70,14 +70,14 @@ public class ComponentValueConverter implements Converter {
         }
     }
 
-    private Date convertTime(UIComponent component, String value) {
+    private Date convertTime(String value) {
         SimpleDateFormat format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
         Date date;
         try {
             date = format.parse(value);
             return date;
         } catch (ParseException e) {
-            LOGGER.warn("Can't parse date",e);
+            LOGGER.warn("Can't parse date", e);
             question.setValid(false);
             throw new ConverterException(new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "Converter Error",

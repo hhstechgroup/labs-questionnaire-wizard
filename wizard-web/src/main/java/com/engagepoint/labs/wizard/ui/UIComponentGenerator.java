@@ -113,7 +113,7 @@ public class UIComponentGenerator {
                 component = getTime(question, answer, defaultAnswer);
                 break;
             case RANGE:
-                return getHtmlPanelGroup(question, answer, defaultAnswer);
+                return getHtmlPanelGroup(question);
             case FILEUPLOAD:
                 panel.getChildren().add(getLitleLabel(question));
                 panel.getChildren().add(getHTMLbr());
@@ -121,7 +121,7 @@ public class UIComponentGenerator {
                 panel.getChildren().add(getButton(question));
                 break;
             case GRID:
-                component = getGrid(question, answer, defaultAnswer, gridHandler);
+                component = getGrid(question,  gridHandler);
                 break;
         }
         component.setId(question.getId());
@@ -130,8 +130,7 @@ public class UIComponentGenerator {
         return panel;
     }
 
-    private PanelGrid getGrid(WizardQuestion question, Value answer,
-                              Value defaultAnswer, DataGridHandler gridHandler) {
+    private PanelGrid getGrid(WizardQuestion question, DataGridHandler gridHandler) {
         GridQuestion gridQuestion = (GridQuestion) question;
         PanelGrid grid = new PanelGrid();
         // Get column names from our model
@@ -210,7 +209,7 @@ public class UIComponentGenerator {
         return grid;
     }
 
-    private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
+    private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question) {
         HtmlPanelGroup panelGroup = new HtmlPanelGroup();
         panelGroup.setStyle("padding: 20px; background-color: #EDEDED; border: 1px solid #DDD; border-radius: 3px;");
         panelGroup.setStyleClass("ui-panel-column");
@@ -254,7 +253,6 @@ public class UIComponentGenerator {
             end = rangeValue.getEnd();
         } else {
             end = ((RangeQuestion) question).getEndRange();
-            System.err.println("end = " + end);
         }
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt7" + question.getId());
@@ -270,7 +268,6 @@ public class UIComponentGenerator {
             begin = rangeValue.getStart();
         } else {
             begin = ((RangeQuestion) question).getStartRange();
-            System.err.println("begin = " + begin);
         }
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt6" + question.getId());
@@ -532,7 +529,6 @@ public class UIComponentGenerator {
         CommandButton commandButton = new CommandButton();
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
-        //   commandButton.setActionExpression(createMethodExpression(String.format("#{fileUploadController.getAnswerInputStream('" + question.getId() + "')}"), null, String.class));
         return commandButton;
     }
 

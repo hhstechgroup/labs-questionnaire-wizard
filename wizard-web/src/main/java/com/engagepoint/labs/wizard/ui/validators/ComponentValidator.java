@@ -314,7 +314,6 @@ public class ComponentValidator implements Validator {
             while ((length = inStream.read(buffer)) > 0) {
                 outStream.write(buffer, 0, length);
             }
-            System.err.println("File is copied successful!");
             uploadFile = new File(path);
 
         } catch (IOException e) {

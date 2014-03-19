@@ -539,6 +539,7 @@ public class UINavigationBean implements Serializable {
                 if (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType) {
                     needToStopUserOnCurrentTopic = true;
                 }
+
             } else if (!isEverChanged
                     && (QType.TEXT == currentQuestionType || QType.PARAGRAPHTEXT == currentQuestionType)) {
                 needToStopUserOnCurrentTopic = false;
@@ -721,7 +722,6 @@ public class UINavigationBean implements Serializable {
             }
         }
         for (String path : xmlPathList) {
-            System.err.print("DELETED PATH" + path);
             new File(path).delete();
         }
     }
