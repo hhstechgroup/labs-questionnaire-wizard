@@ -1,5 +1,7 @@
 package com.engagepoint.labs.wizard.upload;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +12,9 @@ import java.util.zip.ZipOutputStream;
  * Created by igor.guzenko on 3/12/14.
  */
 public class ArchiverZip {
-
+    private static final Logger LOGGER = Logger.getLogger(ArchiverZip.class);
     public static final String ZIP_FILE_NAME = "/Wizard_answer"+Math.random()+".zip";
+
 
     public static void addFilesToZip(List<File> files) {
         FileOutputStream zipFileOUT = null;
@@ -24,7 +27,7 @@ public class ArchiverZip {
             }
 
         } catch (FileNotFoundException e) {
-            System.err.print("ZIP IO EXCEPTION!!! Error when adding files to zip!");
+            LOGGER.warn("ZIP IO EXCEPTION!!! Error when adding files to zip!", e);
         } finally {
             try {
                 if (null != zipOutStream)
@@ -32,7 +35,7 @@ public class ArchiverZip {
                 if (null != zipFileOUT)
                     zipFileOUT.close();
             } catch (IOException e) {
-                e.printStackTrace();
+               LOGGER.warn("Exception close streams", e);
             }
         }
     }
@@ -51,13 +54,13 @@ public class ArchiverZip {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("ZIP IO Exception  ", e);
         } finally {
             if (null != fileInputStream) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    System.err.print("ZIP IO Exception when trying close fileInputStream " + Arrays.toString(e.getStackTrace()));
+                    LOGGER.warn("ZIP IO Exception when trying close fileInputStream ", e);
                 }
             }
         }

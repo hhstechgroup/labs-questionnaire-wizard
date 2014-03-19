@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.ui.converters;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
 import com.engagepoint.labs.wizard.questions.TimeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import org.apache.log4j.Logger;
 import org.primefaces.component.calendar.Calendar;
 import super_binding.QType;
 
@@ -19,7 +20,7 @@ import java.util.Date;
  * Created by artem on 02.03.14.
  */
 public class ComponentValueConverter implements Converter {
-
+    private static final Logger LOGGER = Logger.getLogger(ComponentValueConverter.class);
     private WizardQuestion question;
 
     public ComponentValueConverter(WizardQuestion question) {
@@ -60,6 +61,7 @@ public class ComponentValueConverter implements Converter {
             date = format.parse(value);
             return date;
         } catch (ParseException e) {
+            LOGGER.warn("Can't parse date",e);
             question.setValid(false);
             ((Calendar) component).setConversionFailed(true);
             throw new ConverterException(new FacesMessage(
@@ -75,6 +77,7 @@ public class ComponentValueConverter implements Converter {
             date = format.parse(value);
             return date;
         } catch (ParseException e) {
+            LOGGER.warn("Can't parse date",e);
             question.setValid(false);
             throw new ConverterException(new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "Converter Error",

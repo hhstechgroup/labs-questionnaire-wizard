@@ -1,16 +1,16 @@
 package com.engagepoint.labs.wizard.upload;
 
+import org.apache.log4j.Logger;
+
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.*;
 
 @Named("fileUploadController")
 @SessionScoped
-public class FileUploadController implements Serializable, ActionListener {
+public class FileUploadController implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
     private Part file;
     private String path;
 
@@ -42,9 +42,8 @@ public class FileUploadController implements Serializable, ActionListener {
             while ((length = inStream.read(buffer)) > 0) {
                 outStream.write(buffer, 0, length);
             }
-            System.err.println("File is copied successful!");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Can't copy file", e);
         } finally {
             if (inStream != null) {
                 inStream.close();
@@ -54,15 +53,5 @@ public class FileUploadController implements Serializable, ActionListener {
             }
         }
     }
-
-    @Override
-    public void processAction(ActionEvent event) throws AbortProcessingException {
-        try {
-            //   upload();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

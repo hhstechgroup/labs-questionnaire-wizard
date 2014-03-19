@@ -6,6 +6,7 @@ import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.values.*;
 import com.engagepoint.labs.wizard.values.objects.Range;
+import org.apache.log4j.Logger;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 public class ComponentValidator implements Validator {
     private static final boolean VALID = true;
+    private static final Logger LOGGER = Logger.getLogger(ComponentValidator.class);
     private static int cursor = 0;
     static int[] a = new int[2];
     private final WizardQuestion question;
@@ -286,7 +288,7 @@ public class ComponentValidator implements Validator {
         try {
             fileCopied = copyFile(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Can't copy file",e);
         }
         FileValue fileValue = new FileValue();
         fileValue.setValue(fileCopied);
@@ -312,7 +314,7 @@ public class ComponentValidator implements Validator {
             uploadFile = new File(path);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("IO Exception when you try copy file",e);
         } finally {
             if (inStream != null) {
                 inStream.close();
