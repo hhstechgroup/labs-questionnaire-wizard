@@ -157,7 +157,7 @@ public class WizardDataModelGenerator {
 		try {
 		    date = formatter.parse(defaultAnswers.get(0));
 		} catch (ParseException e) {
-		    LOGGER.warn(e.getMessage());
+		    LOGGER.warn("DateParseException", e);
 		}
 		dateDefault.setValue(date);
 		wizardQuestion.setDefaultAnswer(dateDefault);
@@ -173,7 +173,7 @@ public class WizardDataModelGenerator {
 		try {
 		    time = formatter.parse(defaultAnswers.get(0));
 		} catch (ParseException e) {
-		    LOGGER.warn(e.getMessage());
+		    LOGGER.warn("TimeParseException", e);
 		}
 		timeDefault.setValue(time);
 		wizardQuestion.setDefaultAnswer(timeDefault);

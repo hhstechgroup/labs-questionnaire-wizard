@@ -27,7 +27,7 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
     private WizardForm form;
     private WizardQuestion question;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(QuestionRuleExecutor.class);
+    private static final Logger LOGGER = Logger.getLogger(QuestionRuleExecutor.class.getName());
 
     public QuestionRuleExecutor(WizardForm form) {
         this.form = form;
@@ -99,7 +99,7 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("ParseException", e);
         }
         return compareResult;
     }

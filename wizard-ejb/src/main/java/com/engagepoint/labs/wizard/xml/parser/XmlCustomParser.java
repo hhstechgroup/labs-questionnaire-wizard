@@ -28,7 +28,7 @@ import java.util.Date;
 
 public class XmlCustomParser {
 
-    private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class);
+    private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class.getName());
 
     public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
             JAXBException {
@@ -101,7 +101,7 @@ public class XmlCustomParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("JAXBException", e);
         }
         return exportFile;
     }

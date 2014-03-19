@@ -25,7 +25,7 @@ public class PageRuleExecutor extends RuleExecutorAbstract {
     private MenuItem menuItem;
     private WizardPage page;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(PageRuleExecutor.class);
+    private static final Logger LOGGER = Logger.getLogger(PageRuleExecutor.class.getName());
 
     public PageRuleExecutor(WizardForm form) {
         this.form = form;
@@ -104,7 +104,7 @@ public class PageRuleExecutor extends RuleExecutorAbstract {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("ParseException", e);
         }
         return compareResult;
     }

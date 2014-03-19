@@ -27,7 +27,7 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
     private MenuItem menuItem;
     private WizardTopic topic;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(TopicRuleExecutor.class);
+    private static final Logger LOGGER = Logger.getLogger(TopicRuleExecutor.class.getName());
 
     public TopicRuleExecutor(WizardForm form) {
         this.form = form;
@@ -106,7 +106,7 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("ParseException", e);
         }
         return compareResult;
     }

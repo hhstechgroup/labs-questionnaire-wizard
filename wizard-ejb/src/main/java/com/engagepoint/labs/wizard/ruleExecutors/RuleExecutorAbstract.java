@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class RuleExecutorAbstract {
     private WizardForm form;
     private boolean isAlreadyShowing;
-    private static final Logger LOGGER = Logger.getLogger(RuleExecutorAbstract.class);
+    private static final Logger LOGGER = Logger.getLogger(RuleExecutorAbstract.class.getName());
 
     protected RuleExecutorAbstract() {
     }
@@ -63,7 +63,7 @@ public abstract class RuleExecutorAbstract {
             Date date = format.parse(dateToCompareWith);
             compareResult = date.compareTo((Date) parentQuestionAnswer.getValue()) == 0;
         } catch (ParseException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn("ParseException", e);
         }
         return compareResult;
     }
