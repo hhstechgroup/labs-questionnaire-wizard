@@ -1,6 +1,6 @@
 package com.engagepoint.labs.wizard.questions;
 
-import com.engagepoint.labs.wizard.ruleExecutors.QuestionRuleExecutor;
+import com.engagepoint.labs.wizard.rulexecutors.QuestionRuleExecutor;
 import com.engagepoint.labs.wizard.values.Value;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;

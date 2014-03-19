@@ -1,38 +1,31 @@
-package com.engagepoint.labs.wizard.ruleExecutors;
+package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
-import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
-import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.panel.Panel;
+
+import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 
 /**
  * Created by artem.pylypenko on 3/18/14.
  */
-public class TopicRuleExecutor extends RuleExecutorAbstract {
+public class QuestionRuleExecutor extends RuleExecutorAbstract {
     private WizardForm form;
-    private MenuItem menuItem;
-    private WizardTopic topic;
+    private WizardQuestion question;
     private boolean isAlreadyShowing;
 
-    public TopicRuleExecutor(WizardForm form) {
+    public QuestionRuleExecutor(WizardForm form) {
         this.form = form;
     }
 
-    public MenuItem getMenuItem() {
-        return menuItem;
+    public WizardQuestion getQuestion() {
+        return question;
     }
 
-    public void setMenuItem(MenuItem menuItem) {
-        this.menuItem = menuItem;
-    }
-
-    public WizardTopic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(WizardTopic topic) {
-        this.topic = topic;
+    public void setQuestion(WizardQuestion question) {
+        this.question = question;
     }
 
     @Override
@@ -41,6 +34,8 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
+        String componentId = "maincontentid-panel_" + question.getId();
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
         if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
@@ -63,26 +58,39 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
             if (!isAlreadyShowing) {
                 change = true;
             }
-            showTopic();
+            showQuestionPanel(panel);
             isAlreadyShowing = true;
         } else {
             if (isAlreadyShowing) {
                 change = true;
             }
-            hideTopic();
+            hideQuestionPanel(panel);
             isAlreadyShowing = false;
         }
         return change;
     }
 
-    private void showTopic() {
-        menuItem.setRendered(true);
-        topic.setIgnored(false);
+    private void showQuestionPanel(Panel panel) {
+        panel.setVisible(true);
+        question.setIgnored(false);
     }
 
-    private void hideTopic() {
-        menuItem.setRendered(false);
-        topic.setIgnored(true);
-        topic.resetTopic();
+    private void hideQuestionPanel(Panel panel) {
+        panel.setVisible(false);
+        question.setIgnored(true);
+        question.resetAnswer();
+        if (question.isRequired()) {
+            question.setValid(false);
+        }
+        resetComponentValue();
+    }
+
+    private void resetComponentValue() {
+        UIOutput component = (UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
+        if (question.getDefaultAnswer() != null && component != null) {
+            component.setValue(question.getDefaultAnswer().getValue());
+        } else if (component != null) {
+            component.resetValue();
+        }
     }
 }

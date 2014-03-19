@@ -87,7 +87,7 @@ public class NavigationData implements Serializable {
         xmlController = new XmlController();
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
-        } catch (SAXException | JAXBException ex) {
+        } catch (Exception ex) {
             LOGGER.warn("SAX Exception", ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
@@ -102,7 +102,7 @@ public class NavigationData implements Serializable {
         xmlController.getXmlPathList().addAll(pathList);
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
-        } catch (SAXException | JAXBException ex) {
+        } catch (Exception ex) {
             LOGGER.warn("SAX Exception", ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {

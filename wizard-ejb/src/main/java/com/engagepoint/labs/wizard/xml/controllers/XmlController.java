@@ -44,18 +44,16 @@ public class XmlController implements Serializable {
         return xmlPathList;
     }
 
-    public WizardDocument readAllDeafultXmlFiles() throws SAXException, JAXBException {
+    public WizardDocument readAllDeafultXmlFiles() throws Exception{
         WizardDataModelGenerator generator = new WizardDataModelGenerator();
         List<QuestionnaireForms> formsList = new ArrayList<>();
         for (String xmlPath : xmlPathList) {
             formsList.add(parser.parseXML(xmlPath));
         }
-        WizardDocument wizardDocument = generator.getWizardDocument(formsList);
-        return wizardDocument;
+        return generator.getWizardDocument(formsList);
     }
 
     public File getExportFileFromWizardForm(WizardForm wizardForm) {
-        File exportFile = parser.parseWizardFormToXml(wizardForm);
-        return exportFile;
+        return parser.parseWizardFormToXml(wizardForm);
     }
 }

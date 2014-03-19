@@ -1,4 +1,4 @@
-package com.engagepoint.labs.wizard.ruleExecutors;
+package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;

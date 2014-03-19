@@ -1,4 +1,4 @@
-package com.engagepoint.labs.wizard.ruleExecutors;
+package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
@@ -69,7 +69,7 @@ public abstract class RuleExecutorAbstract {
     }
 
     protected boolean compareFile(Value parentQuestionAnswer, String stringToCompareWith) {
-        return ((Integer) (parentQuestionAnswer.getValue()) != 0) && (stringToCompareWith.equals("true"));
+        return ("true".equals(stringToCompareWith) && (Integer) (parentQuestionAnswer.getValue()) != 0);
     }
 
     protected boolean compareList(Value parentQuestionAnswer, String[] stringArrayToCompareWith) {

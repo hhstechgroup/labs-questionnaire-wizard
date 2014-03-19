@@ -120,127 +120,43 @@ public class WizardDataModelGenerator {
         }
         switch (xmlQuestion.getQuestionType()) {
             case CHECKBOX:
-                CheckBoxesQuestion checkBoxesQuestion = new CheckBoxesQuestion();
-                checkBoxesQuestion.setOptionsList(xmlQuestion.getOptions()
-                        .getOption());
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    ListTextValue checkboxDefaults = new ListTextValue();
-                    checkboxDefaults.setValue(defaultAnswers);
-                    checkBoxesQuestion.setDefaultAnswer(checkboxDefaults);
-                }
+                CheckBoxesQuestion checkBoxesQuestion = getCheckBoxesQuestion(xmlQuestion);
                 wizardQuestion = checkBoxesQuestion;
                 break;
             case CHOOSEFROMLIST:
-                DropDownQuestion dropDownQuestion = new DropDownQuestion();
-                dropDownQuestion.setOptionsList(xmlQuestion.getOptions()
-                        .getOption());
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    TextValue chooseFromListDefaults = new TextValue();
-                    chooseFromListDefaults.setValue(defaultAnswers.get(0));
-                    dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);
-                }
+                DropDownQuestion dropDownQuestion = getDropDownQuestion(xmlQuestion);
                 wizardQuestion = dropDownQuestion;
                 break;
             case DATE:
                 wizardQuestion = new DateQuestion();
-                Date date = null;
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    DateValue dateDefault = new DateValue();
-                    SimpleDateFormat formatter = new SimpleDateFormat(
-                            DateQuestion.DATE_FORMAT);
-                    try {
-                        date = formatter.parse(defaultAnswers.get(0));
-                    } catch (ParseException e) {
-                        LOGGER.warn("DateParseException", e);
-                    }
-                    dateDefault.setValue(date);
-                    wizardQuestion.setDefaultAnswer(dateDefault);
-                }
+                getDateDefaultAnswer(xmlQuestion, wizardQuestion);
                 break;
             case TIME:
                 wizardQuestion = new TimeQuestion();
-                Date time = null;
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    DateValue timeDefault = new DateValue();
-                    SimpleDateFormat formatter = new SimpleDateFormat(
-                            TimeQuestion.TIME_FORMAT);
-                    try {
-                        time = formatter.parse(defaultAnswers.get(0));
-                    } catch (ParseException e) {
-                        LOGGER.warn("TimeParseException", e);
-                    }
-                    timeDefault.setValue(time);
-                    wizardQuestion.setDefaultAnswer(timeDefault);
-                }
+                getTimeDefaultAnswer(xmlQuestion, wizardQuestion);
                 break;
             case FILEUPLOAD:
                 wizardQuestion = new FileUploadQuestion();
                 break;
             case GRID:
-                GridQuestion gridQuestion = new GridQuestion();
-                List<String> rows = xmlQuestion.getGrid().getRows().getRow();
-                List<String> columns = xmlQuestion.getGrid().getColumns()
-                        .getColumn();
-                boolean oneInRow = xmlQuestion.isGridOneInRow();
-                boolean oneInCol = xmlQuestion.isGridOneInCol();
-                gridQuestion.setId(xmlQuestion.getQuestionId());
-                gridQuestion.setColumns(columns);
-                gridQuestion.setRows(rows);
-                gridQuestion.setOneInCol(oneInCol);
-                gridQuestion.setOneInRow(oneInRow);
-
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    GridValue gridDefaults = new GridValue();
-                    int answerSize = gridQuestion.getRows().size() * gridQuestion.getColumns().size();
-                    gridDefaults.setValue(new Grid(gridQuestion.getId(),
-                            defaultAnswers, answerSize));
-                    gridQuestion.setDefaultAnswer(gridDefaults);
-                    gridQuestion.setAnswer(gridDefaults);
-                }
+                GridQuestion gridQuestion = getGridQuestion(xmlQuestion);
                 wizardQuestion = gridQuestion;
                 break;
             case MULTIPLECHOICE:
-                MultipleChoiseQuestion multipleChoiseQuestion = new MultipleChoiseQuestion();
-                multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions()
-                        .getOption());
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    TextValue multipleChoiceDefaults = new TextValue();
-                    multipleChoiceDefaults.setValue(defaultAnswers.get(0));
-                    multipleChoiseQuestion.setDefaultAnswer(multipleChoiceDefaults);
-                }
+                MultipleChoiseQuestion multipleChoiseQuestion = getMultipleChoiseQuestion(xmlQuestion);
                 wizardQuestion = multipleChoiseQuestion;
                 break;
             case PARAGRAPHTEXT:
                 wizardQuestion = new TextAreaQuestion();
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    TextValue paragraphDefaults = new TextValue();
-                    paragraphDefaults.setValue(defaultAnswers.get(0));
-                    wizardQuestion.setDefaultAnswer(paragraphDefaults);
-                }
+                getParagraphText(xmlQuestion, wizardQuestion);
                 break;
             case RANGE:
-                RangeQuestion rangeQuestion = new RangeQuestion();
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    RangeValue rangeDefaults = new RangeValue();
-                    Range range = new Range();
-                    range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers()
-                            .getDefaultAnswer().get(0)));
-                    range.setEnd(Integer.parseInt(xmlQuestion.getDefaultAnswers()
-                            .getDefaultAnswer().get(1)));
-                    rangeDefaults.setValue(range);
-                    rangeQuestion.setDefaultAnswer(rangeDefaults);
-                }
-                rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(),
-                        xmlQuestion.getRange().getRangeEnd());
+                RangeQuestion rangeQuestion = getRangeQuestion(xmlQuestion);
                 wizardQuestion = rangeQuestion;
                 break;
             case TEXT:
                 wizardQuestion = new TextQuestion();
-                if (checkDefaultAnswer(xmlQuestion)) {
-                    TextValue textDefaults = new TextValue();
-                    textDefaults.setValue(defaultAnswers.get(0));
-                    wizardQuestion.setDefaultAnswer(textDefaults);
-                }
+                getTextDefaultAnswer(xmlQuestion, wizardQuestion);
                 break;
         }
         wizardQuestion.setId(xmlQuestion.getQuestionId());
@@ -253,6 +169,131 @@ public class WizardDataModelGenerator {
             wizardQuestion.setIgnored(true);
         }
         return wizardQuestion;
+    }
+
+    private void getTimeDefaultAnswer(Question xmlQuestion, WizardQuestion wizardQuestion) {
+        Date time = null;
+        if (checkDefaultAnswer(xmlQuestion)) {
+            DateValue timeDefault = new DateValue();
+            SimpleDateFormat formatter = new SimpleDateFormat(
+                    TimeQuestion.TIME_FORMAT);
+            try {
+                time = formatter.parse(defaultAnswers.get(0));
+            } catch (ParseException e) {
+                LOGGER.warn("TimeParseException", e);
+            }
+            timeDefault.setValue(time);
+            wizardQuestion.setDefaultAnswer(timeDefault);
+        }
+    }
+
+    private void getDateDefaultAnswer(Question xmlQuestion, WizardQuestion wizardQuestion) {
+        Date date = null;
+        if (checkDefaultAnswer(xmlQuestion)) {
+            DateValue dateDefault = new DateValue();
+            SimpleDateFormat formatter = new SimpleDateFormat(
+                    DateQuestion.DATE_FORMAT);
+            try {
+                date = formatter.parse(defaultAnswers.get(0));
+            } catch (ParseException e) {
+                LOGGER.warn("DateParseException", e);
+            }
+            dateDefault.setValue(date);
+            wizardQuestion.setDefaultAnswer(dateDefault);
+        }
+    }
+
+    private void getTextDefaultAnswer(Question xmlQuestion, WizardQuestion wizardQuestion) {
+        if (checkDefaultAnswer(xmlQuestion)) {
+            TextValue textDefaults = new TextValue();
+            textDefaults.setValue(defaultAnswers.get(0));
+            wizardQuestion.setDefaultAnswer(textDefaults);
+        }
+    }
+
+    private void getParagraphText(Question xmlQuestion, WizardQuestion wizardQuestion) {
+        if (checkDefaultAnswer(xmlQuestion)) {
+            TextValue paragraphDefaults = new TextValue();
+            paragraphDefaults.setValue(defaultAnswers.get(0));
+            wizardQuestion.setDefaultAnswer(paragraphDefaults);
+        }
+    }
+
+    private RangeQuestion getRangeQuestion(Question xmlQuestion) {
+        RangeQuestion rangeQuestion = new RangeQuestion();
+        if (checkDefaultAnswer(xmlQuestion)) {
+            RangeValue rangeDefaults = new RangeValue();
+            Range range = new Range();
+            range.setStart(Integer.parseInt(xmlQuestion.getDefaultAnswers()
+                    .getDefaultAnswer().get(0)));
+            range.setEnd(Integer.parseInt(xmlQuestion.getDefaultAnswers()
+                    .getDefaultAnswer().get(1)));
+            rangeDefaults.setValue(range);
+            rangeQuestion.setDefaultAnswer(rangeDefaults);
+        }
+        rangeQuestion.setRange(xmlQuestion.getRange().getRangeBegin(),
+                xmlQuestion.getRange().getRangeEnd());
+        return rangeQuestion;
+    }
+
+    private CheckBoxesQuestion getCheckBoxesQuestion(Question xmlQuestion) {
+        CheckBoxesQuestion checkBoxesQuestion = new CheckBoxesQuestion();
+        checkBoxesQuestion.setOptionsList(xmlQuestion.getOptions()
+                .getOption());
+        if (checkDefaultAnswer(xmlQuestion)) {
+            ListTextValue checkboxDefaults = new ListTextValue();
+            checkboxDefaults.setValue(defaultAnswers);
+            checkBoxesQuestion.setDefaultAnswer(checkboxDefaults);
+        }
+        return checkBoxesQuestion;
+    }
+
+    private DropDownQuestion getDropDownQuestion(Question xmlQuestion) {
+        DropDownQuestion dropDownQuestion = new DropDownQuestion();
+        dropDownQuestion.setOptionsList(xmlQuestion.getOptions()
+                .getOption());
+        if (checkDefaultAnswer(xmlQuestion)) {
+            TextValue chooseFromListDefaults = new TextValue();
+            chooseFromListDefaults.setValue(defaultAnswers.get(0));
+            dropDownQuestion.setDefaultAnswer(chooseFromListDefaults);
+        }
+        return dropDownQuestion;
+    }
+
+    private MultipleChoiseQuestion getMultipleChoiseQuestion(Question xmlQuestion) {
+        MultipleChoiseQuestion multipleChoiseQuestion = new MultipleChoiseQuestion();
+        multipleChoiseQuestion.setOptionsList(xmlQuestion.getOptions()
+                .getOption());
+        if (checkDefaultAnswer(xmlQuestion)) {
+            TextValue multipleChoiceDefaults = new TextValue();
+            multipleChoiceDefaults.setValue(defaultAnswers.get(0));
+            multipleChoiseQuestion.setDefaultAnswer(multipleChoiceDefaults);
+        }
+        return multipleChoiseQuestion;
+    }
+
+    private GridQuestion getGridQuestion(Question xmlQuestion) {
+        GridQuestion gridQuestion = new GridQuestion();
+        List<String> rows = xmlQuestion.getGrid().getRows().getRow();
+        List<String> columns = xmlQuestion.getGrid().getColumns()
+                .getColumn();
+        boolean oneInRow = xmlQuestion.isGridOneInRow();
+        boolean oneInCol = xmlQuestion.isGridOneInCol();
+        gridQuestion.setId(xmlQuestion.getQuestionId());
+        gridQuestion.setColumns(columns);
+        gridQuestion.setRows(rows);
+        gridQuestion.setOneInCol(oneInCol);
+        gridQuestion.setOneInRow(oneInRow);
+
+        if (checkDefaultAnswer(xmlQuestion)) {
+            GridValue gridDefaults = new GridValue();
+            int answerSize = gridQuestion.getRows().size() * gridQuestion.getColumns().size();
+            gridDefaults.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridQuestion.setDefaultAnswer(gridDefaults);
+            gridQuestion.setAnswer(gridDefaults);
+        }
+        return gridQuestion;
     }
 
     private boolean checkDefaultAnswer(Question xmlQuestion) {
