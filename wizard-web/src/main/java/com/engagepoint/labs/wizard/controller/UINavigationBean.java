@@ -157,7 +157,7 @@ public class UINavigationBean implements Serializable {
     }
 
     public void clearDataFromSession() {
-        if (null != xmlPathList) {
+        if (!xmlPathList.isEmpty()) {
             for (String xmlFile : xmlPathList) {
                 refresh(xmlFile);
             }
