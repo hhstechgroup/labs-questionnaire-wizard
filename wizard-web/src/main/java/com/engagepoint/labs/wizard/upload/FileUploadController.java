@@ -31,8 +31,7 @@ public class FileUploadController implements Serializable, ActionListener {
     }
 
     public void upload() throws IOException {
-        String sourcePath = getClass().getClassLoader().getResource(".").getPath();
-        path = new String(sourcePath + Math.random() + ".xml");
+        path = new String(Math.random() + ".xml");
         InputStream inStream = null;
         OutputStream outStream = null;
         try {

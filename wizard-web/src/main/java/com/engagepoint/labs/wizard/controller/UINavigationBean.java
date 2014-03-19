@@ -6,21 +6,24 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.client.ClientConstantStrings;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.model.NavigationData;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ruleExecutors.PageRuleExecutor;
 import com.engagepoint.labs.wizard.ruleExecutors.QuestionRuleExecutor;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ruleExecutors.TopicRuleExecutor;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
+
 import org.apache.log4j.Logger;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
+
 import super_binding.QType;
 import super_binding.QuestionRule;
+
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -33,6 +36,7 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,6 +45,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Named("uiNavigationBean")
 @SessionScoped
@@ -50,7 +55,7 @@ public class UINavigationBean implements Serializable {
     private static final long serialVersionUID = 7470581070941487130L;
     private static final Logger LOGGER = Logger.getLogger(UINavigationBean.class);
     private List<File> filesForArchive;
-    private String xmlPath;
+    private List<String> xmlPathList = new CopyOnWriteArrayList<>();
     private boolean needToStopUserOnCurrentTopic = false;
     private QType currentQuestionType;
     /**
@@ -125,13 +130,13 @@ public class UINavigationBean implements Serializable {
     }
 
     public void refresh(String path) {
-        xmlPath = path;
+        xmlPathList.add(path);
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             LOGGER.warn("Thread interrupted", e);
         }
-        navigationData.refreshXMLScreen(path);
+        navigationData.refreshXMLScreen(xmlPathList);
     }
 
     /**
@@ -152,8 +157,9 @@ public class UINavigationBean implements Serializable {
     }
 
     public void clearDataFromSession() {
-        if (null != xmlPath) {
-            refresh(xmlPath);
+        if (null != xmlPathList) {
+            for (String xmlFile: xmlPathList)
+            refresh(xmlFile);
         } else {
             navigationData.startSelectXMLScreen();
         }
@@ -707,12 +713,15 @@ public class UINavigationBean implements Serializable {
 
     @PreDestroy
     public void clearFiles() {
-        System.err.println("PRE DESTROY !!!!!!!");
         if(filesForArchive != null){
             filesForArchive.add(new File(ArchiverZip.ZIP_FILE_NAME));
             for (File file:filesForArchive){
                 file.delete();
             }
+        }
+        for(String path:xmlPathList){
+            System.err.print("DELETED PATH"+path);
+            new File(path).delete();
         }
     }
 }
