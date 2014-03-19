@@ -6,26 +6,24 @@ import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.client.ClientConstantStrings;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
 import com.engagepoint.labs.wizard.model.NavigationData;
+import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ruleExecutors.PageRuleExecutor;
 import com.engagepoint.labs.wizard.ruleExecutors.QuestionRuleExecutor;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.ruleExecutors.TopicRuleExecutor;
 import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.ui.UIComponentGenerator;
 import com.engagepoint.labs.wizard.ui.validators.QuestionAnswerValidator;
 import com.engagepoint.labs.wizard.upload.ArchiverZip;
 import com.engagepoint.labs.wizard.upload.FileDownloadController;
-
 import org.apache.log4j.Logger;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-
 import super_binding.QType;
 import super_binding.QuestionRule;
 
-
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -35,7 +33,6 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,7 +49,7 @@ public class UINavigationBean implements Serializable {
     //
     private static final long serialVersionUID = 7470581070941487130L;
     private static final Logger LOGGER = Logger.getLogger(UINavigationBean.class);
-
+    private List<File> filesForArchive;
     private String xmlPath;
     private boolean needToStopUserOnCurrentTopic = false;
     private QType currentQuestionType;
@@ -392,7 +389,7 @@ public class UINavigationBean implements Serializable {
     }
 
     public void exportButtonClick() {
-        List<File> filesForArchive = new ArrayList<>(7);
+        filesForArchive = new ArrayList<>(7);
         filesForArchive.add(navigationData.getExportFile());
         List<WizardQuestion> allWizardQuestions = navigationData.getWizardForm().getAllWizardQuestions();
         for (WizardQuestion singleQuestion : allWizardQuestions) {
@@ -406,9 +403,6 @@ public class UINavigationBean implements Serializable {
             fileDownloadController.setFile(new DefaultStreamedContent(zipFileStream, "application/zip", "answer.zip"));
         } catch (FileNotFoundException e) {
             LOGGER.warn("ZIP FileNotFound", e);
-        }
-        for (File file : filesForArchive) {
-            file.delete();
         }
     }
 
@@ -709,5 +703,16 @@ public class UINavigationBean implements Serializable {
             }
         }
         return match;
+    }
+
+    @PreDestroy
+    public void clearFiles() {
+        System.err.println("PRE DESTROY !!!!!!!");
+        if(filesForArchive != null){
+            filesForArchive.add(new File(ArchiverZip.ZIP_FILE_NAME));
+            for (File file:filesForArchive){
+                file.delete();
+            }
+        }
     }
 }

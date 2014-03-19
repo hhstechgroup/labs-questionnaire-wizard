@@ -4,6 +4,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<!--<context-param> <param-name>javax.faces.CONFIG_FILES</param-name> <param-value>/WEB-INF/faces-config.xml</param-value> 
 		</context-param> -->
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
 	<context-param>
 		<param-name>com.engagepoint.COLOR_SCHEMA</param-name>
 		<param-value>ux-blue</param-value>

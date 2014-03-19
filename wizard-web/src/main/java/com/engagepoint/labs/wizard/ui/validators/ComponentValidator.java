@@ -19,7 +19,6 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -296,7 +295,8 @@ public class ComponentValidator implements Validator {
 
     public File copyFile(Part file) throws IOException {
         String uploadName = file.getSubmittedFileName();
-        String path = new String("D:\\" + uploadName);
+        String sourcePath = getClass().getClassLoader().getResource(".").getPath();
+        String path = new String(sourcePath + uploadName);
         File uploadFile = null;
         InputStream inStream = null;
         OutputStream outStream = null;
