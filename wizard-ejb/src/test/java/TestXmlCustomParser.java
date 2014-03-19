@@ -33,7 +33,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXML() throws JAXBException, SAXException {
+    public void testParseXML() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertNotNull(parsedForm);
@@ -46,7 +46,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLA() throws JAXBException, SAXException {
+    public void testParseXMLA() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertEquals("testController", parsedForm.getFormId());
@@ -59,7 +59,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLB() throws JAXBException, SAXException {
+    public void testParseXMLB() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertEquals("TestController", parsedForm.getFormName());
@@ -72,7 +72,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLC() throws JAXBException, SAXException {
+    public void testParseXMLC() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertEquals("formPage1", parsedForm.getPages().getPage().get(0).getPageId());
@@ -85,7 +85,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLD() throws JAXBException, SAXException {
+    public void testParseXMLD() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertEquals("page1Group1", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupId());
@@ -98,7 +98,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLE() throws JAXBException, SAXException {
+    public void testParseXMLE() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         assertEquals("Topic 1 of First Page", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupName());
@@ -111,7 +111,7 @@ public class TestXmlCustomParser {
      * @throws SAXException
      */
     @Test
-    public void testParseXMLF() throws JAXBException, SAXException {
+    public void testParseXMLF() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
         QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
         Question testingQuestion = parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getQuestions().getQuestion().get(0);
@@ -123,7 +123,7 @@ public class TestXmlCustomParser {
     }
 
     @Test
-    public void testParseWizardFormToXML() throws JAXBException, SAXException {
+    public void testParseWizardFormToXML() throws Exception {
         QuestionnaireForms parsedForms = testingParser.parseXML("/testparser2");
         WizardDataModelGenerator wdmGenerator = new WizardDataModelGenerator();
         ArrayList<QuestionnaireForms> questionnaireFormses = new ArrayList<>();

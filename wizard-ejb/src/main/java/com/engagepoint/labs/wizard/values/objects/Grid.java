@@ -35,12 +35,11 @@ public class Grid {
     }
 
     public static int getCheckBoxNumberFromID(String id) {
-        int checkBoxIDNumberStartPosition = id.lastIndexOf("_") + 1;
+        int checkBoxIDNumberStartPosition = id.lastIndexOf('_') + 1;
         String checkBoxNumberString = id
                 .substring(checkBoxIDNumberStartPosition);
 
-        int currentCellNumber = Integer.parseInt(checkBoxNumberString);
-        return currentCellNumber;
+        return Integer.parseInt(checkBoxNumberString);
     }
 
     public Map<String, Boolean> getValues() {

@@ -8,10 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Named("dataGridHandler")
 @SessionScoped
@@ -25,7 +22,7 @@ public class DataGridHandler implements Serializable {
     private String lastGridID;
     private GridQuestion lastGridQuestion;
 
-    private ArrayList<String> checkBoxIDsToUnset;
+    private List<String> checkBoxIDsToUnset;
 
     private Map<String, GridQuestion> questions;
 
@@ -74,7 +71,7 @@ public class DataGridHandler implements Serializable {
         Grid grid = (Grid) question.getAnswer().getValue();
         grid.getValues().put(currentCellId, currentCellValue);
 
-        if (currentCellValue == true) {
+        if (currentCellValue) {
             if (question.isOneInRow()) {
                 processRowRule();
             }
@@ -136,11 +133,11 @@ public class DataGridHandler implements Serializable {
         for (int i = 0; i < colsCount; i++) {
             String idToUnset = Grid.createCheckBoxID(currentGridID,
                     cellPosition[0] * colsCount + i);
-            {
+
                 if (!idToUnset.equals(currentCellId)) {
                     checkBoxIDsToUnset.add(idToUnset);
                 }
-            }
+
         }
         unsetValues();
     }
@@ -156,11 +153,11 @@ public class DataGridHandler implements Serializable {
         for (int i = cellPosition[1]; i < rowsCount * colsCount; i = i
                 + colsCount) {
             String idToUnset = Grid.createCheckBoxID(currentGridID, i);
-            {
+
                 if (!idToUnset.equals(currentCellId)) {
                     checkBoxIDsToUnset.add(idToUnset);
                 }
-            }
+
         }
         unsetValues();
     }

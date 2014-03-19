@@ -29,8 +29,7 @@ public class XmlCustomParser {
 
     private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class.getName());
 
-    public QuestionnaireForms parseXML(String XMLpath) throws SAXException,
-            JAXBException {
+    public QuestionnaireForms parseXML(String XMLpath) throws Exception {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
         String schemaFileName = null;
         Class clazs = getClass();
@@ -92,8 +91,7 @@ public class XmlCustomParser {
     private String getExportFileName(WizardForm form) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
         Date date = new Date();
-        String fileName = String.format("/%s_answers_%s.xml", form.getFormName(), dateFormat.format(date));
-        return fileName;
+        return String.format("/%s_answers_%s.xml", form.getFormName(), dateFormat.format(date));
     }
 
 
