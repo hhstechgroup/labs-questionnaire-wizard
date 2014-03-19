@@ -121,23 +121,23 @@ public class QuestionaireFormConverter {
         List<String> answerList = new ArrayList<>(gridQuestion.getRows().size());
         StringBuilder linesBuilder = new StringBuilder();
         Map<String, Boolean> answersMap = ((com.engagepoint.labs.wizard.values.objects.Grid) gridQuestion.getAnswer().getValue()).getValues();
-        int size = gridQuestion.getColumns().size() * gridQuestion.getRows().size();
         Set keySet = answersMap.keySet();
         Iterator keysIterator = keySet.iterator();
-        int iterationsCount = 0;
         int valuesInLine = 0;
-        while (keysIterator.hasNext() && iterationsCount < size) {
-            String key = keysIterator.next().toString();
+        boolean lastIterator = false;
+        while (keysIterator.hasNext() || lastIterator) {
             if (valuesInLine < gridQuestion.getColumns().size()) {
+                String key = keysIterator.next().toString();
+                valuesInLine++;
                 linesBuilder.append(answersMap.get(key));
                 linesBuilder.append(",");
-                valuesInLine++;
+                lastIterator = true;
             } else {
+                lastIterator = false;
                 answerList.add(linesBuilder.toString());
-                linesBuilder = new StringBuilder();
                 valuesInLine = 0;
+                linesBuilder.setLength(0);
             }
-            iterationsCount++;
         }
         return answerList;
     }

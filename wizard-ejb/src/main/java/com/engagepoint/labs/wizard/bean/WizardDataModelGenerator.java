@@ -5,34 +5,18 @@
  */
 package com.engagepoint.labs.wizard.bean;
 
+import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.values.*;
+import com.engagepoint.labs.wizard.values.objects.Grid;
+import com.engagepoint.labs.wizard.values.objects.Range;
+import org.apache.log4j.Logger;
+import super_binding.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import super_binding.*;
-
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DateQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.FileUploadQuestion;
-import com.engagepoint.labs.wizard.questions.GridQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.RangeQuestion;
-import com.engagepoint.labs.wizard.questions.TextAreaQuestion;
-import com.engagepoint.labs.wizard.questions.TextQuestion;
-import com.engagepoint.labs.wizard.questions.TimeQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.values.DateValue;
-import com.engagepoint.labs.wizard.values.GridValue;
-import com.engagepoint.labs.wizard.values.ListTextValue;
-import com.engagepoint.labs.wizard.values.RangeValue;
-import com.engagepoint.labs.wizard.values.TextValue;
-import com.engagepoint.labs.wizard.values.objects.Grid;
-import com.engagepoint.labs.wizard.values.objects.Range;
 
 /**
  * @author artem.pylypenko
@@ -213,8 +197,9 @@ public class WizardDataModelGenerator {
 
 	    if (checkDefaultAnswer(xmlQuestion)) {
 		GridValue gridDefaults = new GridValue();
+        int answerSize = gridQuestion.getRows().size()*gridQuestion.getColumns().size();
 		gridDefaults.setValue(new Grid(gridQuestion.getId(),
-			defaultAnswers));
+			defaultAnswers,answerSize));
 		gridQuestion.setDefaultAnswer(gridDefaults);
 		gridQuestion.setAnswer(gridDefaults);
 	    }
