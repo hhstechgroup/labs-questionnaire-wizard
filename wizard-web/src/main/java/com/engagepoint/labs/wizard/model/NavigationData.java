@@ -438,8 +438,9 @@ public class NavigationData implements Serializable {
                 } else {
                     setFirstPage(false);
                 }
-                if (pageIndex == pagesOnTemplate.size() - 1)
+                if (pageIndex == pagesOnTemplate.size() - 1) {
                     return true;
+                }
             }
         }
         return false;
@@ -453,8 +454,9 @@ public class NavigationData implements Serializable {
                 } else {
                     setFirstTopic(false);
                 }
-                if (topicIntId == allTopicsIdOnCurrentPage.size() - 1)
+                if (topicIntId == allTopicsIdOnCurrentPage.size() - 1) {
                     return true;
+                }
             }
         }
         return false;

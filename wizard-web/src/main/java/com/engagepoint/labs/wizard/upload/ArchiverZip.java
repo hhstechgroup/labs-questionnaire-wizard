@@ -13,7 +13,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class ArchiverZip {
     private static final Logger LOGGER = Logger.getLogger(ArchiverZip.class);
-    public static final String ZIP_FILE_NAME = "/Wizard_answer"+Math.random()+".zip";
+    public static final String ZIP_FILE_NAME = "/Wizard_answer" + Math.random() + ".zip";
 
 
     public static void addFilesToZip(List<File> files) {
@@ -30,12 +30,14 @@ public class ArchiverZip {
             LOGGER.warn("ZIP IO EXCEPTION!!! Error when adding files to zip!", e);
         } finally {
             try {
-                if (null != zipOutStream)
+                if (null != zipOutStream) {
                     zipOutStream.close();
-                if (null != zipFileOUT)
+                }
+                if (null != zipFileOUT) {
                     zipFileOUT.close();
+                }
             } catch (IOException e) {
-               LOGGER.warn("Exception close streams", e);
+                LOGGER.warn("Exception close streams", e);
             }
         }
     }

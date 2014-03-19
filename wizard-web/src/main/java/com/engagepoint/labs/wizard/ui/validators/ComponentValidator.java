@@ -238,10 +238,14 @@ public class ComponentValidator implements Validator {
     public boolean validateFileUploadComponent(Object value) {
         if (value != null) {
             long size = ((Part) value).getSize();
-            if (size == 0) return false;
+            if (size == 0) {
+                return false;
+            }
         }
         if (value == null) {
-            if (question.getAnswer() == null) return false;
+            if (question.getAnswer() == null) {
+                return false;
+            }
         }
         return true;
     }
@@ -288,7 +292,7 @@ public class ComponentValidator implements Validator {
         try {
             fileCopied = copyFile(file);
         } catch (IOException e) {
-            LOGGER.warn("Can't copy file",e);
+            LOGGER.warn("Can't copy file", e);
         }
         FileValue fileValue = new FileValue();
         fileValue.setValue(fileCopied);
@@ -314,7 +318,7 @@ public class ComponentValidator implements Validator {
             uploadFile = new File(path);
 
         } catch (IOException e) {
-            LOGGER.warn("IO Exception when you try copy file",e);
+            LOGGER.warn("IO Exception when you try copy file", e);
         } finally {
             if (inStream != null) {
                 inStream.close();

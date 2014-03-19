@@ -36,11 +36,13 @@ public class UIRestoreViewListener implements PhaseListener {
 
         Map<String, Object> state = (Map<String, Object>) rawState[1];
         if (state == null) {
-            return;}
+            return;
+        }
 
         List<Object> savedActions = (List<Object>) state.get(RIConstants.DYNAMIC_ACTIONS);
-        if (savedActions == null)   {
-            return;                  }
+        if (savedActions == null) {
+            return;
+        }
 
         for (Iterator<Object> iterator = savedActions.iterator(); iterator.hasNext(); ) {
             Object object = iterator.next();
