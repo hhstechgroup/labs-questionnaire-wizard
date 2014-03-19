@@ -3,15 +3,11 @@ package com.engagepoint.labs.wizard.export;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.bean.WizardTopic;
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
+import com.engagepoint.labs.wizard.questions.*;
 import com.engagepoint.labs.wizard.values.objects.Range;
 import super_binding.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by igor.guzenko on 2/28/14.
@@ -111,6 +107,7 @@ public class QuestionaireFormConverter {
                 defaultAnswers.getDefaultAnswer().add(getTextValueAnswer(wizardQuestion));
                 break;
             case GRID:
+                defaultAnswers.getDefaultAnswer().addAll(getListGridAnswers((GridQuestion) wizardQuestion));
                 break;
             case FILEUPLOAD:
                 break;
@@ -118,6 +115,31 @@ public class QuestionaireFormConverter {
                 break;
         }
         return defaultAnswers;
+    }
+
+    private List<String> getListGridAnswers(GridQuestion gridQuestion) {
+        List<String> answerList = new ArrayList<>(gridQuestion.getRows().size());
+        StringBuilder linesBuilder = new StringBuilder();
+        Map<String, Boolean> answersMap = ((com.engagepoint.labs.wizard.values.objects.Grid) gridQuestion.getAnswer().getValue()).getValues();
+        int size = gridQuestion.getColumns().size() * gridQuestion.getRows().size();
+        Set keySet = answersMap.keySet();
+        Iterator keysIterator = keySet.iterator();
+        int iterationsCount = 0;
+        int valuesInLine = 0;
+        while (keysIterator.hasNext() && iterationsCount < size) {
+            String key = keysIterator.next().toString();
+            if (valuesInLine < gridQuestion.getColumns().size()) {
+                linesBuilder.append(answersMap.get(key));
+                linesBuilder.append(",");
+                valuesInLine++;
+            } else {
+                answerList.add(linesBuilder.toString());
+                linesBuilder = new StringBuilder();
+                valuesInLine = 0;
+            }
+            iterationsCount++;
+        }
+        return answerList;
     }
 
     private List<String> getListRangeAnswer(WizardQuestion wizardQuestion) {
