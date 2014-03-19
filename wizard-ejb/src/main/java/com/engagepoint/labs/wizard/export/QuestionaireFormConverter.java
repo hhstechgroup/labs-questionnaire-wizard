@@ -33,6 +33,9 @@ public class QuestionaireFormConverter {
         Pages pages = new Pages();
         Page page;
         for (WizardPage wizardPage : wizardForm.getWizardPageList()) {
+            if(wizardPage.isIgnored()){
+                continue;
+            }
             page = new Page();
             page.setPageId(wizardPage.getId());
             page.setPageNumber(wizardPage.getPageNumber());
@@ -46,6 +49,9 @@ public class QuestionaireFormConverter {
         GroupsOfQuestions groupsOfQuestions = new GroupsOfQuestions();
         Group group;
         for (WizardTopic wizardTopic : wizardPage.getTopicList()) {
+            if(wizardTopic.isIgnored()){
+                continue;
+            }
             group = new Group();
             group.setGroupId(wizardTopic.getId());
             group.setGroupName(wizardTopic.getGroupTitle());
@@ -60,6 +66,9 @@ public class QuestionaireFormConverter {
         Question question;
         for (WizardQuestion wizardQuestion : wizardTopic.getWizardQuestionList()) {
             question = new Question();
+            if(wizardQuestion.isIgnored()){
+                continue;
+            }
             setGeneralProperties(question, wizardQuestion);
             question.setDefaultAnswers(getQuestionAnswersByType(question, wizardQuestion));
             questions.getQuestion().add(question);
