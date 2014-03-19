@@ -4,6 +4,8 @@ import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
+
+import org.apache.log4j.Logger;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -21,6 +23,7 @@ import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBException;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author vyacheslav.mysak Bean which helps UINavigationBean in storing
@@ -39,6 +41,7 @@ import java.util.logging.Logger;
 @SessionScoped
 public class NavigationData implements Serializable {
 
+    private static final Logger LOGGER=Logger.getLogger(NavigationData.class.getName());
     private static final long serialVersionUID = -3879860102027220266L;
     private boolean onSelectXMLPage;
     @Inject
@@ -87,8 +90,7 @@ public class NavigationData implements Serializable {
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {
-            Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE,
-                    null, ex);
+            LOGGER.warn("SAX Exception",ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
@@ -103,8 +105,7 @@ public class NavigationData implements Serializable {
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (SAXException | JAXBException ex) {
-            Logger.getLogger(NavigationData.class.getName()).log(Level.SEVERE,
-                    null, ex);
+            LOGGER.warn("SAX Exception",ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
             MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
@@ -550,7 +551,6 @@ public class NavigationData implements Serializable {
         } else {
             setMainContentFormStyle("maincontentid-non-scroll");
         }
-
         return mainContentFormStyle;
     }
 
