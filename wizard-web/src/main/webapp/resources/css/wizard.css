@@ -57,6 +57,11 @@
 	font-size: 16px;
 	font-weight: normal;
     color: #333;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: "MuseoSans500",sans-serif;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .page-menu ul  {
