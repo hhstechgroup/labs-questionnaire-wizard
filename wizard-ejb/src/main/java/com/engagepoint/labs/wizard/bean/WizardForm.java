@@ -131,14 +131,14 @@ public class WizardForm implements Serializable {
     /**
      * Get WizardQuestion by id
      *
-     * @param QuestionId WizardQuestion id
+     * @param questionId WizardQuestion id
      * @return WizardQuestion object if null if there is no WizardQuestion with
      * such id
      */
-    public WizardQuestion getWizardQuestionById(String QuestionId) {
+    public WizardQuestion getWizardQuestionById(String questionId) {
         List<WizardQuestion> allWizardQuestions = getAllWizardQuestions();
         for (WizardQuestion wizardQuestion : allWizardQuestions) {
-            if (QuestionId.equals(wizardQuestion.getId())) {
+            if (questionId.equals(wizardQuestion.getId())) {
                 return wizardQuestion;
             }
         }

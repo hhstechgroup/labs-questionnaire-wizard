@@ -22,36 +22,36 @@ public class TimeHandler implements Serializable {
 
     @PostConstruct
     public void init() {
-	questions = new LinkedHashMap<>();
-	currentQuestionID = "";
+        questions = new LinkedHashMap<>();
+        currentQuestionID = "";
     }
 
     public TimeHandler setTimeQuestionID(String questionID) {
-	currentQuestionID = questionID;
-	return this;
+        currentQuestionID = questionID;
+        return this;
     }
 
     public Date getCurrentTimeQuestionValue() {
-	return (Date) questions.get(currentQuestionID).getAnswer().getValue();
+        return (Date) questions.get(currentQuestionID).getAnswer().getValue();
     }
 
     public void setCurrentTimeQuestionValue(Date date) {
-	questions.get(currentQuestionID).getAnswer().setValue(date);
+        questions.get(currentQuestionID).getAnswer().setValue(date);
     }
 
     public Map<String, TimeQuestion> getQuestions() {
-	return questions;
+        return questions;
     }
 
     public void setQuestions(Map<String, TimeQuestion> questions) {
-	this.questions = questions;
+        this.questions = questions;
     }
 
     public String getCurrentQuestionID() {
-	return currentQuestionID;
+        return currentQuestionID;
     }
 
     public void setCurrentQuestionID(String currentQuestionID) {
-	this.currentQuestionID = currentQuestionID;
+        this.currentQuestionID = currentQuestionID;
     }
 }
