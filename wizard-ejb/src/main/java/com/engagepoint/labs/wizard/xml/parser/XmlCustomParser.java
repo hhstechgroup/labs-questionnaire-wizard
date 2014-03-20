@@ -28,6 +28,8 @@ import java.util.Date;
 public class XmlCustomParser {
 
     private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class.getName());
+    public static final String DATE_FOR_EXPORT_PATTERN = "dd.MM.yyyy_HH-mm-ss";
+    public static final String EXPORT_FILE_NAME_PATTERN = "/%s_answers_%s";
 
     public QuestionnaireForms parseXML(String XMLpath) throws Exception {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
@@ -67,7 +69,6 @@ public class XmlCustomParser {
             return forms;
         } else {
             QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
-                    //new File(getClass().getResource(XMLpath).getFile())
                     .unmarshal(new File(XMLpath));
             return forms;
         }
@@ -96,10 +97,8 @@ public class XmlCustomParser {
     }
 
     private String getExportFileName(WizardForm form) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FOR_EXPORT_PATTERN);
         Date date = new Date();
-        return String.format("/%s_answers_%s", form.getFormName(), dateFormat.format(date));
+        return String.format(EXPORT_FILE_NAME_PATTERN, form.getFormName(), dateFormat.format(date));
     }
-
-
 }
