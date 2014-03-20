@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.apache.log4j.Logger;
 import org.primefaces.component.button.Button;
@@ -255,6 +256,13 @@ public class NavigationData implements Serializable {
     }
 
     public boolean isFirstTopic() {
+        WizardPage firstPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(0));
+        for (WizardTopic topic : firstPage.getTopicList()) {
+            if (!topic.isIgnored()) {
+                setFirstTopic(currentTopicID.equals(topic.getId()));
+                break;
+            }
+        }
         return isFirstTopic;
     }
 
@@ -290,10 +298,12 @@ public class NavigationData implements Serializable {
     }
 
     public File getExportFile() {
-        return  xmlController.getExportFileFromWizardForm(this.wizardForm);
+        return xmlController.getExportFileFromWizardForm(this.wizardForm);
     }
 
     public boolean isFirstPage() {
+        WizardPage firstPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(0));
+        setFirstPage(currentPageID.equals(firstPage.getId()));
         return isFirstPage;
     }
 
@@ -502,36 +512,14 @@ public class NavigationData implements Serializable {
     }
 
     private boolean isOnLastPage() {
-        List<WizardPage> pagesOnTemplate = this.wizardForm.getWizardPageList();
-        WizardPage simpleWizardPage;
-        for (int pageIndex = 0; pageIndex < pagesOnTemplate.size(); pageIndex++) {
-            simpleWizardPage = (WizardPage) pagesOnTemplate.get(pageIndex);
-            if (simpleWizardPage.getId().equals(currentPageID)) {
-                if (pageIndex == 0) {
-                    setFirstPage(true);
-                } else {
-                    setFirstPage(false);
-                }
-                if (pageIndex == pagesOnTemplate.size() - 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        WizardPage lastPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(allPagesIdOnCurrentForm.size() - 1));
+        return currentPageID.equals(lastPage.getId());
     }
 
     private boolean isOnLastTopic() {
-        for (int topicIntId = 0; topicIntId < allTopicsIdOnCurrentPage.size(); topicIntId++) {
-            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(topicIntId))) {
-                if (topicIntId == 0) {
-                    setFirstTopic(true);
-                } else {
-                    setFirstTopic(false);
-                }
-                if (topicIntId == allTopicsIdOnCurrentPage.size() - 1) {
-                    return true;
-                }
-            }
+        if (isOnLastPage()) {
+            WizardTopic lastTopic = wizardForm.getWizardTopicById(allTopicsIdOnCurrentPage.get(allTopicsIdOnCurrentPage.size() - 1));
+            return currentTopicID.equals(lastTopic.getId());
         }
         return false;
     }
