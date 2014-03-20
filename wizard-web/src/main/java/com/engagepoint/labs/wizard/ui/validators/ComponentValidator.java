@@ -1,16 +1,13 @@
 package com.engagepoint.labs.wizard.ui.validators;
 
-import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.style.WizardComponentStyles;
 import com.engagepoint.labs.wizard.values.*;
 import com.engagepoint.labs.wizard.values.objects.Range;
 import org.apache.log4j.Logger;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.context.RequestContext;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -20,6 +17,7 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +27,7 @@ import java.util.List;
 public class ComponentValidator implements Validator {
     private static final boolean VALID = true;
     private static final Logger LOGGER = Logger.getLogger(ComponentValidator.class);
+    private static final String DEFAULT_ITEM_ID = "defaultItem";
     private static int cursor = 0;
     static int[] a = new int[2];
     private final WizardQuestion question;
@@ -36,7 +35,6 @@ public class ComponentValidator implements Validator {
     private int pageNumber;
     private int topicNumber;
     private UINavigationBean navigationBean;
-    private WizardForm wizardForm;
 
     public ComponentValidator(WizardQuestion question, UINavigationBean navigationBean) {
         this.navigationBean = navigationBean;
@@ -50,7 +48,6 @@ public class ComponentValidator implements Validator {
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
         this.navigationBean = navBean;
-        this.wizardForm = navigationBean.getNavigationData().getWizardForm();
     }
 
     @Override
@@ -67,78 +64,108 @@ public class ComponentValidator implements Validator {
                 validateMultipleChoiseAnswer(value);
                 break;
             case CHECKBOX:
-                if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here"));
-                }
-                question.setValid(true);
-                saveListTextValue((Object[]) value);
+                validateCheckBoxAnswer(value);
                 break;
             case CHOOSEFROMLIST:
-                if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Answer must be selected for this question!"));
-                }
-                question.setValid(true);
-                if (component.getChildren().get(0).getId().equals("defaultItem")) {
-                    component.getChildren().remove(0);
-                }
-                saveTextValue(value.toString());
+                validateChooseFromListAnswer(component, value);
                 break;
             case DATE:
-                if (question.isRequired() && !validateDateQuestionComponent(value)) {
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-                question.setValid(true);
-                saveDateTimeValue((Date) value);
+                validateDateAnswer(value);
                 break;
             case TIME:
-                if (question.isRequired() && !validateTimeQuestionComponent(value)) {
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-                question.setValid(true);
-                saveDateTimeValue((Date) value);
+                validateTimeAnswer(value);
                 break;
             case RANGE:
-                if (question.isRequired() && !validateRangeQuestionComponent(value)) {
-                    ((InputText) component).resetValue();
-                    question.setValid(false);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Validation Error",
-                            "Empty field is not allowed here!"));
-                }
-                question.setValid(true);
-                saveRangeValue(value);
+                validateRangeAnswer(component, value);
                 break;
             case FILEUPLOAD:
-                if (question.isRequired() && !validateFileUploadComponent(value)) {
-                    question.setValid(!VALID);
-                    throw new ValidatorException(new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Error, need to choose file",
-                            "Error, need to choose file"));
-                }
-                question.setValid(VALID);
-                saveFileUpload((Part) value);
-                OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
-                outputLabel.setValue("Your file  uploaded");
+                validateFileUploadAnswer(value);
                 break;
             default:
                 break;
         }
         navigationBean.setCurrentQuestionType(question.getQuestionType());
+        updateDependentLimits();
+
+    }
+
+    private void updateDependentLimits() {
         if (isParent) {
             navigationBean.moveLimitIfNecessary(pageNumber, topicNumber);
         }
+    }
+
+    private void validateTimeAnswer(Object value) {
+        if (question.isRequired() && !validateTimeQuestionComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here!"));
+        }
+        question.setValid(true);
+        saveDateTimeValue((Date) value);
+    }
+
+    private void validateDateAnswer(Object value) {
+        if (question.isRequired() && !validateDateQuestionComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here!"));
+        }
+        question.setValid(true);
+        saveDateTimeValue((Date) value);
+    }
+
+    private void validateChooseFromListAnswer(UIComponent component, Object value) {
+        if (question.isRequired() && !validateDropDownQuestionComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Answer must be selected for this question!"));
+        }
+        question.setValid(true);
+        if (component.getChildren().get(0).getId().equals(DEFAULT_ITEM_ID)) {
+            component.getChildren().remove(0);
+        }
+        saveTextValue(value.toString());
+    }
+
+    private void validateCheckBoxAnswer(Object value) {
+        if (question.isRequired() && !validateCheckBoxQuestionComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here"));
+        }
+        question.setValid(true);
+        saveListTextValue((Object[]) value);
+    }
+
+    private void validateRangeAnswer(UIComponent component, Object value) {
+        if (question.isRequired() && !validateRangeQuestionComponent(value)) {
+            ((javax.faces.component.html.HtmlInputHidden) component).resetValue();
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Validation Error",
+                    "Empty field is not allowed here!"));
+        }
+        question.setValid(true);
+        saveRangeValue(value);
+
+    }
+
+    private void validateFileUploadAnswer(Object value) {
+        if (question.isRequired() && !validateFileUploadComponent(value)) {
+            question.setValid(false);
+            throw new ValidatorException(new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Error, need to choose file",
+                    "Error, need to choose file"));
+        }
+        question.setValid(VALID);
+        saveFileUpload((Part) value);
+        OutputLabel outputLabel = (OutputLabel) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-little_" + question.getId());
+        outputLabel.setValue("Your file  uploaded");
     }
 
     private void validateMultipleChoiseAnswer(Object value) {
@@ -177,25 +204,16 @@ public class ComponentValidator implements Validator {
     }
 
     public boolean validateDropDownQuestionComponent(Object value) {
-        if (value == null || value.toString().isEmpty()) {
-            return false;
-        }
-        return true;
+        return !(value == null || value.toString().isEmpty());
     }
 
 
     public boolean validateCheckBoxQuestionComponent(Object value) {
-        if (value == null || ((Object[]) value).length == 0) {
-            return false;
-        }
-        return true;
+        return !(value == null || ((Object[]) value).length == 0);
     }
 
     public boolean validateMultipleChoiseQuestionComponent(Object value) {
-        if (value == null || value.toString().isEmpty()) {
-            return false;
-        }
-        return true;
+        return !(value == null || value.toString().isEmpty());
     }
 
     public boolean validateTextAreaQuestionComponent(Object value) {
@@ -225,25 +243,15 @@ public class ComponentValidator implements Validator {
     }
 
     public boolean validateRangeQuestionComponent(Object value) {
-        if (value == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(value == null);
     }
 
     public boolean validateDateQuestionComponent(Object value) {
-        if (value == null) {
-            return false;
-        }
-        return true;
+        return value != null;
     }
 
     public boolean validateTimeQuestionComponent(Object value) {
-        if (value == null) {
-            return false;
-        }
-        return true;
+        return value != null;
     }
 
 
@@ -254,12 +262,8 @@ public class ComponentValidator implements Validator {
                 return false;
             }
         }
-        if (value == null) {
-            if (question.getAnswer() == null) {
-                return false;
-            }
-        }
-        return true;
+
+        return !(value == null && question.getAnswer() == null);
     }
 
     private void saveTextValue(String value) {
@@ -270,10 +274,7 @@ public class ComponentValidator implements Validator {
 
     private void saveListTextValue(Object[] values) {
         ListTextValue listTextValue = new ListTextValue();
-        List answersList = new ArrayList();
-        for (int i = 0; i < values.length; i++) {
-            answersList.add(values[i]);
-        }
+        List answersList = new ArrayList(Arrays.asList(values));
         listTextValue.setValue(answersList);
         question.setAnswer(listTextValue);
     }
@@ -313,8 +314,15 @@ public class ComponentValidator implements Validator {
 
     public File copyFile(Part file) throws IOException {
         String uploadName = file.getSubmittedFileName();
-        String sourcePath = getClass().getClassLoader().getResource(".").getPath();
-        String path = new String(sourcePath + uploadName);
+        String sourcePath;
+        try {
+            sourcePath = getClass().getClassLoader().getResource(".").getPath();
+        } catch (NullPointerException npe){
+            sourcePath = "\\";
+            LOGGER.warn("NullPointerException was caught,sourcePath will set to '\\'  ");
+        }
+
+        String path = sourcePath + uploadName;
         File uploadFile = null;
         InputStream inStream = null;
         OutputStream outStream = null;
@@ -323,8 +331,13 @@ public class ComponentValidator implements Validator {
             outStream = new FileOutputStream(new File(path));
             byte[] buffer = new byte[4096];
             int length;
-            while ((length = inStream.read(buffer)) > 0) {
-                outStream.write(buffer, 0, length);
+            while (true) {
+                length = inStream.read(buffer);
+                if (length > 0) {
+                    outStream.write(buffer, 0, length);
+                } else {
+                    break;
+                }
             }
             uploadFile = new File(path);
 

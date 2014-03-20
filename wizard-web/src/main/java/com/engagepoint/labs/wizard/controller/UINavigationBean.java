@@ -287,10 +287,10 @@ public class UINavigationBean implements Serializable {
 	    navigationData.getPanelGrid().getChildren().add(panel);
 	}
 	HtmlForm form = navigationData.getMainContentForm();
-	// UIComponent scrollableDiv = form.findComponent("scrollableDiv");
-	// scrollableDiv.getAttributes().put("styleClass",
-	// navigationData.getMainContentFormStyle());
-	// RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
+	UIComponent scrollableDiv = form.findComponent("scrollableDiv");
+	scrollableDiv.getAttributes().put("styleClass",
+	navigationData.getMainContentFormStyle());
+	RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
 	RequestContext.getCurrentInstance().update("maincontentid-j_id1");
 	RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
 	RequestContext.getCurrentInstance().update(

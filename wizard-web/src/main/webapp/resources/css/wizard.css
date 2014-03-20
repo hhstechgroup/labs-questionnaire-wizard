@@ -72,13 +72,12 @@
 
 #maincontentid-j_id1 {
 	position: relative;
-	padding-bottom: 70px;
 }
 
 .maincontentid-scroll {
 	overflow-y: scroll;
 	overflow-x: hidden;
-	height: 87%;
+	height: 100%;
 }
 
 .maincontentid-non-scroll {

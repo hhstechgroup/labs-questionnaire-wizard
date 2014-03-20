@@ -3,7 +3,6 @@ package com.engagepoint.labs.wizard.upload;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -14,7 +13,10 @@ import java.util.zip.ZipOutputStream;
 public class ArchiverZip {
     private static final Logger LOGGER = Logger.getLogger(ArchiverZip.class);
     public static final String ZIP_FILE_NAME = "/Wizard_answer" + Math.random() + ".zip";
+    public static final int BUFER_SIZE = 1024 * 1024;
 
+    private ArchiverZip() {
+    }
 
     public static void addFilesToZip(List<File> files) {
         FileOutputStream zipFileOUT = null;
@@ -46,13 +48,18 @@ public class ArchiverZip {
         FileInputStream fileInputStream = null;
         ZipEntry zipEntry = new ZipEntry(fileForZip.getName());
 
-        byte[] bytes = new byte[100000000];
+        byte[] bytes = new byte[BUFER_SIZE];
         int length;
         try {
             zipOutputStream.putNextEntry(zipEntry);
             fileInputStream = new FileInputStream(fileForZip.getPath());
-            while ((length = fileInputStream.read(bytes)) != -1) {
-                zipOutputStream.write(bytes, 0, length);
+            while (true) {
+                length = fileInputStream.read(bytes);
+                if (length > 0) {
+                    zipOutputStream.write(bytes, 0, length);
+                } else {
+                    break;
+                }
             }
 
         } catch (IOException e) {
