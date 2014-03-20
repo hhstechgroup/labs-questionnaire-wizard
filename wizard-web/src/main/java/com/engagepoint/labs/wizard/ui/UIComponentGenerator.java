@@ -1,6 +1,7 @@
 package com.engagepoint.labs.wizard.ui;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ import org.primefaces.component.slider.Slider;
 
 import com.engagepoint.labs.wizard.controller.UINavigationBean;
 import com.engagepoint.labs.wizard.handler.DataGridHandler;
+import com.engagepoint.labs.wizard.handler.TimeHandler;
 import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
 import com.engagepoint.labs.wizard.questions.DateQuestion;
 import com.engagepoint.labs.wizard.questions.DropDownQuestion;
@@ -68,7 +70,7 @@ public class UIComponentGenerator {
 
     public List<UIComponent> getPanelList(
             Map<WizardQuestion, Boolean> wizardQuestionMap, int pageNumber,
-            int topicNumber, UINavigationBean navigationBean, DataGridHandler gridHandler) {
+            int topicNumber, UINavigationBean navigationBean, DataGridHandler gridHandler, TimeHandler timeHandler) {
         this.navigationBean = navigationBean;
         this.pageNumber = pageNumber;
         this.topicNumber = topicNumber;
@@ -76,12 +78,12 @@ public class UIComponentGenerator {
         for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap
                 .entrySet()) {
             isParent = entry.getValue();
-            panelList.add(analyzeQuestion(entry.getKey(), gridHandler));
+            panelList.add(analyzeQuestion(entry.getKey(), gridHandler,timeHandler));
         }
         return panelList;
     }
 
-    private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler) {
+    private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler,TimeHandler timeHandler) {
         panel = new Panel();
         panel.setId("panel_" + question.getId());
         panel.getChildren().add(getLabel(question));
@@ -110,7 +112,7 @@ public class UIComponentGenerator {
                 break;
             case TIME:
                 // to do
-                component = getTime(question, answer, defaultAnswer);
+                component = getTime(question, answer, defaultAnswer, timeHandler);
                 break;
             case RANGE:
                 return getHtmlPanelGroup(question);
@@ -443,25 +445,41 @@ public class UIComponentGenerator {
         return dateCalendar;
     }
 
-    private Calendar getTime(final WizardQuestion question, Value answer, Value defaultAnswer) {
-        Calendar timeCalendar = new Calendar();
+    private Calendar getTime(final WizardQuestion question, Value answer,
+	    Value defaultAnswer, TimeHandler timeHandler) {
+	Calendar timeCalendar = new Calendar();
 
-        // Adding all attributes to UIComponent
-        timeCalendar.setTimeOnly(true);
-        timeCalendar.setPattern(TimeQuestion.TIME_FORMAT);
-        timeCalendar.setStyle("padding:1px");
-        timeCalendar.setShowOn("both");
-        timeCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
-        timeCalendar.addValidator(getComponentValidator(question));
-        timeCalendar.setConverter(new ComponentValueConverter(question));
+	// Adding all attributes to UIComponent
+	String timeID = question.getId();
+	timeCalendar.setTimeOnly(true);
+	timeCalendar.setPattern(TimeQuestion.TIME_FORMAT);
+	timeCalendar.setStyle("padding:1px");
+	timeCalendar.setShowOn("both");
+	timeCalendar.addClientBehavior("valueChange",
+		getTimeAjaxBehavior(question));
 
-        // Showing Answer or Default Answer
-        if (defaultAnswer != null && answer == null) {
-            timeCalendar.setValue(defaultAnswer.getValue());
-        } else if (answer != null) {
-            timeCalendar.setValue(answer.getValue());
-        }
-        return timeCalendar;
+	// Showing Answer or Default Answer
+	if (defaultAnswer != null && answer == null) {
+	    timeCalendar.setValue(defaultAnswer.getValue());
+	} else if (answer != null) {
+	    timeCalendar.setValue(answer.getValue());
+	}
+
+	String valueGetterQuery = "#{timeHandler.setTimeQuestionID(\"" + timeID
+		+ "\").currentTimeQuestionValue}";
+	timeCalendar.setValueExpression("value",
+		createValueExpression(valueGetterQuery, Date.class));
+
+	timeHandler.getQuestions().put(timeID, (TimeQuestion) question);
+	return timeCalendar;
+    }
+
+	    private AjaxBehavior getTimeAjaxBehavior(WizardQuestion question) {
+	AjaxBehavior ajaxBehavior = new AjaxBehavior();
+	ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(
+		question));
+	ajaxBehavior.setPartialSubmit(true);
+	return ajaxBehavior;
     }
 
     private UISelectItems getSelectItems(List<String> optionsList) {
