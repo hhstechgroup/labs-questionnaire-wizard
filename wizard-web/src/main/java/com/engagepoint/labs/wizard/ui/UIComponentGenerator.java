@@ -214,6 +214,7 @@ public class UIComponentGenerator {
                 }
             }
         }
+        gridHandler.initialValidation();
         return grid;
     }
 
