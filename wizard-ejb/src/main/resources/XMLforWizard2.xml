@@ -247,7 +247,7 @@
 					<group group-id="hjhjhdn">
 						<group-name>Prime Topic ***</group-name>
 						<questions>
-						<question answer-required="false" question-id="hjkreasarehjsssvv">
+							<question answer-required="false" question-id="hjkreasarehjsssvv">
 								<question-title>Only one radio</question-title>
 								<question-type>GRID</question-type>
 								<grid-oneInCol>true</grid-oneInCol>
@@ -269,23 +269,23 @@
 										<column>Column 2</column>
 										<column>Column 3</column>
 										<column>Column 4</column>
-                                        <column>Column 5</column>
+										<column>Column 5</column>
 									</columns>
 									<rows>
 										<row>Row 1</row>
 										<row>Row 2</row>
 										<row>Row 3</row>
-                                        <row>Row 4</row>
+										<row>Row 4</row>
 									</rows>
 								</grid>
 								<default-answers>
 									<default-answer>true,false,false,false,false</default-answer>
 									<default-answer>false,true,false,true,false</default-answer>
 									<default-answer>false,false,true,false,true</default-answer>
-                                    <default-answer>false,false,true,false,true</default-answer>
+									<default-answer>false,false,true,false,true</default-answer>
 								</default-answers>
 							</question>
-						<question answer-required="false" question-id="hjkrerehjsssvv">
+							<question answer-required="false" question-id="hjkrerehjsssvv">
 								<question-title>Any radio</question-title>
 								<question-type>GRID</question-type>
 								<grid-oneInCol>false</grid-oneInCol>
@@ -307,20 +307,20 @@
 										<column>Column 2</column>
 										<column>Column 3</column>
 										<column>Column 4</column>
-                                        <column>Column 5</column>
+										<column>Column 5</column>
 									</columns>
 									<rows>
 										<row>Row 1</row>
 										<row>Row 2</row>
 										<row>Row 3</row>
-                                        <row>Row 4</row>
+										<row>Row 4</row>
 									</rows>
 								</grid>
 								<default-answers>
 									<default-answer>true,false,false,false,false</default-answer>
 									<default-answer>false,true,false,true,false</default-answer>
 									<default-answer>false,false,true,false,true</default-answer>
-                                    <default-answer>false,false,true,false,true</default-answer>
+									<default-answer>false,false,true,false,true</default-answer>
 								</default-answers>
 							</question>
 							<question answer-required="false" question-id="hjkhjsssvv">
@@ -345,20 +345,20 @@
 										<column>Column 2</column>
 										<column>Column 3</column>
 										<column>Column 4</column>
-                                        <column>Column 5</column>
+										<column>Column 5</column>
 									</columns>
 									<rows>
 										<row>Row 1</row>
 										<row>Row 2</row>
 										<row>Row 3</row>
-                                        <row>Row 4</row>
+										<row>Row 4</row>
 									</rows>
 								</grid>
 								<default-answers>
 									<default-answer>true,false,false,false,false</default-answer>
 									<default-answer>false,true,false,true,false</default-answer>
 									<default-answer>false,false,true,false,true</default-answer>
-                                    <default-answer>false,false,true,false,true</default-answer>
+									<default-answer>false,false,true,false,true</default-answer>
 								</default-answers>
 							</question>
 							<question answer-required="false" question-id="fffgfgkhwejsssvv">
@@ -383,10 +383,10 @@
 										<column>Column 2</column>
 										<column>Column 3</column>
 										<column>Column 4</column>
-										<!--<column>Column 5</column>-->
-										<!--<column>Column 6</column>-->
-										<!--<column>Column 7</column>-->
-										<!--<column>Column 8</column>-->
+										<column>Column 5</column>
+										<column>Column 6</column>
+										<column>Column 7</column>
+										<column>Column 8</column>
 									</columns>
 									<rows>
 										<row>Row 1</row>
@@ -394,8 +394,8 @@
 									</rows>
 								</grid>
 								<default-answers>
-									<default-answer>true,false,false,false</default-answer>
-									<default-answer>false,true,false,true</default-answer>
+									<default-answer>true,false,false,false,false,true,false,true</default-answer>
+									<default-answer>false,true,false,true,true,false,false,false</default-answer>
 								</default-answers>
 							</question>
 							<question answer-required="false" question-id="hjkhjvv">
@@ -454,7 +454,7 @@
 									<default-answer></default-answer>
 								</default-answers>
 							</question>
-														<question answer-required="false" question-id="ssswdwssa">
+							<question answer-required="false" question-id="ssswdwssa">
 								<question-title>Question test with default value</question-title>
 								<question-type>TIME</question-type>
 								<rules>
