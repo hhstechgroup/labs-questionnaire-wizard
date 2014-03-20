@@ -9,12 +9,12 @@ import com.engagepoint.labs.wizard.bean.WizardDataModelGenerator;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.xml.parser.XmlCustomParser;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class XmlController implements Serializable {
 
     private final XmlCustomParser parser;
     private List<String> xmlPathList;
+    private static final Logger LOGGER = Logger.getLogger(XmlController.class.getName());
 
     public XmlController() {
         xmlPathList = new ArrayList<String>();
@@ -46,11 +47,17 @@ public class XmlController implements Serializable {
         return xmlPathList;
     }
 
-    public WizardDocument readAllDeafultXmlFiles() throws Exception{
+    public WizardDocument readAllDeafultXmlFiles() {
         WizardDataModelGenerator generator = new WizardDataModelGenerator();
         List<QuestionnaireForms> formsList = new ArrayList<>();
         for (String xmlPath : xmlPathList) {
-            formsList.add(parser.parseXML(xmlPath));
+            try {
+                formsList.add(parser.parseXML(xmlPath));
+            } catch (SAXException e) {
+                LOGGER.warn("SAXException", e);
+            } catch (Exception e) {
+                LOGGER.warn("Exception", e);
+            }
         }
         return generator.getWizardDocument(formsList);
     }
