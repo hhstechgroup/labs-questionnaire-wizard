@@ -39,8 +39,13 @@ public class FileUploadController implements Serializable {
             outStream = new FileOutputStream(new File(path));
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = inStream.read(buffer)) > 0) {
-                outStream.write(buffer, 0, length);
+            while (true) {
+                length = inStream.read(buffer);
+                if (length > 0) {
+                    outStream.write(buffer, 0, length);
+                } else {
+                    break;
+                }
             }
         } catch (IOException e) {
             LOGGER.warn("Can't copy file", e);

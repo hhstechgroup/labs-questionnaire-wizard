@@ -1,25 +1,14 @@
 package com.engagepoint.labs.wizard.ui;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.html.HtmlInputFile;
-import javax.faces.component.html.HtmlInputHidden;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGroup;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.validator.Validator;
-
+import com.engagepoint.labs.wizard.controller.UINavigationBean;
+import com.engagepoint.labs.wizard.handler.DataGridHandler;
+import com.engagepoint.labs.wizard.handler.TimeHandler;
+import com.engagepoint.labs.wizard.questions.*;
+import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
+import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
+import com.engagepoint.labs.wizard.values.Value;
+import com.engagepoint.labs.wizard.values.objects.Grid;
+import com.engagepoint.labs.wizard.values.objects.Range;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.calendar.Calendar;
@@ -35,23 +24,19 @@ import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.component.slider.Slider;
 
-import com.engagepoint.labs.wizard.controller.UINavigationBean;
-import com.engagepoint.labs.wizard.handler.DataGridHandler;
-import com.engagepoint.labs.wizard.handler.TimeHandler;
-import com.engagepoint.labs.wizard.questions.CheckBoxesQuestion;
-import com.engagepoint.labs.wizard.questions.DateQuestion;
-import com.engagepoint.labs.wizard.questions.DropDownQuestion;
-import com.engagepoint.labs.wizard.questions.GridQuestion;
-import com.engagepoint.labs.wizard.questions.MultipleChoiseQuestion;
-import com.engagepoint.labs.wizard.questions.RangeQuestion;
-import com.engagepoint.labs.wizard.questions.TimeQuestion;
-import com.engagepoint.labs.wizard.questions.WizardQuestion;
-import com.engagepoint.labs.wizard.ui.ajax.CustomAjaxBehaviorListener;
-import com.engagepoint.labs.wizard.ui.converters.ComponentValueConverter;
-import com.engagepoint.labs.wizard.ui.validators.ComponentValidator;
-import com.engagepoint.labs.wizard.values.Value;
-import com.engagepoint.labs.wizard.values.objects.Grid;
-import com.engagepoint.labs.wizard.values.objects.Range;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.html.*;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.validator.Validator;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by igor.guzenko on 2/11/14.
@@ -59,7 +44,7 @@ import com.engagepoint.labs.wizard.values.objects.Range;
 public class UIComponentGenerator {
     private static int MAXIMUM_SIZE_FILE_ANSWER = 1024 * 1024 * 100;
     private UIPanel panel;
-    private final int ONE_SELECT_ITEM_HEIGHT = 20;
+    public final int ONE_SELECT_ITEM_HEIGHT = 20;
     private boolean isParent;
     private int pageNumber;
     private int topicNumber;
@@ -78,12 +63,12 @@ public class UIComponentGenerator {
         for (Map.Entry<WizardQuestion, Boolean> entry : wizardQuestionMap
                 .entrySet()) {
             isParent = entry.getValue();
-            panelList.add(analyzeQuestion(entry.getKey(), gridHandler,timeHandler));
+            panelList.add(analyzeQuestion(entry.getKey(), gridHandler, timeHandler));
         }
         return panelList;
     }
 
-    private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler,TimeHandler timeHandler) {
+    private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler, TimeHandler timeHandler) {
         panel = new Panel();
         panel.setId("panel_" + question.getId());
         panel.getChildren().add(getLabel(question));
@@ -122,6 +107,8 @@ public class UIComponentGenerator {
             case GRID:
                 component = getGrid(question, gridHandler);
                 break;
+            default:
+                break;
         }
         component.setId(question.getId());
         panel.getAttributes().put("styleClass", "nonRange");
@@ -142,10 +129,10 @@ public class UIComponentGenerator {
         GridQuestion gridQuestion = (GridQuestion) question;
         PanelGrid grid = new PanelGrid();
         // Get column names from our model
-        ArrayList<String> columns = (ArrayList<String>) gridQuestion
+        List<String> columns = gridQuestion
                 .getColumns();
         // Get rows names from our model
-        ArrayList<String> rows = (ArrayList<String>) gridQuestion.getRows();
+        List<String> rows = gridQuestion.getRows();
         // Get our question ID. Grid will have this id.
         String gridID = gridQuestion.getId();
         // Set rows and column number. +1 because our table must have one upper
@@ -451,40 +438,41 @@ public class UIComponentGenerator {
     }
 
     private Calendar getTime(final WizardQuestion question, Value answer,
-	    Value defaultAnswer, TimeHandler timeHandler) {
-	Calendar timeCalendar = new Calendar();
+                             Value defaultAnswer, TimeHandler timeHandler) {
+        Calendar timeCalendar = new Calendar();
 
-	// Adding all attributes to UIComponent
-	String timeID = question.getId();
-	timeCalendar.setTimeOnly(true);
-	timeCalendar.setPattern(TimeQuestion.TIME_FORMAT);
-	timeCalendar.setStyle("padding:1px");
-	timeCalendar.setShowOn("both");
-	timeCalendar.addClientBehavior("valueChange",
-		getTimeAjaxBehavior(question));
+        // Adding all attributes to UIComponent
+        String timeID = question.getId();
+        timeCalendar.setTimeOnly(true);
+        timeCalendar.setPattern(TimeQuestion.TIME_FORMAT);
+        timeCalendar.setStyle("padding:1px");
+        timeCalendar.setShowOn("both");
+        timeCalendar.addClientBehavior("valueChange",
+                getTimeAjaxBehavior(question));
 
-	// Showing Answer or Default Answer
-	if (defaultAnswer != null && answer == null) {
-	    timeCalendar.setValue(defaultAnswer.getValue());
-	} else if (answer != null) {
-	    timeCalendar.setValue(answer.getValue());
-	}
+        // Showing Answer or Default Answer
+        if (defaultAnswer != null && answer == null) {
+            timeCalendar.setValue(defaultAnswer.getValue());
+        } else if (answer != null) {
+            timeCalendar.setValue(answer.getValue());
+        }
 
-	String valueGetterQuery = "#{timeHandler.setTimeQuestionID(\"" + timeID
-		+ "\").currentTimeQuestionValue}";
-	timeCalendar.setValueExpression("value",
-		createValueExpression(valueGetterQuery, Date.class));
-	
-	timeCalendar.setReadonlyInput(true);
+        String valueGetterQuery = "#{timeHandler.setTimeQuestionID(\"" + timeID
+                + "\").currentTimeQuestionValue}";
+        timeCalendar.setValueExpression("value",
+                createValueExpression(valueGetterQuery, Date.class));
+        
+        timeCalendar.setReadonlyInput(true);
 
-	timeHandler.getQuestions().put(timeID, (TimeQuestion) question);
-	return timeCalendar;
+        timeHandler.getQuestions().put(timeID, (TimeQuestion) question);
+        return timeCalendar;
     }
 
     private AjaxBehavior getTimeAjaxBehavior(WizardQuestion question) {
-	AjaxBehavior ajaxBehavior = new AjaxBehavior();
-	ajaxBehavior.setPartialSubmit(true);
-	return ajaxBehavior;
+        AjaxBehavior ajaxBehavior = new AjaxBehavior();
+
+        ajaxBehavior.setPartialSubmit(true);
+        return ajaxBehavior;
     }
 
     private UISelectItems getSelectItems(List<String> optionsList) {
@@ -538,7 +526,6 @@ public class UIComponentGenerator {
 
     private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
-        ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(question));
         ajaxBehavior.setUpdate("@(.nonRange)");
         ajaxBehavior.setAsync(true);
         return ajaxBehavior;

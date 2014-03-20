@@ -11,7 +11,6 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
-import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +20,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -122,13 +120,12 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
-//        scrollablePanelGroup = new HtmlPanelGroup();
-//        scrollablePanelGroup.setStyle("width:101%;height:90%;");
-//        scrollablePanelGroup.setLayout("block");
-//        scrollablePanelGroup.setId("scrollableDiv");
-//        scrollablePanelGroup.getChildren().add(panelGrid);
-        mainContentForm.getChildren().add(panelGrid);
-//        mainContentForm.getChildren().add(scrollablePanelGroup);
+        scrollablePanelGroup = new HtmlPanelGroup();
+        scrollablePanelGroup.setLayout("block");
+        scrollablePanelGroup.setId("scrollableDiv");
+        scrollablePanelGroup.setStyle("height:87%");
+        scrollablePanelGroup.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(scrollablePanelGroup);
         mainContentForm.getChildren().add(getDialog());
         mainContentForm.getChildren().add(getDialogForDependentQuestion());
         wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,

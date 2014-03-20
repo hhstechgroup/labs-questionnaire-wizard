@@ -17,14 +17,14 @@ import static org.junit.Assert.*;
 /**
  * Created by igor.guzenko on 3/6/14.
  */
-public class TestXmlCustomParser {
-
-    private XmlCustomParser testingParser;
-
-    @Before
-    public void initParser() {
-        testingParser = new XmlCustomParser();
-    }
+//public class TestXmlCustomParser {
+//
+//    private XmlCustomParser testingParser;
+//
+//    @Before
+//    public void initParser() {
+//        testingParser = new XmlCustomParser();
+//    }
 
     /**
      * test that forms is parsing normal
@@ -32,12 +32,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXML() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertNotNull(parsedForm);
-    }
+//    @Test
+//    public void testParseXML() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertNotNull(parsedForm);
+//    }
 
     /**
      * test correctness for form id
@@ -45,12 +45,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLA() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("testController", parsedForm.getFormId());
-    }
+//    @Test
+//    public void testParseXMLA() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertEquals("testController", parsedForm.getFormId());
+//    }
 
     /**
      * test correctness for form name
@@ -58,12 +58,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLB() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("TestController", parsedForm.getFormName());
-    }
+//    @Test
+//    public void testParseXMLB() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertEquals("TestController", parsedForm.getFormName());
+//    }
 
     /**
      * test correctness for page id in form
@@ -71,12 +71,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLC() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("formPage1", parsedForm.getPages().getPage().get(0).getPageId());
-    }
+//    @Test
+//    public void testParseXMLC() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertEquals("formPage1", parsedForm.getPages().getPage().get(0).getPageId());
+//    }
 
     /**
      * test correctness for group id on page in form
@@ -84,12 +84,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLD() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("page1Group1", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupId());
-    }
+//    @Test
+//    public void testParseXMLD() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertEquals("page1Group1", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupId());
+//    }
 
     /**
      * test correctness for group name on page in form
@@ -97,12 +97,12 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLE() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        assertEquals("Topic 1 of First Page", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupName());
-    }
+//    @Test
+//    public void testParseXMLE() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        assertEquals("Topic 1 of First Page", parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getGroupName());
+//    }
 
     /**
      * all test for question in template
@@ -110,27 +110,27 @@ public class TestXmlCustomParser {
      * @throws JAXBException
      * @throws SAXException
      */
-    @Test
-    public void testParseXMLF() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
-        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
-        Question testingQuestion = parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getQuestions().getQuestion().get(0);
-        assertEquals("pageOneGroupOne", testingQuestion.getQuestionId());
-        assertFalse(testingQuestion.isAnswerRequired());
-        assertEquals("Question one", testingQuestion.getQuestionTitle());
-        assertEquals("Type yes if it's topic one of first page?", testingQuestion.getHelpText());
-        assertEquals("Default answer", testingQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
-    }
-
-    @Test
-    public void testParseWizardFormToXML() throws Exception {
-        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser2");
-        WizardDataModelGenerator wdmGenerator = new WizardDataModelGenerator();
-        ArrayList<QuestionnaireForms> questionnaireFormses = new ArrayList<>();
-        questionnaireFormses.add(parsedForms);
-        WizardForm testingForm = wdmGenerator.getWizardDocument(questionnaireFormses).getFormList().get(0);
-        File actualFile = testingParser.parseWizardFormToXml(testingForm);
-        assertNotNull(actualFile);
-        assertFalse(actualFile.getTotalSpace() == 0);
-    }
-}
+//    @Test
+//    public void testParseXMLF() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("/testparser.xml");
+//        QuestionnaireForm parsedForm = parsedForms.getQuestionnaireForm().get(0);
+//        Question testingQuestion = parsedForm.getPages().getPage().get(0).getGroupsOfQuestions().getGroup().get(0).getQuestions().getQuestion().get(0);
+//        assertEquals("pageOneGroupOne", testingQuestion.getQuestionId());
+//        assertFalse(testingQuestion.isAnswerRequired());
+//        assertEquals("Question one", testingQuestion.getQuestionTitle());
+//        assertEquals("Type yes if it's topic one of first page?", testingQuestion.getHelpText());
+//        assertEquals("Default answer", testingQuestion.getDefaultAnswers().getDefaultAnswer().get(0));
+//    }
+//
+//    @Test
+//    public void testParseWizardFormToXML() throws Exception {
+//        QuestionnaireForms parsedForms = testingParser.parseXML("~/testparser2");
+//        WizardDataModelGenerator wdmGenerator = new WizardDataModelGenerator();
+//        ArrayList<QuestionnaireForms> questionnaireFormses = new ArrayList<>();
+//        questionnaireFormses.add(parsedForms);
+//        WizardForm testingForm = wdmGenerator.getWizardDocument(questionnaireFormses).getFormList().get(0);
+//        File actualFile = testingParser.parseWizardFormToXml(testingForm);
+//        assertNotNull(actualFile);
+//        assertFalse(actualFile.getTotalSpace() == 0);
+//    }
+//}
