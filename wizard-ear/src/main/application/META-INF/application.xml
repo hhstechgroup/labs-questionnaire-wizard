@@ -5,11 +5,11 @@
 	version="6">
 	<display-name>wizard-ear</display-name>
 	<module>
-		<ejb>wizard-ejb-1.1.0-DEMO.jar</ejb>
+		<ejb>wizard-ejb-2.0.0-DEMO.jar</ejb>
 	</module>
 	<module>
 		<web>
-			<web-uri>wizard-web-1.1.0-DEMO.war</web-uri>
+			<web-uri>wizard-web-2.0.0-DEMO.war</web-uri>
 			<context-root>/wizard-web</context-root>
 		</web>
 	</module>
