@@ -8,6 +8,7 @@
 	<p:slider for="fewwwfwed02345dftty" minValue="0" maxValue="24"
 		rendered="false" />
 	<p:breadCrumb id="breadcrumb"
-		model="#{uiNavigationBean.navigationData.breadcrumbModel}">
+		model="#{uiNavigationBean.navigationData.breadcrumbModel}"
+		rendered="#{uiNavigationBean.navigationData.renderBreadCrumb}">
 	</p:breadCrumb>
 </h:form>

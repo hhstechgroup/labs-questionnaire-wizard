@@ -417,6 +417,7 @@ public class UINavigationBean implements Serializable {
 		    ClientConstantStrings.DIALOGSHOW);
 	    return "";
 	}
+	navigationData.setRenderBreadCrumb(false);
 	return "wizard-confirmation?faces-redirect=true";
     }
 

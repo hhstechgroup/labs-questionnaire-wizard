@@ -73,6 +73,7 @@ public class NavigationData implements Serializable {
     private HtmlForm sliderForm;
     private String mainContentFormStyle;
     private HtmlPanelGroup scrollablePanelGroup;
+    private boolean renderBreadCrumb;
 
     /**
      * Method parses our XML's. Created because out first page must know the
@@ -142,6 +143,7 @@ public class NavigationData implements Serializable {
         wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
         wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
                 .getTopicNumber());
+        renderBreadCrumb=true;
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -560,5 +562,13 @@ public class NavigationData implements Serializable {
 
     private void setMainContentFormStyle(String mainContentFormStyle) {
         this.mainContentFormStyle = mainContentFormStyle;
+    }
+
+    public boolean isRenderBreadCrumb() {
+	return renderBreadCrumb;
+    }
+
+    public void setRenderBreadCrumb(boolean renderBreadCrumb) {
+	this.renderBreadCrumb = renderBreadCrumb;
     }
 }

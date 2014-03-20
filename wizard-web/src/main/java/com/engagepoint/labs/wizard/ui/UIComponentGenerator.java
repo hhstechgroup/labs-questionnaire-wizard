@@ -475,7 +475,7 @@ public class UIComponentGenerator {
 	return timeCalendar;
     }
 
-	    private AjaxBehavior getTimeAjaxBehavior(WizardQuestion question) {
+    private AjaxBehavior getTimeAjaxBehavior(WizardQuestion question) {
 	AjaxBehavior ajaxBehavior = new AjaxBehavior();
 	ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(
 		question));
