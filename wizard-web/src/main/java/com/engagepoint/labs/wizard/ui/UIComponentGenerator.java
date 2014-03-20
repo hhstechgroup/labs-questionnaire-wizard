@@ -115,7 +115,7 @@ public class UIComponentGenerator {
                 component = getTime(question, answer, defaultAnswer, timeHandler);
                 break;
             case RANGE:
-                return getHtmlPanelGroup(question);
+                return getHtmlPanelGroup(question, answer, defaultAnswer);
             case FILEUPLOAD:
                 component = getUploadComponent(question);
                 break;
@@ -134,7 +134,7 @@ public class UIComponentGenerator {
         panel.getChildren().add(getLitleLabel(question));
         panel.getChildren().add(getHTMLbr());
         component = getFileUpload(question);
-        panel.getChildren().add(getButton(question));
+        panel.getChildren().add(getButton());
         return component;
     }
 
@@ -218,36 +218,47 @@ public class UIComponentGenerator {
         return grid;
     }
 
-    private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question) {
+    private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlPanelGroup panelGroup = new HtmlPanelGroup();
         panelGroup.setStyle("padding: 20px; background-color: #EDEDED; border: 1px solid #DDD; border-radius: 3px;");
         panelGroup.setStyleClass("ui-panel-column");
         panelGroup.setLayout("block");
         panelGroup.setId("panelid" + question.getId());
+        Range range = getSliderPositions(question, answer, defaultAnswer);
+
         panelGroup.getChildren().add(getLabel(question));
         panelGroup.getChildren().add(getHTMLbr());
-        panelGroup.getChildren().add(getOutputTextForSlider(question));
-        panelGroup.getChildren().add(getInputHiddenBegin(question));
+        panelGroup.getChildren().add(getOutputTextForSlider(question, range));
         panelGroup.getChildren().add(getSliderOutputLabelBegin(question));
-        panelGroup.getChildren().add(getInputHiddenEnd(question));
+        panelGroup.getChildren().add(getInputHiddenBegin(question, range));
         panelGroup.getChildren().add(getSliderOutputLabelEnd(question));
+        panelGroup.getChildren().add(getInputHiddenEnd(question, range));
         panelGroup.getChildren().add(getSlider(question));
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getCommandButtonForSlider(question));
         return panelGroup;
     }
 
-    private HtmlOutputText getOutputTextForSlider(WizardQuestion question) {
-        int begin = 0;
-        int end = 0;
-        if (question.getAnswer() != null) {
-            Range rangeValue = (Range) question.getAnswer().getValue();
-            begin = rangeValue.getStart();
-            end = rangeValue.getEnd();
+    private Range getSliderPositions(WizardQuestion question, Value answer, Value defaultAnswer) {
+        Range range = new Range();
+        if (answer != null) {
+            range = (Range) answer.getValue();
+        } else if (defaultAnswer != null) {
+            range = (Range) defaultAnswer.getValue();
         } else {
-            begin = ((RangeQuestion) question).getStartRange();
-            end = ((RangeQuestion) question).getEndRange();
+            int initBegin = ((RangeQuestion) question).getStartRange();
+            int initEnd = ((RangeQuestion) question).getEndRange();
+            int begin = (int) (initBegin + (initEnd-initBegin)*0.2);
+            int end = (int) (initBegin + (initEnd-initBegin)*0.8);
+            range.setStart(begin);
+            range.setEnd(end);
         }
+        return range;
+    }
+
+    private HtmlOutputText getOutputTextForSlider(WizardQuestion question, Range range) {
+        int begin = range.getStart();
+        int end = range.getEnd();
         HtmlOutputText outputText = new HtmlOutputText();
         outputText.setId("displayRange" + question.getId());
         String rangeText = "Between " + begin + " and " + end;
@@ -255,14 +266,8 @@ public class UIComponentGenerator {
         return outputText;
     }
 
-    private HtmlInputHidden getInputHiddenEnd(WizardQuestion question) {
-        int end = 0;
-        if (question.getAnswer() != null) {
-            Range rangeValue = (Range) question.getAnswer().getValue();
-            end = rangeValue.getEnd();
-        } else {
-            end = ((RangeQuestion) question).getEndRange();
-        }
+    private HtmlInputHidden getInputHiddenEnd(WizardQuestion question, Range range) {
+        int end = range.getEnd();
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt7" + question.getId());
         inputHidden.setValue(end);
@@ -270,14 +275,8 @@ public class UIComponentGenerator {
         return inputHidden;
     }
 
-    private HtmlInputHidden getInputHiddenBegin(WizardQuestion question) {
-        int begin = 0;
-        if (question.getAnswer() != null) {
-            Range rangeValue = (Range) question.getAnswer().getValue();
-            begin = rangeValue.getStart();
-        } else {
-            begin = ((RangeQuestion) question).getStartRange();
-        }
+    private HtmlInputHidden getInputHiddenBegin(WizardQuestion question, Range range) {
+        int begin = range.getStart();
         HtmlInputHidden inputHidden = new HtmlInputHidden();
         inputHidden.setId("txt6" + question.getId());
         inputHidden.setValue(begin);
@@ -315,6 +314,11 @@ public class UIComponentGenerator {
         slider.setRange(true);
         String textFor = "txt6" + question.getId() + " , " + "txt7" + question.getId();
         slider.setFor(textFor);
+        //setting slider bounds
+        int min = ((RangeQuestion) question).getStartRange();
+        int max = ((RangeQuestion) question).getEndRange();
+        slider.setMinValue(min);
+        slider.setMaxValue(max);
         return slider;
     }
 
@@ -322,7 +326,7 @@ public class UIComponentGenerator {
         CommandButton commandButton = new CommandButton();
         commandButton.setId("but" + question.getId());
         commandButton.setValue("Submit");
-        commandButton.setProcess("maincontentid-panelid" + question.getId());
+        commandButton.setProcess("maincontentid-panelid"+ question.getId());
         commandButton.setPartialSubmit(true);
         return commandButton;
     }
@@ -550,7 +554,7 @@ public class UIComponentGenerator {
         return fileUpload;
     }
 
-    public CommandButton getButton(WizardQuestion question) {
+    public CommandButton getButton() {
         CommandButton commandButton = new CommandButton();
         commandButton.setValue("Upload");
         commandButton.setAjax(false);
