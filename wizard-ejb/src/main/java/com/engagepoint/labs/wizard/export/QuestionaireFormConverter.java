@@ -152,9 +152,10 @@ public class QuestionaireFormConverter {
 
     private List<String> getListRangeAnswer(WizardQuestion wizardQuestion) {
         List<String> answerList = new ArrayList<>(2);
+        if(wizardQuestion.getAnswer()!=null){
         com.engagepoint.labs.wizard.values.objects.Range range = (Range) wizardQuestion.getAnswer().getValue();
         answerList.add(String.valueOf(range.getStart()));
-        answerList.add(String.valueOf(range.getEnd()));
+        answerList.add(String.valueOf(range.getEnd()));}
         return answerList;
     }
 
@@ -186,7 +187,7 @@ public class QuestionaireFormConverter {
 
     private List getListValueAnswer(WizardQuestion wizardQuestion) {
         if (null == wizardQuestion.getAnswer()) {
-            return new ArrayList();
+            return new ArrayList(0);
         } else {
             return (List) wizardQuestion.getAnswer().getValue();
         }
