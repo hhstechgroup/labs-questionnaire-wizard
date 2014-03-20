@@ -50,14 +50,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SessionScoped
 public class UINavigationBean implements Serializable {
 
-    //
+    public static final String DATE_STUB_ID = "dateStubb-breadcrumb";
+    public static final String LEFT_MENU_ID = "leftmenuid-leftMenu";
     private static final long serialVersionUID = 7470581070941487130L;
-    private static final Logger LOGGER = Logger
-            .getLogger(UINavigationBean.class);
+    private static final Logger LOGGER = Logger.getLogger(UINavigationBean.class);
+    private boolean needToStopUserOnCurrentTopic = false;
     private List<File> filesForArchive;
     private List<String> xmlPathList = new CopyOnWriteArrayList<>();
-    private boolean needToStopUserOnCurrentTopic = false;
+    private List<MenuItem> pageMenuItemList;
+    private List<MenuItem> topicMenuItemList;
     private QType currentQuestionType;
+    private FacesContext facesContext;
+    private ELContext elContext;
+    private ExpressionFactory expressionFactory;
+
+    @Inject
+    private FileDownloadController fileDownloadController;
     /**
      * This is model class to hold data about XML files and Navigation data
      * objects
@@ -65,27 +73,10 @@ public class UINavigationBean implements Serializable {
     @Inject
     private NavigationData navigationData;
     @Inject
-    private FileDownloadController fileDownloadController;
-    @Inject
     private DataGridHandler gridHandler;
     @Inject
     private TimeHandler timeHandler;
-    /**
-     * contains all of the per-request state information related to the
-     * processing of a single JavaServer Faces request, and the rendering of the
-     * corresponding response.
-     */
-    private FacesContext facesContext;
-    /**
-     * Contains all info about EL evaluation
-     */
-    private ELContext elContext;
-    /**
-     * Used to create EL expressions
-     */
-    private ExpressionFactory expressionFactory;
-    private List<MenuItem> pageMenuItemList;
-    private List<MenuItem> topicMenuItemList;
+
 
     public QType getCurrentQuestionType() {
         return currentQuestionType;
@@ -109,6 +100,34 @@ public class UINavigationBean implements Serializable {
 
     public void setTopicMenuItemList(List<MenuItem> topicMenuItemList) {
         this.topicMenuItemList = topicMenuItemList;
+    }
+
+    private int getPageCount() {
+        return getWizardForm().getWizardPageList().size();
+    }
+
+    private int getTopicCount(String pageID) {
+        return getWizardForm().getWizardPageById(pageID).getTopicList().size();
+    }
+
+    private WizardForm getWizardForm() {
+        return navigationData.getWizardForm();
+    }
+
+    public NavigationData getNavigationData() {
+        return navigationData;
+    }
+
+    public void setNavigationData(NavigationData navigationData) {
+        this.navigationData = navigationData;
+    }
+
+    public TimeHandler getTimeHandler() {
+        return timeHandler;
+    }
+
+    public void setTimeHandler(TimeHandler timeHandler) {
+        this.timeHandler = timeHandler;
     }
 
     /**
@@ -166,101 +185,7 @@ public class UINavigationBean implements Serializable {
         } else {
             navigationData.startSelectXMLScreen();
         }
-
     }
-
-    /**
-     * Method used for dynamic initialization breadcrumb component for template
-     * form
-     */
-    private void initBreadcrumb() {
-        // get facesContext for current response
-        facesContext = FacesContext.getCurrentInstance();
-        // get elContext (super container for EL expressions)
-        elContext = facesContext.getELContext();
-        // get expression factory for creating EL expressions in following cycle
-        expressionFactory = facesContext.getApplication()
-                .getExpressionFactory();
-        // Iterating over all pages in model
-        for (int i = 0; i < getPageCount(); i++) {
-            // creating menu item
-            MenuItem item = new MenuItem();
-            MethodExpression elExpression;
-            WizardPage wizardPage;
-            // get page from navigationData by index
-            wizardPage = getWizardForm().getWizardPageList().get(i);
-            // set titles for breadcrumb items
-            item.setValue(wizardPage.getPageName());
-            item.setId(wizardPage.getId());
-            // creating EL expressions for all items in breadcrumb
-            elExpression = expressionFactory.createMethodExpression(
-                    elContext,
-                    "#{uiNavigationBean.changeCurrentPage(\""
-                            + wizardPage.getId() + "\")}", void.class,
-                    new Class[]{String.class});
-            // set elExpression on item action attribute
-            item.setActionExpression(elExpression);
-            pageMenuItemList.add(item);
-            navigationData.getBreadcrumbModel().addMenuItem(item);
-        }
-        fillAllPagesIdOnForm();
-        setMenuItemInPagesOnCurrentForm();
-        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
-        initMenu();
-    }
-
-    /**
-     * This method is used to insert values to our left menu. Values are
-     * extracted from currentTopicIDs list. If we know topic's ID, we can select
-     * topic's title. Method will be called every time when user change page on
-     * breadcrumb
-     */
-    private void initMenu() {
-        // clearing current topics id's. It needed for navigation.
-
-        navigationData.getAllTopicsIdOnCurrentPage().clear();
-        navigationData.getMenuModel().getContents().clear();
-        topicMenuItemList.clear();
-
-        // now we start create new topics for page
-        facesContext = FacesContext.getCurrentInstance();
-        // get elContext (super container for EL expressions)
-        elContext = facesContext.getELContext();
-        // get expression factory for creating EL expressions in following cycle
-        expressionFactory = facesContext.getApplication()
-                .getExpressionFactory();
-        // Iterating over all pages in model
-        for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
-            // retrieve topicID from navigation data
-            String topicID = getWizardForm()
-                    .getWizardPageById(navigationData.getCurrentPageID())
-                    .getTopicList().get(i).getId();
-            // get topics title by id
-            String topicTitle = getWizardForm().getWizardTopicById(topicID)
-                    .getGroupTitle();
-            // add title to topic titles
-            // creating menu item
-            MenuItem item = new MenuItem();
-            MethodExpression elExpression;
-            // set titles for our menu items
-            item.setValue(topicTitle);
-            item.setId(topicID);
-            // creating EL expressions for all items in menu
-            elExpression = expressionFactory.createMethodExpression(elContext,
-                    "#{uiNavigationBean.changeCurrentTopic(\"" + topicID
-                            + "\")}", void.class, new Class[]{String.class});
-            // set elExpression on item action attribute
-            item.setActionExpression(elExpression);
-            topicMenuItemList.add(item);
-            navigationData.getMenuModel().addMenuItem(item);
-        }
-        fillAllTopicsIdOnPage();
-        setMenuItemInTopicsOnCurrentPage();
-        changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
-        // after initialization menu questions creator method called
-        createQuestions();
-    }
-
     /**
      * Create questions, method must be called for every navigation case
      */
@@ -289,17 +214,9 @@ public class UINavigationBean implements Serializable {
                 navigationData.getMainContentFormStyle());
         RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
         RequestContext.getCurrentInstance().update("maincontentid-j_id1");
-        RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+        RequestContext.getCurrentInstance().update(LEFT_MENU_ID);
         RequestContext.getCurrentInstance().update(
                 "navigationButtonsForm-btnsDiv");
-    }
-
-    private int getPageCount() {
-        return getWizardForm().getWizardPageList().size();
-    }
-
-    private int getTopicCount(String pageID) {
-        return getWizardForm().getWizardPageById(pageID).getTopicList().size();
     }
 
     /**
@@ -337,7 +254,7 @@ public class UINavigationBean implements Serializable {
                 .getTopicList().get(0).getId());
         // create new menu for page
         initMenu();
-        RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
+        RequestContext.getCurrentInstance().update(DATE_STUB_ID);
     }
 
     /**
@@ -370,13 +287,7 @@ public class UINavigationBean implements Serializable {
         createQuestions();
     }
 
-    public NavigationData getNavigationData() {
-        return navigationData;
-    }
 
-    public void setNavigationData(NavigationData navigationData) {
-        this.navigationData = navigationData;
-    }
 
     /**
      * Method used as action attribute for NEXT button
@@ -495,6 +406,118 @@ public class UINavigationBean implements Serializable {
         }
     }
 
+    public void changeStyleOfCurrentTopicButton(String styleClass) {
+        List<WizardTopic> topicList = getWizardForm().getWizardPageById(
+                navigationData.getCurrentPageID()).getTopicList();
+        WizardTopic topic;
+        MenuItem item;
+        for (int topicIndex = 0; topicIndex < topicList.size(); topicIndex++) {
+            topic = topicList.get(topicIndex);
+            item = (MenuItem) navigationData.getMenuModel().getContents()
+                    .get(topicIndex);
+            if (topic.getId().equals(navigationData.getCurrentTopicID())) {
+                item.setStyleClass(styleClass);
+            } else {
+                if (topic.getTopicNumber() > getWizardForm().getTopicLimit()) {
+                    item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
+                } else {
+                    item.setStyleClass("");
+                }
+            }
+        }
+    }
+    /**
+     * This method is used to insert values to our left menu. Values are
+     * extracted from currentTopicIDs list. If we know topic's ID, we can select
+     * topic's title. Method will be called every time when user change page on
+     * breadcrumb
+     */
+    private void initMenu() {
+        // clearing current topics id's. It needed for navigation.
+
+        navigationData.getAllTopicsIdOnCurrentPage().clear();
+        navigationData.getMenuModel().getContents().clear();
+        topicMenuItemList.clear();
+
+        // now we start create new topics for page
+        facesContext = FacesContext.getCurrentInstance();
+        // get elContext (super container for EL expressions)
+        elContext = facesContext.getELContext();
+        // get expression factory for creating EL expressions in following cycle
+        expressionFactory = facesContext.getApplication()
+                .getExpressionFactory();
+        // Iterating over all pages in model
+        for (int i = 0; i < getTopicCount(navigationData.getCurrentPageID()); i++) {
+            // retrieve topicID from navigation data
+            String topicID = getWizardForm()
+                    .getWizardPageById(navigationData.getCurrentPageID())
+                    .getTopicList().get(i).getId();
+            // get topics title by id
+            String topicTitle = getWizardForm().getWizardTopicById(topicID)
+                    .getGroupTitle();
+            // add title to topic titles
+            // creating menu item
+            MenuItem item = new MenuItem();
+            MethodExpression elExpression;
+            // set titles for our menu items
+            item.setValue(topicTitle);
+            item.setId(topicID);
+            // creating EL expressions for all items in menu
+            elExpression = expressionFactory.createMethodExpression(elContext,
+                    "#{uiNavigationBean.changeCurrentTopic(\"" + topicID
+                            + "\")}", void.class, new Class[]{String.class});
+            // set elExpression on item action attribute
+            item.setActionExpression(elExpression);
+            topicMenuItemList.add(item);
+            navigationData.getMenuModel().addMenuItem(item);
+        }
+        fillAllTopicsIdOnPage();
+        setMenuItemInTopicsOnCurrentPage();
+        changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
+        // after initialization menu questions creator method called
+        createQuestions();
+    }
+
+    /**
+     * Method used for dynamic initialization breadcrumb component for template
+     * form
+     */
+    private void initBreadcrumb() {
+        // get facesContext for current response
+        facesContext = FacesContext.getCurrentInstance();
+        // get elContext (super container for EL expressions)
+        elContext = facesContext.getELContext();
+        // get expression factory for creating EL expressions in following cycle
+        expressionFactory = facesContext.getApplication()
+                .getExpressionFactory();
+        // Iterating over all pages in model
+        for (int i = 0; i < getPageCount(); i++) {
+            // creating menu item
+            MenuItem item = new MenuItem();
+            MethodExpression elExpression;
+            WizardPage wizardPage;
+            // get page from navigationData by index
+            wizardPage = getWizardForm().getWizardPageList().get(i);
+            // set titles for breadcrumb items
+            item.setValue(wizardPage.getPageName());
+            item.setId(wizardPage.getId());
+            // creating EL expressions for all items in breadcrumb
+            elExpression = expressionFactory.createMethodExpression(
+                    elContext,
+                    "#{uiNavigationBean.changeCurrentPage(\""
+                            + wizardPage.getId() + "\")}", void.class,
+                    new Class[]{String.class});
+            // set elExpression on item action attribute
+            item.setActionExpression(elExpression);
+            pageMenuItemList.add(item);
+            navigationData.getBreadcrumbModel().addMenuItem(item);
+        }
+        fillAllPagesIdOnForm();
+        setMenuItemInPagesOnCurrentForm();
+        changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
+        initMenu();
+    }
+
     private void commitAnswers(List<WizardQuestion> wizardQuestionList) {
         for (WizardQuestion question : wizardQuestionList) {
             if (question.getAnswer() == null
@@ -534,26 +557,7 @@ public class UINavigationBean implements Serializable {
         return wizardTopic.getWizardQuestionList();
     }
 
-    public void changeStyleOfCurrentTopicButton(String styleClass) {
-        List<WizardTopic> topicList = getWizardForm().getWizardPageById(
-                navigationData.getCurrentPageID()).getTopicList();
-        WizardTopic topic;
-        MenuItem item;
-        for (int topicIndex = 0; topicIndex < topicList.size(); topicIndex++) {
-            topic = topicList.get(topicIndex);
-            item = (MenuItem) navigationData.getMenuModel().getContents()
-                    .get(topicIndex);
-            if (topic.getId().equals(navigationData.getCurrentTopicID())) {
-                item.setStyleClass(styleClass);
-            } else {
-                if (topic.getTopicNumber() > getWizardForm().getTopicLimit()) {
-                    item.setStyleClass(WizardComponentStyles.STYLE_MENU_ITEM_DISABLED);
-                } else {
-                    item.setStyleClass("");
-                }
-            }
-        }
-    }
+
 
     public void executeAllRules() {
         boolean isEverChanged = false;
@@ -655,14 +659,14 @@ public class UINavigationBean implements Serializable {
         for (MenuItem menuItem : pageMenuItemList) {
             navigationData.getBreadcrumbModel().addMenuItem(menuItem);
         }
-        RequestContext.getCurrentInstance().update("dateStubb-breadcrumb");
+        RequestContext.getCurrentInstance().update(DATE_STUB_ID);
     }
 
     private void updateLeftMenuAfterRulesAreExecuted() {
         for (MenuItem menuItem : topicMenuItemList) {
             navigationData.getMenuModel().addMenuItem(menuItem);
         }
-        RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+        RequestContext.getCurrentInstance().update(LEFT_MENU_ID);
     }
 
     private MenuItem findMenuItemForWizardPage(String pageID) {
@@ -768,20 +772,18 @@ public class UINavigationBean implements Serializable {
         getWizardForm().setTopicLimit(topicNumber);
         if (moveTopicLimit) {
             changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
-            RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+            RequestContext.getCurrentInstance().update(LEFT_MENU_ID);
             if (movePageLimit) {
                 changeStyleOfCurrentPageButton(WizardComponentStyles.STYLE_PAGE_BUTTON_SELECTED);
                 RequestContext.getCurrentInstance().update(
-                        "dateStubb-breadcrumb");
+                        DATE_STUB_ID);
             }
             RequestContext.getCurrentInstance().execute(
                     "dialogDependentQuestion.show()");
         }
     }
 
-    private WizardForm getWizardForm() {
-        return navigationData.getWizardForm();
-    }
+
 
     @PreDestroy
     public void clearFiles() {
@@ -796,11 +798,5 @@ public class UINavigationBean implements Serializable {
         }
     }
 
-    public TimeHandler getTimeHandler() {
-        return timeHandler;
-    }
 
-    public void setTimeHandler(TimeHandler timeHandler) {
-        this.timeHandler = timeHandler;
-    }
 }

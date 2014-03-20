@@ -22,14 +22,16 @@ public class UIRestoreViewListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
+        //NOP
     }
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        ResponseStateManager rsm = RenderKitUtils.getResponseStateManager(event.getFacesContext(), DYNAMIC_ACTIONS_RENDERKIT);
-        HttpServletRequest httpRequest = (HttpServletRequest) event.getFacesContext().getExternalContext().getRequest();
+        FacesContext context = event.getFacesContext();
+        ResponseStateManager rsm = RenderKitUtils.getResponseStateManager(context, DYNAMIC_ACTIONS_RENDERKIT);
+        HttpServletRequest httpRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 
-        Object[] rawState = (Object[]) rsm.getState(event.getFacesContext(), httpRequest.getRequestURI().replaceFirst(httpRequest.getContextPath(), "").split("\\?")[0]);
+        Object[] rawState = (Object[]) rsm.getState(context, httpRequest.getRequestURI().replaceFirst(httpRequest.getContextPath(), "").split("\\?")[0]);
         if (rawState == null) {
             return;
         }
@@ -44,6 +46,10 @@ public class UIRestoreViewListener implements PhaseListener {
             return;
         }
 
+        updateComponent(event, savedActions);
+    }
+
+    private void updateComponent(PhaseEvent event, List<Object> savedActions) {
         for (Iterator<Object> iterator = savedActions.iterator(); iterator.hasNext(); ) {
             Object object = iterator.next();
             ComponentStruct action = new ComponentStruct();
