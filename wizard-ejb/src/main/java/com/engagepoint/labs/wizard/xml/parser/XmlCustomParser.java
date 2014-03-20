@@ -8,7 +8,6 @@ package com.engagepoint.labs.wizard.xml.parser;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.export.QuestionaireFormConverter;
 import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
 import super_binding.QuestionnaireForms;
 
 import javax.xml.XMLConstants;
@@ -16,6 +15,7 @@ import javax.xml.bind.*;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,6 +28,8 @@ import java.util.Date;
 public class XmlCustomParser {
 
     private static final Logger LOGGER = Logger.getLogger(XmlCustomParser.class.getName());
+    public static final String DATE_FOR_EXPORT_PATTERN = "dd.MM.yyyy_HH-mm-ss";
+    public static final String EXPORT_FILE_NAME_PATTERN = "/%s_answers_%s";
 
     public QuestionnaireForms parseXML(String XMLpath) throws Exception {
         // Selecting XSD schema from our Resources package (wizard-ejb/src/main/resources)
@@ -67,7 +69,6 @@ public class XmlCustomParser {
             return forms;
         } else {
             QuestionnaireForms forms = (QuestionnaireForms) unmarshaller
-                    //new File(getClass().getResource(XMLpath).getFile())
                     .unmarshal(new File(XMLpath));
             return forms;
         }
@@ -77,22 +78,27 @@ public class XmlCustomParser {
     public File parseWizardFormToXml(WizardForm form) {
         QuestionaireFormConverter converter = new QuestionaireFormConverter();
         QuestionnaireForms formsToMarshall = converter.convert(form);
-        File exportFile = new File(getExportFileName(form));
+        File exportFile=null;
         try {
+            exportFile = File.createTempFile(getExportFileName(form),".xml");
             Marshaller marshaller = JAXBContext.newInstance(QuestionnaireForms.class).createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(formsToMarshall, exportFile);
         } catch (JAXBException e) {
             LOGGER.warn("JAXBException", e);
+        } catch (IOException e) {
+            LOGGER.warn("FILE IO EXCEPTION!!!");
+        }finally {
+            if(exportFile==null){
+                exportFile = new File("FAILED.TXT");
+            }
         }
         return exportFile;
     }
 
     private String getExportFileName(WizardForm form) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH-mm-ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FOR_EXPORT_PATTERN);
         Date date = new Date();
-        return String.format("/%s_answers_%s.xml", form.getFormName(), dateFormat.format(date));
+        return String.format(EXPORT_FILE_NAME_PATTERN, form.getFormName(), dateFormat.format(date));
     }
-
-
 }
