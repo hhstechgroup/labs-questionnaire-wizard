@@ -122,9 +122,6 @@
                                                                                                             name="range">
                                                                                                         <xs:complexType>
                                                                                                             <xs:attribute
-                                                                                                                    type="xs:string"
-                                                                                                                    name="value"/>
-                                                                                                            <xs:attribute
                                                                                                                     type="xs:int"
                                                                                                                     name="range-begin"/>
                                                                                                             <xs:attribute

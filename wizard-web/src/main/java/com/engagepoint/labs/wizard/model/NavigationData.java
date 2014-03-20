@@ -139,7 +139,7 @@ public class NavigationData implements Serializable {
         wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
         wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
                 .getTopicNumber());
-        renderBreadCrumb=true;
+        renderBreadCrumb = true;
     }
 
     public boolean setCurrentTopicIDtoNext() {
@@ -487,8 +487,6 @@ public class NavigationData implements Serializable {
     private Dialog getDialog() {
         OutputLabel message = new OutputLabel();
         message.setValue("Some required questions have no answers !");
-        OutputLabel header = new OutputLabel();
-        header.setValue("Validation Error");
         Dialog dialog = new Dialog();
         dialog.setHeader("Validation Error");
         dialog.setId("dialog");
@@ -561,10 +559,10 @@ public class NavigationData implements Serializable {
     }
 
     public boolean isRenderBreadCrumb() {
-	return renderBreadCrumb;
+        return renderBreadCrumb;
     }
 
     public void setRenderBreadCrumb(boolean renderBreadCrumb) {
-	this.renderBreadCrumb = renderBreadCrumb;
+        this.renderBreadCrumb = renderBreadCrumb;
     }
 }
