@@ -317,7 +317,7 @@ public class ComponentValidator implements Validator {
         String sourcePath;
         try {
             sourcePath = getClass().getClassLoader().getResource(".").getPath();
-        } catch (NullPointerException npe){
+        } catch (Exception npe){
             sourcePath = "\\";
             LOGGER.warn("NullPointerException was caught,sourcePath will set to '\\'  ", npe);
         }

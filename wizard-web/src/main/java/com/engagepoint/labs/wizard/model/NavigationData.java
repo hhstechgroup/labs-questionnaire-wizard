@@ -39,7 +39,6 @@ public class NavigationData implements Serializable {
 
     public static final String DIALOG = "dialog";
     public static final String MAIN_CONTENTID_SCROLL = "maincontentid-scroll";
-    public static final String MAIN_CONTENTID_NON_SCROLL = "maincontentid-non-scroll";
     public static final String DIALOG_DEPEND_QUEST = "dialogDependentQuestion";
     private static final Logger LOGGER = Logger.getLogger(NavigationData.class.getName());
     private static final long serialVersionUID = -3879860102027220266L;

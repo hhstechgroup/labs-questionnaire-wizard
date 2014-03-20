@@ -175,7 +175,7 @@ public class UIComponentGenerator {
                                 createValueExpression(valueGetterQuery,
                                         Boolean.class));
                         checkbox.addClientBehavior("valueChange",
-                                getAjaxBehavior(question));
+                                getAjaxBehavior());
                         cell.getChildren().add(checkbox);
                         grid.getChildren().add(cell);
                         checkBoxCellNumber++;
@@ -276,7 +276,7 @@ public class UIComponentGenerator {
         Slider slider = new Slider();
         slider.setFor("sliderinputtext");
         slider.setAnimate(false);
-        slider.addClientBehavior("valueChange", getAjaxBehavior(question));
+        slider.addClientBehavior("valueChange", getAjaxBehavior());
         slider.setStyle("width: 400px;");
         slider.setDisplay("displayRange" + question.getId());
         slider.setStyleClass("ui-slider-with-range");
@@ -312,7 +312,7 @@ public class UIComponentGenerator {
         selectOneListBox.setStyle("height:" + height + "px");
         selectOneListBox.getChildren().add(getSelectItems(optionsList));
         selectOneListBox.addValidator(getComponentValidator(question));
-        selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior(question));
+        selectOneListBox.addClientBehavior("valueChange", getAjaxBehavior());
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -328,7 +328,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         inputText.addValidator(getComponentValidator(question));
-        inputText.addClientBehavior("valueChange", getAjaxBehavior(question));
+        inputText.addClientBehavior("valueChange", getAjaxBehavior());
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             inputText.setValue(defaultAnswer.getValue().toString());
@@ -343,7 +343,7 @@ public class UIComponentGenerator {
 
         // Creating Listener for Validation and AJAX ClientBehavior
         inputTextarea.addValidator(getComponentValidator(question));
-        inputTextarea.addClientBehavior("valueChange", getAjaxBehavior(question));
+        inputTextarea.addClientBehavior("valueChange", getAjaxBehavior());
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -368,7 +368,7 @@ public class UIComponentGenerator {
         // Creating Listener for Validation and AJAX ClientBehavior
         selectOneMenu.getChildren().add(getSelectItems(optionsList));
         selectOneMenu.addValidator(getComponentValidator(question));
-        selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior(question));
+        selectOneMenu.addClientBehavior("valueChange", getAjaxBehavior());
 
         if (defaultAnswer != null && answer == null) {
             selectOneMenu.setValue(defaultAnswer.getValue());
@@ -388,7 +388,7 @@ public class UIComponentGenerator {
         checkbox.getChildren().add(getSelectItems(optionsList));
         checkbox.setLayout("pageDirection");
         checkbox.addValidator(getComponentValidator(question));
-        checkbox.addClientBehavior("valueChange", getAjaxBehavior(question));
+        checkbox.addClientBehavior("valueChange", getAjaxBehavior());
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
             checkbox.setValue(defaultAnswer.getValue());
@@ -406,8 +406,8 @@ public class UIComponentGenerator {
         dateCalendar.setStyle("padding:1px");
         dateCalendar.setNavigator(true);
         dateCalendar.setShowOn("both");
-        dateCalendar.addClientBehavior("valueChange", getAjaxBehavior(question));
-        dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior(question));
+        dateCalendar.addClientBehavior("valueChange", getAjaxBehavior());
+        dateCalendar.addClientBehavior("dateSelect", getAjaxBehavior());
         dateCalendar.addValidator(getComponentValidator(question));
         dateCalendar.setConverter(new ComponentValueConverter(question));
 
@@ -431,7 +431,7 @@ public class UIComponentGenerator {
         timeCalendar.setStyle("padding:1px");
         timeCalendar.setShowOn("both");
         timeCalendar.addClientBehavior("valueChange",
-                getTimeAjaxBehavior(question));
+                getTimeAjaxBehavior());
 
         // Showing Answer or Default Answer
         if (defaultAnswer != null && answer == null) {
@@ -451,9 +451,8 @@ public class UIComponentGenerator {
         return timeCalendar;
     }
 
-    private AjaxBehavior getTimeAjaxBehavior(WizardQuestion question) {
+    private AjaxBehavior getTimeAjaxBehavior() {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
-
         ajaxBehavior.setPartialSubmit(true);
         return ajaxBehavior;
     }
@@ -507,7 +506,7 @@ public class UIComponentGenerator {
         return message;
     }
 
-    private AjaxBehavior getAjaxBehavior(WizardQuestion question) {
+    private AjaxBehavior getAjaxBehavior() {
         AjaxBehavior ajaxBehavior = new AjaxBehavior();
         ajaxBehavior.setUpdate("@(.nonRange)");
         ajaxBehavior.setAsync(true);
