@@ -444,6 +444,8 @@ public class UIComponentGenerator {
                 + "\").currentTimeQuestionValue}";
         timeCalendar.setValueExpression("value",
                 createValueExpression(valueGetterQuery, Date.class));
+        
+        timeCalendar.setReadonlyInput(true);
 
         timeHandler.getQuestions().put(timeID, (TimeQuestion) question);
         return timeCalendar;

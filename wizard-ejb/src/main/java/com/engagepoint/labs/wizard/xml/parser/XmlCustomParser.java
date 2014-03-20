@@ -87,7 +87,7 @@ public class XmlCustomParser {
         } catch (JAXBException e) {
             LOGGER.warn("JAXBException", e);
         } catch (IOException e) {
-            LOGGER.warn("FILE IO EXCEPTION!!!");
+            LOGGER.warn("FILE IO EXCEPTION!!!", e);
         }finally {
             if(exportFile==null){
                 exportFile = new File("FAILED.TXT");
