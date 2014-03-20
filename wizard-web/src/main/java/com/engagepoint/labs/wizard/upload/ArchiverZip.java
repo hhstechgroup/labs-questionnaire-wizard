@@ -12,7 +12,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class ArchiverZip {
     private static final Logger LOGGER = Logger.getLogger(ArchiverZip.class);
-    public static final String ZIP_FILE_NAME = "/Wizard_answer" + Math.random() + ".zip";
+    public static File ZIP_FILE;
     public static final int BUFER_SIZE = 1024 * 1024;
 
     private ArchiverZip() {
@@ -22,7 +22,8 @@ public class ArchiverZip {
         FileOutputStream zipFileOUT = null;
         ZipOutputStream zipOutStream = null;
         try {
-            zipFileOUT = new FileOutputStream(ZIP_FILE_NAME);
+            ZIP_FILE = File.createTempFile("zip"+Math.random(),".zip");
+            zipFileOUT = new FileOutputStream(ZIP_FILE);
             zipOutStream = new ZipOutputStream(zipFileOUT);
             for (File file : files) {
                 addToZipFile(file, zipOutStream);
@@ -30,6 +31,8 @@ public class ArchiverZip {
 
         } catch (FileNotFoundException e) {
             LOGGER.warn("ZIP IO EXCEPTION!!! Error when adding files to zip!", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (null != zipOutStream) {

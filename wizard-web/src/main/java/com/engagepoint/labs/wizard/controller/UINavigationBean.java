@@ -432,7 +432,7 @@ public class UINavigationBean implements Serializable {
         ArchiverZip.addFilesToZip(filesForArchive);
         try {
             FileInputStream zipFileStream = new FileInputStream(
-                    ArchiverZip.ZIP_FILE_NAME);
+                    ArchiverZip.ZIP_FILE);
             fileDownloadController.setFile(new DefaultStreamedContent(
                     zipFileStream, "application/zip", "answer.zip"));
         } catch (FileNotFoundException e) {
@@ -786,7 +786,7 @@ public class UINavigationBean implements Serializable {
     @PreDestroy
     public void clearFiles() {
         if (filesForArchive != null) {
-            filesForArchive.add(new File(ArchiverZip.ZIP_FILE_NAME));
+            filesForArchive.add(ArchiverZip.ZIP_FILE);
             for (File file : filesForArchive) {
                 file.delete();
             }
