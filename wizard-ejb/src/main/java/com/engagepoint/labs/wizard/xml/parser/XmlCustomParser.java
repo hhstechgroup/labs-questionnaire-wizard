@@ -58,22 +58,6 @@ public class XmlCustomParser {
         unmarshaller.setEventHandler(new ValidationEventHandler() {
             @Override
             public boolean handleEvent(ValidationEvent event) {
-                LOGGER.info("\n EVENT");
-                LOGGER.info("SEVERITY: " + event.getSeverity());
-                LOGGER.info("MESSAGE: " + event.getMessage());
-                LOGGER.info("LINKED EXCEPTION: "
-                        + event.getLinkedException());
-                LOGGER.info("LOCATOR");
-                LOGGER.info(" LINE NUMBER: "
-                        + event.getLocator().getLineNumber());
-                LOGGER.info(" COLUMN NUMBER: "
-                        + event.getLocator().getColumnNumber());
-                LOGGER.info(" OFFSET: "
-                        + event.getLocator().getOffset());
-                LOGGER.info(" OBJECT: "
-                        + event.getLocator().getObject());
-                LOGGER.info(" NODE: " + event.getLocator().getNode());
-                LOGGER.info(" URL: " + event.getLocator().getURL());
                 return true;
             }
         });
