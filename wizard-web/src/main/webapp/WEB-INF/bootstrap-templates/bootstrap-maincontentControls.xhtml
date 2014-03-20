@@ -7,7 +7,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" markupType="html5"
 	id="navigationButtonsForm"
 	template="../WEB-INF/bootstrap-templates/bootstrap-template.xhtml">
-	<h:panelGroup id="btnsDiv" layout="block">
+	<h:panelGroup id="btnsDiv" layout="block"
+                  style="height: 15%;width: 90%;position: absolute;bottom: 0%;background: #ffffff;">
 		<p:commandButton value="NEXT" id="buttonid"
 			rendered="#{!navigationData.finishButtonRendered}"
 			action="#{uiNavigationBean.nextButtonClick}"
