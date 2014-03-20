@@ -32,7 +32,7 @@ public class ArchiverZip {
         } catch (FileNotFoundException e) {
             LOGGER.warn("ZIP IO EXCEPTION!!! Error when adding files to zip!", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("IOException", e);
         } finally {
             try {
                 if (null != zipOutStream) {

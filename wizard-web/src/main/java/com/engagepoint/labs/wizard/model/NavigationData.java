@@ -38,6 +38,8 @@ import java.util.Map;
 public class NavigationData implements Serializable {
 
     public static final String DIALOG = "dialog";
+    public static final String MAIN_CONTENTID_SCROLL = "maincontentid-scroll";
+    public static final String MAIN_CONTENTID_NON_SCROLL = "maincontentid-non-scroll";
     public static final String DIALOG_DEPEND_QUEST = "dialogDependentQuestion";
     private static final Logger LOGGER = Logger.getLogger(NavigationData.class.getName());
     private static final long serialVersionUID = -3879860102027220266L;
@@ -73,7 +75,7 @@ public class NavigationData implements Serializable {
     private boolean previousButtonRendered;
     private HtmlForm sliderForm;
     private String mainContentFormStyle;
-    private HtmlPanelGroup scrollablePanelGroup;
+
     private boolean renderBreadCrumb;
 
 
@@ -348,7 +350,7 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
-        scrollablePanelGroup = new HtmlPanelGroup();
+        HtmlPanelGroup scrollablePanelGroup = new HtmlPanelGroup();
         scrollablePanelGroup.setLayout("block");
         scrollablePanelGroup.setId("scrollableDiv");
         scrollablePanelGroup.setStyle("height:87%");
@@ -379,7 +381,7 @@ public class NavigationData implements Serializable {
         try {
             wizardDocument = xmlController.readAllDeafultXmlFiles();
         } catch (Exception ex) {
-            LOGGER.warn("SAX Exception", ex);
+            LOGGER.warn("Can't parse xml file", ex);
         }
         for (WizardForm wForm : wizardDocument.getFormList()) {
             wizardFormMap.put(wForm.getFormName(), wForm.getId());
@@ -501,12 +503,12 @@ public class NavigationData implements Serializable {
     public String getMainContentFormStyle() {
         if (panelList != null) {
             if (panelList.size() > 4) {
-                setMainContentFormStyle("maincontentid-scroll");
+                setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
             } else {
                 setMainContentFormStyle("maincontentid-non-scroll");
             }
         } else {
-            setMainContentFormStyle("maincontentid-non-scroll");
+            setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
         }
         return mainContentFormStyle;
     }
