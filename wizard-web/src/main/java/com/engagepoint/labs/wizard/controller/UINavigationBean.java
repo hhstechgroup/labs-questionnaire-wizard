@@ -265,33 +265,33 @@ public class UINavigationBean implements Serializable {
      * Create questions, method must be called for every navigation case
      */
     public void createQuestions() {
-	UIComponentGenerator generator = new UIComponentGenerator();
-	WizardForm wizardForm = getWizardForm();
-	WizardPage wizardPage = wizardForm.getWizardPageById(navigationData
-		.getCurrentPageID());
-	WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData
-		.getCurrentTopicID());
-	Map<WizardQuestion, Boolean> questionsMap = new LinkedHashMap<>();
-	for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
-	    questionsMap.put(question, isQuestionParent(question));
-	}
-	List<UIComponent> panelList = generator.getPanelList(questionsMap,
-		wizardPage.getPageNumber(), wizardTopic.getTopicNumber(), this,
-		gridHandler, timeHandler);
-	navigationData.setPanelList(panelList);
-	navigationData.getPanelGrid().getChildren().clear();
-	for (UIComponent panel : navigationData.getPanelList()) {
-	    navigationData.getPanelGrid().getChildren().add(panel);
-	}
-	HtmlForm form = navigationData.getMainContentForm();
-	UIComponent scrollableDiv = form.findComponent("scrollableDiv");
-	scrollableDiv.getAttributes().put("styleClass",
-	navigationData.getMainContentFormStyle());
-	RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
-	RequestContext.getCurrentInstance().update("maincontentid-j_id1");
-	RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
-	RequestContext.getCurrentInstance().update(
-		"navigationButtonsForm-btnsDiv");
+        UIComponentGenerator generator = new UIComponentGenerator();
+        WizardForm wizardForm = getWizardForm();
+        WizardPage wizardPage = wizardForm.getWizardPageById(navigationData
+                .getCurrentPageID());
+        WizardTopic wizardTopic = wizardForm.getWizardTopicById(navigationData
+                .getCurrentTopicID());
+        Map<WizardQuestion, Boolean> questionsMap = new LinkedHashMap<>();
+        for (WizardQuestion question : wizardTopic.getWizardQuestionList()) {
+            questionsMap.put(question, isQuestionParent(question));
+        }
+        List<UIComponent> panelList = generator.getPanelList(questionsMap,
+                wizardPage.getPageNumber(), wizardTopic.getTopicNumber(), this,
+                gridHandler, timeHandler);
+        navigationData.setPanelList(panelList);
+        navigationData.getPanelGrid().getChildren().clear();
+        for (UIComponent panel : navigationData.getPanelList()) {
+            navigationData.getPanelGrid().getChildren().add(panel);
+        }
+        HtmlForm form = navigationData.getMainContentForm();
+        UIComponent scrollableDiv = form.findComponent("scrollableDiv");
+        scrollableDiv.getAttributes().put("styleClass",
+                navigationData.getMainContentFormStyle());
+        RequestContext.getCurrentInstance().update("maincontentid-scrollableDiv");
+        RequestContext.getCurrentInstance().update("maincontentid-j_id1");
+        RequestContext.getCurrentInstance().update("leftmenuid-leftMenu");
+        RequestContext.getCurrentInstance().update(
+                "navigationButtonsForm-btnsDiv");
     }
 
     private int getPageCount() {

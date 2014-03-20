@@ -123,6 +123,7 @@ public class NavigationData implements Serializable {
         scrollablePanelGroup = new HtmlPanelGroup();
         scrollablePanelGroup.setLayout("block");
         scrollablePanelGroup.setId("scrollableDiv");
+        scrollablePanelGroup.setStyle("height:87%");
         scrollablePanelGroup.getChildren().add(panelGrid);
         mainContentForm.getChildren().add(scrollablePanelGroup);
         mainContentForm.getChildren().add(getDialog());
