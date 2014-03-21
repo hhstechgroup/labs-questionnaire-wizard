@@ -49,6 +49,21 @@ When the user clicks on element with id/name/className 'navigationButtonsForm-bu
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonidprev'
 Then in 'maincontentid-choosefromlist_question' drop-down is selected text 'Option 1' option
 
+Scenario: GRID
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the checkbox id/name/className 'maincontentid-gridcell_grid_question_4_input' is unchecked make it checked
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonidprev'
+Then checkbox with id 'maincontentid-gridcell_grid_question_4_input' is checked
+
+Scenario: DATE
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user fills 'maincontentid-date_question_input' field with '12-12-2014'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonidprev'
+Then element 'maincontentid-date_question_input' has attribute value '12-12-2014'
+When the user fills 'maincontentid-date_question_input' field with '2222222222222'
 
 Scenario: return to default page
 When clicks on element with id/name/className 'logo'
