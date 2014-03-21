@@ -190,14 +190,16 @@ public class UIComponentGenerator {
 
     private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlPanelGroup panelGroup = new HtmlPanelGroup();
-        panelGroup.setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
-        panelGroup.setStyleClass("ui-panel-column");
+        //panelGroup.setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
+        //panelGroup.setStyleClass("ui-panel-column");
         panelGroup.setStyleClass("nonRange");
         //panelGroup.setStyleClass("ui-widget-content");
         panelGroup.setLayout("block");
         panelGroup.setId("panelid" + question.getId());
         Range range = getSliderPositions(question, answer, defaultAnswer);
-        panelGroup.getChildren().add(getLabel(question));
+        OutputLabel outputLabel = getLabel(question);
+        ((Button)outputLabel.getChildren().get(0)).setStyle("position: absolute; left:auto; right:70px; bottom: auto; padding: 1px");
+        panelGroup.getChildren().add(outputLabel);
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getOutputTextForSlider(question, range));
         panelGroup.getChildren().add(getSliderOutputLabelBegin(question));
@@ -445,7 +447,7 @@ public class UIComponentGenerator {
                 + "\").currentTimeQuestionValue}";
         timeCalendar.setValueExpression("value",
                 createValueExpression(valueGetterQuery, Date.class));
-        
+
         timeCalendar.setReadonlyInput(true);
 
         timeHandler.getQuestions().put(timeID, (TimeQuestion) question);
@@ -476,7 +478,7 @@ public class UIComponentGenerator {
         tooltip.setTitle(question.getHelpText());
         tooltip.setIcon("ui-icon-help");
         tooltip.setStyleClass("custom");
-        tooltip.setStyle("position: absolute; left: auto; right: 15px; bottom: auto; padding: 1px");
+        tooltip.setStyle("position: absolute; left:auto; right:15px; bottom: auto; padding: 1px");
         tooltip.setDisabled(true);
         return tooltip;
     }

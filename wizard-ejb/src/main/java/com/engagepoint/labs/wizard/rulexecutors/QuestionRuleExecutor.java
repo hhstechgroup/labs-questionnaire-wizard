@@ -86,9 +86,7 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
 
     private void showQuestionPanel(UIPanel panel) {
         if (panel instanceof HtmlPanelGroup) {
-          //  panel.setRendered(true);
-            ((HtmlPanelGroup) panel).setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
-           ((HtmlPanelGroup) panel).setStyle("visibility:visible");
+            ((HtmlPanelGroup) panel).setStyle("visibility:visible");
         } else {
             ((Panel) panel).setVisible(true);
         }
@@ -98,8 +96,6 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
 
     private void hideQuestionPanel(UIPanel panel) {
         if (panel instanceof HtmlPanelGroup) {
-           // panel.setRendered(false);
-            ((HtmlPanelGroup) panel).setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
             ((HtmlPanelGroup) panel).setStyle("visibility:hidden");
         } else {
             ((Panel) panel).setVisible(false);
