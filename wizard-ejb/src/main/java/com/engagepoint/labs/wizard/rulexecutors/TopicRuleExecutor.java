@@ -18,78 +18,80 @@ public class TopicRuleExecutor extends RuleExecutorAbstract {
     private boolean isAlreadyShowing;
 
     public TopicRuleExecutor(WizardForm form) {
-	this.form = form;
+        this.form = form;
     }
 
     public MenuItem getMenuItem() {
-	return menuItem;
+        return menuItem;
     }
 
     public void setMenuItem(MenuItem menuItem) {
-	this.menuItem = menuItem;
+        this.menuItem = menuItem;
     }
 
     public WizardTopic getTopic() {
-	return topic;
+        return topic;
     }
 
     public void setTopic(WizardTopic topic) {
-	this.topic = topic;
+        this.topic = topic;
     }
 
     @Override
     public boolean renderedRule(String parentID, String[] expectedAnswer) {
-	boolean change = false;
-	boolean show = false;
-	WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
-	Value parentQuestionAnswer = parentQuestion.getAnswer();
-	if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
-		&& parentQuestionAnswer.getValue() != null) {
-	    switch (parentQuestionAnswer.getType()) {
-	    case STRING:
-		show = compareString(parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case DATE:
-		show = compareDateOrTime(parentQuestion.getQuestionType(),
-			parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case FILE:
-		show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case LIST:
-		show = compareList(parentQuestionAnswer, expectedAnswer);
-		break;
-	    case GRID:
-		GridQuestion gridQuestion = (GridQuestion) parentQuestion;
-		show = compareGrid(gridQuestion.getAnswerAsStrings(),
-			expectedAnswer);
-		break;
-	    }
-	}
-	if (show) {
-	    if (!isAlreadyShowing) {
-		change = true;
-	    }
-	    showTopic();
-	    isAlreadyShowing = true;
-	} else {
-	    if (isAlreadyShowing) {
-		change = true;
-	    }
-	    hideTopic();
-	    isAlreadyShowing = false;
-	}
-	return change;
+        boolean change = false;
+        boolean show = false;
+        WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
+        Value parentQuestionAnswer = parentQuestion.getAnswer();
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
+                && parentQuestionAnswer.getValue() != null) {
+            switch (parentQuestionAnswer.getType()) {
+                case STRING:
+                    show = compareString(parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case DATE:
+                    show = compareDateOrTime(parentQuestion.getQuestionType(),
+                            parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case FILE:
+                    show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case LIST:
+                    show = compareList(parentQuestionAnswer, expectedAnswer);
+                    break;
+                case GRID:
+                    GridQuestion gridQuestion = (GridQuestion) parentQuestion;
+                    show = compareGrid(gridQuestion.getAnswerAsStrings(),
+                            expectedAnswer);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (show) {
+            if (!isAlreadyShowing) {
+                change = true;
+            }
+            showTopic();
+            isAlreadyShowing = true;
+        } else {
+            if (isAlreadyShowing) {
+                change = true;
+            }
+            hideTopic();
+            isAlreadyShowing = false;
+        }
+        return change;
     }
 
     private void showTopic() {
-	menuItem.setRendered(true);
-	topic.setIgnored(false);
+        menuItem.setRendered(true);
+        topic.setIgnored(false);
     }
 
     private void hideTopic() {
-	menuItem.setRendered(false);
-	topic.setIgnored(true);
-	topic.resetTopic();
+        menuItem.setRendered(false);
+        topic.setIgnored(true);
+        topic.resetTopic();
     }
 }

@@ -19,88 +19,90 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
     private boolean isAlreadyShowing;
 
     public QuestionRuleExecutor(WizardForm form) {
-	this.form = form;
+        this.form = form;
     }
 
     public WizardQuestion getQuestion() {
-	return question;
+        return question;
     }
 
     public void setQuestion(WizardQuestion question) {
-	this.question = question;
+        this.question = question;
     }
 
     @Override
     public boolean renderedRule(String parentID, String[] expectedAnswer) {
-	boolean change = false;
-	boolean show = false;
-	WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
-	Value parentQuestionAnswer = parentQuestion.getAnswer();
-	String componentId = "maincontentid-panel_" + question.getId();
-	Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot()
-		.findComponent(componentId);
-	if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
-		&& parentQuestionAnswer.getValue() != null) {
-	    switch (parentQuestionAnswer.getType()) {
-	    case STRING:
-		show = compareString(parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case DATE:
-		show = compareDateOrTime(parentQuestion.getQuestionType(),
-			parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case FILE:
-		show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
-		break;
-	    case LIST:
-		show = compareList(parentQuestionAnswer, expectedAnswer);
-		break;
-	    case GRID:
-		GridQuestion gridQuestion = (GridQuestion) parentQuestion;
-		show = compareGrid(gridQuestion.getAnswerAsStrings(),
-			expectedAnswer);
-		break;
-	    }
-	}
-	if (show) {
-	    if (!isAlreadyShowing) {
-		change = true;
-	    }
-	    showQuestionPanel(panel);
-	    isAlreadyShowing = true;
-	} else {
-	    if (isAlreadyShowing) {
-		change = true;
-	    }
-	    hideQuestionPanel(panel);
-	    isAlreadyShowing = false;
-	}
-	return change;
+        boolean change = false;
+        boolean show = false;
+        WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
+        Value parentQuestionAnswer = parentQuestion.getAnswer();
+        String componentId = "maincontentid-panel_" + question.getId();
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot()
+                .findComponent(componentId);
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
+                && parentQuestionAnswer.getValue() != null) {
+            switch (parentQuestionAnswer.getType()) {
+                case STRING:
+                    show = compareString(parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case DATE:
+                    show = compareDateOrTime(parentQuestion.getQuestionType(),
+                            parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case FILE:
+                    show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
+                    break;
+                case LIST:
+                    show = compareList(parentQuestionAnswer, expectedAnswer);
+                    break;
+                case GRID:
+                    GridQuestion gridQuestion = (GridQuestion) parentQuestion;
+                    show = compareGrid(gridQuestion.getAnswerAsStrings(),
+                            expectedAnswer);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (show) {
+            if (!isAlreadyShowing) {
+                change = true;
+            }
+            showQuestionPanel(panel);
+            isAlreadyShowing = true;
+        } else {
+            if (isAlreadyShowing) {
+                change = true;
+            }
+            hideQuestionPanel(panel);
+            isAlreadyShowing = false;
+        }
+        return change;
     }
 
     private void showQuestionPanel(Panel panel) {
-	panel.setVisible(true);
-	question.setIgnored(false);
+        panel.setVisible(true);
+        question.setIgnored(false);
     }
 
     private void hideQuestionPanel(Panel panel) {
-	panel.setVisible(false);
-	question.setIgnored(true);
-	question.resetAnswer();
-	if (question.isRequired()) {
-	    question.setValid(false);
-	}
-	resetComponentValue();
+        panel.setVisible(false);
+        question.setIgnored(true);
+        question.resetAnswer();
+        if (question.isRequired()) {
+            question.setValid(false);
+        }
+        resetComponentValue();
     }
 
     private void resetComponentValue() {
-	UIOutput component = (UIOutput) FacesContext.getCurrentInstance()
-		.getViewRoot()
-		.findComponent("maincontentid-" + question.getId());
-	if (question.getDefaultAnswer() != null && component != null) {
-	    component.setValue(question.getDefaultAnswer().getValue());
-	} else if (component != null) {
-	    component.resetValue();
-	}
+        UIOutput component = (UIOutput) FacesContext.getCurrentInstance()
+                .getViewRoot()
+                .findComponent("maincontentid-" + question.getId());
+        if (question.getDefaultAnswer() != null && component != null) {
+            component.setValue(question.getDefaultAnswer().getValue());
+        } else if (component != null) {
+            component.resetValue();
+        }
     }
 }

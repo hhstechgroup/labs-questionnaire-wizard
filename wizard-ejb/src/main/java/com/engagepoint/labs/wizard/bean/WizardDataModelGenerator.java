@@ -159,6 +159,8 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new TextQuestion();
                 getTextDefaultAnswer(xmlQuestion, wizardQuestion);
                 break;
+            default:
+                break;
         }
         wizardQuestion.setId(xmlQuestion.getQuestionId());
         wizardQuestion.setTitle(xmlQuestion.getQuestionTitle());
@@ -290,45 +292,45 @@ public class WizardDataModelGenerator {
     }
 
     private GridQuestion getGridQuestion(Question xmlQuestion) {
-	GridQuestion gridQuestion = new GridQuestion();
-	List<String> rows = xmlQuestion.getGrid().getRows().getRow();
-	List<String> columns = xmlQuestion.getGrid().getColumns().getColumn();
-	boolean oneInRow = xmlQuestion.isGridOneInRow();
-	boolean oneInCol = xmlQuestion.isGridOneInCol();
-	gridQuestion.setId(xmlQuestion.getQuestionId());
-	gridQuestion.setColumns(columns);
-	gridQuestion.setRows(rows);
-	gridQuestion.setOneInCol(oneInCol);
-	gridQuestion.setOneInRow(oneInRow);
+        GridQuestion gridQuestion = new GridQuestion();
+        List<String> rows = xmlQuestion.getGrid().getRows().getRow();
+        List<String> columns = xmlQuestion.getGrid().getColumns().getColumn();
+        boolean oneInRow = xmlQuestion.isGridOneInRow();
+        boolean oneInCol = xmlQuestion.isGridOneInCol();
+        gridQuestion.setId(xmlQuestion.getQuestionId());
+        gridQuestion.setColumns(columns);
+        gridQuestion.setRows(rows);
+        gridQuestion.setOneInCol(oneInCol);
+        gridQuestion.setOneInRow(oneInRow);
 
-	if (checkDefaultAnswer(xmlQuestion)) {
-	    GridValue gridDefaults = new GridValue();
-	    GridValue gridAnswer = new GridValue();
-	    int answerSize = gridQuestion.getRows().size()
-		    * gridQuestion.getColumns().size();
-	    gridDefaults.setValue(new Grid(gridQuestion.getId(),
-		    defaultAnswers, answerSize));
-	    gridAnswer.setValue(new Grid(gridQuestion.getId(),
-		    defaultAnswers, answerSize));
-	    gridQuestion.setDefaultAnswer(gridDefaults);
-	    gridQuestion.setAnswer(gridAnswer);
-	    gridQuestion.setEmptyDefaultAnswer(false);
-	} else {
-	    GridValue gridDefaults = new GridValue();
-	    GridValue gridAnswer = new GridValue();
-	    int answerSize = gridQuestion.getRows().size()
-		    * gridQuestion.getColumns().size();
-	    defaultAnswers = GridQuestion.createGridEmptyAnswers(gridQuestion
-		    .getRows().size(), gridQuestion.getColumns().size());
-	    gridDefaults.setValue(new Grid(gridQuestion.getId(),
-		    defaultAnswers, answerSize));
-	    gridAnswer.setValue(new Grid(gridQuestion.getId(),
-		    defaultAnswers, answerSize));
-	    gridQuestion.setDefaultAnswer(gridDefaults);
-	    gridQuestion.setAnswer(gridAnswer);
-	    gridQuestion.setEmptyDefaultAnswer(true);
-	}
-	return gridQuestion;
+        if (checkDefaultAnswer(xmlQuestion)) {
+            GridValue gridDefaults = new GridValue();
+            GridValue gridAnswer = new GridValue();
+            int answerSize = gridQuestion.getRows().size()
+                    * gridQuestion.getColumns().size();
+            gridDefaults.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridAnswer.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridQuestion.setDefaultAnswer(gridDefaults);
+            gridQuestion.setAnswer(gridAnswer);
+            gridQuestion.setEmptyDefaultAnswer(false);
+        } else {
+            GridValue gridDefaults = new GridValue();
+            GridValue gridAnswer = new GridValue();
+            int answerSize = gridQuestion.getRows().size()
+                    * gridQuestion.getColumns().size();
+            defaultAnswers = GridQuestion.createGridEmptyAnswers(gridQuestion
+                    .getRows().size(), gridQuestion.getColumns().size());
+            gridDefaults.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridAnswer.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridQuestion.setDefaultAnswer(gridDefaults);
+            gridQuestion.setAnswer(gridAnswer);
+            gridQuestion.setEmptyDefaultAnswer(true);
+        }
+        return gridQuestion;
     }
 
     private boolean checkDefaultAnswer(Question xmlQuestion) {

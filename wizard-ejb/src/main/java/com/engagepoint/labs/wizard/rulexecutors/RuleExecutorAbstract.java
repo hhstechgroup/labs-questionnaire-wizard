@@ -20,78 +20,78 @@ public abstract class RuleExecutorAbstract {
     private WizardForm form;
     private boolean isAlreadyShowing;
     private static final Logger LOGGER = Logger
-	    .getLogger(RuleExecutorAbstract.class.getName());
+            .getLogger(RuleExecutorAbstract.class.getName());
 
     protected RuleExecutorAbstract() {
     }
 
     protected RuleExecutorAbstract(WizardForm form) {
-	this.form = form;
+        this.form = form;
     }
 
     public boolean isAlreadyShowing() {
-	return isAlreadyShowing;
+        return isAlreadyShowing;
     }
 
     public void setAlreadyShowing(boolean isAlreadyShowing) {
-	this.isAlreadyShowing = isAlreadyShowing;
+        this.isAlreadyShowing = isAlreadyShowing;
     }
 
     public WizardForm getForm() {
 
-	return form;
+        return form;
     }
 
     public void setForm(WizardForm form) {
-	this.form = form;
+        this.form = form;
     }
 
     public abstract boolean renderedRule(String parentID,
-	    String[] expectedAnswer);
+                                         String[] expectedAnswer);
 
     protected boolean compareString(Value parentQuestionAnswer,
-	    String stringToCompareWith) {
-	return parentQuestionAnswer.getValue().equals(stringToCompareWith);
+                                    String stringToCompareWith) {
+        return parentQuestionAnswer.getValue().equals(stringToCompareWith);
     }
 
     protected boolean compareDateOrTime(QType parentQuestionType,
-	    Value parentQuestionAnswer, String dateToCompareWith) {
-	SimpleDateFormat format;
-	boolean compareResult = false;
-	if (parentQuestionType.equals(QType.DATE)) {
-	    format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
-	} else {
-	    format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
-	}
-	try {
-	    Date date = format.parse(dateToCompareWith);
-	    compareResult = date.compareTo((Date) parentQuestionAnswer
-		    .getValue()) == 0;
-	} catch (ParseException e) {
-	    LOGGER.warn("ParseException", e);
-	}
-	return compareResult;
+                                        Value parentQuestionAnswer, String dateToCompareWith) {
+        SimpleDateFormat format;
+        boolean compareResult = false;
+        if (parentQuestionType.equals(QType.DATE)) {
+            format = new SimpleDateFormat(DateQuestion.DATE_FORMAT);
+        } else {
+            format = new SimpleDateFormat(TimeQuestion.TIME_FORMAT);
+        }
+        try {
+            Date date = format.parse(dateToCompareWith);
+            compareResult = date.compareTo((Date) parentQuestionAnswer
+                    .getValue()) == 0;
+        } catch (ParseException e) {
+            LOGGER.warn("ParseException", e);
+        }
+        return compareResult;
     }
 
     protected boolean compareFile(Value parentQuestionAnswer,
-	    String stringToCompareWith) {
-	return ("true".equals(stringToCompareWith) && (Integer) (parentQuestionAnswer
-		.getValue()) != 0);
+                                  String stringToCompareWith) {
+        return ("true".equals(stringToCompareWith) && (Integer) (parentQuestionAnswer
+                .getValue()) != 0);
     }
 
     protected boolean compareList(Value parentQuestionAnswer,
-	    String[] stringArrayToCompareWith) {
-	List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
-	return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
-		&& stringArrayToCompareWith.length == valueList.size();
+                                  String[] stringArrayToCompareWith) {
+        List<String> valueList = (List<String>) parentQuestionAnswer.getValue();
+        return valueList.containsAll(Arrays.asList(stringArrayToCompareWith))
+                && stringArrayToCompareWith.length == valueList.size();
     }
 
     protected boolean compareGrid(List<String> parentQuestionAnswer,
-	    String[] stringArrayToCompareWith) {
-	return parentQuestionAnswer.containsAll(Arrays
-		.asList(stringArrayToCompareWith))
-		&& stringArrayToCompareWith.length == parentQuestionAnswer
-			.size();
+                                  String[] stringArrayToCompareWith) {
+        return parentQuestionAnswer.containsAll(Arrays
+                .asList(stringArrayToCompareWith))
+                && stringArrayToCompareWith.length == parentQuestionAnswer
+                .size();
     }
 
 }
