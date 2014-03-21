@@ -30,138 +30,153 @@ public class DataGridHandler implements Serializable {
 
     @PostConstruct
     public void init() {
-        questions = new HashMap<String, GridQuestion>();
-        checkBoxIDsToUnset = new ArrayList<String>();
+	questions = new HashMap<String, GridQuestion>();
+	checkBoxIDsToUnset = new ArrayList<String>();
     }
 
     public void initialValidation() {
-        Iterator<String> idIterator = questions.keySet().iterator();
-        while (idIterator.hasNext()) {
-            String currentID = idIterator.next();
-            Map<String, Boolean> currentGrid = ((Grid) questions.get(currentID)
-                    .getAnswer().getValue()).getValues();
-            Iterator<String> cellIterator = currentGrid.keySet().iterator();
-            while (cellIterator.hasNext()) {
-                String cellID = cellIterator.next();
-                if (currentGrid.get(cellID)) {
-                    currentGridID = currentID;
-                    currentCellId = cellID;
-                    setCurrentCellValue(true);
-                    continue;
-                }
-            }
-        }
+	Iterator<String> idIterator = questions.keySet().iterator();
+	while (idIterator.hasNext()) {
+	    String currentID = idIterator.next();
+	    Map<String, Boolean> currentGrid = ((Grid) questions.get(currentID)
+		    .getAnswer().getValue()).getValues();
+	    Iterator<String> cellIterator = currentGrid.keySet().iterator();
+	    while (cellIterator.hasNext()) {
+		String cellID = cellIterator.next();
+		if (currentGrid.get(cellID)) {
+		    currentGridID = currentID;
+		    currentCellId = cellID;
+		    setCurrentCellValue(true);
+		    continue;
+		}
+	    }
+	}
     }
 
     public Map<String, GridQuestion> getQuestions() {
-        return questions;
+	return questions;
     }
 
     public void setQuestions(Map<String, GridQuestion> questions) {
-        this.questions = questions;
+	this.questions = questions;
     }
 
     public DataGridHandler setCellFromGridByID(String gridID, String cellID) {
-        GridQuestion question = questions.get(gridID);
-        currentCellValue = ((Grid) question.getAnswer().getValue()).getValues()
-                .get(cellID);
-        currentGridID = gridID;
-        currentCellId = cellID;
-        return this;
+	GridQuestion question = questions.get(gridID);
+	currentCellValue = ((Grid) question.getAnswer().getValue()).getValues()
+		.get(cellID);
+	currentGridID = gridID;
+	currentCellId = cellID;
+	return this;
     }
 
     public Boolean getCurrentCellValue() {
-        return currentCellValue;
+	return currentCellValue;
     }
 
     public void setCurrentCellValue(Boolean currentCellValue) {
-        this.currentCellValue = currentCellValue;
-        GridQuestion question = questions.get(currentGridID);
-        Grid grid = (Grid) question.getAnswer().getValue();
-        grid.getValues().put(currentCellId, currentCellValue);
+	this.currentCellValue = currentCellValue;
+	GridQuestion question = questions.get(currentGridID);
+	Grid grid = (Grid) question.getAnswer().getValue();
+	grid.getValues().put(currentCellId, currentCellValue);
 
-        if (currentCellValue) {
-            if (question.isOneInRow()) {
-                processRowRule();
-            }
-            if (question.isOneInCol()) {
-                processColumnRule();
-            }
-            if (question.isOneInRow() && question.isOneInCol()) {
-                processRowRule();
-                processColumnRule();
-            }
-        }
-        RequestContext.getCurrentInstance().update(currentGridID);
+	if (currentCellValue) {
+	    if (question.isOneInRow()) {
+		processRowRule();
+	    }
+	    if (question.isOneInCol()) {
+		processColumnRule();
+	    }
+	    if (question.isOneInRow() && question.isOneInCol()) {
+		processOneRule();
+	    }
+	}
+	RequestContext.getCurrentInstance().update(currentGridID);
     }
 
     private int[] getCellPosition(int cellNumber, int rowsNumber,
-                                  int columnNumber) {
-        int[] position = new int[2];
-        int iter = 0;
-        boolean positionFound = false;
-        for (int i = 0; i < rowsNumber; i++) {
-            for (int j = 0; j < columnNumber; j++) {
-                if (iter == cellNumber) {
-                    position[0] = i;
-                    position[1] = j;
-                    positionFound = true;
-                    break;
-                }
-                iter++;
-            }
-            if (positionFound) {
-                break;
-            }
-        }
-        return position;
+	    int columnNumber) {
+	int[] position = new int[2];
+	int iter = 0;
+	boolean positionFound = false;
+	for (int i = 0; i < rowsNumber; i++) {
+	    for (int j = 0; j < columnNumber; j++) {
+		if (iter == cellNumber) {
+		    position[0] = i;
+		    position[1] = j;
+		    positionFound = true;
+		    break;
+		}
+		iter++;
+	    }
+	    if (positionFound) {
+		break;
+	    }
+	}
+	return position;
     }
 
     private void processRowRule() {
-        int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
-        int rowsCount = questions.get(currentGridID).getRows().size();
-        int colsCount = questions.get(currentGridID).getColumns().size();
-        int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
-                colsCount);
+	int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
+	int rowsCount = questions.get(currentGridID).getRows().size();
+	int colsCount = questions.get(currentGridID).getColumns().size();
+	int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
+		colsCount);
 
-        checkBoxIDsToUnset.clear();
-        for (int i = 0; i < colsCount; i++) {
-            String idToUnset = Grid.createCheckBoxID(currentGridID,
-                    cellPosition[0] * colsCount + i);
+	checkBoxIDsToUnset.clear();
+	for (int i = 0; i < colsCount; i++) {
+	    String idToUnset = Grid.createCheckBoxID(currentGridID,
+		    cellPosition[0] * colsCount + i);
 
-            if (!idToUnset.equals(currentCellId)) {
-                checkBoxIDsToUnset.add(idToUnset);
-            }
+	    if (!idToUnset.equals(currentCellId)) {
+		checkBoxIDsToUnset.add(idToUnset);
+	    }
 
-        }
-        unsetValues();
+	}
+	unsetValues();
     }
 
     private void processColumnRule() {
-        int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
-        int rowsCount = questions.get(currentGridID).getRows().size();
-        int colsCount = questions.get(currentGridID).getColumns().size();
-        int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
-                colsCount);
+	int currentCellNumber = Grid.getCheckBoxNumberFromID(currentCellId);
+	int rowsCount = questions.get(currentGridID).getRows().size();
+	int colsCount = questions.get(currentGridID).getColumns().size();
+	int[] cellPosition = getCellPosition(currentCellNumber, rowsCount,
+		colsCount);
 
-        checkBoxIDsToUnset.clear();
-        for (int i = cellPosition[1]; i < rowsCount * colsCount; i = i
-                + colsCount) {
-            String idToUnset = Grid.createCheckBoxID(currentGridID, i);
+	checkBoxIDsToUnset.clear();
+	for (int i = cellPosition[1]; i < rowsCount * colsCount; i = i
+		+ colsCount) {
+	    String idToUnset = Grid.createCheckBoxID(currentGridID, i);
 
-            if (!idToUnset.equals(currentCellId)) {
-                checkBoxIDsToUnset.add(idToUnset);
-            }
+	    if (!idToUnset.equals(currentCellId)) {
+		checkBoxIDsToUnset.add(idToUnset);
+	    }
 
-        }
-        unsetValues();
+	}
+	unsetValues();
+    }
+
+    private void processOneRule() {
+	int rowsCount = questions.get(currentGridID).getRows().size();
+	int colsCount = questions.get(currentGridID).getColumns().size();
+
+	checkBoxIDsToUnset.clear();
+	for (int i = 0; i < rowsCount * colsCount; i++) {
+	    String idToUnset = Grid.createCheckBoxID(currentGridID, i);
+
+	    if (!idToUnset.equals(currentCellId)) {
+		checkBoxIDsToUnset.add(idToUnset);
+	    }
+
+	}
+	unsetValues();
     }
 
     private void unsetValues() {
-        GridQuestion question = questions.get(currentGridID);
-        Grid grid = (Grid) question.getAnswer().getValue();
-        for (String cellID : checkBoxIDsToUnset) {
-            grid.getValues().put(cellID, false);
-        }
+	GridQuestion question = questions.get(currentGridID);
+	Grid grid = (Grid) question.getAnswer().getValue();
+	for (String cellID : checkBoxIDsToUnset) {
+	    grid.getValues().put(cellID, false);
+	}
     }
 }

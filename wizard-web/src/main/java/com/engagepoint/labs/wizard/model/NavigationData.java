@@ -3,6 +3,7 @@ package com.engagepoint.labs.wizard.model;
 import com.engagepoint.labs.wizard.bean.WizardDocument;
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.bean.WizardTopic;
 import com.engagepoint.labs.wizard.xml.controllers.XmlController;
 import org.apache.log4j.Logger;
 import org.primefaces.component.button.Button;
@@ -11,7 +12,6 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
-import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +21,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +37,9 @@ import java.util.Map;
 @SessionScoped
 public class NavigationData implements Serializable {
 
+    public static final String DIALOG = "dialog";
+    public static final String MAIN_CONTENTID_SCROLL = "maincontentid-scroll";
+    public static final String DIALOG_DEPEND_QUEST = "dialogDependentQuestion";
     private static final Logger LOGGER = Logger.getLogger(NavigationData.class.getName());
     private static final long serialVersionUID = -3879860102027220266L;
     private boolean onSelectXMLPage;
@@ -47,7 +49,7 @@ public class NavigationData implements Serializable {
     private WizardDocument wizardDocument;
     private XmlController xmlController;
     // only for our default xml files!
-    private Map<String, String> MapOfWizardForms;
+    private Map<String, String> wizardFormMap;
     // NavData
     private String selectedFormTemplate;
 
@@ -72,151 +74,9 @@ public class NavigationData implements Serializable {
     private boolean previousButtonRendered;
     private HtmlForm sliderForm;
     private String mainContentFormStyle;
-    private HtmlPanelGroup scrollablePanelGroup;
+
     private boolean renderBreadCrumb;
 
-    /**
-     * Method parses our XML's. Created because out first page must know the
-     * list of available templates. Then when you click on start button, method
-     *
-     * @see
-     */
-    @PostConstruct
-    public void startSelectXMLScreen() {
-        onSelectXMLPage = true;
-        MapOfWizardForms = new LinkedHashMap<String, String>();
-        xmlController = new XmlController();
-        try {
-            wizardDocument = xmlController.readAllDeafultXmlFiles();
-        } catch (Exception ex) {
-            LOGGER.warn("SAX Exception", ex);
-        }
-        for (WizardForm wForm : wizardDocument.getFormList()) {
-            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
-        }
-    }
-
-    public void refreshXMLScreen(List<String> pathList) {
-        onSelectXMLPage = true;
-        MapOfWizardForms = new LinkedHashMap<String, String>();
-        xmlController = new XmlController();
-        xmlController.getXmlPathList().addAll(pathList);
-        try {
-            wizardDocument = xmlController.readAllDeafultXmlFiles();
-        } catch (Exception ex) {
-            LOGGER.warn("SAX Exception", ex);
-        }
-        for (WizardForm wForm : wizardDocument.getFormList()) {
-            MapOfWizardForms.put(wForm.getFormName(), wForm.getId());
-        }
-    }
-
-    /**
-     * Method uses parsed XML for creating actual wizardForm for user. Sets
-     * currentPage and currentTopic to '1' - first in the list. Method creates
-     * new empty breadCrumbModel for our breadcrumb and empty list of our
-     * current topicID's for menu, because menu uses forEach that iterates over
-     * this topicID's
-     */
-    public void startWizard() {
-        mainContentForm = new HtmlForm();
-        panelGrid = new PanelGrid();
-        panelGrid.setColumns(1);
-//        scrollablePanelGroup = new HtmlPanelGroup();
-//        scrollablePanelGroup.setStyle("width:101%;height:90%;");
-//        scrollablePanelGroup.setLayout("block");
-//        scrollablePanelGroup.setId("scrollableDiv");
-//        scrollablePanelGroup.getChildren().add(panelGrid);
-        mainContentForm.getChildren().add(panelGrid);
-//        mainContentForm.getChildren().add(scrollablePanelGroup);
-        mainContentForm.getChildren().add(getDialog());
-        mainContentForm.getChildren().add(getDialogForDependentQuestion());
-        wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
-                wizardDocument.getFormList());
-        currentPageID = wizardForm.getWizardPageList().get(0).getId();
-        currentTopicID = wizardForm.getWizardPageById(currentPageID)
-                .getTopicList().get(0).getId();
-        allPagesIdOnCurrentForm = new ArrayList<>();
-        allTopicsIdOnCurrentPage = new ArrayList<>();
-        breadcrumbModel = new DefaultMenuModel();
-        menuModel = new DefaultMenuModel();
-        wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
-        wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
-                .getTopicNumber());
-        renderBreadCrumb=true;
-    }
-
-    public boolean setCurrentTopicIDtoNext() {
-        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
-            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
-                if (index == allTopicsIdOnCurrentPage.size() - 1) {
-                    return false;
-                } else {
-                    currentTopicID = allTopicsIdOnCurrentPage.get(index + 1);
-                    Integer newCurrentTopicNumber = wizardForm
-                            .getWizardTopicById(currentTopicID)
-                            .getTopicNumber();
-                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
-                        wizardForm.setTopicLimit(newCurrentTopicNumber);
-                    }
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean setCurrentPageIDtoNext() {
-        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
-            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
-                if (index == allPagesIdOnCurrentForm.size() - 1) {
-                    return false;// if finded page is last
-                } else {
-                    currentPageID = allPagesIdOnCurrentForm.get(index + 1);
-                    Integer newCurrentPageNumber = wizardForm
-                            .getWizardPageById(currentPageID).getPageNumber();
-                    if (newCurrentPageNumber > wizardForm.getPageLimit()) {
-                        wizardForm.setPageLimit(newCurrentPageNumber);
-                    }
-                    Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
-                            .getTopicList().get(0)).getTopicNumber();
-                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
-                        wizardForm.setTopicLimit(newCurrentTopicNumber);
-                    }
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean setCurrentPageIDtoPrev() {
-        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
-            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
-                if (index == 0) {
-                    return false;// if finded page is first
-                } else {
-                    currentPageID = allPagesIdOnCurrentForm.get(index - 1);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean setCurrentTopicIDtoPrev() {
-        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
-            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
-                if (index == 0) {
-                    return false; // first topic case
-                } else {
-                    currentTopicID = allTopicsIdOnCurrentPage.get(index - 1);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public String getTopicTitleFromID(String topicID) {
         String title;
@@ -226,12 +86,6 @@ public class NavigationData implements Serializable {
 
     public String getCurrentPageID() {
         return currentPageID;
-    }
-
-    public void setCurrentPageIDAndTitle(String currentPageID) {
-        this.currentPageID = currentPageID;
-        this.currentPageTitle = wizardForm.getWizardPageById(currentPageID)
-                .getPageNumber().toString();
     }
 
     public void setCurrentPageID(String currentPageID) {
@@ -291,12 +145,12 @@ public class NavigationData implements Serializable {
         this.wizardDocument = wizardDocument;
     }
 
-    public Map<String, String> getMapOfWizardForms() {
-        return MapOfWizardForms;
+    public Map<String, String> getWizardFormMap() {
+        return wizardFormMap;
     }
 
-    public void setMapOfWizardForms(Map<String, String> mapOfWizardForms) {
-        MapOfWizardForms = mapOfWizardForms;
+    public void setWizardFormMap(Map<String, String> wizardFormMap) {
+        this.wizardFormMap = wizardFormMap;
     }
 
     public XmlController getXmlController() {
@@ -332,33 +186,9 @@ public class NavigationData implements Serializable {
     }
 
     public Map<String, String> getXmlsValues() {
-        return MapOfWizardForms;
+        return wizardFormMap;
     }
 
-    /**
-     * Get flag, that determines our position in our application. Necessary for
-     * correct XML processing - first we are parsing XML, and show templates on
-     * our start page. Then this flag sets to false - in next steps we don't
-     * need to parse XML. If a new XML appears, this flag must be set again to
-     * true
-     *
-     * @return flag
-     * @author vyacheslav.mysak
-     */
-    public boolean isOnSelectXMLPage() {
-        return onSelectXMLPage;
-    }
-
-    /**
-     * Set flag, that determines our position in our application. Necessary for
-     * correct XML processing - first we are parsing XML, and show templates on
-     * our start page. Then this flag sets to false - in next steps we don't
-     * need to parse XML. If a new XML appears, this flag must be set again to
-     * true
-     *
-     * @return flag
-     * @author vyacheslav.mysak
-     */
     public void setOnSelectXMLPage(boolean onSelectXMLPage) {
         this.onSelectXMLPage = onSelectXMLPage;
     }
@@ -414,54 +244,47 @@ public class NavigationData implements Serializable {
         this.menuModel = menuModel;
     }
 
-    public boolean isFinishButtonRendered() {
-        boolean nowLastPage = isOnLastPage();
-        boolean nowLastTopic = isOnLastTopic();
-        if (nowLastPage && nowLastTopic) {
-            setFinishButtonRendered(true);
-        } else {
-            setFinishButtonRendered(false);
+    public boolean isOnSelectXMLPage() {
+        return onSelectXMLPage;
+    }
+
+    public boolean isPreviousButtonRendered() {
+        return previousButtonRendered;
+    }
+
+    public void setPreviousButtonRendered(boolean previousButtonRendered) {
+        this.previousButtonRendered = previousButtonRendered;
+    }
+
+    public boolean isFirstTopic() {
+        WizardPage firstPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(0));
+        for (WizardTopic topic : firstPage.getTopicList()) {
+            if (!topic.isIgnored()) {
+                setFirstTopic(currentTopicID.equals(topic.getId()));
+                break;
+            }
         }
-        return finishButtonRendered;
+        return isFirstTopic;
+    }
+
+    public void setFirstTopic(boolean isFirstTopic) {
+        this.isFirstTopic = isFirstTopic;
+    }
+
+    private void setMainContentFormStyle(String mainContentFormStyle) {
+        this.mainContentFormStyle = mainContentFormStyle;
+    }
+
+    public boolean isRenderBreadCrumb() {
+        return renderBreadCrumb;
+    }
+
+    public void setRenderBreadCrumb(boolean renderBreadCrumb) {
+        this.renderBreadCrumb = renderBreadCrumb;
     }
 
     public void setFinishButtonRendered(boolean finishButtonRendered) {
         this.finishButtonRendered = finishButtonRendered;
-    }
-
-    private boolean isOnLastPage() {
-        List<WizardPage> pagesOnTemplate = this.wizardForm.getWizardPageList();
-        WizardPage simpleWizardPage;
-        for (int pageIndex = 0; pageIndex < pagesOnTemplate.size(); pageIndex++) {
-            simpleWizardPage = (WizardPage) pagesOnTemplate.get(pageIndex);
-            if (simpleWizardPage.getId().equals(currentPageID)) {
-                if (pageIndex == 0) {
-                    setFirstPage(true);
-                } else {
-                    setFirstPage(false);
-                }
-                if (pageIndex == pagesOnTemplate.size() - 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isOnLastTopic() {
-        for (int topicIntId = 0; topicIntId < allTopicsIdOnCurrentPage.size(); topicIntId++) {
-            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(topicIntId))) {
-                if (topicIntId == 0) {
-                    setFirstTopic(true);
-                } else {
-                    setFirstTopic(false);
-                }
-                if (topicIntId == allTopicsIdOnCurrentPage.size() - 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public HtmlForm getSliderForm() {
@@ -476,11 +299,12 @@ public class NavigationData implements Serializable {
     }
 
     public File getExportFile() {
-        File exFile = xmlController.getExportFileFromWizardForm(this.wizardForm);
-        return exFile;
+        return xmlController.getExportFileFromWizardForm(this.wizardForm);
     }
 
     public boolean isFirstPage() {
+        WizardPage firstPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(0));
+        setFirstPage(currentPageID.equals(firstPage.getId()));
         return isFirstPage;
     }
 
@@ -488,15 +312,226 @@ public class NavigationData implements Serializable {
         this.isFirstPage = isFirstPage;
     }
 
+    /**
+     * Get flag, that determines our position in our application. Necessary for
+     * correct XML processing - first we are parsing XML, and show templates on
+     * our start page. Then this flag sets to false - in next steps we don't
+     * need to parse XML. If a new XML appears, this flag must be set again to
+     * true
+     *
+     * @return flag
+     * @author vyacheslav.mysak
+     */
+
+
+    /**
+     * Method parses our XML's. Created because out first page must know the
+     * list of available templates. Then when you click on start button, method
+     *
+     * @see
+     */
+    @PostConstruct
+    public void startSelectXMLScreen() {
+        onSelectXMLPage = true;
+        wizardFormMap = new LinkedHashMap<String, String>();
+        xmlController = new XmlController();
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles();
+        } catch (Exception ex) {
+            LOGGER.warn("SAX Exception", ex);
+        }
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            wizardFormMap.put(wForm.getFormName(), wForm.getId());
+        }
+    }
+
+    public void startWizard() {
+        mainContentForm = new HtmlForm();
+        panelGrid = new PanelGrid();
+        panelGrid.setColumns(1);
+        HtmlPanelGroup scrollablePanelGroup = new HtmlPanelGroup();
+        scrollablePanelGroup.setLayout("block");
+        scrollablePanelGroup.setId("scrollableDiv");
+        scrollablePanelGroup.setStyle("height:87%");
+        scrollablePanelGroup.getChildren().add(panelGrid);
+        mainContentForm.getChildren().add(scrollablePanelGroup);
+        mainContentForm.getChildren().add(getDialog());
+        mainContentForm.getChildren().add(getDialogForDependentQuestion());
+        wizardDocument.findWizardFormByID(selectedFormTemplate, wizardForm,
+                wizardDocument.getFormList());
+        currentPageID = wizardForm.getWizardPageList().get(0).getId();
+        currentTopicID = wizardForm.getWizardPageById(currentPageID)
+                .getTopicList().get(0).getId();
+        allPagesIdOnCurrentForm = new ArrayList<>();
+        allTopicsIdOnCurrentPage = new ArrayList<>();
+        breadcrumbModel = new DefaultMenuModel();
+        menuModel = new DefaultMenuModel();
+        wizardForm.setPageLimit(wizardForm.getWizardPageById(currentPageID).getPageNumber());
+        wizardForm.setTopicLimit(wizardForm.getWizardTopicById(currentTopicID)
+                .getTopicNumber());
+        renderBreadCrumb = true;
+    }
+
+    public void refreshXMLScreen(List<String> pathList) {
+        onSelectXMLPage = true;
+        wizardFormMap = new LinkedHashMap<String, String>();
+        xmlController = new XmlController();
+        xmlController.getXmlPathList().addAll(pathList);
+        try {
+            wizardDocument = xmlController.readAllDeafultXmlFiles();
+        } catch (Exception ex) {
+            LOGGER.warn("Can't parse xml file", ex);
+        }
+        for (WizardForm wForm : wizardDocument.getFormList()) {
+            wizardFormMap.put(wForm.getFormName(), wForm.getId());
+        }
+    }
+
+    /**
+     * Method uses parsed XML for creating actual wizardForm for user. Sets
+     * currentPage and currentTopic to '1' - first in the list. Method creates
+     * new empty breadCrumbModel for our breadcrumb and empty list of our
+     * current topicID's for menu, because menu uses forEach that iterates over
+     * this topicID's
+     */
+
+
+    public boolean setCurrentTopicIDtoNext() {
+        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
+            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
+                if (index == allTopicsIdOnCurrentPage.size() - 1) {
+                    return false;
+                } else {
+                    currentTopicID = allTopicsIdOnCurrentPage.get(index + 1);
+                    Integer newCurrentTopicNumber = wizardForm
+                            .getWizardTopicById(currentTopicID)
+                            .getTopicNumber();
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentPageIDtoNext() {
+        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
+            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
+                if (index == allPagesIdOnCurrentForm.size() - 1) {
+                    // if finded page is last
+                    return false;
+                } else {
+                    currentPageID = allPagesIdOnCurrentForm.get(index + 1);
+                    Integer newCurrentPageNumber = wizardForm
+                            .getWizardPageById(currentPageID).getPageNumber();
+                    if (newCurrentPageNumber > wizardForm.getPageLimit()) {
+                        wizardForm.setPageLimit(newCurrentPageNumber);
+                    }
+                    Integer newCurrentTopicNumber = (wizardForm.getWizardPageById(currentPageID)
+                            .getTopicList().get(0)).getTopicNumber();
+                    if (newCurrentTopicNumber > wizardForm.getTopicLimit()) {
+                        wizardForm.setTopicLimit(newCurrentTopicNumber);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentPageIDtoPrev() {
+        for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {
+            if (currentPageID.equals(allPagesIdOnCurrentForm.get(index))) {
+                if (index == 0) {
+                    // if finded page is first
+                    return false;
+                } else {
+                    currentPageID = allPagesIdOnCurrentForm.get(index - 1);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setCurrentTopicIDtoPrev() {
+        for (int index = 0; index < allTopicsIdOnCurrentPage.size(); index++) {
+            if (currentTopicID.equals(allTopicsIdOnCurrentPage.get(index))) {
+                if (index == 0) {
+                    // first topic case
+                    return false;
+                } else {
+                    currentTopicID = allTopicsIdOnCurrentPage.get(index - 1);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void setCurrentPageIDAndTitle(String currentPageID) {
+        this.currentPageID = currentPageID;
+        this.currentPageTitle = wizardForm.getWizardPageById(currentPageID)
+                .getPageNumber().toString();
+    }
+
+    /**
+     * Set flag, that determines our position in our application. Necessary for
+     * correct XML processing - first we are parsing XML, and show templates on
+     * our start page. Then this flag sets to false - in next steps we don't
+     * need to parse XML. If a new XML appears, this flag must be set again to
+     * true
+     *
+     * @return flag
+     * @author vyacheslav.mysak
+     */
+
+    public boolean isFinishButtonRendered() {
+        boolean nowLastPage = isOnLastPage();
+        boolean nowLastTopic = isOnLastTopic();
+        if (nowLastPage && nowLastTopic) {
+            setFinishButtonRendered(true);
+        } else {
+            setFinishButtonRendered(false);
+        }
+        return finishButtonRendered;
+    }
+
+    public String getMainContentFormStyle() {
+        if (panelList != null) {
+            if (panelList.size() > 4) {
+                setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
+            } else {
+                setMainContentFormStyle("maincontentid-non-scroll");
+            }
+        } else {
+            setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
+        }
+        return mainContentFormStyle;
+    }
+
+    private boolean isOnLastPage() {
+        WizardPage lastPage = wizardForm.getWizardPageById(allPagesIdOnCurrentForm.get(allPagesIdOnCurrentForm.size() - 1));
+        return currentPageID.equals(lastPage.getId());
+    }
+
+    private boolean isOnLastTopic() {
+        if (isOnLastPage()) {
+            WizardTopic lastTopic = wizardForm.getWizardTopicById(allTopicsIdOnCurrentPage.get(allTopicsIdOnCurrentPage.size() - 1));
+            return currentTopicID.equals(lastTopic.getId());
+        }
+        return false;
+    }
+
     private Dialog getDialog() {
         OutputLabel message = new OutputLabel();
         message.setValue("Some required questions have no answers !");
-        OutputLabel header = new OutputLabel();
-        header.setValue("Validation Error");
         Dialog dialog = new Dialog();
         dialog.setHeader("Validation Error");
-        dialog.setId("dialog");
-        dialog.setWidgetVar("dialog");
+        dialog.setId(DIALOG);
+        dialog.setWidgetVar(DIALOG);
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.getChildren().add(message);
@@ -519,8 +554,8 @@ public class NavigationData implements Serializable {
         secondPartOfMessage.setEscape(false);
         Dialog dialog = new Dialog();
         dialog.setHeader("Other question, topic or page depend on this one!");
-        dialog.setId("dialogDependentQuestion");
-        dialog.setWidgetVar("dialogDependentQuestion");
+        dialog.setId(DIALOG_DEPEND_QUEST);
+        dialog.setWidgetVar(DIALOG_DEPEND_QUEST);
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.getChildren().add(firstPartOfMessage);
@@ -531,44 +566,5 @@ public class NavigationData implements Serializable {
         return dialog;
     }
 
-    public boolean isPreviousButtonRendered() {
-        return previousButtonRendered;
-    }
 
-    public void setPreviousButtonRendered(boolean previousButtonRendered) {
-        this.previousButtonRendered = previousButtonRendered;
-    }
-
-    public boolean isFirstTopic() {
-        return isFirstTopic;
-    }
-
-    public void setFirstTopic(boolean isFirstTopic) {
-        this.isFirstTopic = isFirstTopic;
-    }
-
-    public String getMainContentFormStyle() {
-        if (panelList != null) {
-            if (panelList.size() > 4) {
-                setMainContentFormStyle("maincontentid-scroll");
-            } else {
-                setMainContentFormStyle("maincontentid-non-scroll");
-            }
-        } else {
-            setMainContentFormStyle("maincontentid-non-scroll");
-        }
-        return mainContentFormStyle;
-    }
-
-    private void setMainContentFormStyle(String mainContentFormStyle) {
-        this.mainContentFormStyle = mainContentFormStyle;
-    }
-
-    public boolean isRenderBreadCrumb() {
-	return renderBreadCrumb;
-    }
-
-    public void setRenderBreadCrumb(boolean renderBreadCrumb) {
-	this.renderBreadCrumb = renderBreadCrumb;
-    }
 }

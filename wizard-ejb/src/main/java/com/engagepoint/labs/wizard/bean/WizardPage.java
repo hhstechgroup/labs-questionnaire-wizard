@@ -86,6 +86,15 @@ public class WizardPage {
         this.topicList = topicList;
     }
 
+    public WizardTopic findTopicByID(String topicId) {
+        for (WizardTopic topic : topicList) {
+            if (topicId.equals(topic.getId())) {
+                return topic;
+            }
+        }
+        return null;
+    }
+
     public boolean executeAllRules() {
         boolean change = false;
         if (pageRuleList != null) {
