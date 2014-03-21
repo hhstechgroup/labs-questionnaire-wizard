@@ -6,6 +6,7 @@
         <form-name>Job application wizard</form-name>
         <pages>
             <page page-number="1" page-id="dcvxd">
+                <page-name>Page 1</page-name>
                 <groups-of-questions>
                     <group group-id="bcugyrfn">
                         <group-name>Main info</group-name>
@@ -116,6 +117,8 @@
                 </groups-of-questions>
             </page>
             <page page-number="2" page-id="allalalsqioioi">
+                <page-name>Page 2</page-name>
+
                 <groups-of-questions>
                     <group group-id="pqpqpqowowowo">
                         <group-name>Job application</group-name>

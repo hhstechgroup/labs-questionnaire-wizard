@@ -86,21 +86,6 @@
                             </question>
                         </questions>
                     </group>
-                    <group group-id="range_topic">
-                        <group-name>Range</group-name>
-                        <questions>
-                            <question answer-required="false" question-id="range_question">
-                                <question-title>Range Question</question-title>
-                                <question-type>RANGE</question-type>
-                                <help-text>Range Question</help-text>
-                                <range range-begin="30" range-end="70" />
-                                <default-answers>
-                                    <default-answer>44</default-answer>
-                                    <default-answer>55</default-answer>
-                                </default-answers>
-                            </question>
-                        </questions>
-                    </group>
                     <group group-id="grid_topic">
                         <group-name>Grid</group-name>
                         <questions>
@@ -141,6 +126,26 @@
                             </question>
                         </questions>
                     </group>
+                </groups-of-questions>
+            </page>
+            <page page-number="2" page-id="page_two">
+                <page-name>Page Two</page-name>
+                <groups-of-questions>
+                    <group group-id="range_topic">
+                        <group-name>Range</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="range_question">
+                                <question-title>Range Question</question-title>
+                                <question-type>RANGE</question-type>
+                                <help-text>Range Question</help-text>
+                                <range range-begin="30" range-end="70" />
+                                <default-answers>
+                                    <default-answer>44</default-answer>
+                                    <default-answer>55</default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
                     <group group-id="time_topic">
                         <group-name>Time</group-name>
                         <questions>
@@ -162,16 +167,6 @@
                                 <question-type>FILEUPLOAD</question-type>
                                 <help-text>File Upload Question</help-text>
                             </question>
-                        </questions>
-                    </group>
-                </groups-of-questions>
-            </page>
-            <page page-number="2" page-id="page_two">
-                <page-name>Page Two</page-name>
-                <groups-of-questions>
-                    <group group-id="empty_topic">
-                        <group-name>Empty Topic</group-name>
-                        <questions>
                         </questions>
                     </group>
                 </groups-of-questions>
