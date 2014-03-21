@@ -335,7 +335,7 @@ public class UINavigationBean implements Serializable {
         List<WizardQuestion> allWizardQuestions = getWizardForm()
                 .getAllWizardQuestions();
         for (WizardQuestion singleQuestion : allWizardQuestions) {
-            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD)) {
+            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD) && singleQuestion.getAnswer() != null) {
                 filesForArchive.add((File) singleQuestion.getAnswer()
                         .getValue());
             }
@@ -373,7 +373,8 @@ public class UINavigationBean implements Serializable {
                             .getAllTopicsIdOnCurrentPage().get(
                                     navigationData
                                             .getAllTopicsIdOnCurrentPage()
-                                            .size() - 1));
+                                            .size() - 1
+                            ));
             changeCurrentTopic(navigationData.getCurrentTopicID());
         }
         executeAllRules();
@@ -466,7 +467,8 @@ public class UINavigationBean implements Serializable {
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID
-                            + "\")}", void.class, new Class[]{String.class});
+                            + "\")}", void.class, new Class[]{String.class}
+            );
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
             topicMenuItemList.add(item);
@@ -507,7 +509,8 @@ public class UINavigationBean implements Serializable {
                     elContext,
                     "#{uiNavigationBean.changeCurrentPage(\""
                             + wizardPage.getId() + "\")}", void.class,
-                    new Class[]{String.class});
+                    new Class[]{String.class}
+            );
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
             pageMenuItemList.add(item);

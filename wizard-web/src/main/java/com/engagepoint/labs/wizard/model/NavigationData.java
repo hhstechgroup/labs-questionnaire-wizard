@@ -502,15 +502,16 @@ public class NavigationData implements Serializable {
     }
 
     public String getMainContentFormStyle() {
-        if (panelList != null) {
-            if (panelList.size() > 4) {
-                setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
-            } else {
-                setMainContentFormStyle("maincontentid-non-scroll");
-            }
-        } else {
-            setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
-        }
+//        if (panelList != null) {
+//            if (panelList.size() > 2) {
+//                setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
+//            } else {
+//                setMainContentFormStyle("maincontentid-non-scroll");
+//            }
+//        } else {
+//            setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
+//        }
+        setMainContentFormStyle(MAIN_CONTENTID_SCROLL);
         return mainContentFormStyle;
     }
 
