@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questionnaire-forms
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='jaxb/super_binding/XSDforWizard.xsd'>
+    <questionnaire-form form-id="demotemplate">
+        <form-name>Job application wizard</form-name>
+        <pages>
+            <page page-number="1" page-id="dcvxd">
+                <groups-of-questions>
+                    <group group-id="bcugyrfn">
+                        <group-name>Main info</group-name>
+                        <questions>
+                            <question answer-required="true" question-id="xxssx">
+                                <question-title>Name</question-title>
+                                <question-type>TEXT</question-type>
+                                <help-text>Enter Your first name</help-text>
+                                <default-answers>
+                                    <default-answer>Vasya</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="true" question-id="xgfsx">
+                                <question-title>Surname</question-title>
+                                <question-type>TEXT</question-type>
+                                <help-text>Enter Your surname</help-text>
+                                <default-answers>
+                                    <default-answer>Pupkin</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="xrtsx">
+                                <question-title>Gender</question-title>
+                                <question-type>CHOOSEFROMLIST</question-type>
+                                <help-text>Choose Your gender: male, female</help-text>
+                                <options>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </options>
+                                <default-answers>
+                                    <default-answer>Male</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="iulbk">
+                                <question-title>Date of birth</question-title>
+                                <question-type>DATE</question-type>
+                                <help-text>Enter Your date of birth</help-text>
+                                <default-answers>
+                                    <default-answer>01-01-1990</default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="hboidbfo">
+                        <group-name>Contact info</group-name>
+                        <questions>
+                            <question answer-required="true" question-id="vcbnx">
+                                <question-title>Phone number</question-title>
+                                <question-type>TEXT</question-type>
+                                <help-text>Enter Your phone number (mobile or stationary)</help-text>
+                                <default-answers>
+                                    <default-answer>+38(099) 111-11-11</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="iuenbk">
+                                <question-title>E-mail</question-title>
+                                <question-type>TEXT</question-type>
+                                <help-text>Enter Your e-mail</help-text>
+                                <default-answers>
+                                    <default-answer>yourmail@mailservice.com</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="kdkdk">
+                                <question-title>Address</question-title>
+                                <question-type>PARAGRAPHTEXT</question-type>
+                                <help-text>Enter Your address: zip code, town, street, building, appartment</help-text>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="hdhdhplplpl">
+                        <group-name>Education</group-name>
+                        <questions>
+                            <question answer-required="false" question-id="iudljlkuqu">
+                                <question-title>Your education</question-title>
+                                <question-type>MULTIPLECHOICE</question-type>
+                                <help-text>Choose You education</help-text>
+                                <options>
+                                    <option>none</option>
+                                    <option>secondary education (incomplete)</option>
+                                    <option>secondary education</option>
+                                    <option>higher education (bachelor degree)</option>
+                                    <option>higher education (master degree)</option>
+                                    <option>PHD</option>
+                                </options>
+                                <default-answers>
+                                    <default-answer>higher education (master degree)</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="iuqweququ">
+                                <question-title>What languages do You speak?</question-title>
+                                <question-type>CHECKBOX</question-type>
+                                <help-text>What languages can You speak or read at a beginner level or higher</help-text>
+                                <options>
+                                    <option>Ukrainian</option>
+                                    <option>Russian</option>
+                                    <option>English</option>
+                                    <option>German</option>
+                                    <option>Spanish</option>
+                                    <option>Chinese</option>
+                                    <option>others</option>
+                                </options>
+                                <default-answers>
+                                    <default-answer>English</default-answer>
+                                    <default-answer>Ukrainian</default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+            <page page-number="2" page-id="allalalsqioioi">
+                <groups-of-questions>
+                    <group group-id="pqpqpqowowowo">
+                        <group-name>Job application</group-name>
+                        <questions>
+                            <question answer-required="true" question-id="iuqweququ">
+                                <question-title>Which position do You wish to apply for?</question-title>
+                                <question-type>CHECKBOX</question-type>
+                                <help-text>Choose one or more positions in the company You'd like to apply for</help-text>
+                                <options>
+                                    <option>Java developer</option>
+                                    <option>PHP developer</option>
+                                    <option>QA engineer</option>
+                                    <option>Project manager</option>
+                                    <option>Accountant</option>
+                                    <option>Barista</option>
+                                </options>
+                            </question>
+                            <question answer-required="false" question-id="oqoqoklalalksks">
+                                <question-title>How long do You work at current position (years)</question-title>
+                                <question-type>RANGE</question-type>
+                                <help-text>Select the number of years You've worked at the position You are applying for</help-text>
+                                <range range-begin="0" range-end="10"/>
+                            </question>
+                            <question answer-required="false" question-id="iuenbk">
+                                <question-title>Expected salary (USD)</question-title>
+                                <question-type>TEXT</question-type>
+                                <help-text>What salary are You looking for (dollars)?</help-text>
+                                <default-answers>
+                                    <default-answer>0</default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
+                    <group group-id="pqplakdhfg">
+                        <group-name>Working conditions</group-name>
+                        <questions>
+                            <question answer-required="true" question-id="iudljlkuqu">
+                                <question-title>Employment type</question-title>
+                                <question-type>MULTIPLECHOICE</question-type>
+                                <help-text>What type of employment are You looking for?</help-text>
+                                <options>
+                                    <option>part-time employment (office)</option>
+                                    <option>part-time employment (remote)</option>
+                                    <option>full-time employment (office)</option>
+                                    <option>full-time employment (remote)</option>
+                                </options>
+                                <default-answers>
+                                    <default-answer>full-time employment (office)</default-answer>
+                                </default-answers>
+                            </question>
+                            <question answer-required="false" question-id="iudlhkhuqu">
+                                <question-title>Are You ready for business trips?</question-title>
+                                <question-type>CHOOSEFROMLIST</question-type>
+                                <help-text>Your job may require business trips around the country and abroad.</help-text>
+                                <options>
+                                    <option>No, I cannot leave the city for a long time</option>
+                                    <option>Only for short-time trips around the country.</option>
+                                    <option>Short time trips around the country and abroad are OK for me</option>
+                                    <option>Yes, I'm ready for long time trips around the country and abroad</option>
+                                </options>
+                                <default-answers>
+                                    <default-answer>Short time trips around the country and abroad are OK for me</default-answer>
+                                </default-answers>
+                            </question>
+                        </questions>
+                    </group>
+                </groups-of-questions>
+            </page>
+        </pages>
+    </questionnaire-form>
+</questionnaire-forms>
