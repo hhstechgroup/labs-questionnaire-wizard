@@ -306,7 +306,7 @@ public class UIComponentGenerator {
         Slider slider = new Slider();
         slider.setFor("sliderinputtext");
         slider.setAnimate(false);
-        slider.addClientBehavior("valueChange", getAjaxBehavior(question));
+        slider.addClientBehavior("valueChange", getSliderAjaxBehavior(question));
         slider.setStyle("width: 400px;");
         slider.setDisplay("displayRange" + question.getId());
         slider.setStyleClass("ui-slider-with-range");
@@ -486,6 +486,16 @@ public class UIComponentGenerator {
 	ajaxBehavior.setPartialSubmit(true);
 	return ajaxBehavior;
     }
+
+    private AjaxBehavior getSliderAjaxBehavior(WizardQuestion question) {
+        AjaxBehavior ajaxBehavior = new AjaxBehavior();
+        ajaxBehavior.addAjaxBehaviorListener(new CustomAjaxBehaviorListener(
+                question));
+        ajaxBehavior.setPartialSubmit(true);
+        ajaxBehavior.setProcess("maincontentid-panelid"+ question.getId());
+        return ajaxBehavior;
+    }
+
 
     private UISelectItems getSelectItems(List<String> optionsList) {
         SelectItem item;

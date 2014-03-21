@@ -5,7 +5,7 @@
 	<!--<context-param> <param-name>javax.faces.CONFIG_FILES</param-name> <param-value>/WEB-INF/faces-config.xml</param-value> 
 		</context-param> -->
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 	<context-param>
 		<param-name>com.engagepoint.COLOR_SCHEMA</param-name>
