@@ -43,6 +43,7 @@ When the user clicks on element with id/name/className 'navigationButtonsForm-bu
 Then checkbox with id 'maincontentid-checkboxes_question-0' is checked
 
 Scenario: CHOOSEFROMLIST
+
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
 When chooses text 'Option 1' from 'maincontentid-choosefromlist_question' drop-down
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
@@ -50,7 +51,7 @@ When the user clicks on element with id/name/className 'navigationButtonsForm-bu
 Then in 'maincontentid-choosefromlist_question' drop-down is selected text 'Option 1' option
 
 Scenario: GRID
-When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
 When the checkbox id/name/className 'maincontentid-gridcell_grid_question_4_input' is unchecked make it checked
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
@@ -58,6 +59,7 @@ When the user clicks on element with id/name/className 'navigationButtonsForm-bu
 Then checkbox with id 'maincontentid-gridcell_grid_question_4_input' is checked
 
 Scenario: DATE
+
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
 When the user fills 'maincontentid-date_question_input' field with '12-12-2014'
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
@@ -65,6 +67,14 @@ When the user clicks on element with id/name/className 'navigationButtonsForm-bu
 Then element 'maincontentid-date_question_input' has attribute value '12-12-2014'
 When the user fills 'maincontentid-date_question_input' field with '2222222222222'
 
+Scenario: Click other questions to the end
+
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
+
 Scenario: return to default page
+
+When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
 When clicks on element with id/name/className 'logo'
 Then check that current URL is 'http://localhost:8080/wizard-web/'

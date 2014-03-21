@@ -335,7 +335,7 @@ public class UINavigationBean implements Serializable {
         List<WizardQuestion> allWizardQuestions = getWizardForm()
                 .getAllWizardQuestions();
         for (WizardQuestion singleQuestion : allWizardQuestions) {
-            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD)) {
+            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD)&&singleQuestion.getAnswer()!=null) {
                 filesForArchive.add((File) singleQuestion.getAnswer()
                         .getValue());
             }
