@@ -1,12 +1,8 @@
 package com.engagepoint.labs.wizard.acceptancetest;
 
-import static com.engagepoint.acceptancetest.base.webelements.utils.WebElementsHelper.getTextAndSuppressNextLineChar;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
+import com.engagepoint.acceptancetest.base.pages.UIBootstrapBasePage;
+import com.engagepoint.acceptancetest.base.steps.JbehaveBaseSteps;
 import net.thucydides.core.pages.Pages;
-
 import net.thucydides.core.pages.WebElementFacade;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -15,8 +11,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import com.engagepoint.acceptancetest.base.pages.UIBootstrapBasePage;
-import com.engagepoint.acceptancetest.base.steps.JbehaveBaseSteps;
+import static com.engagepoint.acceptancetest.base.webelements.utils.WebElementsHelper.getTextAndSuppressNextLineChar;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class SimpleJbehaveSteps extends JbehaveBaseSteps {
 
@@ -50,6 +48,15 @@ public class SimpleJbehaveSteps extends JbehaveBaseSteps {
         Select clickThis = new Select(webElement);
         clickThis.selectByValue(value);
     }
+
+    @When("choose from list with id '$id' and set value '$value'")
+    public void chooseFromListChecker(String id, String value) {
+        clickBySelector(id);
+        WebElement webElement = uIBootstrapBasePage.getDriver().findElement(By.xpath("//*[@id=\"maincontentid-choosefromlist_question\"]"));
+        Select clickThis = new Select(webElement);
+        clickThis.selectByValue(value);
+    }
+
 
     @When("user click 'Next' button")
     public void clickNextButton() {
