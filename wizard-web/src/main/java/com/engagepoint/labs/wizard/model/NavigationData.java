@@ -349,6 +349,7 @@ public class NavigationData implements Serializable {
         mainContentForm = new HtmlForm();
         panelGrid = new PanelGrid();
         panelGrid.setColumns(1);
+        panelGrid.setId("Panel222");
         HtmlPanelGroup scrollablePanelGroup = new HtmlPanelGroup();
         scrollablePanelGroup.setLayout("block");
         scrollablePanelGroup.setId("scrollableDiv");
@@ -440,6 +441,7 @@ public class NavigationData implements Serializable {
         }
         return false;
     }
+
 
     public boolean setCurrentPageIDtoPrev() {
         for (int index = 0; index < allPagesIdOnCurrentForm.size(); index++) {

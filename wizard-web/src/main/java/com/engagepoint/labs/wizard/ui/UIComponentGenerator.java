@@ -72,7 +72,7 @@ public class UIComponentGenerator {
 
     private UIComponent analyzeQuestion(WizardQuestion question, DataGridHandler gridHandler, TimeHandler timeHandler) {
         panel = new Panel();
-        panel.setId("panel_" + question.getId());
+        panel.setId("panelid" + question.getId());
         panel.getChildren().add(getLabel(question));
         panel.getChildren().add(getValidationMessage(question));
         UIComponent component = null;
@@ -190,12 +190,13 @@ public class UIComponentGenerator {
 
     private HtmlPanelGroup getHtmlPanelGroup(WizardQuestion question, Value answer, Value defaultAnswer) {
         HtmlPanelGroup panelGroup = new HtmlPanelGroup();
-        panelGroup.setStyle("padding: 20px; background-color: #EDEDED; border: 1px solid #DDD; border-radius: 3px;");
+        panelGroup.setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
         panelGroup.setStyleClass("ui-panel-column");
+        panelGroup.setStyleClass("nonRange");
+        //panelGroup.setStyleClass("ui-widget-content");
         panelGroup.setLayout("block");
         panelGroup.setId("panelid" + question.getId());
         Range range = getSliderPositions(question, answer, defaultAnswer);
-
         panelGroup.getChildren().add(getLabel(question));
         panelGroup.getChildren().add(getHTMLbr());
         panelGroup.getChildren().add(getOutputTextForSlider(question, range));

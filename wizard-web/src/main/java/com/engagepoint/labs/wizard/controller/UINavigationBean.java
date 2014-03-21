@@ -186,6 +186,7 @@ public class UINavigationBean implements Serializable {
             navigationData.startSelectXMLScreen();
         }
     }
+
     /**
      * Create questions, method must be called for every navigation case
      */
@@ -286,7 +287,6 @@ public class UINavigationBean implements Serializable {
         changeStyleOfCurrentTopicButton(WizardComponentStyles.STYLE_TOPIC_BUTTON_SELECTED);
         createQuestions();
     }
-
 
 
     /**
@@ -426,6 +426,7 @@ public class UINavigationBean implements Serializable {
             }
         }
     }
+
     /**
      * This method is used to insert values to our left menu. Values are
      * extracted from currentTopicIDs list. If we know topic's ID, we can select
@@ -558,7 +559,6 @@ public class UINavigationBean implements Serializable {
     }
 
 
-
     public void executeAllRules() {
         boolean isEverChanged = false;
         isEverChanged = executeAllPagesRuleOnCurrentForm(isEverChanged);
@@ -592,6 +592,7 @@ public class UINavigationBean implements Serializable {
         for (WizardQuestion question : topic.getWizardQuestionList()) {
             stopUserOnCurrentTopicOrNot(question.executeAllRules());
         }
+        RequestContext.getCurrentInstance().update("@(.nonRange)");
         return isEverChanged;
     }
 
@@ -782,7 +783,6 @@ public class UINavigationBean implements Serializable {
                     "dialogDependentQuestion.show()");
         }
     }
-
 
 
     @PreDestroy

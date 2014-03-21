@@ -1,11 +1,18 @@
 package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.questions.RangeQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.component.slider.Slider;
+import super_binding.QType;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
+import javax.faces.component.UIPanel;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 
 /**
@@ -34,8 +41,8 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
-        String componentId = "maincontentid-panel_" + question.getId();
-        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
+        String componentId = "maincontentid-panelid" + question.getId();
+        UIPanel panel = (UIPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
         if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
@@ -70,13 +77,26 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
         return change;
     }
 
-    private void showQuestionPanel(Panel panel) {
-        panel.setVisible(true);
+    private void showQuestionPanel(UIPanel panel) {
+        if (panel instanceof HtmlPanelGroup) {
+          //  panel.setRendered(true);
+            ((HtmlPanelGroup) panel).setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
+           ((HtmlPanelGroup) panel).setStyle("visibility:visible");
+        } else {
+            ((Panel) panel).setVisible(true);
+        }
+        panel.setRendered(true);
         question.setIgnored(false);
     }
 
-    private void hideQuestionPanel(Panel panel) {
-        panel.setVisible(false);
+    private void hideQuestionPanel(UIPanel panel) {
+        if (panel instanceof HtmlPanelGroup) {
+           // panel.setRendered(false);
+            ((HtmlPanelGroup) panel).setStyle("padding: 20px; background-color: #EDEDED ; border: 1px solid #DDD; border-radius: 3px;");
+            ((HtmlPanelGroup) panel).setStyle("visibility:hidden");
+        } else {
+            ((Panel) panel).setVisible(false);
+        }
         question.setIgnored(true);
         question.resetAnswer();
         if (question.isRequired()) {
@@ -85,12 +105,23 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
         resetComponentValue();
     }
 
+
     private void resetComponentValue() {
-        UIOutput component = (UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
-        if (question.getDefaultAnswer() != null && component != null) {
-            component.setValue(question.getDefaultAnswer().getValue());
-        } else if (component != null) {
-            component.resetValue();
+        if (question.getDefaultAnswer() != null && question.getQuestionType() == QType.RANGE) {
+            Slider slider = (Slider) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
+            if (slider != null) {
+                int min = ((RangeQuestion) question).getStartRange();
+                int max = ((RangeQuestion) question).getEndRange();
+                slider.setMinValue(min);
+                slider.setMaxValue(max);
+            } else {
+                UIOutput component = (UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
+                if (question.getDefaultAnswer() != null && component != null) {
+                    component.setValue(question.getDefaultAnswer().getValue());
+                } else if (component != null) {
+                    component.resetValue();
+                }
+            }
         }
     }
 }

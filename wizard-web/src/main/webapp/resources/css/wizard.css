@@ -21,6 +21,14 @@
     border-bottom: medium none;
     background: none repeat scroll 0% 0% #0075AC;
 }
+.nonRange {
+    padding: 20px;
+    background-color: #EDEDED;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    /*background-color: #EDEDED;*/
+}
+
 
 #brd-j_id1 {
 	font-size: 16px;

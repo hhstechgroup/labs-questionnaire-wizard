@@ -57,7 +57,7 @@
                             </question>
                             <question answer-required="false" question-id="qawes123">
                                 <question-title>1.1.2</question-title>
-                                <question-type>TEXT</question-type>
+                                <question-type>RANGE</question-type>
                                 <grid-oneInCol>false</grid-oneInCol>
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
@@ -72,7 +72,7 @@
                                     <option>Mega Option</option>
                                     <option>Insane Option</option>
                                 </options>
-                                <range/>
+                                <range range-begin="10" range-end="65"/>
                                 <grid>
                                     <columns>
                                         <column></column>
