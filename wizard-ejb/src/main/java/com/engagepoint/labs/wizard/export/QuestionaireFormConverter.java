@@ -126,27 +126,7 @@ public class QuestionaireFormConverter {
     }
 
     private List<String> getListGridAnswers(GridQuestion gridQuestion) {
-        List<String> answerList = new ArrayList<>(gridQuestion.getRows().size());
-        StringBuilder linesBuilder = new StringBuilder();
-        Map<String, Boolean> answersMap = ((com.engagepoint.labs.wizard.values.objects.Grid) gridQuestion.getAnswer().getValue()).getValues();
-        Set keySet = answersMap.keySet();
-        Iterator keysIterator = keySet.iterator();
-        int valuesInLine = 0;
-        boolean lastIterator = false;
-        while (keysIterator.hasNext() || lastIterator) {
-            if (valuesInLine < gridQuestion.getColumns().size()) {
-                String key = keysIterator.next().toString();
-                valuesInLine++;
-                linesBuilder.append(answersMap.get(key));
-                linesBuilder.append(",");
-                lastIterator = true;
-            } else {
-                lastIterator = false;
-                answerList.add(linesBuilder.toString());
-                valuesInLine = 0;
-                linesBuilder.setLength(0);
-            }
-        }
+        List<String> answerList = gridQuestion.getAnswerAsStrings();
         return answerList;
     }
 
