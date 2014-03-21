@@ -152,4 +152,4 @@ Scenario: return to default page
 
 When the user clicks on element with id/name/className 'navigationButtonsForm-buttonid'
 When clicks on element with id/name/className 'logo'
-Then check that current URL is 'http://localhost:8080/wizard-web/'
+Then check that current URL is 'http://192.168.32.34:8080/wizard-web/'
