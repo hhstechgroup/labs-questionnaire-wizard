@@ -239,34 +239,6 @@
                             </group-rule>
                         </group-rules>
                         <questions>
-                            <question answer-required="false" question-id="uwietry176243">
-                                <question-title>2.1.1</question-title>
-                                <question-type>TIME</question-type>
-                                <grid-oneInCol>false</grid-oneInCol>
-                                <grid-oneInRow>false</grid-oneInRow>
-                                <question-rules>
-                                    <question-rule>
-                                        <parentId></parentId>
-                                        <method></method>
-                                    </question-rule>
-                                </question-rules>
-                                <help-text></help-text>
-                                <options>
-                                    <option></option>
-                                </options>
-                                <range/>
-                                <grid>
-                                    <columns>
-                                        <column></column>
-                                    </columns>
-                                    <rows>
-                                        <row></row>
-                                    </rows>
-                                </grid>
-                                <default-answers>
-                                    <default-answer></default-answer>
-                                </default-answers>
-                            </question>
                             <question answer-required="false" question-id="rqewbzla52431">
                                 <question-title>2.1.2</question-title>
                                 <question-type>DATE</question-type>
@@ -274,8 +246,8 @@
                                 <grid-oneInRow>false</grid-oneInRow>
                                 <question-rules>
                                     <question-rule>
-                                        <parentId>uwietry176243</parentId>
-                                        <method>this.ruleExecutor.renderedRule('%s', ['19:37'])</method>
+                                        <parentId></parentId>
+                                        <method></method>
                                     </question-rule>
                                 </question-rules>
                                 <help-text></help-text>
