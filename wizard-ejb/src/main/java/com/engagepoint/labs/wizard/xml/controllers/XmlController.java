@@ -33,14 +33,10 @@ public class XmlController implements Serializable {
 
     public XmlController() {
         xmlPathList = new ArrayList<String>();
-//        xmlPathList.add("/XMLforWizard.xml");
-//        xmlPathList.add("/XMLforWizard2.xml");
-//        xmlPathList.add("/ExemplaryWelcome.xml");
         xmlPathList.add("/DependentPages.xml");
         xmlPathList.add("/DependentTopics.xml");
         xmlPathList.add("/DependentQuestions.xml");
         xmlPathList.add("/TestAllComponents.xml");
-//        xmlPathList.add("/prevTestTemplate.xml");
         xmlPathList.add("/XMLforDemo.xml");
         this.parser = new XmlCustomParser();
     }

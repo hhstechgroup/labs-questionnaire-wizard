@@ -159,6 +159,8 @@ public class WizardDataModelGenerator {
                 wizardQuestion = new TextQuestion();
                 getTextDefaultAnswer(xmlQuestion, wizardQuestion);
                 break;
+            default:
+                break;
         }
         wizardQuestion.setId(xmlQuestion.getQuestionId());
         wizardQuestion.setTitle(xmlQuestion.getQuestionTitle());
@@ -303,12 +305,30 @@ public class WizardDataModelGenerator {
 
         if (checkDefaultAnswer(xmlQuestion)) {
             GridValue gridDefaults = new GridValue();
+            GridValue gridAnswer = new GridValue();
             int answerSize = gridQuestion.getRows().size()
                     * gridQuestion.getColumns().size();
             gridDefaults.setValue(new Grid(gridQuestion.getId(),
                     defaultAnswers, answerSize));
+            gridAnswer.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
             gridQuestion.setDefaultAnswer(gridDefaults);
-            gridQuestion.setAnswer(gridDefaults);
+            gridQuestion.setAnswer(gridAnswer);
+            gridQuestion.setEmptyDefaultAnswer(false);
+        } else {
+            GridValue gridDefaults = new GridValue();
+            GridValue gridAnswer = new GridValue();
+            int answerSize = gridQuestion.getRows().size()
+                    * gridQuestion.getColumns().size();
+            defaultAnswers = GridQuestion.createGridEmptyAnswers(gridQuestion
+                    .getRows().size(), gridQuestion.getColumns().size());
+            gridDefaults.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridAnswer.setValue(new Grid(gridQuestion.getId(),
+                    defaultAnswers, answerSize));
+            gridQuestion.setDefaultAnswer(gridDefaults);
+            gridQuestion.setAnswer(gridAnswer);
+            gridQuestion.setEmptyDefaultAnswer(true);
         }
         return gridQuestion;
     }

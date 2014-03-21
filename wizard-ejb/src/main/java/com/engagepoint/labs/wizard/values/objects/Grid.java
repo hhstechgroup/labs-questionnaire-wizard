@@ -8,8 +8,12 @@ import java.util.Map;
  * Created by igor.guzenko on 2/17/14.
  */
 public class Grid {
-    public static String CELL_PREFIX = "gridcell_";
+    public static final String CELL_PREFIX = "gridcell_";
     private Map<String, Boolean> values;
+
+    public Grid() {
+
+    }
 
     public Grid(String gridID, List<String> values, int size) {
         this.values = new LinkedHashMap<String, Boolean>();

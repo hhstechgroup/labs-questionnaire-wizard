@@ -186,6 +186,7 @@ public class UINavigationBean implements Serializable {
             navigationData.startSelectXMLScreen();
         }
     }
+
     /**
      * Create questions, method must be called for every navigation case
      */
@@ -288,7 +289,6 @@ public class UINavigationBean implements Serializable {
     }
 
 
-
     /**
      * Method used as action attribute for NEXT button
      */
@@ -335,7 +335,7 @@ public class UINavigationBean implements Serializable {
         List<WizardQuestion> allWizardQuestions = getWizardForm()
                 .getAllWizardQuestions();
         for (WizardQuestion singleQuestion : allWizardQuestions) {
-            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD)) {
+            if (singleQuestion.getQuestionType().equals(QType.FILEUPLOAD) && singleQuestion.getAnswer() != null) {
                 filesForArchive.add((File) singleQuestion.getAnswer()
                         .getValue());
             }
@@ -373,7 +373,8 @@ public class UINavigationBean implements Serializable {
                             .getAllTopicsIdOnCurrentPage().get(
                                     navigationData
                                             .getAllTopicsIdOnCurrentPage()
-                                            .size() - 1));
+                                            .size() - 1
+                            ));
             changeCurrentTopic(navigationData.getCurrentTopicID());
         }
         executeAllRules();
@@ -426,6 +427,7 @@ public class UINavigationBean implements Serializable {
             }
         }
     }
+
     /**
      * This method is used to insert values to our left menu. Values are
      * extracted from currentTopicIDs list. If we know topic's ID, we can select
@@ -465,7 +467,8 @@ public class UINavigationBean implements Serializable {
             // creating EL expressions for all items in menu
             elExpression = expressionFactory.createMethodExpression(elContext,
                     "#{uiNavigationBean.changeCurrentTopic(\"" + topicID
-                            + "\")}", void.class, new Class[]{String.class});
+                            + "\")}", void.class, new Class[]{String.class}
+            );
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
             topicMenuItemList.add(item);
@@ -506,7 +509,8 @@ public class UINavigationBean implements Serializable {
                     elContext,
                     "#{uiNavigationBean.changeCurrentPage(\""
                             + wizardPage.getId() + "\")}", void.class,
-                    new Class[]{String.class});
+                    new Class[]{String.class}
+            );
             // set elExpression on item action attribute
             item.setActionExpression(elExpression);
             pageMenuItemList.add(item);
@@ -556,7 +560,6 @@ public class UINavigationBean implements Serializable {
         WizardTopic wizardTopic = wizardForm.getWizardTopicById(currentTopicID);
         return wizardTopic.getWizardQuestionList();
     }
-
 
 
     public void executeAllRules() {
@@ -782,7 +785,6 @@ public class UINavigationBean implements Serializable {
                     "dialogDependentQuestion.show()");
         }
     }
-
 
 
     @PreDestroy

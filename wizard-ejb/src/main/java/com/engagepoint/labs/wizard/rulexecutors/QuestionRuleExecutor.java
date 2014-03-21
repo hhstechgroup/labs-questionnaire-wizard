@@ -1,8 +1,10 @@
 package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
+import com.engagepoint.labs.wizard.questions.GridQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
+
 import org.primefaces.component.panel.Panel;
 
 import javax.faces.component.UIOutput;
@@ -35,14 +37,17 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
         String componentId = "maincontentid-panel_" + question.getId();
-        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent(componentId);
-        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
+        Panel panel = (Panel) FacesContext.getCurrentInstance().getViewRoot()
+                .findComponent(componentId);
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
+                && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
                     show = compareString(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case DATE:
-                    show = compareDateOrTime(parentQuestion.getQuestionType(), parentQuestionAnswer, expectedAnswer[0]);
+                    show = compareDateOrTime(parentQuestion.getQuestionType(),
+                            parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case FILE:
                     show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
@@ -51,6 +56,11 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
                     show = compareList(parentQuestionAnswer, expectedAnswer);
                     break;
                 case GRID:
+                    GridQuestion gridQuestion = (GridQuestion) parentQuestion;
+                    show = compareGrid(gridQuestion.getAnswerAsStrings(),
+                            expectedAnswer);
+                    break;
+                default:
                     break;
             }
         }
@@ -86,7 +96,9 @@ public class QuestionRuleExecutor extends RuleExecutorAbstract {
     }
 
     private void resetComponentValue() {
-        UIOutput component = (UIOutput) FacesContext.getCurrentInstance().getViewRoot().findComponent("maincontentid-" + question.getId());
+        UIOutput component = (UIOutput) FacesContext.getCurrentInstance()
+                .getViewRoot()
+                .findComponent("maincontentid-" + question.getId());
         if (question.getDefaultAnswer() != null && component != null) {
             component.setValue(question.getDefaultAnswer().getValue());
         } else if (component != null) {

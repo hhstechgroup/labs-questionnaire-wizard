@@ -2,8 +2,10 @@ package com.engagepoint.labs.wizard.rulexecutors;
 
 import com.engagepoint.labs.wizard.bean.WizardForm;
 import com.engagepoint.labs.wizard.bean.WizardPage;
+import com.engagepoint.labs.wizard.questions.GridQuestion;
 import com.engagepoint.labs.wizard.questions.WizardQuestion;
 import com.engagepoint.labs.wizard.values.Value;
+
 import org.primefaces.component.menuitem.MenuItem;
 
 /**
@@ -41,13 +43,15 @@ public class PageRuleExecutor extends RuleExecutorAbstract {
         boolean show = false;
         WizardQuestion parentQuestion = form.getWizardQuestionById(parentID);
         Value parentQuestionAnswer = parentQuestion.getAnswer();
-        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null && parentQuestionAnswer.getValue() != null) {
+        if (!parentQuestion.isIgnored() && parentQuestionAnswer != null
+                && parentQuestionAnswer.getValue() != null) {
             switch (parentQuestionAnswer.getType()) {
                 case STRING:
                     show = compareString(parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case DATE:
-                    show = compareDateOrTime(parentQuestion.getQuestionType(), parentQuestionAnswer, expectedAnswer[0]);
+                    show = compareDateOrTime(parentQuestion.getQuestionType(),
+                            parentQuestionAnswer, expectedAnswer[0]);
                     break;
                 case FILE:
                     show = compareFile(parentQuestionAnswer, expectedAnswer[0]);
@@ -56,6 +60,11 @@ public class PageRuleExecutor extends RuleExecutorAbstract {
                     show = compareList(parentQuestionAnswer, expectedAnswer);
                     break;
                 case GRID:
+                    GridQuestion gridQuestion = (GridQuestion) parentQuestion;
+                    show = compareGrid(gridQuestion.getAnswerAsStrings(),
+                            expectedAnswer);
+                    break;
+                default:
                     break;
             }
         }
