@@ -73,6 +73,7 @@ public class TestValues {
         textValueList.add("test1");
         textValueList.add("test2");
         textValueList.add("test3");
+	textValueList.add("test4");
         listTextValue.setValue(textValueList);
 
         assertNotNull(listTextValue.getValue());
